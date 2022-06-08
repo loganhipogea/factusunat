@@ -15,8 +15,8 @@ return [
         'view' => [
                 'theme' => [
                         'pathMap' => [
-                //'@app/views' => '@app/views/yii2-app-frontend',
-                                    '@app/views' => '@vendor/yiister/yii2-gentelella/views'
+                                    '@app/views' => '@app/views/skins/gentella',
+                                    //'@app/views' => '@vendor/yiister/yii2-gentelella/views'
                                 ],
                         ],
                     ],
