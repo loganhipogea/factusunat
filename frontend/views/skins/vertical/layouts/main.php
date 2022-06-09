@@ -3,7 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use frontend\assets\tabler\AppAssetTabler;
+use synamen\yii2tabler\assets\AppAsset;
 
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -11,7 +11,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
-AppAssetTabler::register($this);
+AppAsset::register($this);
 
 ?>
 <?php $this->beginPage() ?>
@@ -21,11 +21,9 @@ AppAssetTabler::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-    <!-- CSS files -->
-    
- 
- <?= Html::csrfMetaTags() ?>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext"
+    <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
 
      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.7/c3.min.js"></script>
@@ -39,17 +37,16 @@ AppAssetTabler::register($this);
     ?>
 
 </head>
-<body >
-<?php 
-    
-$this->beginBody() ?>
+<body>
+<?php $this->beginBody() ?>
 
-<div class="wrapper">
-        <?= $this->render('left.php');?>
-        <?= $this->render('container-fluid.php');?>
-          <?= $content ?>
-        <?php //echo $this->render('header.php');?>
+<div class="page">
+    <div class="page-main">
+        <?= $this->render('header.php');?>
+        <?= $this->render('menu.php');?>
+        <?= $content ?>
         <?= $this->render('footer.php');?>
+    </div>
 </div>
 
 <?php $this->endBody() ?>

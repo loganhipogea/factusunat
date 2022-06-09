@@ -6,7 +6,45 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
-        'urlManager' => [
+          'log' => [
+                //'traceLevel' => YII_DEBUG ? 3 : 0,            
+            'targets' => [
+                [
+                    'class' => 'yii\log\DbTarget',
+                    'levels' => ['error'],
+                ],
+               /* [
+                    'class' => 'yii\log\EmailTarget',
+                    'levels' => ['error'],
+                    'categories' => ['yii\db\*'],
+                    'message' => [
+                       'from' => ['log@example.com'],
+                       'to' => ['admin@example.com', 'developer@example.com'],
+                       'subject' => 'Database errors at example.com',
+                    ],
+                ],*/
+            ],
+        ],
+        
+          'i18n' => [
+            'translations' => [             
+                        
+                'rbac-admin'=>[
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@mdm/admin/messages',
+                    'sourceLanguage' => 'en',
+                ],
+                 'base.verbs'=>[
+                            'class' => 'yii\i18n\PhpMessageSource',
+                           'basePath' => '@messages',                                         
+                                            ], 
+                  ],
+              ],
+        
+        
+        
+        
+       /* 'urlManager' => [
                             'class' => 'yii\web\UrlManager',
                     // Disable index.php
                              'showScriptName' => false,
@@ -17,7 +55,7 @@ return [
                                     '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                                     '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
                                     ),
-                       ],
+                       ],*/
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

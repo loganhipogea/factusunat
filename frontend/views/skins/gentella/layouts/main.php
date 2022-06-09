@@ -6,7 +6,9 @@
  */
 
 use yii\helpers\Html;
-
+use yii\helpers\Url;
+use common\helpers\h;
+yii::error('registrinado los assets');
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
 ?>
@@ -37,20 +39,11 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/" class="site_title"><i class="fa fa-paw"></i> <span>Gentellela Alela!</span></a>
+                    <a href="/" class="site_title"><i class="fa fa-paw"></i> <span><?=h::app()->name?></span></a>
                 </div>
                 <div class="clearfix"></div>
 
-                <!-- menu prile quick info -->
-                <div class="profile">
-                    <div class="profile_pic">
-                        <img src="" alt="..." class="img-circle profile_img">
-                    </div>
-                    <div class="profile_info">
-                        <span>Welcome,</span>
-                        <h2>John Doe</h2>
-                    </div>
-                </div>
+                
                 <!-- /menu prile quick info -->
 
                 <br />
@@ -59,14 +52,34 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 
                     <div class="menu_section">
-                        <h3>General</h3>
+                        
+           <?php $items=common\helpers\MenuHelper::getAssignedMenu(
+                   yii::$app->user->id
+                   ,null/*root*/, 
+                    function ($menu) {
+    // $data = eval($menu['data']);
+     return [
+         'label' => $menu['name'],
+        'url' => (empty($menu['route']))?'#':[$menu['route']],
+         'icon'=>$menu['icon'],
+        // 'options' => $data,
+         'items' => $menu['items']
+         ];
+     
+            },
+                   true/*refresh*/);?>  
+       <?php  /*var_dump($items);die();*/?>
+       
                         <?=
                         \yiister\gentelella\widgets\Menu::widget(
                             [
-                                "items" => [
+                               "items" =>$items, 
+                                /*"items" => [
                                     ["label" => "Home", "url" => "/", "icon" => "home"],
-                                    ["label" => "Layout", "url" => ["site/layout"], "icon" => "files-o"],
+                                    ["label" => "About", "url" => ["site/about"], "icon" => "files-o"],
                                     ["label" => "Error page", "url" => ["site/error-page"], "icon" => "close"],
+                                    
+                                    
                                     [
                                         "label" => "Widgets",
                                         "icon" => "th",
@@ -125,7 +138,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                             ],
                                         ],
                                     ],
-                                ],
+                                ],*/
                             ]
                         )
                         ?>
@@ -165,7 +178,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="" alt="">John Doe
+                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;"></i><?=h::userName() ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -180,7 +193,14 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                 <li>
                                     <a href="javascript:;">Help</a>
                                 </li>
-                                <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                <li>
+                                   <?= Html::a(
+                                    yii::t('base.verbs','Logout').'<i class="fa fa-sign-out pull-right"></i>',
+                                    ['/site/logout'],
+                                    ['data-method' => 'post',]
+                                           )
+                                 ?>
+                                    
                                 </li>
                             </ul>
                         </li>

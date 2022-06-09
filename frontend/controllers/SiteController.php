@@ -15,6 +15,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+USE common\helpers\h;
+use yii\base\UnknownPropertyException;
 
 /**
  * Site controller
@@ -75,7 +77,35 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+       // $urlBackend=str_replace('frontend','backend',yii::$app->urlManager->baseUrl);
+         //if(\backend\components\Installer::readEnv('APP_INSTALLED')=='false'){
+                //$this->redirect($urlBackend);             
+            //}else{                
+                if(yii::$app->user->isGuest){
+                    $this->layout="plataforma"; 
+                  return  $this->redirect(['site/login']);
+                    
+                }else{
+                       try {
+                            $profile=h::user()->profile;
+                            $url= $profile->url;
+                            $tipo=$profile->tipo;
+                            if(empty($url)){
+                            $url=h::gsetting('general','url.profile.'.$tipo);  
+                                     // yii::error(' url  '.$url); 
+                                }
+              //yii::error('LA URL ES  '.$url);                   
+                                if(!empty($url))
+                                 $this->redirect(Url::to([$url]));
+                       } catch (UnknownPropertyException $ex) {
+                           return $this->render('index');
+                       } 
+                                                 
+                     //return h::user()->resolveUrlAfterLogin();                     
+                        
+                }               
+              // $this->redirect(\Yii::$app->urlManager->home);
+            //}
     }
 
     /**
@@ -85,13 +115,15 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout="login";
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
+        
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+           $this->redirect(['index']); 
         }
 
         $model->password = '';

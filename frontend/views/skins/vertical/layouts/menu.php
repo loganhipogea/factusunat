@@ -28,6 +28,8 @@
               <a href="./maps.html" class="dropdown-item ">Maps</a>
               <a href="./icons.html" class="dropdown-item ">Icons</a>
               <a href="./store.html" class="dropdown-item ">Store</a>
+              <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-arrow-right"></i> Sub opciop</a>
+                
               <a href="./blog.html" class="dropdown-item ">Blog</a>
               <a href="./carousel.html" class="dropdown-item ">Carousel</a>
             </div>

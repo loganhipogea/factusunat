@@ -22,7 +22,8 @@
         "daxslab/yii2-coreui": "*",
         "synamen/yii2-tabler-theme": "~1.0",
         "yiister/yii2-gentelella": "~1.0",
-        "dmstr/yii2-adminlte-asset": "^2.1"
+        "dmstr/yii2-adminlte-asset": "^2.1",
+        "dlds/yii2-metronic": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

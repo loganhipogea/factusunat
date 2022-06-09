@@ -7,6 +7,9 @@ $params = array_merge(
 );
 
 return [
+    'language'=>'es',
+    'sourceLanguage' => 'en',
+     'timeZone' => 'America/Lima',
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -15,6 +18,7 @@ return [
         'view' => [
                 'theme' => [
                         'pathMap' => [
+                                    //'@app/views' => '@app/views/skins/vertical',
                                     '@app/views' => '@app/views/skins/gentella',
                                     //'@app/views' => '@vendor/yiister/yii2-gentelella/views'
                                 ],
