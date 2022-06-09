@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23888fa6fcfbffe64f4d5abdbd2a98c4",
+    "content-hash": "6f6f240bfd5e30593f209cf6ec26a683",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -132,6 +132,24 @@
             ]
         },
         {
+            "name": "bower-asset/jquery-colorbox",
+            "version": "1.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jackmoore/colorbox.git",
+                "reference": "bac78120c6ca9e63370cc317ab6f400129cd6608"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jackmoore/colorbox/zipball/bac78120c6ca9e63370cc317ab6f400129cd6608",
+                "reference": "bac78120c6ca9e63370cc317ab6f400129cd6608"
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.3.2"
+            },
+            "type": "bower-asset"
+        },
+        {
             "name": "bower-asset/punycode",
             "version": "v1.3.2",
             "source": {
@@ -143,6 +161,24 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/mathiasbynens/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/x-editable",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:vitalets/x-editable.git",
+                "reference": "f32802f48a33b8a7ec9cca32eec4ca844b7d39b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vitalets/x-editable/zipball/f32802f48a33b8a7ec9cca32eec4ca844b7d39b2",
+                "reference": "f32802f48a33b8a7ec9cca32eec4ca844b7d39b2"
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.6"
             },
             "type": "bower-asset"
         },
@@ -728,6 +764,117 @@
             "time": "2016-10-24T15:52:54+00:00"
         },
         {
+            "name": "himiklab/yii2-colorbox-widget",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/himiklab/yii2-colorbox-widget.git",
+                "reference": "c4aee292cdeabe03e996eb4396719376c2252602"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/himiklab/yii2-colorbox-widget/zipball/c4aee292cdeabe03e996eb4396719376c2252602",
+                "reference": "c4aee292cdeabe03e996eb4396719376c2252602",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery-colorbox": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "himiklab\\colorbox\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "HimikLab",
+                    "homepage": "https://github.com/himiklab/"
+                }
+            ],
+            "description": "Customizable lightbox widget for Yii2",
+            "keywords": [
+                "colorbox",
+                "lightbox",
+                "widget",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/himiklab/yii2-colorbox-widget/issues",
+                "source": "https://github.com/himiklab/yii2-colorbox-widget"
+            },
+            "abandoned": true,
+            "time": "2016-02-02T10:23:58+00:00"
+        },
+        {
+            "name": "kartik-v/bootstrap-fileinput",
+            "version": "v5.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
+                "reference": "89be70dbb9470dd8a56ef27508e344fcfccdb5af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/89be70dbb9470dd8a56ef27508e344fcfccdb5af",
+                "reference": "89be70dbb9470dd8a56ef27508e344fcfccdb5af",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\plugins\\fileinput\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An enhanced HTML 5 file input for Bootstrap 5.x, 4.x, and 3.x with features for file preview for many file types, multiple selection, ajax uploads, and more.",
+            "homepage": "https://github.com/kartik-v/bootstrap-fileinput",
+            "keywords": [
+                "ajax",
+                "bootstrap",
+                "delete",
+                "file",
+                "image",
+                "input",
+                "jquery",
+                "multiple",
+                "preview",
+                "progress",
+                "upload"
+            ],
+            "support": {
+                "issues": "https://github.com/kartik-v/bootstrap-fileinput/issues",
+                "source": "https://github.com/kartik-v/bootstrap-fileinput/tree/v5.2.8"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/bootstrap-fileinput",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2022-05-10T14:17:20+00:00"
+        },
+        {
             "name": "kartik-v/yii2-dialog",
             "version": "v1.0.6",
             "source": {
@@ -905,6 +1052,65 @@
             "time": "2022-03-04T08:41:33+00:00"
         },
         {
+            "name": "kartik-v/yii2-widget-fileinput",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-fileinput.git",
+                "reference": "fcf5bf41fac35363d3f24a01a34f228c2534c7b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/fcf5bf41fac35363d3f24a01a34f228c2534c7b7",
+                "reference": "fcf5bf41fac35363d3f24a01a34f228c2534c7b7",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/bootstrap-fileinput": ">=5.0.0",
+                "kartik-v/yii2-krajee-base": ">=2.0.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\file\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An enhanced FileInput widget for Bootstrap 3.x & 4.x with file preview, multiple selection, and more features (sub repo split from yii2-widgets)",
+            "homepage": "https://github.com/kartik-v/yii2-widget-fileinput",
+            "keywords": [
+                "extension",
+                "file",
+                "form",
+                "input",
+                "jquery",
+                "plugin",
+                "upload",
+                "widget",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/kartik-v/yii2-widget-fileinput/issues",
+                "source": "https://github.com/kartik-v/yii2-widget-fileinput/tree/master"
+            },
+            "time": "2019-04-19T11:45:08+00:00"
+        },
+        {
             "name": "mdmsoft/yii2-admin",
             "version": "2.12",
             "source": {
@@ -965,6 +1171,69 @@
                 "source": "https://github.com/mdmsoft/yii2-admin"
             },
             "time": "2020-12-31T06:48:57+00:00"
+        },
+        {
+            "name": "nemmo/yii2-attachments",
+            "version": "1.0.0-beta.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nemmo/yii2-attachments.git",
+                "reference": "2636e214b87b1cfdcd2396741be76145ad092092"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nemmo/yii2-attachments/zipball/2636e214b87b1cfdcd2396741be76145ad092092",
+                "reference": "2636e214b87b1cfdcd2396741be76145ad092092",
+                "shasum": ""
+            },
+            "require": {
+                "himiklab/yii2-colorbox-widget": "*",
+                "kartik-v/yii2-widget-fileinput": "~1.0.0",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/dbunit": "~1.0",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "nemmo\\attachments\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alimzhan Abuov aka Nemmo",
+                    "email": "alimzhan.abu@yandex.kz",
+                    "homepage": "http://alimzhan.kz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Extension for file uploading and attaching to the models",
+            "homepage": "https://github.com/Nemmo/yii2-attachments",
+            "keywords": [
+                "attachment",
+                "extension",
+                "file",
+                "upload",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/Nemmo/yii2-attachments/issues",
+                "source": "https://github.com/Nemmo/yii2-attachments/tree/master"
+            },
+            "time": "2016-12-07T12:54:01+00:00"
         },
         {
             "name": "npm-asset/bootstrap",
@@ -1632,6 +1901,162 @@
                 "source": "https://github.com/synamen/yii2-tabler-theme/tree/master"
             },
             "time": "2018-09-21T11:04:44+00:00"
+        },
+        {
+            "name": "yii2mod/yii2-editable",
+            "version": "1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2mod/yii2-editable.git",
+                "reference": "21099a75670b6a406484afadf05ddd415774f4a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2mod/yii2-editable/zipball/21099a75670b6a406484afadf05ddd415774f4a6",
+                "reference": "21099a75670b6a406484afadf05ddd415774f4a6",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/x-editable": "*",
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii2mod\\editable\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Chepurnoi",
+                    "email": "igorzfort@gmail.com"
+                }
+            ],
+            "description": "Yii2 editable field extension",
+            "keywords": [
+                "yii2",
+                "yii2 editable",
+                "yii2 editable column",
+                "yii2 editable field"
+            ],
+            "support": {
+                "issues": "https://github.com/yii2mod/yii2-editable/issues",
+                "source": "https://github.com/yii2mod/yii2-editable/tree/master"
+            },
+            "time": "2018-01-15T15:00:16+00:00"
+        },
+        {
+            "name": "yii2mod/yii2-enum",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2mod/yii2-enum.git",
+                "reference": "7af030e19636ece5fd0adb5d6012d2b03fa63895"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2mod/yii2-enum/zipball/7af030e19636ece5fd0adb5d6012d2b03fa63895",
+                "reference": "7af030e19636ece5fd0adb5d6012d2b03fa63895",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii2mod\\enum\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Semenov",
+                    "email": "disemx@gmail.com"
+                },
+                {
+                    "name": "Igor Chepurnoi",
+                    "email": "igorzfort@gmail.com"
+                }
+            ],
+            "description": "Yii2 Enumerable helpers",
+            "keywords": [
+                "enumerable helper",
+                "yii2",
+                "yii2 enum"
+            ],
+            "support": {
+                "issues": "https://github.com/yii2mod/yii2-enum/issues",
+                "source": "https://github.com/yii2mod/yii2-enum/tree/master"
+            },
+            "time": "2017-04-19T22:06:46+00:00"
+        },
+        {
+            "name": "yii2mod/yii2-settings",
+            "version": "2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2mod/yii2-settings.git",
+                "reference": "a336b5a38143999f275f023702790b3838acc214"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2mod/yii2-settings/zipball/a336b5a38143999f275f023702790b3838acc214",
+                "reference": "a336b5a38143999f275f023702790b3838acc214",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "yii2mod/yii2-editable": "*",
+                "yii2mod/yii2-enum": "*",
+                "yiisoft/yii2": "~2.0.10"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.0",
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii2mod\\settings\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Chepurnoi",
+                    "email": "chepurnoi.igor@gmail.com"
+                }
+            ],
+            "description": "Yii2 Settings Module",
+            "keywords": [
+                "Settings",
+                "config",
+                "storage",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/yii2mod/yii2-settings/issues",
+                "source": "https://github.com/yii2mod/yii2-settings/tree/master"
+            },
+            "time": "2018-08-20T19:39:14+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -6324,7 +6749,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dlds/yii2-metronic": 20
+        "dlds/yii2-metronic": 20,
+        "nemmo/yii2-attachments": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

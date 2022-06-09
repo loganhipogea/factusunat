@@ -29,7 +29,24 @@ return [
     ],*/
     
      'controllerMap' => [
-      
+         'migrate' => [
+		'class' => 'yii\console\controllers\MigrateController',
+		'migrationNamespaces' => [
+			'nemmo\attachments\migrations',
+		],
+         ],
+        'migrate-build' => [
+            'class' => 'yii\console\controllers\MigrateController',
+             'migrationPath'=>[
+                '@console/migrations/build',
+                
+                ],          
+            //'migrationTable' => 'migration_rbac',
+            //'migrationPath' => null,
+        ],
+         
+     
+         
         'migrate-core' => [
             'class' => 'yii\console\controllers\MigrateController',
              'migrationPath'=>[

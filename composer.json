@@ -23,7 +23,9 @@
         "synamen/yii2-tabler-theme": "~1.0",
         "yiister/yii2-gentelella": "~1.0",
         "dmstr/yii2-adminlte-asset": "^2.1",
-        "dlds/yii2-metronic": "dev-master"
+        "dlds/yii2-metronic": "dev-master",
+        "yii2mod/yii2-settings": "*",
+        "nemmo/yii2-attachments": "~1.0.0-Beta.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

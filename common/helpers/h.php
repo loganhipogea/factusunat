@@ -284,7 +284,9 @@ class h {
      
  }
 
-
+public static function userNameExists($username){
+   return (!is_null(User::findByUsername($username)));
+}
  
 }
 ?>
