@@ -67,7 +67,10 @@ return [
         'class' => 'yii\web\User',
         'identityClass' => 'mdm\admin\models\User',
         'loginUrl' => ['admin/user/login'],
-    ]
+    ],
+        'settings' => [
+        'class' => 'yii2mod\settings\components\Settings',
+    ],
     ],
     
     'modules' => [
@@ -84,6 +87,9 @@ return [
 			'maxSize' => 1024 * 1024 // 1 MB
 		],
 		'tableName' => '{{%attachments}}' // Optional, default to 'attach_file'
-	]
+	],
+      'settings' => [
+        'class' => 'yii2mod\settings\Module',
+    ],
     ]
 ];

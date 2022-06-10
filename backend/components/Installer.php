@@ -425,8 +425,12 @@ class Installer
     public static function readEnv($key,$default=null)
     {
         $retorno=null;
+        if(is_file(__DIR__.'/../web/.env')){
+            $env = file_get_contents(__DIR__.'/../web/.env');
+        }else{
+            return $default;
+        }
         
-        $env = file_get_contents(__DIR__.'/../web/.env');
         
         $env = explode("\n", $env);
        

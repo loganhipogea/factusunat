@@ -11,6 +11,9 @@ use common\models\masters\Combovalores;
  */
 class baseMigration extends Migration
 {
+    private $_tabla='{{%fks}}';
+    public $paramsFk=[];
+    
     const TABLE_COMBO='{{%combovalores}}' ;
     public function isMySql(){
         return ($this->db->driverName === 'mysql')?true:false;
@@ -175,8 +178,78 @@ class baseMigration extends Migration
     public function dropView($nameView){
         $this->db->createCommand()->dropView($nameView)->execute();
     }
+    public function nameFk(){
+        $namecolumns='';
+        $namerefcolums='';
+            if(is_array($this->paramsFk[1])) {
+                    foreach($this->paramsFk[1] as $column){
+                        $namecolumns.=$column;
+                        }
+                   }else{
+                        $namecolumns.=$this->paramsFk[1];
+               }
+           if(is_array($this->paramsFk[3])) {
+                    foreach($this->paramsFk[3] as $column){
+                        $namerefcolums.=$column;
+                        }
+                   }else{
+                        $namerefcolums.=$this->paramsFk[3];
+               }
+             return 'fk_'.preg_replace('([^A-Za-z0-9_])', '', $this->paramsFk[0]).'_'.$namecolumns.'_'.preg_replace('([^A-Za-z0-9_])', '', $this->paramsFk[2]).'_'. $namerefcolums;      
+         }
+    /*public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete = null, $update = null) {
+        $name=$this->nameFk($table, $columns, $refTable, $refColumns);
+        try {
+            parent::addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete, $update); 
+        } catch (Exception $ex) {
+            $this->storeFk($name, $table, $columns, $refTable, $refColumns,$ex->getMessage());
+        }
+       
+    }*/
+    private function storeLogFk($error){
+        $this->db->createCommand()->insert($this->_tabla, [
+            'name'=>$this->nameFk(),
+            'tabla_origen'=>$this->paramsFk[0],
+            'campo_origen'=>(is_array($this->paramsFk[1]))?\yii\helpers\Json::encode($this->paramsFk[1]):$this->paramsFk[1],
+            'tabla_destino'=>$this->paramsFk[2],
+             'campo_destino'=>(is_array($this->paramsFk[3]))?\yii\helpers\Json::encode($this->paramsFk[3]):$this->paramsFk[3],
+              'exito'=>'0',
+              'error'=>$error,
+        ])->execute();
+    }
+    private function deleteLogFk(){
+        $this->db->createCommand()->delete('{{%fks}}',                
+                [
+                    'name'=>$this->nameFk(),
+                    
+                    ]
+                )->execute();
+        
+    }
+   public function addFk(){
+       try{
+           $this->addForeignKey(
+                   $this->nameFk(),
+                   $this->paramsFk[0], $this->paramsFk[1], $this->paramsFk[2], $this->paramsFk[3]
+                   );
+       } catch (Exception $ex) {
+           $this->storeLogFk($ex->getMessage());
+       }
+       
+   }
+   
+   public function dropFk(){
+       
+           $this->dropForeignKey(
+                   $this->nameFk(),
+                   $this->paramsFk[0]
+                   );
+           $this->deleteLogFk();
+       } 
+       
+   }
             
-}
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates

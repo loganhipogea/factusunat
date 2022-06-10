@@ -1,5 +1,7 @@
-<?php foreach ($fields as $field): ?>
-   if(!$this->existsColumn($this->table,'<?=$field?>')){  
+<?php
+
+foreach ($fields as $field): ?>
+   if(!$this->existsColumn($this->table,'<?=$field['property']?>')){  
         $this->addColumn('<?=
             $table
         ?>', '<?=

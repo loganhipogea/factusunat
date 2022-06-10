@@ -17,7 +17,7 @@ if (!empty($namespace)) {
 }
 ?>
 
-use console\migratons\baseMigration;
+use console\migrations\baseMigration;
 
 /**
  * Handles the creation of table `<?= $table ?>`.
