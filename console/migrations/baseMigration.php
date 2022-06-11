@@ -2,7 +2,7 @@
 namespace console\migrations;
 use yii\db\Migration;
 use backend\components\Installer;
-use common\models\masters\ModelCombo; //la tabla de combos padre config
+//use common\models\masters\ModelCombo; //la tabla de combos padre config
 use common\models\masters\Combovalores;
 /*
  * Clase definida para ayudar asimplificar los procesos de migracion 
@@ -135,10 +135,10 @@ class baseMigration extends Migration
               }
         }else{
             $code='1'.str_pad($i, $largo-1, '0', STR_PAD_LEFT);
-           ModelCombo::firstOrCreateStatic([
+           /*ModelCombo::firstOrCreateStatic([
             'parametro'=>$realNameTable.'.'.$namefield,
             'clavecentro'=>'0',
-            ]);
+            ]);*/
             Combovalores::firstOrCreateStatic([
             'nombretabla'=>$realNameTable.'.'.$namefield,
             'codigo'=>$code,

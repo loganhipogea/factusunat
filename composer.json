@@ -25,7 +25,13 @@
         "dmstr/yii2-adminlte-asset": "^2.1",
         "dlds/yii2-metronic": "dev-master",
         "yii2mod/yii2-settings": "*",
-        "nemmo/yii2-attachments": "~1.0.0-Beta.3"
+        "nemmo/yii2-attachments": "~1.0.0-Beta.3",
+        "2amigos/yii2-chartjs-widget": "~2.0",
+        "kartik-v/yii2-export": "dev-master",
+        "kartik-v/yii2-tabs-x": "dev-master",
+        "shifrin/yii2-noty": "^1.0",
+        "loveorigami/yii2-modal-ajax": "@dev",
+        "kartik-v/yii2-editable": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

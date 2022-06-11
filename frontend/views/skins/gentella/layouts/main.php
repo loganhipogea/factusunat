@@ -4,7 +4,8 @@
  * @var string $content
  * @var \yii\web\View $this
  */
-
+use yii\widgets\Breadcrumbs;
+use dmstr\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\helpers\h;
@@ -23,6 +24,10 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <?php
+    $this->registerCssFile('@web/css/gentelella_ajustes.css', 
+           ['depends' => [yiister\gentelella\assets\Asset::className()]]);
+    ?>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -143,7 +148,44 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         )
                         ?>
                     </div>
+                <?php
+use lo\widgets\modal\ModalAjax;
 
+echo ModalAjax::widget([
+    'id' => 'buscarvalor',
+    'header' => 'Buscar Valor',
+    'toggleButton' => false,
+    //'mode'=>ModalAjax::MODE_MULTI,
+    'size'=>\yii\bootstrap\Modal::SIZE_LARGE,    
+    'selector'=>'.botonAbre',
+   // 'url' => $url, // Ajax view with form to load
+    'ajaxSubmit' => true, // Submit the contained form as ajax, true by default
+    //para que no se esconda la ventana cuando presionas una tecla fuera del marco
+    'clientOptions' => ['tabindex' => false,'backdrop' => 'static', 'keyboard' => FALSE]
+    // ... any other yii2 bootstrap modal option you need
+]);
+
+?>
+    <?php \shifrin\noty\NotyWidget::widget([
+    'options' => [ // you can add js options here, see noty plugin page for available options
+        'dismissQueue' => true,
+        'layout' => 'center',
+        'theme' => 'metroui',
+        'animation' => [
+            'open' => 'animated flipInX',
+            'close' => 'animated flipOutX',
+        ],
+        'timeout' =>1000, //false para que no se borre
+        'progressBar'=>true,
+    ],
+    'enableSessionFlash' => true,
+    'enableIcon' => true,
+    'registerAnimateCss' => true,
+    'registerButtonsCss' => true,
+    'registerFontAwesomeCss' => true,
+]); ?>
+                        
+                    
                 </div>
                 <!-- /sidebar menu -->
 
@@ -178,7 +220,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;"></i><?=h::userName() ?>
+                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;color: #52be0a;"></i><?=h::userName() ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -287,6 +329,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
         <!-- page content -->
         <div class="right_col" role="main">
+            
             <?php if (isset($this->params['h1'])): ?>
                 <div class="page-title">
                     <div class="title_left">
@@ -305,7 +348,30 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                 </div>
             <?php endif; ?>
             <div class="clearfix"></div>
+            <section class="content-header">
+                    <?php if (isset($this->blocks['content-header'])) { ?>
+                        <h1><?= $this->blocks['content-header'] ?></h1>
+                             <?php } else { ?>
+                            <h1>
+                                <?php
+               /* if ($this->title !== null) {
+                    echo \yii\helpers\Html::encode($this->title);
+                } else {
+                    echo \yii\helpers\Inflector::camel2words(
+                        \yii\helpers\Inflector::id2camel($this->context->module->id)
+                    );
+                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
+                }*/                 ?>
+                            </h1>
+                                <?php } ?>
 
+        <?=
+        Breadcrumbs::widget(
+            [
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]
+        ) ?>
+    </section>
             <?= $content ?>
         </div>
         <!-- /page content -->

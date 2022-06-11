@@ -34,11 +34,34 @@ return [
                     'basePath' => '@mdm/admin/messages',
                     'sourceLanguage' => 'en',
                 ],
+                
+                'yii2mod.settings' => [
+                                            'class' => 'yii\i18n\PhpMessageSource',
+                                            'basePath' => '@yii2mod/settings/messages',
+                                            ],  
                  'base.verbs'=>[
                             'class' => 'yii\i18n\PhpMessageSource',
                            'basePath' => '@messages',                                         
-                                            ], 
+                     
+                     
+                     ], 
+                
+                        'base.names'=>[
+                            'class' => 'yii\i18n\PhpMessageSource',
+                           'basePath' => '@messages',                                         
+                              ],
+                      'base.errors'=>[
+                            'class' => 'yii\i18n\PhpMessageSource',
+                           'basePath' => '@messages',                                         
+                              ],
+                          'base.responses'=>[
+                            'class' => 'yii\i18n\PhpMessageSource',
+                           'basePath' => '@messages',                                         
+                              ],
                   ],
+              
+                  
+                  
               ],
         
         
@@ -74,6 +97,14 @@ return [
     ],
     
     'modules' => [
+        'gridview' =>  [
+        'class' => '\kartik\grid\Module'
+        // enter optional module parameters below - only if you need to  
+        // use your own export download action or custom translation 
+        // message source
+        // 'downloadAction' => 'gridview/export/download',
+        // 'i18n' => []
+        ],
     'admin' => [
         'class' => 'mdm\admin\Module',
      ], 
