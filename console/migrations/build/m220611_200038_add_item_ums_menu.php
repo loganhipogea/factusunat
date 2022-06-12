@@ -1,18 +1,15 @@
 <?php
 use console\migrations\baseMigration;
 use console\migrations\migrationMenu;
-/**
- * Class m220611_181945_add_item_masters_menu
- */
-class m220611_181945_add_item_masters_menu extends baseMigration
+class m220611_200038_add_item_ums_menu  extends baseMigration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-       migrationMenu::insertOption('Maestros', null,null);
-        migrationMenu::insertOption('Empresas', '/masters/clipro/index','Maestros');
+      // migrationMenu::insertOption('Maestros', null,null);
+        migrationMenu::insertOption('Unidades medida', '/masters/ums/index','Maestros');
        
     }
 
@@ -21,8 +18,8 @@ class m220611_181945_add_item_masters_menu extends baseMigration
      */
     public function safeDown()
     {
-        migrationMenu::deleteOption('Empresas', '/masters/clipro/index','Maestros');
-        migrationMenu::deleteOption('Maestros', null,null);
+        migrationMenu::deleteOption('Unidades medida', '/masters/ums/index','Maestros');
+       
         
     }
 

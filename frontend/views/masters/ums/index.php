@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('base.verbs', 'Create').' '.Yii::t('base.names', 'Units of measure'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+  <div class="box box-success">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -35,4 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
+   </div>
+
 </div>

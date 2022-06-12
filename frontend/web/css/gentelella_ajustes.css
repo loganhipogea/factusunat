@@ -1,3 +1,99 @@
 .modal-backdrop {
     z-index: 0 !important;
 }
+
+/*
+Corregir el color del link dl sandwih
+del menu principal 
+y tambien los links d elos tabs
+*/
+ .nav>a,
+.nav-tabs > li > a {
+    color: #90be49 !important;
+    text-decoration: none;
+ }
+ .nav>a:over,
+.nav-tabs > li > a:over {
+    color: #red !important;
+    text-decoration: none;
+ }
+ /*
+Aumentar el tamaño de la letra del menu
+ lateral
+*/
+ .nav-sm .nav.side-menu li a {
+    
+    font-weight: 400;
+    font-size: 14px;
+    padding: 10px 5px;
+}
+
+/*
+Corregir los colores feos del menu lateral 
+cunado salian fondos blancos  y letras grises
+al pasar el mouse a:hover,a:active,a:focus,
+*/
+.nav-sm ul.nav.child_menu a:hover,
+.nav-sm ul.nav.child_menu a:active,
+.nav-sm ul.nav.child_menu a:focus ,
+.nav.child_menu>li>a:hover,
+.nav.child_menu>li>a:active,
+.nav.child_menu>li>a:focus,
+.nav.side-menu>li.active>a
+{
+    color:#999999 !important;
+    background: #2c3b4b !important;;
+}
+
+
+div.box {
+     height:auto !important;    
+     border: none  !important; 
+     background-color: #fefefe !important; ; 
+}
+
+
+/*
+No se veian los spams fa fa 
+*/
+.nav-sm span.fa, .nav-sm .menu_section h3 {
+   display:inline !important;
+}
+/*
+Corregir el color del boton verde del success
+*/
+.btn-success {
+    background-color: #90be49;
+    background-image: -moz-linear-gradient(top, #62c462, #51a351) !important;
+    background-image: -ms-linear-gradient(top, #62c462, #51a351) !important;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#90be49), to(#90be49)) !important;
+    background-image: -webkit-linear-gradient(top, #90be49, #90be49) !important;
+    background-image: -o-linear-gradient(top, #62c462, #51a351) !important;
+    background-image: linear-gradient(top, #62c462, #51a351) !important;
+    background-repeat: repeat-x !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#62c462', endColorstr='#51a351', GradientType=0) !important;
+    border-color: #90be49 #90be49 #90be49 !important;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25) !important;
+    filter: progid:dximagetransform.microsoft.gradient(enabled=false) !important;
+}
+
+.btn-primary {
+    background-color: #35a0ea !important;
+    background-image: -moz-linear-gradient(top, #0088cc, #0055cc) !important;
+    background-image: -ms-linear-gradient(top, #0088cc, #0055cc) !important;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#35a0ea), to(#35a0ea));
+    background-image: -webkit-linear-gradient(top, #35a0ea, #35a0ea) !important;
+    background-image: -o-linear-gradient(top, #0088cc, #0055cc) !important;
+    background-image: linear-gradient(top, #0088cc, #0055cc) !important;
+    background-repeat: repeat-x !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0055cc', GradientType=0) !important;
+    border-color: #35a0ea #35a0ea #35a0ea !important;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25) !important;
+    filter: progid:dximagetransform.microsoft.gradient(enabled=false) !important;
+}
+/*
+EL color del link
+*/
+th a {
+    color: #52c0ff!important;    
+}

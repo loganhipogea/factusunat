@@ -9,7 +9,7 @@ use dosamigos\chartjs\ChartJs;
 
     <div class="body-content">
            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
-     <H4><?=yii::t('app','Módulos'); ?></H4>
+     <H4><i class="fa fa-cogs"></i><?=yii::t('app','Módulos'); ?></H4>
  
           <div class="row">
         <!---Income-->
