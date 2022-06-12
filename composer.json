@@ -32,7 +32,7 @@
         "loveorigami/yii2-modal-ajax": "@dev",
         "kartik-v/yii2-editable": "@dev",
         "rmrevin/yii2-fontawesome": "2.10.*",
-        "yiister/yii2-gentelella": "~1.0"
+        "yiister/yii2-gentelella": "~1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
