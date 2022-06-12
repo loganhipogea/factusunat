@@ -1,6 +1,7 @@
 <?php
 return [
     'Active'=>'Activo',
+    'Customers/Vendors'=>'Empresas/proveedores',
     'Disabled'=>'Inhabilitado',
     'Name'=>'Nombre',
     'Names'=>'Nombres',
@@ -43,8 +44,9 @@ return [
     'Province'=>'Provincia',
     'Departament'=>'Departamento',
      'Latitude'=>'Latitud',
-         'Meridian'=>'Meridiano',
+     'Meridian'=>'Meridiano',
      'Vendor Code'=>'Cod Empresa',
+    'Materials'=>'Materiales',
 ];
 
 ?>

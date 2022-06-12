@@ -19,8 +19,10 @@ return [
      'Preview'=>'Vista Previa',
     'View'=>'Visualizar',
     'Create {algo}'=>'Crear {algo}',
-    'Update {algo}'=>'Editar {algo}',
+    'Update Clipro: {name}'=>'Editar compañía: {name}',
     'Choose a Value'=>'Elija un valor',
     'Request password reset'=>'Reestablecer Contraseña',
-    'Create User'=>'Crear Usuario'
+    'Create User'=>'Crear Usuario',
+    'Create company'=>'Crear empresa',
+    'Update Material: {name}'=>'Editar Material: {name}',
 ];

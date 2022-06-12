@@ -8,14 +8,15 @@ use kartik\export\ExportMenu;
 /* @var $searchModel common\models\masters\CliproSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('base.names', 'Companies');
+$this->title = Yii::t('base.names', 'Customers/Vendors');
 
 ?>
+<h4><span class="fa fa-building"></span><?= Html::encode($this->title) ?></h4>
+   
 <div class="box box-success">
 <div class="clipro-index"> 
 
-    <h4><span class="fa fa-building"></span><?= Html::encode($this->title) ?></h4>
-    <?php Pjax::begin(['id'=>'clipropj']); ?>
+     <?php Pjax::begin(['id'=>'clipropj']); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="btn-group">  
         <?= Html::a('<span class="fa fa-industry"></span>'.'  '.Yii::t('app', 'Crear Empresa'), ['create'], ['class' => 'btn btn-success']) ?>

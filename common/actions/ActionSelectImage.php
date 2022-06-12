@@ -59,7 +59,7 @@ class ActionSelectImage extends \yii\base\Action
             $allowedExtensions=($isImage==1)?['jpg','png','gif','jpeg']:['doc','docx','pdf','xls','xlsx','csv','txt','ppt','pptx'];  
           }
            yii::error('Renderizando la vista  ');
-            return $this->controller->render('/comunes/attachFile', [
+            return $this->controller->renderAjax('/comunes/attachFile', [
                         'model' => $model,
                  'allowedExtensions' => $allowedExtensions,
                         //'vendorsForCombo' => $vendorsForCombo,

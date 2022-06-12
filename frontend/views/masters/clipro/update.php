@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use common\helpers\h;
 /* @var $this yii\web\View */
 /* @var $model common\models\masters\Clipro */
 
@@ -14,7 +14,8 @@ $this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Update');
 ?>
 <div class="clipro-update">
 
-    <h4><?= Html::encode($this->title) ?></h4>
+     <h4><?=h::awe('pencil')?><?=h::awe('building')?><?= Html::encode($this->title) ?></h4>
+
     
 <div class="box box-success">
     <?= $this->render('_formfirme', [

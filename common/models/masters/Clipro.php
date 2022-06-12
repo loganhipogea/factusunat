@@ -49,7 +49,7 @@ class Clipro extends \common\models\base\modelBase
   public static function patternDNI_RUC(){
       $regDni= h::gsetting('general','formatoDNI');
       $regRuc= h::gsetting('general','formatoRUC');
-      //yii::error(strrev(substr(strrev($regDni),1)).'|'.substr($regRuc,1),__FUNCTION__);
+      yii::error(strrev(substr(strrev($regDni),1)).'|'.substr($regRuc,1),__FUNCTION__);
     return strrev(substr(strrev($regDni),1)).'|'.substr($regRuc,1);
   }
     /**

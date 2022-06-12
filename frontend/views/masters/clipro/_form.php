@@ -30,7 +30,9 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                 <?= Html::submitButton("<span class=\"fa fa-cog\"></span>".($model->isNewRecord) ? 'Grabar' : 'Grabar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                <?php 
                  
-                 if(!$model->isNewRecord && !$model->socio){
+                 if(!$model->isNewRecord){
+                     if(!$model->socio){
+                 
                   echo Html::button("<span class=\"fa fa-cog\"></span>Convertir a Socio", 
                           [
                               'id'=>'btn_transf_sociedad',
@@ -42,7 +44,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                               'id'=>'btn_utransf_sociedad',
                               'class' => 'btn btn-warning']
                           );   
-                 }  
+                 }}  
                 
                ?>
              
@@ -55,7 +57,10 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <?= $form->field($model, 'codpro')->textInput(['disabled'=>'disabled','maxlength' => true]) ?>
     </div>
-       <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
+            <?= $form->field($model, 'despro')->textInput(['maxlength' => true]) ?>
+    </div>
+       <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
                 <?= $form->field($model, 'rucpro',['enableAjaxValidation'=>true])->textInput([
                     'maxlength' => true,
                     'disabled'=>($model->hasChilds())?true:false
@@ -72,9 +77,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                     <?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
          </div>
          
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <?= $form->field($model, 'despro')->textInput(['maxlength' => true]) ?>
-    </div>
+   
        
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <?= $form->field($model, 'web')->textInput(['maxlength' => true]) ?>
