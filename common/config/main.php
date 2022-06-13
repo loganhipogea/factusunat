@@ -67,14 +67,14 @@ return [
         
         
         
-        'urlManager' => [
-                            'class' => 'yii\web\UrlManager',
-                    // Disable index.php
-                             'showScriptName' => false,
-                    // Disable r= routes
-                             'enablePrettyUrl' => true,
-                            'rules' =>[],
-                       ],
+  'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'enableStrictParsing' => false,
+            'rules' => [
+               
+           ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
