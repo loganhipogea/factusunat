@@ -133,15 +133,6 @@ class BasicoController extends baseController
     }
     
     
-     public function actionBancos()
-    {
-        $searchModel = new CentrosSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index-centros', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    
     
 }
