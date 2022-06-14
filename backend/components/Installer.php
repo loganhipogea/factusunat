@@ -497,9 +497,10 @@ public static function testMail($serverMail,$userMail,$passwordMail,$portMail){
 }
 
 private static function createRoutes(){
-    
+        $rutas=static::getPureRutas();
+        $rutas[]='/*';
         $model = new \mdm\admin\models\Route();
-        $model->addNew(static::getPureRutas());
+        $model->addNew();
         unset($model);
     
     
@@ -527,7 +528,7 @@ public static function createBasicRole($username=null){
                             }
         $modelo = new \mdm\admin\models\Assignment($idUser);
         $success = $modelo->assign(['r_god']);
-                
+           usset($model);unset($modelo);      
                 
                 
         foreach(static::getRutas() as $clave=>$arreglo){
