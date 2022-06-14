@@ -507,14 +507,29 @@ private static function createRoutes(){
 
 public static function createBasicRole($username=null){
     if(yii::$app->hasModule('admin')){
-        static::createRoutes(); 
-        
+        static::createRoutes();         
          //Recuerde que ya se almaceno el id del pirmer usuario 
         //en sesion , aqui solo se consulta la sesion
         //$idUser=yii::$app->session->get('newUser');
         ///if(is_null($idUser))
-         $idUser= \mdm\admin\models\User::findByUsername($username)->id;
-        
+         $idUser= \mdm\admin\models\User::findByUsername($username)->id;   
+         
+         /*
+          * CREAMOS EL ROL DIOS Y LO ASIGNAMOS AL USER
+          */
+         $model = new \mdm\admin\models\AuthItem(null);
+                $model->setAttributes(['name'=>'r_god',
+                                'type'=>1,
+                                'description'=>'Rol Omnipotente ',
+                                ]);        
+                    if($model->save()){ 
+                                $model->addChildren(['/*']);                
+                            }
+        $modelo = new \mdm\admin\models\Assignment($idUser);
+        $success = $modelo->assign(['r_god']);
+                
+                
+                
         foreach(static::getRutas() as $clave=>$arreglo){
                 $model = new \mdm\admin\models\AuthItem(null);
                 $model->setAttributes(['name'=>'r_base'.$clave,
@@ -526,24 +541,29 @@ public static function createBasicRole($username=null){
                             }
                 $modelo = new \mdm\admin\models\Assignment($idUser);
                 $success = $modelo->assign(['r_base'.$clave]);
-                
-                
                  /*
          * Creando el Menu Basico
          */
-        
         $modelMenu=new \mdm\admin\models\Menu();
-        $modelMenu->setAttributes(['name'=>$clave,'route'=>'','parent'=>'','orden'=>'','data'=>'']);
+        $modelMenu->setAttributes([
+            'name'=>$clave,
+            'route'=>'',
+            'parent'=>'',
+            'orden'=>'',
+            'data'=>'',
+            'icon'=>'list',
+            ]);
         $modelMenu->save();$modelMenu->refresh();
         $idmMenu=$modelMenu->id;
-        unset($modelMenu);
-        
+        unset($modelMenu);        
         foreach($arreglo as $ruta=>$nombre){
              $modelMenu=new \mdm\admin\models\Menu();
              $modelMenu->setAttributes([
                  'name'=> $nombre/*FileHelper::getShortName($accion) /*  str_replace('/admin/user/','',$accion)*/,
                  'route'=>$ruta,
-                 'parent'=>$idmMenu,'orden'=>'',
+                 'parent'=>$idmMenu,
+                 'icon'=>'list',
+                 'orden'=>'',
                  'data'=>'']
                      );
            $modelMenu->save();
