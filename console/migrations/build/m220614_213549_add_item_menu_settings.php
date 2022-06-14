@@ -5,7 +5,7 @@ use console\migrations\migrationMenu;
 /**
  * Class m220614_213549_add_item_menu
  */
-class m220614_213549_add_item_menu extends migrationMenu
+class m220614_213549_add_item_menu_settings extends migrationMenu
 {
     /**
      * {@inheritdoc}
