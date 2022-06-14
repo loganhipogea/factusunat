@@ -528,7 +528,7 @@ public static function createBasicRole($username=null){
                             }
         $modelo = new \mdm\admin\models\Assignment($idUser);
         $success = $modelo->assign(['r_god']);
-           usset($model);unset($modelo);      
+           unset($model);unset($modelo);      
                 
                 
         foreach(static::getRutas() as $clave=>$arreglo){
