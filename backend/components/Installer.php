@@ -541,8 +541,8 @@ public static function createBasicRole($username=null){
                             }
                 $modelo = new \mdm\admin\models\Assignment($idUser);
                 $success = $modelo->assign(['r_base'.$clave]);
-                 /*
-         * Creando el Menu Basico
+                 
+         /* Creando el Menu Basico
          */
         $modelMenu=new \mdm\admin\models\Menu();
         $modelMenu->setAttributes([
