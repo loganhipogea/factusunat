@@ -25,7 +25,8 @@ return [
                         ],
                     ],
         'request' => [
-            'csrfParam' => '_csrf-frontend',
+        'csrfParam' => '_csrf-frontend',
+        //'baseUrl' => '/factusunat', //http://localhost/yii-advanced
         ],
         'user' => [
             'identityClass' => 'common\models\User',

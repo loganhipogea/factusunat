@@ -1,11 +1,26 @@
-Options +FollowSymLinks
-IndexIgnore */*
-
-RewriteEngine on
-
-# If a directory or a file exists, use the request directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-# Otherwise forward the request to index.php
-RewriteRule . index.php
-
+<IfModule mod_rewrite.c>
+    Options +SymLinksIfOwnerMatch
+    RewriteEngine On
+</IfModule>
+ 
+<IfModule mod_rewrite.c>    
+   
+    RewriteCond %{REQUEST_URI} ^/(assets|css|js|images)
+    RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L,DPI]
+    RewriteRule ^css/(.*)$ frontend/web/css/$1 [L,DPI]
+    RewriteRule ^js/(.*)$ frontend/web/js/$1 [L,DPI]
+    RewriteRule ^images/(.*)$ frontend/web/images/$1 [L,DPI]
+    RewriteRule ^(.*)$ frontend/web/$1 [L,DPI]
+    RewriteCond %{REQUEST_URI} !^/(frontend|backend)/web/(assets|css|js)/
+    RewriteCond %{REQUEST_URI} !index.php
+    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^.*$ frontend/web/index.php
+</IfModule>
+<IfModule mod_xsendfile.c> 
+ # <Archivos * .php> 
+ #   XSendFile en 
+ #   XSendFileAllowAbove en 
+ #   SetEnv MOD_X_SENDFILE_ENABLED 1 
+ # </Files> 
+</IfModule>
