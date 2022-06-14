@@ -500,7 +500,7 @@ private static function createRoutes(){
         $rutas=static::getPureRutas();
         $rutas[]='/*';
         $model = new \mdm\admin\models\Route();
-        $model->addNew();
+        $model->addNew($rutas);
         unset($model);
     
     
