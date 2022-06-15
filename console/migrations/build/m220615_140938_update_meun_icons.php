@@ -26,8 +26,8 @@ class m220615_140938_update_meun_icons extends baseMigration
         Menu::updateAll(['icon'=>'dropbox'],['name'=>'Maestros']);
         Menu::updateAll(['icon'=>'cog'],['name'=>'Config']);
         Menu::updateAll(['icon'=>'cogs'],['name'=>'Parametros']);
-        Menu::updateAll(['icon'=>'user-plus'],['name'=>'Regitrarse']);
-         Menu::updateAll(['icon'=>'user-lock'],['name'=>'Cambiar pass']);
+        Menu::updateAll(['icon'=>'user-plus'],['name'=>'Registrarse']);
+         Menu::updateAll(['icon'=>'address-book'],['name'=>'Cambiar pass']);
           Menu::updateAll(['icon'=>'key'],['name'=>'User']);
            Menu::updateAll(['icon'=>'user-plus'],['name'=>'Asignaciones']);
               Menu::updateAll(['icon'=>'users'],['name'=>'Usuarios']);
