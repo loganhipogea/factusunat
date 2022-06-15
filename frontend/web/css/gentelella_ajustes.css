@@ -97,3 +97,21 @@ EL color del link
 th a {
     color: #52c0ff!important;    
 }
+
+/*
+COLOR DE FONDO 
+*/
+body .container.body .right_col {
+    background: #ffffff !important;
+}
+
+/*Selccion del meni
+*/
+.nav.side-menu>li.current-page, .nav.side-menu>li.active {
+    border-right: 5px solid #90be49 !important;
+}
+
+.nav-sm .nav.child_menu li.active, .nav-sm .nav.side-menu li.active-sm {
+    border-right: 5px solid #c7db3d !important;
+};
+}

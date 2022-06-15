@@ -14,7 +14,7 @@ class m220614_213549_add_item_menu_settings extends migrationMenu
     {
 
       migrationMenu::insertOption('Config', null,null);
-        migrationMenu::insertOption('Parámetros', '/settings/index','Maestros');
+        migrationMenu::insertOption('Parametros', '/settings/index','Config');
          
     }
 
@@ -23,7 +23,7 @@ class m220614_213549_add_item_menu_settings extends migrationMenu
      */
     public function safeDown()
     {
-         migrationMenu::deleteOption('Parámetros', '/settings/index','Maestros');
+         migrationMenu::deleteOption('Parámetros', '/settings/index','Config');
         migrationMenu::deleteOption('Config', null,null);
         
     }

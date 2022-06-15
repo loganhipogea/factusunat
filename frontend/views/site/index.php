@@ -17,7 +17,7 @@ use dosamigos\chartjs\ChartJs;
            <div class="panel panel-success">
                <div class="panel-heading"><h3 class="panel-title" >Config.</h3></div> 
                <div class="panel-body">
-          <a href="<?=\yii\helpers\Url::to(["/sta/default/panel-coord",'codfac'=>'FIA'])  ?>"><span class="info-box-icon bg-yellow-gradient">
+          <a href="<?=\yii\helpers\Url::to(["/sta/default/panel-coord",'codfac'=>'FIA'])  ?>"><span class="">
                   <i class="fa fa-cogs" style="color:#d392e8;font-size:4em;"></i></span>
           </a>
            </div> 
@@ -29,7 +29,7 @@ use dosamigos\chartjs\ChartJs;
            <div class="panel panel-success">
                <div class="panel-heading"><h3 class="panel-title" >Ventas</h3></div> 
                <div class="panel-body">
-          <a href="<?=\yii\helpers\Url::to(["/sta/default/resumen-facultad",'codfac'=>'FIA'])  ?>"><span class="info-box-icon bg-green-gradient">
+          <a href="<?=\yii\helpers\Url::to(["/sta/default/resumen-facultad",'codfac'=>'FIA'])  ?>"><span class="">
                   <i class="fa fa-money" style="color:#f5c571;font-size:4em;"></i></span>
           </a>
            </div> 
@@ -39,7 +39,7 @@ use dosamigos\chartjs\ChartJs;
            <div class="panel panel-success">
                <div class="panel-heading"><h3 class="panel-title" >Almacén</h3></div> 
                <div class="panel-body">
-            <a href="<?=\yii\helpers\Url::to(["/sta/default/resumen-facultad",'codfac'=>'FAUA'])  ?>"><span class="info-box-icon bg-aqua">
+            <a href="<?=\yii\helpers\Url::to(["/sta/default/resumen-facultad",'codfac'=>'FAUA'])  ?>"><span class="">
                     <i class="fa fa-industry" style="color:#78ceff;font-size:4em;"></i></span>
             </a>
        </div> 
@@ -51,7 +51,7 @@ use dosamigos\chartjs\ChartJs;
            <div class="panel panel-success">
                <div class="panel-heading"><h3 class="panel-title" >Compras</h3></div> 
                <div class="panel-body">
-               <a href="<?=\yii\helpers\Url::to(["/sta/default/resumen-facultad",'codfac'=>'FIQT'])  ?>"><span class="info-box-icon bg-orange-active">
+               <a href="<?=\yii\helpers\Url::to(["/sta/default/resumen-facultad",'codfac'=>'FIQT'])  ?>"><span class="">
                        <i class="fa fa-cart-plus" style="color:#a5df85;font-size:4em;">
                            
                        </i>

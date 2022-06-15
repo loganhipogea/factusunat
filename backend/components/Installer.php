@@ -73,18 +73,7 @@ class Installer
                        // '/admin/route/create'=>Yii::t('app', 'Crear Ruta'),
                        
                   ],
-             'Masters'=>[
-                        '/masters/trabajadores/index'=>Yii::t('app', 'Colaboradores'),
-                        '/masters/clipro/index'=>Yii::t('app', 'Proveedores'),
-                        '/masters/bancos/index'=>Yii::t('app', 'Bancos'),
-                        '/documentos/index'=>Yii::t('app', 'Documentos'), 
-                  ],
-                 'Gestion'=>[
-                        '/sigi/edificios/index'=>Yii::t('app', 'Edificios'),
-                        '/sigi/cargos/index'=>Yii::t('app', 'Cargos'),
-                        '/sigi/unidades/index'=>Yii::t('app', 'Unidades'),
-                      
-                  ],
+             
              //'parameters'=>[
                         //'/parameteres/createmaster'=>Yii::t('app', 'Crear Parametro'),
                         //'/parameters/createparamdocu'=>Yii::t('app', 'Crear Paramaeters Documents'),
