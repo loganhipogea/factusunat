@@ -30,7 +30,7 @@ class m220615_140938_update_meun_icons extends baseMigration
          Menu::updateAll(['icon'=>'user-lock'],['name'=>'Cambiar pass']);
           Menu::updateAll(['icon'=>'key'],['name'=>'User']);
            Menu::updateAll(['icon'=>'user-plus'],['name'=>'Asignaciones']);
-              Menu::updateAll(['icon'=>'users'],['name'=>'Usuarios'])
+              Menu::updateAll(['icon'=>'users'],['name'=>'Usuarios']);
     }
 
     /**
