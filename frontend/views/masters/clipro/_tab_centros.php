@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\helpers\Html;
+//use kartik\grid\GridView as grid;
 use kartik\grid\GridView as grid;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
@@ -39,6 +40,23 @@ $zonaAjax='grilla-centros'
                              }
                         
                     ]
+                ],
+        [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                            return grid::ROW_COLLAPSED;
+                                },
+                 'detail'=> function($model)  {          
+                                        
+                          return  $this->render('_expand_sucursal',[
+                               'model'=>$model,
+                               //'key'=>$key,
+                           ]);
+                            },
+                     //'detailUrl' =>Url::toRoute(['/masters/clipro/_expand_almacen']),
+                    //'headerOptions' => ['class' => 'kartik-sheet-style'], 
+                    'expandOneOnly' => true
                 ],
            
         [

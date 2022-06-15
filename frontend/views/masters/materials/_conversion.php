@@ -10,37 +10,50 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="maestrocompo-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-    <?= $form->field($model, 'codum1')->
-            dropDownList(ComboHelper::getCboUms() ,
+    <?php $form = ActiveForm::begin([
+       'id'=>'myformulario',
+    'fieldClass'=>'\common\components\MyActiveField'
+    ]); ?>
+      <div class="box-header">
+          
+        <div class="col-md-12">
+            <div class="form-group no-margin">
+            <?php
+          $operacion=($model->isNewRecord)?'creaconversion':'editacontacto';             
+          $url=\yii\helpers\Url::to(['/masters/materials/'.$operacion,'id'=>$id]); 
+           ?>
+           <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
+                  ['idModal'=>$idModal,
+                    'idForm'=>'myformulario',
+                      'url'=> $url,
+                     'idGrilla'=>$gridName, 
+                      ]
+                  )?>
+            </div>
+        </div>
+    </div>
+     
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <?php $elementos =ComboHelper::getCboUms() ;
+      unset($elementos[$model->material->codum]);
+     
+    ?>
+    
+    <?= $form->field($model, 'codum')->
+            dropDownList($elementos ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
-                      'disabled'=>($model->isBlockedField('codum1'))?'disabled':null,
+                      //'disabled'=>($model->isBlockedField('codum1'))?'disabled':null,
                         ]
                     ) ?>
 </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'codum2')->
-            dropDownList(ComboHelper::getCboUms() ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                      'disabled'=>($model->isBlockedField('codum2'))?'disabled':null,
-                        ]
-                    ) ?>
-</div>
+   
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
     <?= $form->field($model, 'valor1')->textInput(['maxlength' => true]) ?>
 </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-    <?= $form->field($model, 'valor2')->textInput(['maxlength' => true]) ?>
-</div>
-  <?= $form->field($model, 'codart')->hiddenInput(['value'=>$codigo]); ?>
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
-    </div>
-
+   
+  <?= $form->field($model, 'codart')->hiddenInput(['value'=>$codigo])->label(''); ?>
+    
     <?php ActiveForm::end(); ?>
 </div>
 

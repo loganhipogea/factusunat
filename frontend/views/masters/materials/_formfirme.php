@@ -37,13 +37,7 @@ echo TabsX::widget([
             'options' => ['id' => 'myveryownID1'],
             'active' => false
         ],
-        [
-            'label' => yii::t('base.names','Centers'),
-            'content' => $this->render('_tab_centros',['model'=>$model]),
-            'headerOptions' => ['style'=>'font-weight:bold'],
-            'options' => ['id' => 'myveryownID2'],
-            'active' => false
-        ],
+        
         
     ],
 ]);    

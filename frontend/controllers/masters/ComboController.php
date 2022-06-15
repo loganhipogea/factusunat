@@ -3,17 +3,20 @@
 namespace frontend\controllers\masters;
 
 use Yii;
-use common\models\masters\Ums;
-use common\models\masters\UmsSearch;
-use common\controllers\base\baseController;
+use common\models\masters\Combovalores;
+use common\models\masters\CombovaloresSearch;
+use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\h;
+use yii\helpers\Url;
 
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 /**
- * UmsController implements the CRUD actions for Ums model.
+ * ComboController implements the CRUD actions for Combovalores model.
  */
-class UmsController extends baseController
+class ComboController extends baseController
 {
     /**
      * {@inheritdoc}
@@ -31,12 +34,12 @@ class UmsController extends baseController
     }
 
     /**
-     * Lists all Ums models.
+     * Lists all Combovalores models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UmsSearch();
+        $searchModel = new CombovaloresSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,8 +49,8 @@ class UmsController extends baseController
     }
 
     /**
-     * Displays a single Ums model.
-     * @param string $id
+     * Displays a single Combovalores model.
+     * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -59,19 +62,24 @@ class UmsController extends baseController
     }
 
     /**
-     * Creates a new Ums model.
+     * Creates a new Combovalores model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Ums();
-         if (h::request()->isAjax && $model->load(h::request()->post())) {
-                h::response()->format = \yii\web\Response::FORMAT_JSON;
-                return \yii\widgets\ActiveForm::validate($model);
+        $model = new Combovalores();
+        
+        
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
         }
+        
+        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codum]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -80,21 +88,23 @@ class UmsController extends baseController
     }
 
     /**
-     * Updates an existing Ums model.
+     * Updates an existing Combovalores model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-         if (h::request()->isAjax && $model->load(h::request()->post())) {
-                h::response()->format = \yii\web\Response::FORMAT_JSON;
-                return \yii\widgets\ActiveForm::validate($model);
+
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
         }
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codum]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -103,9 +113,9 @@ class UmsController extends baseController
     }
 
     /**
-     * Deletes an existing Ums model.
+     * Deletes an existing Combovalores model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -117,18 +127,18 @@ class UmsController extends baseController
     }
 
     /**
-     * Finds the Ums model based on its primary key value.
+     * Finds the Combovalores model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Ums the loaded model
+     * @param int $id ID
+     * @return Combovalores the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Ums::findOne($id)) !== null) {
+        if (($model = Combovalores::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('base.verbs', 'The requested page does not exist.'));
     }
 }

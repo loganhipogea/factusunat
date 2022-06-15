@@ -1,49 +1,42 @@
 <?php
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use kartik\export\ExportMenu;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\masters\CliproSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = Yii::t('base.names', 'Customers/Vendors');
-
-?>
-<h4><span class="fa fa-building"></span><?= Html::encode($this->title) ?></h4>
-   
-<div class="box box-success">
+?> 
 
 
-     <?php Pjax::begin(['id'=>'clipropj']); ?>
+
+     <?php
+     $zonaAjax='expand_sucursal';
+     echo get_class($model);
+     Pjax::begin(['id'=>$zonaAjax]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="btn-group">  
-        <?= Html::a('<span class="fa fa-industry"></span>'.'  '.Yii::t('app', 'Crear Empresa'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+        $url= Url::to(['/masters/clipro/crea-almacen','id'=>$model->codcen,'gridName'=>$zonaAjax,'idModal'=>'buscarvalor']);
+ 
+        ?>
+        <?= Html::a('<span class="fa fa-industry"></span>'.'  '.Yii::t('base.verbs', 'Create store'), $url, ['class' => 'btn btn-success botonAbre']) ?>
    
    
     <?php
- echo ExportMenu::widget([
-    'dataProvider' => $dataProvider,    
-    'columns' => ['codpro',
-            'despro',
-            'rucpro'],
-    'dropdownOptions' => [
-        'label' => yii::t('base.names','Exportar'),
-        'class' => 'btn btn-success'
-    ]
-]).' 
+    $dataProvider=new \yii\data\ActiveDataProvider([
+                'query'=> \common\models\masters\Almacenes::find()->select(['codal','nomal']),
+            ]);
+  ?>
     </div>
- <hr>
-         '.GridView::widget([
+
+    <?php ECHO GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         // 'summary' => '',
         //'tableOptions'=>['class'=>".thead-dark table table-condensed table-hover table-bordered table-striped"],
         'columns' => [
            ['class' => 'yii\grid\ActionColumn',
                 'template'=>'{update}{view}{delete}',
-                'buttons'=>[
+                /*'buttons'=>[
                     'update'=>function($url,$model){
                         $url=\yii\helpers\Url::toRoute(['update','id'=>$model->codpro]);
                         return \yii\helpers\Html::a(
@@ -65,19 +58,13 @@ $this->title = Yii::t('base.names', 'Customers/Vendors');
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->codpro]);
                               return \yii\helpers\Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->codpro,'modelito'=> str_replace('@','\\',get_class($model))])]);
                              }
-                   ]
+                   ]*/
                 ],
            
-            'codpro',
-            'despro',
-            'alias',
-            'rucpro',
-           ['attribute'=>'deslarga',
-               'value'=>function ($model) {
-                     return $model->deslarga;
-			     }
-               
-               ]
+            'codal',
+            'nomal',
+            
+           
             //'deslarga:ntext',
 
               
@@ -101,5 +88,3 @@ $this->title = Yii::t('base.names', 'Customers/Vendors');
     <?php Pjax::end(); ?>
 </div>
     
-</div>
-

@@ -34,13 +34,13 @@ class Conversiones extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['codum1', 'codum2', 'valor1', 'valor2', 'codart'], 'required'],
-            [['valor1', 'valor2'], 'number'],
-            [['codum1', 'codum2'], 'string', 'max' => 4],
+            [['codum', 'valor1',], 'required'],
+            [['valor1'], 'number'],
+            [['codum', ], 'string', 'max' => 4],
             [['codart'], 'string', 'max' => 14],
-            [['codum2'], 'exist', 'skipOnError' => true, 'targetClass' => Ums::className(), 'targetAttribute' => ['codum2' => 'codum']],
-            [['codart'], 'exist', 'skipOnError' => true, 'targetClass' => Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
-            [['codum1'], 'exist', 'skipOnError' => true, 'targetClass' => Ums::className(), 'targetAttribute' => ['codum1' => 'codum']],
+            [['codart', 'codum'], 'unique', 'targetAttribute' => ['codart', 'codum']],
+             [['codart'], 'exist', 'skipOnError' => true, 'targetClass' => Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
+            [['codum'], 'exist', 'skipOnError' => true, 'targetClass' => Ums::className(), 'targetAttribute' => ['codum' => 'codum']],
         ];
     }
 
@@ -51,10 +51,9 @@ class Conversiones extends \common\models\base\modelBase
     {
         return [
             'id' => Yii::t('base.names', 'ID'),
-            'codum1' => Yii::t('base.names', 'Codum1'),
-            'codum2' => Yii::t('base.names', 'Codum2'),
+            
             'valor1' => Yii::t('base.names', 'Valor1'),
-            'valor2' => Yii::t('base.names', 'Valor2'),
+           
             'codart' => Yii::t('base.names', 'Codart'),
         ];
     }
@@ -62,15 +61,12 @@ class Conversiones extends \common\models\base\modelBase
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCodum20()
-    {
-        return $this->hasOne(Ums::className(), ['codum' => 'codum2']);
-    }
+  
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCodart0()
+    public function getMaterial()
     {
         return $this->hasOne(Maestrocompo::className(), ['codart' => 'codart']);
     }
@@ -78,10 +74,7 @@ class Conversiones extends \common\models\base\modelBase
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCodum10()
-    {
-        return $this->hasOne(Ums::className(), ['codum' => 'codum1']);
-    }
+   
 
     /**
      * {@inheritdoc}

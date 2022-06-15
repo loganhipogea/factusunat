@@ -33,7 +33,7 @@ class Monedas extends \common\models\base\modelBase
             [['codmon', 'desmon'], 'required'],
             [['codmon'], 'string', 'max' => 5],
             [['desmon'], 'string', 'max' => 15],
-            [['activa'], 'string', 'max' => 40],
+           // [['activa'], 'string', 'max' => 40],
             [['simbolo'], 'string', 'max' => 3],
             [['codmon'], 'unique'],
         ];

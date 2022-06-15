@@ -25,4 +25,5 @@ return [
     'Create User'=>'Crear Usuario',
     'Create company'=>'Crear empresa',
     'Update Material: {name}'=>'Editar Material: {name}',
+    'Update {param}'=>'Editar {param}',
 ];

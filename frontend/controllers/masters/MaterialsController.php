@@ -7,6 +7,7 @@ use common\models\masters\Maestrocompo;
 use common\models\masters\MaestrocompoSearch;
 use common\models\masters\ConversionesSearch;
 use common\models\masters\Conversiones;
+use common\helpers\h;
 use common\controllers\base\baseController;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -141,24 +142,37 @@ class MaterialsController extends baseController
     
     public function actionCreaconversion($id){
           $this->layout = "install";
-        //$modelReporte = $this->findModel($id);
+        $modelMaterial = Maestrocompo::findOne(['codart'=>$id]);
         $model = new Conversiones();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //echo \yii\helpers\Html::script("$('#createCompany').modal('hide'); window.parent.$.pjax({container: '#grilla-contactos'})");
-            $this->closeModal('modal-conversiones','holas');
-        } elseif (Yii::$app->request->isAjax) {
-            return $this->renderAjax('_conversion', [
+        $model->codart=$modelMaterial->codart;
+        if(h::request()->isPost){   
+             //yii::error('Es post');
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+                //yii::error('Hay errores t');
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                //yii::error('va grabando');
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+               // yii::error('creoq uer grabo');
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_conversion', [
                         'model' => $model,
-                        'codigo' => $id,
-                            //'vendorsForCombo'=>  $vendorsForCombo,
-                            //'aditionalParams'=>$aditionalParams
-            ]);
-        } else {
-            
-            return $this->render('_detalle', [
-                        'model' => $model,
-                        //'vendorsForCombo' => $vendorsForCombo,
-            ]);
-        }
+                        'codigo'=>$modelMaterial->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
     }
 }

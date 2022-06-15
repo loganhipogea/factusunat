@@ -14,7 +14,7 @@ class m220614_213549_add_item_menu_settings extends migrationMenu
     {
 
       migrationMenu::insertOption('Config', null,null);
-        migrationMenu::insertOption('Parametros', '/settings/index','Config');
+        migrationMenu::insertOption('Parametros', '/settings','Config');
          
     }
 

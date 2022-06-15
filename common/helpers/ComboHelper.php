@@ -199,6 +199,7 @@ class ComboHelper  {
     }
     
     public static function getCboMonedas(){
+        
          return ArrayHelper::map(
                         \common\models\masters\Monedas::find()->all(),
                 'codmon','codmon');

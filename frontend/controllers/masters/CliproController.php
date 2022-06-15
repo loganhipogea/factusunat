@@ -734,5 +734,45 @@ public function actionCreateMaterial($id) {
         
 
        
-    }    
+    }
+
+ public function actionCreaAlmacen($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $modelCentros= \common\models\masters\Centros::findOne($id);
+        $model=New \common\models\masters\Almacenes();
+        //$model->codpro=$modelCentros->codpro;
+        $model->codcen=$modelCentros->codcen;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codcen];
+            }
+        }else{
+           return $this->renderAjax('modal_almacenes', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+        
+
+       
+    }  
+    
 }

@@ -1478,7 +1478,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
         
         public  static function comboValueFieldStatic($attribute,$valor=null,$codcentro=null){
            //echo static::RawTableName().'.'.$attribute;return;
-           return \common\models\masters\Combovalores::getValue(static::RawTableName().'.'.$attribute,$valor,$codcentro);
+           return \common\models\masters\Combovalores::valor(static::RawTableName().'.'.$attribute,$valor,$codcentro);
            
         }
         
@@ -1488,7 +1488,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
    */
         public  function comboValueField($attribute,$codcentro=null){
             $valor=$this->{$attribute};
-           return \common\models\masters\Combovalores::getValue(static::RawTableName().'.'.$attribute,$valor,$codcentro);
+           return \common\models\masters\Combovalores::valor(static::RawTableName().'.'.$attribute,$valor,$codcentro);
            
         }
         

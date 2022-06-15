@@ -47,6 +47,7 @@ return [
      'Meridian'=>'Meridiano',
      'Vendor Code'=>'Cod Empresa',
     'Materials'=>'Materiales',
+    'Units of measure'=>'Unidades de medida',
 ];
 
 ?>
