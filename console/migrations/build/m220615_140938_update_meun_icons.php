@@ -22,15 +22,15 @@ class m220615_140938_update_meun_icons extends baseMigration
         Menu::updateAll(['icon'=>'codepen'],['name'=>'Reglas']);
         Menu::updateAll(['icon'=>'modx'],['name'=>'Roles']);
         Menu::updateAll(['icon'=>'sign-out'],['name'=>'Salir']);
-        Menu::updateAll(['icon'=>'user-shield'],['name'=>'RBAC']);
+        Menu::updateAll(['icon'=>'user-plus'],['name'=>'RBAC']);
         Menu::updateAll(['icon'=>'dropbox'],['name'=>'Maestros']);
         Menu::updateAll(['icon'=>'cog'],['name'=>'Config']);
         Menu::updateAll(['icon'=>'cogs'],['name'=>'Parametros']);
-        Menu::updateAll(['icon'=>'user-plus'],['name'=>'Parametros']);
+        Menu::updateAll(['icon'=>'user-plus'],['name'=>'Regitrarse']);
          Menu::updateAll(['icon'=>'user-lock'],['name'=>'Cambiar pass']);
           Menu::updateAll(['icon'=>'key'],['name'=>'User']);
-           Menu::updateAll(['icon'=>'user-tag'],['name'=>'Asignaciones']);
-         
+           Menu::updateAll(['icon'=>'user-plus'],['name'=>'Asignaciones']);
+              Menu::updateAll(['icon'=>'users'],['name'=>'Usuarios'])
     }
 
     /**
