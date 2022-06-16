@@ -236,7 +236,7 @@ public static function extDocs(){
 public static function randomNameFile($ext){
     if(!(substr($ext,0,1)=='.'))
       $ext='.'.$ext;    
-    return uniqid().'_'.h::userId().'_'.str_replace('.','_',h::request()->getUserIP()).$ext;
+    return uniqid().'_'.h::userId().'_'.str_replace(['.',':'],['_',''],h::request()->getUserIP()).$ext;
 }
 
 public static function deleteDirectory($dir,$preserve=false) {

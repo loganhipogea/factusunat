@@ -28,7 +28,11 @@ return [
         ],
         
           'i18n' => [
-            'translations' => [             
+            'translations' => [ 
+                 'import.labels' => [
+                                            'class' => 'yii\i18n\PhpMessageSource',
+                                            'basePath' => '@frontend/modules/import/messages',
+                                            ], 
                         
                 'rbac-admin'=>[
                     'class' => 'yii\i18n\PhpMessageSource',
@@ -121,6 +125,10 @@ return [
       'settings' => [
         'class' => 'yii2mod\settings\Module',
     ],
+        
+       'import' => [
+                'class' => 'frontend\modules\import\ModuleImport',
+            ],
     ]
     
    
