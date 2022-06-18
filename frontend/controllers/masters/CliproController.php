@@ -774,5 +774,72 @@ public function actionCreateMaterial($id) {
 
        
     }  
-    
+  public function actionCreaCuenta($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $modelClipro= \common\models\masters\Clipro::findOne($id);
+        $model=New \common\models\masters\Cuentas();
+        //$model->codpro=$modelCentros->codpro;
+        $model->codpro=$modelClipro->codpro;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codpro];
+            }
+        }else{
+           return $this->renderAjax('modal_cuentas', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    } 
+  public function actionEditaCuenta($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "installx";
+        $model= \common\models\masters\Cuentas::findOne($id);
+        
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codcen];
+            }
+        }else{
+           return $this->renderAjax('modal_cuentas', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    } 
 }

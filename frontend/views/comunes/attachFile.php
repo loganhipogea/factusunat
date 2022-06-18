@@ -4,9 +4,12 @@ use yii\helpers\Html;
 ?>
 
 
-    <?php $form = ActiveForm::begin(['id' => 'registration-form',
+    <?php
+   $form = ActiveForm::begin(['id' => 'registration-form',
         'enableAjaxValidation'=>true
         ]); ?>
+ 
+
  <?= \nemmo\attachments\components\AttachmentsInput::widget([
 	'id' => 'file-input', // Optional
 	'model' => $model,         
@@ -32,8 +35,4 @@ use yii\helpers\Html;
 	]
 ]) ?> 
 
-<div class="form-group">
-        
-        <?= Html::submitButton('<span class="glyphicon glyphicon-paperclip"></span>'.'   '.Yii::t('base.verbs', 'Adjuntar'), ['class' => 'btn btn-success','data-pjax'=>true]) ?>
-    </div>
  <?php ActiveForm::end(); ?>

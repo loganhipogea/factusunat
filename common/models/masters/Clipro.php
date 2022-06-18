@@ -19,7 +19,7 @@ class Clipro extends \common\models\base\modelBase
     /**
      * {@inheritdoc}
      */
-    public $prefijo='37';
+    public $prefijo='1';
     public $withAudit=true;
     public $fecha;
     public $booleanFields=['socio'];

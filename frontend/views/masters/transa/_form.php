@@ -11,6 +11,8 @@ use yii\widgets\ActiveForm;
 <div class="transacciones-form">
     <br>
     <?php $form = ActiveForm::begin([
+    'id'=>'kio',
+    'enableAjaxValidation'=>true,
     'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
       <div class="box-header">
@@ -33,10 +35,15 @@ use yii\widgets\ActiveForm;
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
  </div>
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'signo')->textInput() ?>
-
- </div>
+   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">    
+ <?= $form->field($model, 'signo')->
+            dropDownList([1=>'1',-1=>'-1',0=>'0'],
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    ) ?>
+ </div>  
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'detalles')->textarea(['rows' => 6]) ?>
 

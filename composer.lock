@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1df49d6167e212b08a036a181dfefb34",
+    "content-hash": "bb07acb3ba0d707434bae4d688f04a66",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -120,7 +120,7 @@
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
+                "url": "git@github.com:twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -141,12 +141,12 @@
             "version": "v2.9.4",
             "source": {
                 "type": "git",
-                "url": "git@github.com:nnnick/Chart.js.git",
+                "url": "https://github.com/chartjs/Chart.js.git",
                 "reference": "9bd4cf82fda9f50a5fb50b72843e06ab88124278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nnnick/Chart.js/zipball/9bd4cf82fda9f50a5fb50b72843e06ab88124278",
+                "url": "https://api.github.com/repos/chartjs/Chart.js/zipball/9bd4cf82fda9f50a5fb50b72843e06ab88124278",
                 "reference": "9bd4cf82fda9f50a5fb50b72843e06ab88124278"
             },
             "type": "bower-asset",
@@ -177,7 +177,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -1265,12 +1265,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-export.git",
-                "reference": "ffae06ba8c0ce1c27503fc2bb94af15aeef0e85a"
+                "reference": "e720dcdd7df85b5af836a58178a72fc8e0942927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-export/zipball/ffae06ba8c0ce1c27503fc2bb94af15aeef0e85a",
-                "reference": "ffae06ba8c0ce1c27503fc2bb94af15aeef0e85a",
+                "url": "https://api.github.com/repos/kartik-v/yii2-export/zipball/e720dcdd7df85b5af836a58178a72fc8e0942927",
+                "reference": "e720dcdd7df85b5af836a58178a72fc8e0942927",
                 "shasum": ""
             },
             "require": {
@@ -1328,7 +1328,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-11-16T15:22:53+00:00"
+            "time": "2022-06-15T13:25:59+00:00"
         },
         {
             "name": "kartik-v/yii2-grid",
@@ -4432,16 +4432,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "4.1.31",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "15524571ae0686a7facc2eb1f40f600e5bbce9e5"
+                "reference": "e646d160bf1223d3595b227b69d903777fbcfb5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/15524571ae0686a7facc2eb1f40f600e5bbce9e5",
-                "reference": "15524571ae0686a7facc2eb1f40f600e5bbce9e5",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/e646d160bf1223d3595b227b69d903777fbcfb5f",
+                "reference": "e646d160bf1223d3595b227b69d903777fbcfb5f",
                 "shasum": ""
             },
             "require": {
@@ -4504,11 +4504,11 @@
                 {
                     "name": "Michael Bodnarchuk",
                     "email": "davert@mail.ua",
-                    "homepage": "http://codegyre.com"
+                    "homepage": "https://codegyre.com"
                 }
             ],
             "description": "BDD-style testing framework",
-            "homepage": "http://codeception.com/",
+            "homepage": "https://codeception.com/",
             "keywords": [
                 "BDD",
                 "TDD",
@@ -4518,7 +4518,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-                "source": "https://github.com/Codeception/Codeception/tree/4.1.31"
+                "source": "https://github.com/Codeception/Codeception/tree/4.2.0"
             },
             "funding": [
                 {
@@ -4526,7 +4526,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2022-03-13T17:07:08+00:00"
+            "time": "2022-06-16T05:33:39+00:00"
         },
         {
             "name": "codeception/lib-asserts",
@@ -8351,11 +8351,11 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "dlds/yii2-metronic": 20,
-        "nemmo/yii2-attachments": 10,
         "kartik-v/yii2-export": 20,
         "kartik-v/yii2-tabs-x": 20,
         "loveorigami/yii2-modal-ajax": 20,
-        "kartik-v/yii2-editable": 20
+        "kartik-v/yii2-editable": 20,
+        "nemmo/yii2-attachments": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

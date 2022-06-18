@@ -1,6 +1,7 @@
 <?php
 
 return [
+     'Alphanumerics are not allowed and must not start with zero'=>'No se permiten letras o no debe comenzar con \'0\'',
     'This username has already been taken.'=>'Este nombre de usuario ya ha sido tomado',
     'This email address has already been taken.'=>'Esta dirección de correo ya ha sido tomada',
     'Username is empty'=>'Nombre de usuario vacío',

@@ -29,32 +29,25 @@ class ActionSelectImage extends \yii\base\Action
          //$model->fecha=$model::SwichtFormatDate($model->fecha, 'date', false);
          //echo $model->fecha;*/
          //$model->attributes=$model->getOldAttributes();
-        yii::error('seguimiento al modal');
+        
         if (h::request()->isPost && $model->save()) {
-             yii::error('reques es post y grabo');
-           // h::request()->get('idModal');die();
-            //echo \yii\helpers\Html::script("$('#createCompany').modal('hide'); window.parent.$.pjax({container: '#grilla-contactos'})");
-            yii::error('closemodal');
+           
              $this->controller->closeModal('buscarvalor');
         
         } else {
-             yii::error('lo contrario a  reques es post y grabo');
+             
             if($model->hasErrors()){
-                 yii::error('El modelo tienje errores ');
-                 yii::error($model->getErrors());
-                //print_r($model->getErrors());die();
+               
             }
           if(!is_null($ext)){
               $allowedExtensions=json_decode($ext);
               if(!is_null($allowedExtensions) && is_array($allowedExtensions) ){
                   foreach($allowedExtensions as $index=>$ext){
                       $allowedExtensions[$index]=str_replace('.','',$ext);
-                  }
-                 
+                  }                 
               }else{
                  $allowedExtensions=[str_replace('.','',$ext)];   
-              }
-            
+              }            
           }else{
             $allowedExtensions=($isImage==1)?['jpg','png','gif','jpeg']:['doc','docx','pdf','xls','xlsx','csv','txt','ppt','pptx'];  
           }
@@ -65,6 +58,7 @@ class ActionSelectImage extends \yii\base\Action
                         //'vendorsForCombo' => $vendorsForCombo,
             ]);
         }
+          
 
         /* $type = $request['type'];
           $category_selector = false;

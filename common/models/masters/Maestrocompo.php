@@ -20,6 +20,8 @@ use common\helpers\h;
  */
 class Maestrocompo extends \common\models\base\modelBase
 {
+    
+  
     /**
      * {@inheritdoc}
      */
@@ -71,6 +73,15 @@ class Maestrocompo extends \common\models\base\modelBase
         ];
     }
 
+    
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios['batch'] = [
+            'codart', 'descripcion','codum',
+            'codtipo', 'codean', 'numeroparte',
+            'marca', 'regsan'];
+       return $scenarios;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -93,6 +104,7 @@ class Maestrocompo extends \common\models\base\modelBase
         
         if($insert){
             //$this->prefijo=$this->codtipo;
+            if(empty($this->codart))
             $this->codart=$this->correlativo('codart',10,'codtipo');
         }
         return parent::beforeSave($insert);

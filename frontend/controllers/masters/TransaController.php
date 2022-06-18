@@ -135,7 +135,7 @@ class TransaController extends baseController
      */
     protected function findModel($codtrans)
     {
-        if (($model = Transacciones::findOne($id)) !== null) {
+        if (($model = Transacciones::findOne($codtrans)) !== null) {
             return $model;
         }
 

@@ -70,7 +70,10 @@ class Centros extends modelBase
     {
         return $this->hasOne(Sociedades::className(), ['socio' => 'codsoc']);
     }
-    
+    public function getAlmacenes()
+    {
+        return $this->hasMany(Almacenes::className(), ['codcen' => 'codcen']);
+    }
     
     /*public function getDocumentos()
     {

@@ -38,20 +38,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
+                        $url= \yii\helpers\Url::to(['masters/transa/update','codtrans'=>$model->codtrans]);
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
                          },
                           'view' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'View'),                            
                         ];
-                        return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-search"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class="glyphicon glyphicon-search"></span>', $url, $options);
                          },
                          'delete' => function($url, $model) {                        
                         $options = [
                             'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'title' => Yii::t('base.verbs', 'Delete'),                            
                         ];
-                        return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-remove"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class=" glyphicon glyphicon-remove"></span>', $url, $options);
                          }
                     ]
                 ],

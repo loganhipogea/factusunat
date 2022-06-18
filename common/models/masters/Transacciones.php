@@ -21,7 +21,7 @@ class Transacciones extends \common\models\base\modelBase
      */
     public static function tableName()
     {
-        return 'transacciones';
+        return '{{%transacciones}}';
     }
 
     /**
@@ -33,6 +33,11 @@ class Transacciones extends \common\models\base\modelBase
             [['codtrans', 'descripcion', 'signo'], 'required'],
             [['signo'], 'integer'],
             [['detalles'], 'string'],
+            [ ['codtrans'],
+                'match', 
+                'pattern' => '/[1-9]{1}[0-9]{2}/',
+                'message'=>yii::t('base.errors','Alphanumerics are not allowed and must not start with zero'),
+                ],
             [['codtrans'], 'string', 'max' => 3],
             [['descripcion'], 'string', 'max' => 40],
             [['codtrans'], 'unique'],

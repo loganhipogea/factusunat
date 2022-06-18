@@ -9,7 +9,7 @@ use dmstr\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\helpers\h;
-yii::error('registrinado los assets');
+
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
 ?>

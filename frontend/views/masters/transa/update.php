@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = Yii::t('base.names', 'Update');
       'encodeLabels'=>false,
     'items' => [
         [
-          'label'=>'<i class="fa fa-home"></i> '.yii::t('sta.labels','Principal'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-home"></i> '.yii::t('base.names','Principal'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_form',['model' => $model]),
             'active' => true,
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('sta.labels','Tutores'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Settings'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_segunda',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],

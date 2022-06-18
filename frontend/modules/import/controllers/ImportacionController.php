@@ -384,9 +384,9 @@ public function actionNewCarga(){
             ];
         $errores=[];
         if(ImportCargamasivaUser::firstOrCreateStatic($attributes,'minimo')){
-            $errores['success']=yii::t('sta.messages','Se creó la carga exitosamente');
+            $errores['success']=yii::t('import.labels','Se creó la carga exitosamente');
         }else{
-             $errores['error']=yii::t('sta.messages','No se pudo crear la carga');
+             $errores['error']=yii::t('import.labels','No se pudo crear la carga');
         }
        return $errores;
      }

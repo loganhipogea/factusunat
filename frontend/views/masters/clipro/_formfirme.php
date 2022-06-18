@@ -37,8 +37,8 @@ $items=[
         ],
         
         [
-            'label' => yii::t('base.names','Objetos'),
-            'content' => $this->render('_tab_objetos',['dpObjetosCliente' =>$dpObjetosCliente ,'model'=>$model]),
+            'label' => yii::t('base.names','Cuentas'),
+            'content' => $this->render('_tab_cuentas',['dpObjetosCliente' =>$dpObjetosCliente ,'model'=>$model]),
             'headerOptions' => ['style'=>'font-weight:bold'],
             'options' => ['id' => 'myveryowdfgnID3'],
             'active' => false
