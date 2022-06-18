@@ -29,6 +29,10 @@ return [
         
           'i18n' => [
             'translations' => [ 
+                 'import.errors' => [
+                                            'class' => 'yii\i18n\PhpMessageSource',
+                                            'basePath' => '@frontend/modules/import/messages',
+                                            ], 
                  'import.labels' => [
                                             'class' => 'yii\i18n\PhpMessageSource',
                                             'basePath' => '@frontend/modules/import/messages',

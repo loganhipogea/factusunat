@@ -679,15 +679,17 @@ class ImportCargamasivaUser extends \common\models\base\modelBase
     }    
    
    
-     private function isReadyToLoad($verdadero){        
-         $estado=$this->activo;
+     private function isReadyToLoad($verdadero){   
+          $estado=$this->activo;
+         //var_dump(!$verdadero && $estado==self::STATUS_ABIERTO);die();
+        
          $isReady=(
             (!$verdadero && ($estado==self::STATUS_ABIERTO)) or 
               !$verdadero && ($estado==self::STATUS_PROBADO) or   
             ($verdadero && ($estado==self::STATUS_PROBADO)) or 
             ($verdadero && ($estado==self::STATUS_CARGADO_INCOMPLETO))             
            )?true:false;
-         if(!$isReady)$this->addError ('activo',yii::t('import.errors','El estado del registro no permite efectuar la operacion'));
+         if(!$isReady)$this->addError ('activo',yii::t('import.errors','El estado del registro no permite efectuar la operacion \'{estado}\'',['estado'=>$estado]));
          return $isReady;
     } 
 

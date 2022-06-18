@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb07acb3ba0d707434bae4d688f04a66",
+    "content-hash": "6e995ed82e92d02672f74c3f4a89156f",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -2956,6 +2956,53 @@
                 "source": "https://github.com/rmrevin/yii2-fontawesome"
             },
             "time": "2017-01-11T14:05:47+00:00"
+        },
+        {
+            "name": "ruskid/yii2-csv-importer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruskid/yii2-csv-importer.git",
+                "reference": "2c9a55bc31a643773c4000a6f4457081fbaccb72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruskid/yii2-csv-importer/zipball/2c9a55bc31a643773c4000a6f4457081fbaccb72",
+                "reference": "2c9a55bc31a643773c4000a6f4457081fbaccb72",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "ruskid\\csvimporter\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Victor Demin",
+                    "email": "demin@trabeja.com"
+                }
+            ],
+            "description": "Helper to import csv files into database",
+            "keywords": [
+                "csv",
+                "excel",
+                "importer",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/ruskid/yii2-csv-importer/issues",
+                "source": "https://github.com/ruskid/yii2-csv-importer/tree/master"
+            },
+            "time": "2019-05-23T12:13:42+00:00"
         },
         {
             "name": "select2/select2",
@@ -8355,7 +8402,8 @@
         "kartik-v/yii2-tabs-x": 20,
         "loveorigami/yii2-modal-ajax": 20,
         "kartik-v/yii2-editable": 20,
-        "nemmo/yii2-attachments": 10
+        "nemmo/yii2-attachments": 10,
+        "ruskid/yii2-csv-importer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

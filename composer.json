@@ -31,7 +31,8 @@
         "shifrin/yii2-noty": "^1.0",
         "loveorigami/yii2-modal-ajax": "@dev",
         "kartik-v/yii2-editable": "@dev",
-      "nemmo/yii2-attachments": "~1.0.0-beta.3"
+      "nemmo/yii2-attachments": "~1.0.0-beta.3",
+      "ruskid/yii2-csv-importer": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
