@@ -829,16 +829,15 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
         }
         
         
-        public  static function  firstOrCreateStatic($attributes,$scenario=null,$verifyAttributes=null,$returnModel=FALSE){  
-            //print_r($attributes);
-            //$model=self::find()->where($attributes)->one();
+        public  static function  firstOrCreateStatic(
+                $attributes,
+                $scenario=null,
+                $verifyAttributes=null,
+                $returnModel=FALSE
+                ){  
             $myAttributesVerify=(is_null($verifyAttributes))?$attributes:$verifyAttributes;
-           // yii::error($myAttributesVerify); 
-           //yii::error(self::find()->where($myAttributesVerify)->createCommand()->rawSql,__FUNCTION__);
-            if(!self::find()->where($myAttributesVerify)->exists()){
-                         //yii::error($myAttributesVerify);       
-
-                try{
+           if(!self::find()->where($myAttributesVerify)->exists()){
+                     try{
                     $clase= static::class;
                     $model=new $clase;
                     if(!is_null($scenario))
@@ -850,8 +849,8 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                       // print_r($model->attributes);die();
                        
                  IF(!$model->insert()){
-                     yii::error($model->getErrors(),__METHOD__);
-                      //print_r($model->getErrors());die();
+                    // yii::error($model->getErrors(),__METHOD__);
+                      print_r($model->getErrors());die();
                      return (!$returnModel)?false:null;
                  }
                    // print_r($model->getErrors());die();
