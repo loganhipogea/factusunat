@@ -850,7 +850,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                        
                  IF(!$model->insert()){
                     // yii::error($model->getErrors(),__METHOD__);
-                      print_r($model->getErrors());die();
+                      //print_r($model->getErrors());die();
                      return (!$returnModel)?false:null;
                  }
                    // print_r($model->getErrors());die();
@@ -859,8 +859,8 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                     //echo "ok  ----->";
                        return (!$returnModel)?true:$model;
                 } catch (\yii\db\Exception $exception) {
-                    yii::error($exception->getMessage());
-                  //  echo "    --->  error  :    ". $exception->getMessage();
+                    //yii::error($exception->getMessage());
+                    echo "    --->  error  :    ". $exception->getMessage();die();
                      return (!$returnModel)?false:null;
              } 
                 
