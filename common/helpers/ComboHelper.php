@@ -204,4 +204,18 @@ class ComboHelper  {
                         \common\models\masters\Monedas::find()->all(),
                 'codmon','codmon');
     }
+    
+     public static function getCboAlmacenes($centro=null){
+         if(is_null($centro))
+         return ArrayHelper::map(
+                        \common\models\masters\Almacenes::find()->
+                // andWhere(['codcen'=>$centro])->
+                all(),
+                'codal','nomal');
+        return ArrayHelper::map(
+                        \common\models\masters\Almacenes::find()->
+                 andWhere(['codcen'=>$centro])->
+                all(),
+                'codal','nomal');
+    }
 }

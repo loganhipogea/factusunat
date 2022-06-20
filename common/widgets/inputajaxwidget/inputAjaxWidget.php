@@ -57,7 +57,7 @@ class inputAjaxWidget extends \yii\base\Widget
                               $.noty.setType(n.options.id, 'error');         
                                 }, 
 success: function (data) {// success callback function
-           $('#".$this->idGrilla."').html(data);
+           $('#".$this->idGrilla."').val(data);
     }
        }); //ajax 
         } //on change
@@ -76,7 +76,7 @@ success: function (data) {// success callback function
            $cadUx="";  
          }
     $cadena="$(document).ready(function() {
-    $('#".$this->id."').on('".$this->evento."',function(){
+    $('#".$this->id_input."').on('".$this->evento."',function(){
       
     
   $.ajax({ 

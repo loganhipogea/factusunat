@@ -1,5 +1,8 @@
 <?php
 return [
+    'Center'=>'Sucursal',
+    'Store'=>'Almacén',
+     'Location'=>'Ubicación',
     'Active'=>'Activo',
     'Customers/Vendors'=>'Empresas/proveedores',
     'Disabled'=>'Inhabilitado',

@@ -77,6 +77,7 @@ class selectWidget extends \yii\base\Widget
             //$valores=[];
             
           return  $this->render('controls',[
+                 'tabular'=>$this->tabular,
                 'model'=>$this->model,
                 'form'=>$this->form,
                 'campo'=>$this->campo,
@@ -268,6 +269,7 @@ class selectWidget extends \yii\base\Widget
   
   private function getAditionalFields(){
       $fieldsForeigns=array_keys($this->getModelForeign()->attributes);
+      // var_dump($fieldsForeigns);die();
       $campos=[];
       foreach($this->addCampos as $key=>$value){
           if(isset($fieldsForeigns[$value])){

@@ -524,7 +524,8 @@ class CliproController extends baseController {
  public function actionCreaFromApi(){
      
      if(h::request()->isAjax){
-         // h::response()->format = \yii\web\Response::FORMAT_JSON;
+    // h::response()->format = yii\web\Response::FORMAT_JSON;   
+        //  h::response()->format = \yii\web\Response::FORMAT_JSON;
          $ruc=h::request()->post('valorInput');
          yii::error('El ruc es ');
          yii::error($ruc);
@@ -841,5 +842,8 @@ public function actionCreateMaterial($id) {
           
             ]);  
         }
-    } 
+    }
+    
+   
+    
 }

@@ -37,6 +37,10 @@ return [
                                             'class' => 'yii\i18n\PhpMessageSource',
                                             'basePath' => '@frontend/modules/import/messages',
                                             ], 
+                'logi.labels' => [
+                                            'class' => 'yii\i18n\PhpMessageSource',
+                                            'basePath' => '@frontend/modules/logi/messages',
+                                            ], 
                         
                 'rbac-admin'=>[
                     'class' => 'yii\i18n\PhpMessageSource',

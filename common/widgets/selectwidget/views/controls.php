@@ -15,12 +15,15 @@ if($multiple){
 
 
 ?>
- <?= $form->field($model,(is_null($orden))?$campo:'['.$orden.']'.$campo,$opciones)->
+<?php $widget= $form->field($model,(is_null($orden))?$campo:'['.$orden.']'.$campo,$opciones)->
             dropDownList($valoresLista,
                    $options
                     ) ?>
- 
-
+<?php if($tabular){
+  $widget->label(false);  
+} 
+?>
+<?=$widget?>
 
 
 

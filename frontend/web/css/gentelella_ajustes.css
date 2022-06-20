@@ -105,6 +105,15 @@ body .container.body .right_col {
     background: #ffffff !important;
 }
 
+/*
+Ancho del select
+*/
+.select2-container {
+   
+    width: 100% !important;
+}
+
+
 /*Selccion del meni
 */
 .nav.side-menu>li.current-page, .nav.side-menu>li.active {

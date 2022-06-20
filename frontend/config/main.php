@@ -16,6 +16,15 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules'=>[
+       
+        'logi' => [
+            'class' => 'frontend\modules\logi\Module',
+                ],
+         'com' => [
+            'class' => 'frontend\modules\com\Module',
+        ],
+    ],
     'components' => [
         'view' => [
                'theme' => [
