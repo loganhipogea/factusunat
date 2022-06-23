@@ -182,6 +182,61 @@ class ComController extends baseController
         return $this->render('create', ['model' => $model,'models' => $models]);
     }
    
+     public function actionCreaOvPlus(){ 
+        $model = new ComOv();
+         $models = $this->getItemsOvdet();//Obenter los items detalles
+        $request = Yii::$app->getRequest();
+        
+        
+        /*
+         * Validacion ajax 
+         */
+        if ($request->isPost && $request->post('ajax') !== null) {
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                //return \yii\widgets\ActiveForm::validate($model);
+                 $data = Yii::$app->request->post('ComOvdet', []);
+                    foreach (array_keys($data) as $index) {
+                     $models[$index] = new \frontend\modules\com\models\ComOvdet();
+                        }
+                     //$modelsNuev=$models;
+                    // array_push($modelsNuev,$model);
+                     Model::loadMultiple($models, Yii::$app->request->post());                   
+                    $result = ActiveForm::validateMultiple($models);
+                    return $result;                
+        }
+        
+         if ($this->request->isPost) {           
+            if ($model->load($this->request->post()) && $model->save()) {
+                 $model->refresh();
+                if(Model::loadMultiple($models, Yii::$app->request->post())){
+                    foreach($models as $modeldetalle){
+                        $modeldetalle->ov_id=$model->id;
+                        $modeldetalle->save();
+                    }
+                     return $this->redirect(['view', 'id' => $model->id]);
+                }else{
+                    var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
+                }
+                
+            }else{
+                print_r($model->getErrors()); die();
+            }
+        } else { 
+            
+        }
+       
+        return $this->render('create_plus', ['model' => $model,'models' => $models]);
+    }
+    
+     public function actionAjaxShowStock(){       
+        if (h::request()->isAjax) {
+            $val=h::request()->post('valorInput');
+            if(strlen($val)>2)
+            return $this->renderAjax('listado_stock',['parametro'=>$val]);
+            
+         }     
+   }
+    
   private function getItemsOvdet(){
       
 
@@ -189,6 +244,7 @@ class ComController extends baseController
            $attributes=[
             'item'=>'100',
              'codsoc'=>'A',
+             'codart'=>'100155',
              'codcen'=>'3207',
              'codal'=>'1203',
             'codum'=>'UN',

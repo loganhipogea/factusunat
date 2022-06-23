@@ -106,12 +106,57 @@ body .container.body .right_col {
 }
 
 /*
-Ancho del select
+Ancho del select2 WIDGET 
 */
 .select2-container {
    
     width: 100% !important;
 }
+
+/*
+Bordes de los inputs de l formulario
+seleccionados cuando se validan
+*/
+.form-group.has-success .form-control, .form-group.has-success .input-group-addon {
+    border-color: #66ad02 !important;
+    
+}
+/*
+Color de los labels al validar success
+*/
+.form-group.has-success label {
+    color: #90be49 !important;
+}
+/*
+Bordes de los inputs de l formulario
+seleccionados con error
+*/
+.form-group.has-error .form-control, .form-group.has-error .input-group-addon {
+    border-color: #fdbfa7 !important;
+ 
+}
+/*
+Mensajes de error de los forms
+*/
+.form-group.has-error .help-block {
+    color:#de6131 !important;
+}
+
+/*
+Color de los labels con error
+*/
+.form-group.has-error label {
+    color: #fdbfa7 !important;
+}
+
+
+input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color:yellow !important;
+    color: fieldtext !important;
+}
+
 
 
 /*Selccion del meni

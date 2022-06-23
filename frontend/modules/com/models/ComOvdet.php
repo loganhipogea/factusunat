@@ -29,6 +29,9 @@ use Yii;
  */
 class ComOvdet extends \common\models\base\modelBase
 {
+    
+    public $subtotal=0;
+    public $subtotal_raw=0;
     /**
      * {@inheritdoc}
      */
@@ -44,9 +47,12 @@ class ComOvdet extends \common\models\base\modelBase
     {
         return [
             [['item', 'codcen', 'codal',
-                'codum', 'codart', 'punit',
+                'codum', 'codart', 'punit','cant',
                 'pventa'], 'required'],
             [['ov_id'], 'integer'],
+            [['item', 'codcen', 'codal',
+                'codum', 'codart', 'punit','cant',
+                'pventa'], 'safe'],
             [['punit', 'pventa'], 'number'],
             [['item'], 'string', 'max' => 3],
             [['codsoc'], 'string', 'max' => 1],

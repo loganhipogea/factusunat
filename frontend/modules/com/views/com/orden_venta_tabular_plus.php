@@ -6,6 +6,7 @@ use unclead\multipleinput\examples\models\Item;
 use unclead\multipleinput\TabularColumn;
 use yii\widgets\Pjax;
 use frontend\assets\NumberFormatAsset;
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 
 /* @var $this \yii\web\View */
 /* @var $models Item[] */
@@ -60,19 +61,10 @@ $form = \yii\bootstrap\ActiveForm::begin([
         
          [
             'name' => 'codart',
-            'type'  => '\common\widgets\selectwidget\selectWidget',
-            'title' => 'Código',
-            //'defaultValue' => '1970/01/01',
-            'options' => [
-               'model'=>$models[1],
-                 'form'=>$form,
-                'campo'=>'codart',
-                'tabular'=>true,
-                'ordenCampo'=>2,
-                'addCampos'=>[1,9,4,],
-                ],
+            'type' => TabularColumn::TYPE_STATIC, 'title' => 'Código',
+            
             'headerOptions' => [
-                'style' => 'width: 30%',
+                'style' => 'width: 60%',
                 'class' => 'day-css-class'
             ]
          

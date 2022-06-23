@@ -16,6 +16,7 @@ class inputAjaxWidget extends \yii\base\Widget
     public $ruta='';
     public $dataType='json';
     public $posicion=\yii\web\View::POS_END;
+    public $isDivReceptor=false; //Si el campo a llenar es un div(true) o un imput
     //public $model=null;
     public $data=[];
      public $otherContainers=[];
@@ -43,6 +44,7 @@ class inputAjaxWidget extends \yii\base\Widget
     
     
  private function makeJsHtml(){
+     $operador=($this->isDivReceptor)?'html':'val';
    $this->getView()->registerJs("$(document).ready(function() {
     $('#".$this->id_input."').on('".$this->evento."',function(){
     var_input=$('#".$this->id_input."').val();
@@ -57,7 +59,8 @@ class inputAjaxWidget extends \yii\base\Widget
                               $.noty.setType(n.options.id, 'error');         
                                 }, 
 success: function (data) {// success callback function
-           $('#".$this->idGrilla."').val(data);
+           ".($this->isDivReceptor)." 
+           $('#".$this->idGrilla."').".$operador."(data);
     }
        }); //ajax 
         } //on change
