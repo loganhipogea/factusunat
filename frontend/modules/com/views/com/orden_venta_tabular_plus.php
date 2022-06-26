@@ -58,9 +58,12 @@ $form = \yii\bootstrap\ActiveForm::begin([
             'name' => 'subtotal',
             'type' => TabularColumn::TYPE_HIDDEN_INPUT
         ],
-        
-         [
+        [
             'name' => 'codart',
+            'type' => TabularColumn::TYPE_HIDDEN_INPUT
+        ],
+         [
+            'name' => 'descripcion',
             'type' => TabularColumn::TYPE_STATIC, 'title' => 'Código',
             
             'headerOptions' => [
@@ -86,16 +89,17 @@ $form = \yii\bootstrap\ActiveForm::begin([
             'headerOptions' => [
                 'style' => 'width: 40%',
                 //'class' => 'day-css-class'
-            ]
+            ],
+          'inputTemplate'=>'<div style="width:60px !important;font-weight:800; color:#90be49 !important; text-align:right !important; ">{input}</div>',
         ],
        [
             'name' => 'pventa',
             'title' => 'P. venta',
            'headerOptions' => [
-                'style' => 'width: 40%',
+               // 'style' => 'width: 40%',
                 //'class' => 'day-css-class'
             ],
-           'inputTemplate'=>'<div style="font-weight:800; color:#90be49 !important; text-align:right !important; ">{input}</div>',
+           'inputTemplate'=>'<div style="width:60px !important;font-weight:800; color:#90be49 !important; text-align:right !important; ">{input}</div>',
         ],
         
         [
@@ -207,13 +211,13 @@ $form = \yii\bootstrap\ActiveForm::begin([
                  disabled="disabled"
                  >
           
-           </div>
+       </div>
       </div>      
     </div>
-    <div class="col-xs-12 col-md-3 ">
-      <div class="form-group ">
-        <label for="">Subtotal</label>
-        <div class="input-group">
+     <div class="col-xs-12 col-md-3 ">
+        <div class="form-group ">
+           <label for="">Subtotal</label>
+            <div class="input-group">
                 <input name="total_total" id="total_a_pagar" 
                  type="text" required class="form-control" 
                  disabled="disabled"
@@ -223,5 +227,47 @@ $form = \yii\bootstrap\ActiveForm::begin([
           </div>
       </div>      
     </div>
+    <!--   CUADROS DE PAGO Y VUELTO   -->
+    
+      
+    <div class="row float-left">
+         <!--   CUADRO DE MONTO PAGADO  -->
+    <div class="col-xs-12 col-md-3 ">
+      <div class="form-group ">
+        <label for="">Pagado</label>
+        <div class="input-group">
+          <input name="total_igv" id="id_pagado_compra" 
+                 type="text" required class="form-control" 
+                
+                 >
+          
+       </div>
+      </div>      
+    </div>
+     <!--   CUADRO DE VUELTO  -->
+     <div class="col-xs-12 col-md-3 ">
+        <div class="form-group ">
+           <label for="">Cambio</label>
+            <div class="input-group">
+                <input name="total_total" id="id_vuelto_compra" 
+                 type="text" required class="form-control" 
+                 disabled="disabled"
+                 >
+          
+           </div>
+          </div>
+      </div>      
+    </div>
   </div>
-</div>
+<?php $this->registerJs("$(document).ready(function() {       
+      $('#id_pagado_compra').on('change',function(){
+          var_vuelto=$('#id_pagado_compra').val()-parseFloat($('#total_a_pagar').val());
+          console.log($('#id_pagado_compra').val());
+          console.log(parseFloat($('#total_a_pagar').val()));
+          if(var_vuelto<0){
+            var_vuelto=0;
+          }else{
+          }
+              $('#id_vuelto_compra').val($.number(var_vuelto));  
+         });
+       });", \yii\web\View::POS_END);

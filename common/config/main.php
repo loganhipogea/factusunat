@@ -137,7 +137,11 @@ return [
        'import' => [
                 'class' => 'frontend\modules\import\ModuleImport',
             ],
-    ]
+        'sunat' => [
+            'class' => 'frontend\modules\sunat\Module',
+        ],
+    ],
+    
     
    
 ];

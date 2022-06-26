@@ -531,42 +531,65 @@ class CliproController extends baseController {
          yii::error($ruc);
           yii::error(h::request()->post());
      $compo=New \common\components\MyClientGeneral();
-     $validator=new \yii\validators\RegularExpressionValidator([
+     $validatorRuc=new \yii\validators\RegularExpressionValidator([
          'pattern'=>h::gsetting('general', 'formatoRUC'),
      ]);
-    if($validator->validate($ruc)){
+     $validatorDni=new \yii\validators\RegularExpressionValidator([
+         'pattern'=>h::gsetting('general', 'formatoDNI'),
+     ]);
+     
+     
+    if($validatorRuc->validate($ruc)){
         if(is_null($model=Clipro::findOne(['rucpro'=>$ruc]))){
             $respuesta=$compo->apiRuc($ruc); 
+              yii::error( $respuesta,__FUNCTION__);
                 if($respuesta ){
-                        if($respuesta['success']){
+                        //if($respuesta['success']){
                             $nuevoClipro=New Clipro();
                             $nuevoClipro->setAttributes([
                                 'rucpro'=>$ruc,
-                                'despro'=>$respuesta['data']["nombre_o_razon_social"],
+                                'despro'=>$respuesta['nombre'],
                              ]);
                             $nuevoClipro->save();
                             $nuevoClipro->refresh();
+                            $ubigeo=$respuesta['ubigeo'];
+                                
                             $nuevaDireccion=New Direcciones();
                             $nuevaDireccion->setAttributes([
                                 'codpro'=>$nuevoClipro->codpro,
-                                'direc'=>$respuesta['data']["direccion_completa"],
-                                'coddepa'=>'1'.$respuesta['data']["ubigeo"][0],
-                                'codprov'=>'1'.$respuesta['data']["ubigeo"][0].'1'.$respuesta['data']["ubigeo"][1],
-                                'coddist'=>'1'.$respuesta['data']["ubigeo"][0].'1'.$respuesta['data']["ubigeo"][1].'1'.$respuesta['data']["ubigeo"][2],
+                                'direc'=>$respuesta['direccion'],
+                                
+                                'coddepa'=>'1'.substr($ubigeo,0,2),
+                               'codprov'=>'1'.substr($ubigeo,0,2).'1'.substr($ubigeo,2,2),
+                               'coddist'=>'1'.substr($ubigeo,0,2).'1'.substr($ubigeo,2,2).'1'.substr($ubigeo,4,2),
                              ]);
                             $nuevaDireccion->save();
+                            yii::error($nuevaDireccion->getErrors());
                             return $nuevoClipro->despro;
-                        }else{
-                            return /*['error'=>*/$respuesta['message']/*]*/;
-                         }
+                        //}else{
+                            //return /*['error'=>*/$respuesta['message']/*]*/;
+                         //}
             }else{
                return 'Error en la petición API';
             }
         }else{
             return $model->despro;
         }
-    }else{
-       return 'El RUC NO ES VALIDO  '; 
+    }elseif($validatorDni->validate($ruc)){
+        if(is_null($model=Clipro::findOne(['rucpro'=>$ruc]))){
+           $respuesta=$compo->apiDni($ruc);  
+            $nuevoClipro=New Clipro();
+                            $nuevoClipro->setAttributes([
+                                'rucpro'=>$ruc,
+                                'despro'=>$respuesta['nombre'],
+                             ]);
+                            $nuevoClipro->save();
+                            yii::error($nuevoClipro->getErrors());
+                            
+              return $nuevoClipro->despro;
+        }else{
+           return $model->despro;  
+        }
     }
      
    }
@@ -844,6 +867,11 @@ public function actionCreateMaterial($id) {
         }
     }
     
-   
+  public function actionApiCambio(){
+     //h::cache()->delete(h::PREFIX_CACHE_TIPO_CAMBIO);
+     PRINT_R(h::tipoCambio('USD','2022-06-24'));
+      /*$nn=New \common\components\MyClientGeneral();
+      var_dump($nn->apiCambio());*/
+  } 
     
 }

@@ -8,7 +8,10 @@ use yii;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\masters\Valoresdefault;
+use common\models\masters\Tipocambio;
 use mdm\admin\models\User;
+use Carbon\Carbon;
+
 class h {
      const SESION_MALETIN = 'maletin';
      const DATE_FORMAT = 'php:Y-m-d';
@@ -16,6 +19,7 @@ class h {
     const TIME_FORMAT = 'php:H:i:s';   
    const FLAG_ACTIVE = '1'; 
     const FLAG_INACTIVE = '0'; 
+    const PREFIX_CACHE_TIPO_CAMBIO='cache_tipo_cambio';
 
     public static function convert($dateStr, $type='date', $format = null) {
         if ($type === 'datetime') {
@@ -34,7 +38,9 @@ class h {
         return yii::$app;
     }
     
-    
+    public static function  cache(){
+        return yii::$app->cache;
+    }
     
     public static function  db(){
         return yii::$app->db;
@@ -287,6 +293,55 @@ class h {
 public static function userNameExists($username){
    return (!is_null(User::findByUsername($username)));
 }
- 
+
+
+
+private static function resolveCambio($codmon,$fecha,$eshoy){
+      $tipoCambio=New Tipocambio();
+      if($codmon==Tipocambio::COD_MONEDA_DOLAR){
+                $filaCambio=$tipoCambio->getChangeFromApi($codmon,$fecha);
+      }else{
+         $filaCambio=[]; 
+      }
+                if(count($filaCambio)>0){
+                       if($eshoy)
+                        //Almacenamos por 12 horas
+                         self::cache()->set(self::PREFIX_CACHE_TIPO_CAMBIO,$filaCambio,60*60*12);
+                        return $filaCambio;                    
+                }else{                    
+                   if(!is_null($model=Tipocambio::getChange($codmon, $fecha))){  
+                        return $model->attributes;
+                    }else{
+                      h::currentController()->redirect(['/masters/basico/new-change','codmon'=>$codmon,'fecha'=>$fecha]);  
+                    }
+                }      
+}
+
+public static function tipoCambio($codmon,$fecha=null){
+    $cache=self::cache();
+    $carbonNow=Tipocambio::CarbonNow();
+    $hoy=$carbonNow->format('Y-m-d');
+   if(is_null($fecha) or ($fecha===$hoy) ){//Se trata de una fecha de hoy;       
+       //Leyendo la cache
+       yii::error('es de hoy ');
+       if($filaCambio=$cache->get(self::PREFIX_CACHE_TIPO_CAMBIO)){          
+         $carbonLastFecha=Carbon::parse($filaCambio['ultima']);
+         //verificando el vencimiento         
+         if($carbonLastFecha->lt($carbonNow->subDay()->endOfDay())){
+            //Si es una cache del dia anterior actualizar            
+            return self::resolveCambio($codmon, $fecha,true);
+         }else{
+             yii::error('del cache...ok',__FUNCTION__);
+            return  $filaCambio;
+         }         
+       }else{//Si no encontro cache igual toca resolver
+          return self::resolveCambio($codmon, $fecha,true); 
+       }   
+     }else{//se trata de una fecha anterior
+       yii::error('FECHA ANTERIOR');       
+         return self::resolveCambio($codmon, $fecha,false); 
+         }
+    }
+
 }
 ?>

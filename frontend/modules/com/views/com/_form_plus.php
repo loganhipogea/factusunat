@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
 use common\helpers\ComboHelper;
+use common\models\masters\Tipocambio;
 use common\helpers\h;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
@@ -38,12 +39,15 @@ use yii\widgets\Pjax;
         'id'=>'Form_general',
         'enableAjaxValidation'=>true
         ]); ?>  
+        <div class="form-group">
+        <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
+        </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
              <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
             <?= $form->field($model, 'tipodoc')->
-            dropDownList(ComboHelper::getTablesValues('com_ov.tipodoc') ,
+            dropDownList(['01'=>'FACTURA','02'=>'BOLETA'],
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
@@ -79,8 +83,9 @@ use yii\widgets\Pjax;
 
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <?= $form->field($model, 'codcen')->
-            dropDownList(ComboHelper::getCboCentros() ,
+            <?= $form->field($model, 'codmon')->
+            dropDownList([Tipocambio::COD_MONEDA_DOLAR=>Tipocambio::COD_MONEDA_DOLAR,
+                Tipocambio::COD_MONEDA_BASE=>Tipocambio::COD_MONEDA_BASE] ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
@@ -104,9 +109,7 @@ use yii\widgets\Pjax;
                     ) ?>
         </div>
    
-        <div class="form-group">
-        <?= Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
-        </div>
+        
       
             <?php   
             echo $this->render('orden_venta_tabular_plus.php', ['models' => $models]);

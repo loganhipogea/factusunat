@@ -63,16 +63,16 @@ class Clipro extends \common\models\base\modelBase
             [['deslarga'], 'string'],
             [['cci', 'codbanco','cuenta','deslarga','alias','socio'], 'safe'],
             //[['rucpro'], 'match', 'pattern'=>h::gsetting('general','formatoDNI')],
-            [['rucpro'], 'match', 'pattern'=>self::patternDNI_RUC()],
+           // [['rucpro'], 'match', 'pattern'=>self::patternDNI_RUC()],
             [['despro'], 'string', 'max' => 60],
             [['rucpro', 'telpro'], 'string', 'max' => 15],
             [['web'], 'string', 'max' => 85],
              ['rucpro', 'unique'],
-             ['rucpro','match',
+             /*['rucpro','match',
                  'pattern'=>h::settings()->get('general','formatoRUC'),
                  'message'=>yii::t('base.errors','The {field} doesn\'t match with format',['field'=>$this->getAttributeLabel('rucpro')])
                 
-                 ],
+                 ],*/
         ];
     }
 

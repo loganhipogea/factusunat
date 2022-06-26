@@ -184,7 +184,7 @@ class ComController extends baseController
    
      public function actionCreaOvPlus(){ 
         $model = new ComOv();
-         $models = $this->getItemsOvdet();//Obenter los items detalles
+         $models =[];// $this->getItemsOvdet();//Obenter los items detalles
         $request = Yii::$app->getRequest();
         
         
@@ -208,23 +208,29 @@ class ComController extends baseController
          if ($this->request->isPost) {           
             if ($model->load($this->request->post()) && $model->save()) {
                  $model->refresh();
+                 $data = Yii::$app->request->post('ComOvdet', []);
+                    foreach (array_keys($data) as $index) {
+                     $models[$index] = new \frontend\modules\com\models\ComOvdet();
+                        }
                 if(Model::loadMultiple($models, Yii::$app->request->post())){
                     foreach($models as $modeldetalle){
                         $modeldetalle->ov_id=$model->id;
-                        $modeldetalle->save();
+                        if(!$modeldetalle->save()){
+                            yii::error($modeldetalle->getErrors());
+                            yii::error($modeldetalle->attributes);
+                        }
                     }
+                    $model->invoice_create();
                      return $this->redirect(['view', 'id' => $model->id]);
                 }else{
                     var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
-                }
-                
+                }                
             }else{
                 print_r($model->getErrors()); die();
             }
         } else { 
             
-        }
-       
+        }       
         return $this->render('create_plus', ['model' => $model,'models' => $models]);
     }
     
@@ -233,6 +239,17 @@ class ComController extends baseController
             $val=h::request()->post('valorInput');
             if(strlen($val)>2)
             return $this->renderAjax('listado_stock',['parametro'=>$val]);
+            
+         }     
+   }
+   
+   public function actionAjaxAddArt($id){       
+        if (h::request()->isAjax) {
+            //$id=h::request()->get('valorInput');
+           // var_dump($val);die();
+            $model = \frontend\modules\logi\models\LogiVwStock::find()->andWhere(['id'=>$id])->one();
+             h::response()->format = yii\web\Response::FORMAT_JSON;  
+             return [$model->attributes];
             
          }     
    }

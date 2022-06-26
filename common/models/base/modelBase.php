@@ -881,7 +881,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                     if(!is_null($scenario))
                         $this->setScenario($scenario);
                        $this->attributes=$attributes;
-                    if($this->insert()){
+                    if(!$this->insert()){
                         
                         return false;
                     }
@@ -1663,7 +1663,6 @@ public function firstMessage($category=null){
     return trim(strtolower($this->getScenario()))== trim(strtolower($scenario));
  }
  
- 
- 
+
 }   
 

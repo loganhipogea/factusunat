@@ -32,6 +32,7 @@ class ComOvdet extends \common\models\base\modelBase
     
     public $subtotal=0;
     public $subtotal_raw=0;
+    public $descripcion='';
     /**
      * {@inheritdoc}
      */
@@ -135,5 +136,23 @@ class ComOvdet extends \common\models\base\modelBase
     public static function find()
     {
         return new ComOvdetQuery(get_called_class());
+    }
+    
+    public function beforeValidate() {
+        $this->setAttributes([
+    'item' => '100',
+    'codsoc' => 'A',
+    'codcen' => Centros::find()->one()->codcen,
+    'codal' => Almacenes::find()->one()->codal,
+               ]);
+     $this->codum=$this->stock->um;
+     $this->punit=$this->stock->valor;
+        RETURN parent::beforeValidate();
+    }
+    
+    public function beforeSave($insert) {
+        
+      
+        return parent::beforeSave($insert);
     }
 }
