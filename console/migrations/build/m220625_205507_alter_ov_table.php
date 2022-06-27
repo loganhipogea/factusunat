@@ -5,6 +5,7 @@ class m220625_205507_alter_ov_table  extends baseMigration
    public $table='{{%com_ov}}';
     public function safeUp()
     { 
+        $this->getDb()->createCommand("delete from {{%com_ov}}")->execute();
        if($this->existsColumn($this->table, 'tipopago'))
         $this->alterColumn($this->table, 'tipopago', $this->char(2));
        if($this->existsColumn($this->table, 'tipodoc'))
