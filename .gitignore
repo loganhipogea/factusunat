@@ -7,7 +7,7 @@
 .idea
 
 # phpstorm project files
-/frontend/web/assets
+
 
 # netbeans project files
 nbproject
@@ -39,7 +39,6 @@ phpunit.phar
 /.vagrant
 
 # ignore generated files
-/frontend/web/temp
 /frontend/web/index.php
 /frontend/web/index-test.php
 /frontend/web/robots.txt
