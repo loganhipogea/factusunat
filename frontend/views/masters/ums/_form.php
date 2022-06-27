@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use common\helpers\h;
 use yii\widgets\ActiveForm;
+use common\helpers\ComboHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\masters\Ums */
@@ -33,7 +34,7 @@ use yii\widgets\ActiveForm;
      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
     <?= $form->field($model,'dimension')->
             dropDownList(
-                     h::getDimensions() ,
+            ComboHelper::getCboUms() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                      //'class'=>'probandoSelect2',
                         ]
