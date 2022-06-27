@@ -6,9 +6,7 @@ class m220626_012531_alter_ov_table  extends baseMigration
     public function safeUp()
     {
         
-        if(!$this->existsColumn($this->table,'codestado')){  
-            $this->addColumn($this->table,'codestado', $this->char(2));
-        }
+        
     }
 
     /**
@@ -17,9 +15,7 @@ class m220626_012531_alter_ov_table  extends baseMigration
     public function safeDown()
     {
         
-        if($this->existsColumn($this->table,$this->campo)){  
-            $this->dropColumn($this->table,'codestado');
-        }
+       
      
    }
 }
