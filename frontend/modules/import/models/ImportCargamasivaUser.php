@@ -486,13 +486,15 @@ class ImportCargamasivaUser extends \common\models\base\modelBase
                         endwhile;
                             
                         }
-                    
-                     $rutaCsvTemp=yii::getAlias('@frontend/web/img_repo').DIRECTORY_SEPARATOR.'errores_'.uniqid().'.csv';
-                     $resource=fopen($rutaCsvTemp,'w+');
+                    if(is_writable(yii::getAlias('@frontend/web/temp'))){
+                       $rutaCsvTemp=yii::getAlias('@frontend/web/temp').DIRECTORY_SEPARATOR.'errores_'.uniqid().'.csv';
+                       $resource=fopen($rutaCsvTemp,'w+');
                      //$resource= fopen('php://output', 'w');
-                     $campos=$cargamasiva->childsField($model);
-                     $campos[]='Linea';$campos[]='Error';
-                     fputcsv($resource, $campos);
+                       $campos=$cargamasiva->childsField($model);
+                       $campos[]='Linea';$campos[]='Error';
+                        fputcsv($resource, $campos); 
+                    }
+                     
                      
                      
                 foreach ($datos as $fila){ 
