@@ -528,8 +528,11 @@ class CliproController extends baseController {
         //  h::response()->format = \yii\web\Response::FORMAT_JSON;
          $ruc=h::request()->post('valorInput');
          yii::error('El ruc es ');
-         yii::error($ruc);
-          yii::error(h::request()->post());
+          yii::error($ruc);
+          yii::error('El PARAMETROS es ');
+         YII::ERROR(h::gsetting('general', 'DNI_anonimo'));
+        
+          //yii::error(h::request()->post());
      $compo=New \common\components\MyClientGeneral();
      $validatorRuc=new \yii\validators\RegularExpressionValidator([
          'pattern'=>h::gsetting('general', 'formatoRUC'),
@@ -537,7 +540,6 @@ class CliproController extends baseController {
      $validatorDni=new \yii\validators\RegularExpressionValidator([
          'pattern'=>h::gsetting('general', 'formatoDNI'),
      ]);
-     
      
     if($validatorRuc->validate($ruc)){
         if(is_null($model=Clipro::findOne(['rucpro'=>$ruc]))){
@@ -590,6 +592,9 @@ class CliproController extends baseController {
         }else{
            return $model->despro;  
         }
+    }elseif($ruc==h::gsetting('general', 'DNI_anonimo')){
+        
+        return h::gsetting('general', 'nombre_anonimo');
     }
      
    }

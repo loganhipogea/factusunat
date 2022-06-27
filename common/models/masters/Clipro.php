@@ -23,6 +23,7 @@ class Clipro extends \common\models\base\modelBase
     public $withAudit=true;
     public $fecha;
     public $booleanFields=['socio'];
+   //const RUCPRO_ANONIMO='XXXXXXX';
     //public $booleanFields=[''];
     public static function tableName()
     {

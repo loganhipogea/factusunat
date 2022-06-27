@@ -16,27 +16,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('base.names', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('base.names', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('base.names', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a(Yii::t('base.names', 'Update'), ['update-invoice', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'rucodni',
-            'codcen',
-            'codsoc',
-            'tipodoc',
-            'tipopago',
-            'numero',
-        ],
-    ]) ?>
-
+    
+<div class="box-body">
+<div>
+        <?php if($model->hasAttachments()) { 
+       //echo $model::className();die();
+       //echo $model->files[0]->urlTempWeb ;
+       echo $this->render('@frontend/views/comunes/view_pdf', [
+                        'urlFile' => $model->files[0]->urlTempWeb,
+                         'width' => 700,
+                            'height' => 900,
+            ]); ?> 
+         <?php } ?>
+    </div>
+    
+   
+  
+  </div>
 </div>

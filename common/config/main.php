@@ -7,6 +7,12 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'html2pdf' => [
+            'class' => 'yii2tech\html2pdf\Manager',
+            'viewPath' => '@app/views/pdf',
+            'converter' => 'wkhtmltopdf',
+            //'converter' => 'tcpdf',
+        ],
           'log' => [
                 //'traceLevel' => YII_DEBUG ? 3 : 0,            
             'targets' => [

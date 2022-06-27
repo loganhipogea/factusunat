@@ -46,31 +46,20 @@ use yii\widgets\Pjax;
              <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-            <?= $form->field($model, 'tipodoc')->
-            dropDownList(['01'=>'FACTURA','02'=>'BOLETA'],
+            <?= $form->field($model, 'sunat_tipodoc')->
+            dropDownList([$model::TYPE_DOC_INVOICE=>yii::t('base.names','Invoice'),$model::TYPE_DOC_VOUCHER=>yii::t('base.names','Voucher')],
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
                     ) ?>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-          <?= $form->field($model, 'rucodni')->textInput(['maxlength' => true]) ?>
+          <?= $form->field($model, 'rucpro')->textInput(['maxlength' => true]) ?>
         </div>
    
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-          <div class="form-group field-zona_pk">
-                <label class="control-label" for="zona_pk">
-                    Despro
-                </label>
-             
-                <input type="text"  
-                       id="zona_pk"
-                       class="form-control" 
-                       name="ComOv[despro]"                       
-                       disabled
-                  >  
-              
-            </div>   
+         <?= $form->field($model, 'nombre_cliente')->textInput(['maxlength' => true]) ?>
+         
          
          
            <?php  /*= $form->field($model, 'despro')->textInput([
@@ -119,8 +108,8 @@ use yii\widgets\Pjax;
             'isHtml'=>true,
             'tipo'=>'POST',
             'ruta'=>Url::to(['/masters/clipro/crea-from-api']),
-            'id_input'=>'comov-rucodni',
-            'idGrilla'=>'zona_pk'
+            'id_input'=>'comfactura-rucpro',
+            'idGrilla'=>'comfactura-nombre_cliente'
             ])  ?>
    </div> 
 </div>

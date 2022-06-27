@@ -43,7 +43,7 @@ class ComOv extends \common\models\base\modelBase
             [['rucodni', 'codcen','tipodoc'], 'required'],
             [['rucodni', 'numero'], 'string', 'max' => 14],
              [['codmon'], 'string', 'max' => 4],
-            [['codmon'], 'safe'],
+            [['codmon','codestado'], 'safe'],
             [['codcen'], 'string', 'max' => 4],
             [['codsoc'], 'string', 'max' => 1],
             [['tipodoc', 'tipopago'], 'string', 'max' => 3],
@@ -167,5 +167,10 @@ class ComOv extends \common\models\base\modelBase
     //'codal' => Almacenes::find()->one()->codal,
                ]);
         return parent::beforeValidate();
+    }
+    
+    public function setStatus($status){
+        $this->codestado=$status;
+        return $this->save();
     }
 }

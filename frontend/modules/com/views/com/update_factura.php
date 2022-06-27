@@ -1,0 +1,27 @@
+<?php
+
+use yii\helpers\Html;
+use common\helpers\h;
+/* @var $this yii\web\View */
+/* @var $model common\models\masters\Clipro */
+
+$this->title = Yii::t('base.verbs', 'Update Invoice: {name}', [
+    'name' => $model->numero,
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Invoices'), 'url' => ['index-invoices']];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Update');
+?>
+<div class="clipro-update">
+
+     <h4><?=h::awe('pencil')?><?=h::awe('building')?><?= Html::encode($this->title) ?></h4>
+
+    
+<div class="box box-success">
+    <?= $this->render('_form_update_factura', [
+        'model' => $model,
+            
+    ]) ?>
+
+</div>
+</div>

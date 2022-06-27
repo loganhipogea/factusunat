@@ -25,6 +25,8 @@ return [
     'Address'=>'Dirección',  
     'Place'=>'Lugar', 
     'Identity Document'=>'DNI',
+    'Invoice'=>'Factura',
+    
     'Safe passage'=>'Salvoconducto',
     'Passport'=>'Pasaporte',
     'Position'=>'Puesto',
@@ -49,6 +51,7 @@ return [
      'Latitude'=>'Latitud',
      'Meridian'=>'Meridiano',
      'Vendor Code'=>'Cod Empresa',
+    'Voucher'=>'Boleta venta',
     'Materials'=>'Materiales',
     'Units of measure'=>'Unidades de medida',
 ];

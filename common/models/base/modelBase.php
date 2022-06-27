@@ -156,7 +156,17 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
 
 {
    use modelBaseTrait;
+    const ST_CREATED='10';
+    const ST_CANCELED='99';
+    const STA_PASSED='20';
     
+    /*
+     * CONSTANTES DE TIPO DE DOCUMENTO
+     */
+    const TYPE_DOC_INVOICE='01';//factura
+    const TYPE_DOC_VOUCHER='02'; //boleta 
+   
+   
     const PREFIX_ADVANCED = '@';
     const PREFIX_BASIC = '/';
      const MESSAGE_ERROR='error';
@@ -629,6 +639,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                 $key=($show)?static::_FORMATUSER:static::_FORMATBD;
              // $oldformat=Yii::$app->formatter->dateFormat;
                  foreach($this->dateorTimeFields as $field=>$typ){
+                     
                 //$this->{$field}=$this->setFormatTimeFromSettings($field,$key, $typ);
                 $this->{$field}=$this->setFormatTimeFromSettings($field,/*$key*, $typ,*/$show);
             }
@@ -1662,6 +1673,7 @@ public function firstMessage($category=null){
  public function isScenario($scenario){
     return trim(strtolower($this->getScenario()))== trim(strtolower($scenario));
  }
+ 
  
 
 }   

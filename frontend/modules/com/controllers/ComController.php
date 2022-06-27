@@ -183,49 +183,93 @@ class ComController extends baseController
     }
    
      public function actionCreaOvPlus(){ 
-        $model = new ComOv();
-         $models =[];// $this->getItemsOvdet();//Obenter los items detalles
+        $model = new \frontend\modules\com\models\ComFactura();
         $request = Yii::$app->getRequest();
+        if(!$request->isPost){
+             $model->setAttributes([
+            'codcen'=> \common\models\masters\Centros::find()->one()->codcen,
+            'codsoc'=> 'A',
+            'sunat_tipodoc'=> $model::TYPE_DOC_INVOICE,
+            'codmon'=> 'PEN',
+        ]);
+        }
+       
+        //$model->setScenario($model::SCE_CREACION_RAPIDA);
+         $models =[];// $this->getItemsOvdet();//Obenter los items detalles
+       
         
         
         /*
          * Validacion ajax 
          */
         if ($request->isPost && $request->post('ajax') !== null) {
+           
                 h::response()->format = \yii\web\Response::FORMAT_JSON;
                 //return \yii\widgets\ActiveForm::validate($model);
-                 $data = Yii::$app->request->post('ComOvdet', []);
+                 $data = Yii::$app->request->post('ComFactudet', []);
+               
                     foreach (array_keys($data) as $index) {
-                     $models[$index] = new \frontend\modules\com\models\ComOvdet();
+                     $models[$index] = new \frontend\modules\com\models\ComFactudet();
                         }
                      //$modelsNuev=$models;
-                    // array_push($modelsNuev,$model);
-                     Model::loadMultiple($models, Yii::$app->request->post());                   
-                    $result = ActiveForm::validateMultiple($models);
-                    return $result;                
+                   // array_push($modelsNuev,$model);
+                         
+                     Model::loadMultiple($models, Yii::$app->request->post());
+                       //yii::error('validando la cabecera');
+                     $model->load($this->request->post());
+                     //if(count($data)==0){
+                    //$model->addError('numero',yii::t('base.errors','No child records have been registered'));
+                     //} 
+                     $result = ActiveForm::validate($model);
+                      
+                     if(count($result)==0){ //Si el encabezado va bien en todo
+                     //Verificamos que se haya registrado por lo meno un hijo
+                         if(count($data)==0){
+                             $result[\yii\helpers\Html::getInputId($model,'rucpro')] = [yii::t('base.errors','No child records have been registered')];
+                              //$result['codsoc-numero']=yii::t('base.errors','No child records have been registered');
+                              return $result;
+                         }
+                     
+                         //Entonces recien podemos mostrar los erroes del detalle
+                         
+                        $result = ActiveForm::validateMultiple($models); 
+                        return $result;
+                     }else{
+                         return $result;  
+                     }
+                   // $result = ActiveForm::validateMultiple($models);
+                  
+                    //
+                    //    //yii::error('validando_el modelo',__FUNCTION__);
+                    //yii::error(ActiveForm::validate($model));
+                   //array_push($result,ActiveForm::validate($model));
+                                  
         }
         
          if ($this->request->isPost) {           
             if ($model->load($this->request->post()) && $model->save()) {
                  $model->refresh();
-                 $data = Yii::$app->request->post('ComOvdet', []);
+                 $data = Yii::$app->request->post('ComFactudet', []);
                     foreach (array_keys($data) as $index) {
-                     $models[$index] = new \frontend\modules\com\models\ComOvdet();
+                     $models[$index] = new \frontend\modules\com\models\ComFactudet();
                         }
                 if(Model::loadMultiple($models, Yii::$app->request->post())){
                     foreach($models as $modeldetalle){
-                        $modeldetalle->ov_id=$model->id;
+                        $modeldetalle->factu_id=$model->id;
+                        $modeldetalle->sunat_tipodoc=$model->sunat_tipodoc;
+                         $modeldetalle->igv=0;
                         if(!$modeldetalle->save()){
                             yii::error($modeldetalle->getErrors());
                             yii::error($modeldetalle->attributes);
                         }
                     }
-                    $model->invoice_create();
-                     return $this->redirect(['view', 'id' => $model->id]);
+                    //$model->invoice_create();
+                     return $this->redirect(['view-invoice', 'id' => $model->id]);
                 }else{
                     var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
                 }                
             }else{
+                var_dump($model->attributes);
                 print_r($model->getErrors()); die();
             }
         } else { 
@@ -276,4 +320,51 @@ class ComController extends baseController
         
         return $items;
   }
+  
+  
+  public function actionUpdateInvoice($id)
+    {
+        $model = \frontend\modules\com\models\ComFactura::findOne($id);
+        $request=h::request();
+        if ($request->isPost && $request->post('ajax') !== null) {
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                 $result = ActiveForm::validate($model);
+                    return $result;                
+        }
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view-invoice', 'id' => $model->id]);
+        }
+
+        return $this->render('update_factura', [
+            'model' => $model,
+        ]);
+        
+    }
+    
+    public function actionViewInvoice($id)
+    {
+        $this->layout = "install";
+        return $this->render('view', [
+            'model' => \frontend\modules\com\models\ComFactura::findOne($id),
+        ]);
+    }
+    
+    
+     public function actionOpenCash(){
+        $model=New \frontend\modules\com\models\ComCajadia();
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['crea-ov-plus']);
+        }
+  
+        return $this->render('create_caja_dia', [
+            'model' => $model,
+        ]);
+    }
 }

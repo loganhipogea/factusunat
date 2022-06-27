@@ -178,7 +178,7 @@ CONST FIRE_METHOD='triggerUpload';
      * 
      */
 
-    public function attachFromPath($path) {
+    public function attachFromPath($path,$delete=false) {
         $cad = $path . "<br>";
         $files = [];
         if (is_file($path)) {
@@ -202,7 +202,10 @@ CONST FIRE_METHOD='triggerUpload';
                 if (!$this->getModule()->attachFile($newPathFile, $this->owner)) {
                     throw new \Exception(\Yii::t('yii', 'File upload failed.'));
                 } else {
+                    if($delete)
+                     @unlink($path);   
                    //@unlink($newPathFile);
+                    
                     yii::error('Attach Exitoso ' . $newPathFile . '---' . $file, __METHOD__);
                 }
             }

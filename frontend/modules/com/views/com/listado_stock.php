@@ -109,12 +109,13 @@ use frontend\modules\logi\models\LogiVwStock;
                                                                 });//fin del each                  
                                               console.log('el maximo id es :');
                                               console.log(v_maximo);
-                                              console.log('#comovdet-'+v_maximo+'-'+'codart');
-                                              $('#comovdet-'+v_maximo+'-'+'descripcion').text(v_fila['codart']+'-'+v_fila['descripcion']);
-                                              $('#comovdet-'+v_maximo+'-'+'cant').val(1);
-                                               $('#comovdet-'+v_maximo+'-'+'pventa').val(v_fila['pventa']);
-                                               $('#comovdet-'+v_maximo+'-'+'pventa').trigger('change');
-                                               $('#comovdet-'+v_maximo+'-'+'codart').val(v_fila['codart']);
+                                              console.log('#comfactudet-'+v_maximo+'-'+'codart');
+                                              $('#comfactudet-'+v_maximo+'-'+'descripcion_fake').text(v_fila['codart']+'-'+v_fila['descripcion']);
+                                              $('#comfactudet-'+v_maximo+'-'+'cant').val(1);
+                                               $('#comfactudet-'+v_maximo+'-'+'punit').val(v_fila['pventa']);
+                                               $('#comfactudet-'+v_maximo+'-'+'punit').trigger('change');
+                                               $('#comfactudet-'+v_maximo+'-'+'codart').val(v_fila['codart']);
+                                               $('#comfactudet-'+v_maximo+'-'+'descripcion').val(v_fila['descripcion']);
                                      }//fin del success
                         });
                         })";

@@ -7,7 +7,7 @@ namespace frontend\modules\sunat;
  */
 class Module extends \yii\base\Module
 {
-    
+   
     
     
     public $catalogs=[

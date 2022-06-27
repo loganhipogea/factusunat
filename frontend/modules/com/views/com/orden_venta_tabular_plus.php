@@ -25,7 +25,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
 <?php Pjax::begin(['id'=>'monet']);  ?>
 <?= TabularInput::widget([
     'models' => $models,
-    'modelClass' => \frontend\modules\com\models\ComOvdet::class,
+    'modelClass' => \frontend\modules\com\models\ComFactudet::class,
     'cloneButton' => false,
     'sortable' => false,
     'enableError'=>true,
@@ -62,8 +62,13 @@ $form = \yii\bootstrap\ActiveForm::begin([
             'name' => 'codart',
             'type' => TabularColumn::TYPE_HIDDEN_INPUT
         ],
-         [
+        
+        [
             'name' => 'descripcion',
+            'type' => TabularColumn::TYPE_HIDDEN_INPUT
+        ],
+         [
+            'name' => 'descripcion_fake',
             'type' => TabularColumn::TYPE_STATIC, 'title' => 'Código',
             
             'headerOptions' => [
@@ -93,8 +98,8 @@ $form = \yii\bootstrap\ActiveForm::begin([
           'inputTemplate'=>'<div style="width:60px !important;font-weight:800; color:#90be49 !important; text-align:right !important; ">{input}</div>',
         ],
        [
-            'name' => 'pventa',
-            'title' => 'P. venta',
+            'name' => 'punit',
+            'title' => 'P. unit',
            'headerOptions' => [
                // 'style' => 'width: 40%',
                 //'class' => 'day-css-class'
@@ -117,13 +122,13 @@ $form = \yii\bootstrap\ActiveForm::begin([
 
 <?php $this->registerJs(" $(document).on( 'change', 
     ' tr[class=\"multiple-input-list__item\"] input', function(){
-             var_prefijo='comovdet-';
+             var_prefijo='comfactudet-';
              var_identidad=this.id;
              var_indice=var_identidad.substr(var_prefijo.length,1);
-             var_cant=$('#comovdet-'+var_indice+'-cant').val();
-             var_punit=$('#comovdet-'+var_indice+'-pventa').val();
-             $('#comovdet-'+var_indice+'-subtotal_raw').text($.number(var_cant*var_punit,1))             
-             $('#comovdet-'+var_indice+'-subtotal').val(var_cant*var_punit)             
+             var_cant=$('#comfactudet-'+var_indice+'-cant').val();
+             var_punit=$('#comfactudet-'+var_indice+'-punit').val();
+             $('#comfactudet-'+var_indice+'-subtotal_raw').text(var_cant*var_punit,1)             
+             $('#comfactudet-'+var_indice+'-subtotal').val(var_cant*var_punit)             
              
              //Numero de filas
            //n_filas = $('#monet').find('hidden[name*=\"subtotal\"]').length;
@@ -139,39 +144,46 @@ $form = \yii\bootstrap\ActiveForm::begin([
                          }
                         var_subto= var_subto+parseFloat(var_valor);                       
                         console.log(this.id);
-                        console.log($.number(var_subto,1));
+                        console.log(var_subto,1);
                        
         	});                 
             //Colocando el subtotal
-            $('#total_a_pagar').val($.number(var_subto,1));
+            $('#total_a_pagar').val(var_subto,1);
+            $('#id_pagado_compra').trigger('change');
         
        });", \yii\web\View::POS_READY);
   ?>
 
 <?php $this->registerJs(" $(document).on('mouseup', 
     'div[class*=\"js-input-remove\"]', function(e){            
-            var_index=$(this).parent().parent().attr('data-index'); 
+            var_index=$(this).parent().parent().attr('data-index');
+          
+           
             //Recorriendo el bucle para halla el subtotal
                 let vi = 0;
                 var_subto=0;    
-             $('#monet').find('p[class=\"form-control-static\"]').each(function(){
-        	     
+             $('#monet').find('input[name*=\"[subtotal]\"]').each(function(){
+        	         console.log('Var index');
                         console.log(var_index);
-                        console.log($('#'+this.id).parent().parent().parent().attr('data-index'));
-                      if(var_index===$('#'+this.id).parent().parent().parent().attr('data-index')){
+                        v_index_a_borrar=$('#'+this.id).parent().parent().attr('data-index');
+                          console.log('Index a borrar');
+                        console.log(v_index_a_borrar);
+                      if(var_index===v_index_a_borrar){
                            console.log('Es la fila que borraste');
                         }else{
-                            var_valor=$('#'+this.id).text();
+                            var_valor=$('#'+this.id).val();
                             if(var_valor===''){
                                 var_valor=0;
                                 }
                                     var_subto= var_subto+parseFloat(var_valor);                       
                                     console.log(this.id);
+                                    console.log('eL SUBTOTAL');
                                     console.log(var_subto);
                         }                       
         	});                 
             //Colocando el subtotal
               $('#total_a_pagar').val(var_subto);
+              $('#id_pagado_compra').trigger('change');
        });", \yii\web\View::POS_END);
   ?>
 <?php Pjax::end();  ?>
@@ -184,7 +196,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
 
                     do {
                         vi = vi + 1;                        
-                    } while ($('#select2-comovdet-'+vi+'-codart-container').length);
+                    } while ($('#select2-comfactudet-'+vi+'-codart-container').length);
                     vi=vi-1;
                var data = {
                     id: '100028',
@@ -192,11 +204,11 @@ $form = \yii\bootstrap\ActiveForm::begin([
                         }; 
                   var newOption = new Option(data.text, data.id, true, false);
              // console.log(newOption);
-           //alert('#comovdet-'+vi+'-codart');
-         $('#comovdet-'+vi+'-codart').append(newOption).trigger('change'); 
-         $('#select2-comovdet-'+vi+'-codart-container').text(data.id+'-'+data.text); 
-            //$('#comovdet-'+vi+'-codart').val('100028');
-           // alert($('#comovdet-'+vi+'-codart').length);
+           //alert('#comfactudet-'+vi+'-codart');
+         $('#comfactudet-'+vi+'-codart').append(newOption).trigger('change'); 
+         $('#select2-comfactudet-'+vi+'-codart-container').text(data.id+'-'+data.text); 
+            //$('#comfactudet-'+vi+'-codart').val('100028');
+           // alert($('#comfactudet-'+vi+'-codart').length);
          });
        });", \yii\web\View::POS_END);
   ?>
@@ -268,6 +280,6 @@ $form = \yii\bootstrap\ActiveForm::begin([
             var_vuelto=0;
           }else{
           }
-              $('#id_vuelto_compra').val($.number(var_vuelto));  
+              $('#id_vuelto_compra').val(var_vuelto);  
          });
        });", \yii\web\View::POS_END);

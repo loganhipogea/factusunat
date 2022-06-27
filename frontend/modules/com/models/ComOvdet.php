@@ -13,7 +13,7 @@ use Yii;
  *
  * @property int $id
  * @property int $ov_id
- * @property string $item
+ * @property  string $item
  * @property string|null $codsoc
  * @property string $codcen
  * @property string $codal
@@ -33,6 +33,7 @@ class ComOvdet extends \common\models\base\modelBase
     public $subtotal=0;
     public $subtotal_raw=0;
     public $descripcion='';
+    public $booleanFields=['activo'];
     /**
      * {@inheritdoc}
      */
@@ -52,7 +53,7 @@ class ComOvdet extends \common\models\base\modelBase
                 'pventa'], 'required'],
             [['ov_id'], 'integer'],
             [['item', 'codcen', 'codal',
-                'codum', 'codart', 'punit','cant',
+                'codum', 'codart', 'punit','cant','activo',
                 'pventa'], 'safe'],
             [['punit', 'pventa'], 'number'],
             [['item'], 'string', 'max' => 3],

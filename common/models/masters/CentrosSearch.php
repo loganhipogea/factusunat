@@ -17,7 +17,7 @@ class CentrosSearch extends Centros
     public function rules()
     {
         return [
-            [['codcen', 'nomcen', 'codsoc', 'descricen'], 'safe'],
+            [['codcen', 'nomcen', 'codpro', 'descricen'], 'safe'],
         ];
     }
 
@@ -58,7 +58,7 @@ class CentrosSearch extends Centros
         // grid filtering conditions
         $query->andFilterWhere(['like', 'codcen', $this->codcen])
             ->andFilterWhere(['like', 'nomcen', $this->nomcen])
-            ->andFilterWhere(['like', 'codsoc', $this->codsoc])
+            ->andFilterWhere(['like', 'codpro', $this->codpro])
             ->andFilterWhere(['like', 'descricen', $this->descricen]);
 
         return $dataProvider;
