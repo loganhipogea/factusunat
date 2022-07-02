@@ -3,10 +3,14 @@
 namespace frontend\modules\com\controllers;
 use common\helpers\h;
 use frontend\modules\com\models\ComOv;
+use frontend\modules\com\models\ComFactudet;
+use frontend\modules\com\models\ComFactura;
 use frontend\modules\com\ComOvSearch;
 use frontend\controllers\base\baseController;
+use frontend\modules\com\models\ComVwFactudetSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\date\DatePicker;
 use yii\base\Model;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
@@ -183,6 +187,7 @@ class ComController extends baseController
     }
    
      public function actionCreaOvPlus(){ 
+         //h::sunat()->clearCache();
         $model = new \frontend\modules\com\models\ComFactura();
         $request = Yii::$app->getRequest();
         if(!$request->isPost){
@@ -254,16 +259,20 @@ class ComController extends baseController
                      $models[$index] = new \frontend\modules\com\models\ComFactudet();
                         }
                 if(Model::loadMultiple($models, Yii::$app->request->post())){
+                      $item=100;
                     foreach($models as $modeldetalle){
-                        $modeldetalle->factu_id=$model->id;
-                        $modeldetalle->sunat_tipodoc=$model->sunat_tipodoc;
-                         $modeldetalle->igv=0;
+                        $modeldetalle->setIdChild($model->id)
+                                ->setItem($item.'')->
+                                setTipoDocSunat($model->sunat_tipodoc)-> //Boleta o factura
+                                setTipoTributoIGV() //Tiene IGV
+                                ->setTipoAfectacionEsGravada(); //  Es gravada  (Puede ser exonerada, pero tiene que indicarlo el usuario)                   
                         if(!$modeldetalle->save()){
-                            yii::error($modeldetalle->getErrors());
-                            yii::error($modeldetalle->attributes);
+                            yii::error($modeldetalle->getErrors(),__FUNCTION__);
                         }
+                       $item++;
                     }
-                    //$model->invoice_create();
+                     $model->refreshValues();
+                     $model->preparePdf();
                      return $this->redirect(['view-invoice', 'id' => $model->id]);
                 }else{
                     var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
@@ -326,7 +335,7 @@ class ComController extends baseController
     {
         $model = \frontend\modules\com\models\ComFactura::findOne($id);
         $request=h::request();
-        if ($request->isPost && $request->post('ajax') !== null) {
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
                 h::response()->format = \yii\web\Response::FORMAT_JSON;
                  $result = ActiveForm::validate($model);
                     return $result;                
@@ -367,4 +376,125 @@ class ComController extends baseController
             'model' => $model,
         ]);
     }
+    
+    public function actionEditDetailInvoice($id) {
+        //var_dump(\yii\helpers\Json::decode(h::request()->get('gridName')));die();
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $model= ComFactudet::findOne($id);
+        
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codcen];
+            }
+        }else{
+           return $this->renderAjax('modal_detalle_factura', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    public function actionNewDetailInvoice($id) {
+        //var_dump(\yii\helpers\Json::decode(h::request()->get('gridName')));die();
+        $modelParent= ComFactura::findOne($id);
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $model=New ComFactudet();
+        $model->setIdChild($modelParent->id); 
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codcen];
+            }
+        }else{
+           return $this->renderAjax('modal_detalle_factura', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    
+   public function actionAjaxDeleteInvoiceItem($id){
+       //verificamos el estado
+       $model=ComFactudet::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;            
+                 
+        if(!$model->factura->isCreated()){
+           return ['error' => yii::t('base.errors', 'Document status does not allow editing')];
+                
+        }elseif($model->factura->getDetails()->count()<2){//INTENTA BORRAR EL ULTIMO ITEM 
+           return ['error' => yii::t('base.errors', 'Can\'t delete the last item')];
+            
+        }else{
+          return parent::deleteModel($id,$model::className());
+        }
+   }
+   
+   public function actionAjaxPassInvoice($id){
+       //verificamos el estado
+       $model=ComFactura::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;   
+         if(!$model->passInvoice()){ //En la funcion passInvoice validar el cambio de estado
+           return ['error' => $model->getFirstError()];             
+         }else{
+           return ['success' => yii::t('base.errors','Document was passed' )];  
+         }
+        
+        
+   }
+   
+   public function actionAjaxRemoveInvoice($id){
+       //verificamos el estado
+       $model=ComFactura::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;   
+         if(!$model->removeInvoice()){ //En la funcion  validar el cambio de estado
+           return ['error' => $model->getFirstError()];             
+         }else{
+           return ['success' => yii::t('base.errors','Document was passed' )];  
+         }
+        
+        
+   }
+   
+  public function actionIndexInvoices(){
+      $searchModel = new ComVwFactudetSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_con_detalles', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+  }
 }

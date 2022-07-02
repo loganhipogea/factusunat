@@ -471,7 +471,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
            if (($object->class===static::class) //es un metodo de la clase actual y no de los parents
                && (substr(trim(strtolower($object->name)),0,3)==='get' ) //comieniza con get
                && (method_exists(static::class,$object->name)) //si es una fucion no una propiedad
-               && is_object($this->{$object->name}()) //si devuelve un objeto
+              // && is_object($this->{$object->name}()) //si devuelve un objeto
                //&& in_array(get_parent_class($this->{$object->name}()),['yii\db\ActiveQuery','yii\db\Query'])  //si el objeto es una clas actiev Query
                && is_subclass_of($this->{$object->name}(), 'yii\db\ActiveQuery')
                ){

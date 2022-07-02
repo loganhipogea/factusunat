@@ -24,7 +24,10 @@ use yii\widgets\Pjax;
       <div id="zona_stock" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           
       </div>
-       <?php echo inputAjaxWidget::widget([
+       <?php 
+       
+      // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
+       echo inputAjaxWidget::widget([
             'isHtml'=>true,//Devuelve datos Html
             'isDivReceptor'=>true,//Es un diov que recibe Html
             'tipo'=>'POST',            

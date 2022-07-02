@@ -98,7 +98,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
           'inputTemplate'=>'<div style="width:60px !important;font-weight:800; color:#90be49 !important; text-align:right !important; ">{input}</div>',
         ],
        [
-            'name' => 'punit',
+            'name' => 'punitgravado',
             'title' => 'P. unit',
            'headerOptions' => [
                // 'style' => 'width: 40%',
@@ -126,7 +126,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
              var_identidad=this.id;
              var_indice=var_identidad.substr(var_prefijo.length,1);
              var_cant=$('#comfactudet-'+var_indice+'-cant').val();
-             var_punit=$('#comfactudet-'+var_indice+'-punit').val();
+             var_punit=$('#comfactudet-'+var_indice+'-punitgravado').val();
              $('#comfactudet-'+var_indice+'-subtotal_raw').text(var_cant*var_punit,1)             
              $('#comfactudet-'+var_indice+'-subtotal').val(var_cant*var_punit)             
              

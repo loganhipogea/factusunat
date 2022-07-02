@@ -27,7 +27,7 @@ class m220620_150117_create_comov_table extends baseMigration
                 ];
         
          $this->addFk();
-         $this->putCombo($this->table,'tipodoc', ['10'=>'BOLETA','20'=>'FACTURA']);
+         $this->putCombo($this->table,'tipodoc', ['01'=>'BOLETA','02'=>'FACTURA']);
          $this->putCombo($this->table,'tipopago', [
              '10'=>'EFECTIVO',
              '20'=>'YAPE',

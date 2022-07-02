@@ -18,7 +18,7 @@ use kartik\tabs\TabsX;
 
 
 <?php
-Pjax::begin(['id'=>'zona-pjax-socio']);
+Pjax::begin(['id'=>'zona-pjax-socio','timeout'=>false]);
 $items=[
         [
             'label' => yii::t('base.names','General'),
@@ -33,7 +33,13 @@ $items=[
             'options' => ['id' => 'myveryownID2'],
             'active' => false
         ],
-        
+        [
+            'label' => yii::t('base.names','Sends'),
+            'content' => $this->render('_tab_factura_sends',['model'=>$model]),
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'options' => ['id' => 'myveryore67wnID2'],
+            'active' => false
+        ],
        
          
     ];

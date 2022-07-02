@@ -2,11 +2,13 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\Json;
 use yii\widgets\ActiveForm;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
 use common\helpers\ComboHelper;
 use common\models\masters\Tipocambio;
 use common\helpers\h;
+use kartik\date\DatePicker;
 use yii\widgets\Pjax;
 use yii\grid\GridView as grid;
 
@@ -21,17 +23,65 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     
   
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <?php $form = ActiveForm::begin([
+        <?php 
+       $deshabilitado=(
+                $model->isPassed() ||
+                $model->isRemoved() /*||
+               !$model->isCreated() ||*/
+               );
+        
+        $form = ActiveForm::begin([
         'id'=>'Form_general',
-       // 'enableAjaxValidation'=>true
+       'enableAjaxValidation'=>true
         ]); ?>  
-        <div class="form-group">
-        <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
+        
+      <div class="col-md-12">
+            <div class="form-group no-margin">
+                <div class="btn-group">
+                 <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-info']) ?>
+       
+                
+               <?php 
+                 
+                 if(
+                     !$model->isNewRecord && //Si es edicion
+                     $model->isCreated()  //ademas esta creado
+                             ){ 
+                  echo Html::button("<span class=\"fa fa-check\"></span>Aprobar", 
+                          [
+                              'id'=>'btn_fct_aprobar',
+                              'class' => 'btn btn-success']
+                          );   
+                  }  
+                  
+                  if(!$model->isNewRecord && 
+                          $model->isCreated() //Si esta recien creado
+                          ){ 
+                  echo Html::button("<span class=\"fa fa-trash\"></span>Anular", 
+                          [
+                              'id'=>'btn_fct_anular',
+                              'class' => 'btn btn-danger']
+                          );   
+                  }  
+                  if($model->isPassed()  && (!$model->isPassedSunat() || $model->isRejectedSunat() ) //Si esta aprobada
+                          ){ 
+                  echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
+                          [
+                              'id'=>'btn_fct_enviar-sunat',
+                              'class' => 'btn btn-warning']
+                          );   
+                  }  
+                
+               ?>
+             
+               
+              </div>  
+            </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
              <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <?= $form->field($model, 'sunat_tipodoc')->
             dropDownList(['01'=>'FACTURA','02'=>'BOLETA'],
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
@@ -41,7 +91,26 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                     ) ?>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-          <?= $form->field($model, 'rucpro')->textInput(['maxlength' => true]) ?>
+                <?php  //h::settings()->invalidateCache();  ?>
+                       <?= $form->field($model, 'femision')->widget(DatePicker::class, [
+                             'language' => h::app()->language,
+                           // 'readonly'=>true,
+                          // 'inline'=>true,
+                           'pluginOptions'=>[
+                                     'format' => h::gsetting('timeUser', 'date')  , 
+                                  'changeMonth'=>true,
+                                  'changeYear'=>true,
+                                 'yearRange'=>"-99:+0",
+                               ],
+                           
+                            //'dateFormat' => h::getFormatShowDate(),
+                            'options'=>['class'=>'form-control','disabled'=>$deshabilitado]
+                            ]) ?>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+          <?= $form->field($model, 'rucpro')->textInput(['maxlength' => true,
+              'disabled'=>$deshabilitado
+              ]) ?>
         </div>
    
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
@@ -76,6 +145,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                 Tipocambio::COD_MONEDA_BASE=>Tipocambio::COD_MONEDA_BASE] ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                        
+              'disabled'=>$deshabilitado
                         ]
                     ) ?>
         </div>
@@ -84,6 +155,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             dropDownList(['A'=>'SOCIEDAD','B'=>'SOCIEDAD2'] ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                        
+              'disabled'=>$deshabilitado
                         ]
                     ) ?>
 
@@ -93,13 +166,28 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             dropDownList(ComboHelper::getTablesValues('com_ov.tipopago') ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                        
+              'disabled'=>$deshabilitado
                         ]
                     ) ?>
         </div>
-   
-        
-      
-           
+          <?php Pjax::begin(['id'=>'zona-totales']); ?>
+         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+             <?= $form->field($model, 'subtotal')->textInput(['disabled'=>true,'maxlength' => true]) ?>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+             <?= $form->field($model, 'sunat_totisc')->textInput(['disabled'=>true,'maxlength' => true]) ?>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+             <?= $form->field($model, 'sunat_totigv')->textInput(['disabled'=>true,'maxlength' => true]) ?>
+        </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+             <?= $form->field($model, 'sunat_totimpuestos')->textInput(['disabled'=>true,'maxlength' => true]) ?>
+        </div>
+           <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+             <?= $form->field($model, 'total')->textInput(['disabled'=>true,'maxlength' => true]) ?>
+        </div>
+             <?php Pjax::end(); ?>
             <?php ActiveForm::end(); ?>
             <?php echo inputAjaxWidget::widget([
             'isHtml'=>true,
@@ -111,29 +199,70 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
    </div> 
     
     <?php Pjax::begin(['id'=>'grilla-contactos']); ?>
-   
+    <?php echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_fct_aprobar',
+            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/com/com/ajax-pass-invoice','id'=>$model->id]),
+            'id_input'=>'btn_fct_aprobar',
+            'idGrilla'=>'zona-pjax-socio'
+      ])  ?>  
+     <?php echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_fct_anular',
+            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/com/com/ajax-remove-invoice','id'=>$model->id]),
+            'id_input'=>'btn_fct_anular',
+            'idGrilla'=>'zona-pjax-socio'
+      ])  ?>  
+    
+     <?php echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_fct_enviar-sunat',
+            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/sunat/default/ajax-send-invoice-std','id'=>$model->id]),
+            'id_input'=>'btn_fct_enviar-sunat',
+            'idGrilla'=>'pjax-sends-grilla'
+      ])  ?>  
+    
+
+    
    <?php 
-   $gridColumns=[
-       
-            [
+   if(!$deshabilitado){
+  $column=[
                     
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}',
                'buttons' => [  
                        'edit' => function ($url,$model) {
-			    $url= Url::to(['masters/clipro/editacontacto','id'=>$model->id,'gridName'=>'grilla-contactos','idModal'=>'buscarvalor']);
+			    $url= Url::to(['/com/com/edit-detail-invoice','id'=>$model->id,'gridName'=>Json::encode(['grilla-contactos','zona-totales']),'idModal'=>'buscarvalor']);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {                             
-                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-invoice-item','id'=>$model->id]);
                               return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              }
                         
                     ]
-                ],
-           
-           
+                ];
+   }else{
+      $column=[
+                    
+                'class' => 'yii\grid\ActionColumn',
+                //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
+            'template' => '',
+               
+                ]; 
+   }
+   $gridColumns=[       
+            $column,
         [
             'attribute' => 'item',
            
@@ -165,20 +294,23 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'width' => '210px',*/
             
          ],
-       [
-           
-            'attribute' => 'punit',
+         [           
+            'attribute' => 'punit', 
+             
+         ],
           
+       [           
+            'attribute' => 'punitgravado',          
          ], 
        [
-           
-            'attribute' => 'pventa',
-          
+                       'attribute' => 'pventa',          
          ],
-                            [
-           
-            'attribute' => 'igv',
-          
+                            [  
+            'headerOptions' => [
+                        'class' => 'text-right',
+                        'style' => 'text-align: right;',
+                            ],                    
+            'attribute' => 'igv',          
          ],
    ];
    echo grid::widget([
@@ -213,10 +345,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     <?php Pjax::end(); ?>    
    
 <?php
-$url= Url::to(['/com/com/modal-crea-itemfac','id'=>$model->id,'gridName'=>'grilla-contactos','idModal'=>'buscarvalor']);
+   if(!$deshabilitado){
+      $url= Url::to(['/com/com/new-detail-invoice','id'=>$model->id,'gridName'=>Json::encode(['grilla-contactos','zona-totales']),'idModal'=>'buscarvalor']);
+      echo  Html::button('<span class="fa fa-plus"></span>'.yii::t('base.verbs','Add Detail'), ['href' => $url, 'title' => 'Nuevo item de '.$model->numero,'id'=>'btn_contacts','idGrilla'=>Json::encode(['grilla-contactos','zona-totales']),  'class' => 'botonAbre btn btn-success']); 
  
-  echo  Html::button('<span class="fa fa-user"></span>'.yii::t('base.verbs','Crear Contacto'), ['href' => $url, 'title' => 'Nuevo item de '.$model->numero,'id'=>'btn_contacts','idGrilla'=>'grilla-contactos',    'class' => 'botonAbre btn btn-success']); 
-
+   }
+   
   
  /* use lo\widgets\modal\ModalAjax;
 

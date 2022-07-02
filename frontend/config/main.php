@@ -26,6 +26,10 @@ return [
         ],
     ],
     'components' => [
+        'sunat'=>[
+            'class'=>'common\components\SunatCatalog',
+        ],
+        
         'view' => [
                'theme' => [
                         'pathMap' => [

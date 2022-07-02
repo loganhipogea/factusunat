@@ -13,7 +13,7 @@ use frontend\modules\logi\models\LogiVwStock;
     <?php Pjax::begin(['id'=>'stock-index']); ?>
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
-                'query'=> LogiVwStock::find()->andWhere(['like','descripcion',$parametro])->limit(5),
+                'query'=> LogiVwStock::find()->andFilterWhere(['like', 'descripcion', explode ('%',$parametro)])->limit(5),
                 ]),
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
@@ -112,8 +112,8 @@ use frontend\modules\logi\models\LogiVwStock;
                                               console.log('#comfactudet-'+v_maximo+'-'+'codart');
                                               $('#comfactudet-'+v_maximo+'-'+'descripcion_fake').text(v_fila['codart']+'-'+v_fila['descripcion']);
                                               $('#comfactudet-'+v_maximo+'-'+'cant').val(1);
-                                               $('#comfactudet-'+v_maximo+'-'+'punit').val(v_fila['pventa']);
-                                               $('#comfactudet-'+v_maximo+'-'+'punit').trigger('change');
+                                               $('#comfactudet-'+v_maximo+'-'+'punitgravado').val(v_fila['pventa']);
+                                               $('#comfactudet-'+v_maximo+'-'+'punitgravado').trigger('change');
                                                $('#comfactudet-'+v_maximo+'-'+'codart').val(v_fila['codart']);
                                                $('#comfactudet-'+v_maximo+'-'+'descripcion').val(v_fila['descripcion']);
                                      }//fin del success

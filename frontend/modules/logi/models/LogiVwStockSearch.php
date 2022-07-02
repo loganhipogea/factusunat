@@ -69,7 +69,8 @@ class LogiVwStockSearch extends LogiVwStock
             ->andFilterWhere(['like', 'descripcion', explode ('%',$this->descripcion)])
             ->andFilterWhere(['like', 'marca', $this->marca])
             ->andFilterWhere(['like', 'modelo', $this->modelo]);
-
+       // echo $query->createCommand()->rawSql; die();
+             //YII::ERROR($query->createCommand()->rawSql);
         return $dataProvider;
     }
 }

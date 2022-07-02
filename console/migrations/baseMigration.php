@@ -123,22 +123,23 @@ class baseMigration extends Migration
         
     }
   
-    private static function fillCboValor($i,$realNameTable,$namefield,$valor,$largo){
-       
+    private static function fillCboValor($key,$realNameTable,$namefield,$valor,$largo){
+       /*
+        * SI EL VALOR ES DE UN CARACTER SE TRATA DE UNA LETRA
+        */
         if($largo==1){
               if($valor=='Z'){
                   return false;
               }else {
-                  $code=self::selectLetter($i);  
-                  return true;
-                  
+                  $code=self::selectLetter($key);  
+                  return true;                  
               }
-        }else{
-            $code='1'.str_pad($i, $largo-1, '0', STR_PAD_LEFT);
-           /*ModelCombo::firstOrCreateStatic([
-            'parametro'=>$realNameTable.'.'.$namefield,
-            'clavecentro'=>'0',
-            ]);*/
+        }else{            
+            if(is_string($key) && strlen($key) <=$largo){//Si ya hay uin valore predefinido respetarlo
+                $code=$key;
+            }else{//Si no especificaron valores rellenarlos
+               $code='1'.str_pad($i, $largo-1, '0', STR_PAD_LEFT); 
+            }            
             Combovalores::firstOrCreateStatic([
             'nombretabla'=>$realNameTable.'.'.$namefield,
             'codigo'=>$code,

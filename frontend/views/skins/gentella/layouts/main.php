@@ -166,7 +166,8 @@ echo ModalAjax::widget([
    // 'url' => $url, // Ajax view with form to load
     'ajaxSubmit' => true, // Submit the contained form as ajax, true by default
     //para que no se esconda la ventana cuando presionas una tecla fuera del marco
-    'clientOptions' => ['tabindex' => false,'backdrop' => 'static', 'keyboard' => FALSE]
+     'options' => ['tabindex' => false],
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
     // ... any other yii2 bootstrap modal option you need
 ]);
 
@@ -225,7 +226,7 @@ echo ModalAjax::widget([
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;color: #52be0a;"></i><?=h::userName() ?>
+                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i><?=h::userName() ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -252,79 +253,14 @@ echo ModalAjax::widget([
                             </ul>
                         </li>
 
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
+                        
+                         <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-money" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
+                                <?php echo \common\helpers\h::tipoCambio('USD')['compra'] ?>/<?php echo \common\helpers\h::tipoCambio('USD')['venta'] ?>
                             </a>
-                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="" alt="Profile Image" />
-                                    </span>
-                      <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                      <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="" alt="Profile Image" />
-                                    </span>
-                      <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                      <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="" alt="Profile Image" />
-                                    </span>
-                      <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                      <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="" alt="Profile Image" />
-                                    </span>
-                      <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                      <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="text-center">
-                                        <a href="/">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
+                            
                         </li>
-
                     </ul>
                 </nav>
             </div>

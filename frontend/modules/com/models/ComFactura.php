@@ -1,18 +1,40 @@
 <?php
 namespace frontend\modules\com\models;
+/*
+ * Libreiras greenter
+ */
+use Greenter\Model\Sale\Invoice;
+use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
+use Greenter\Model\Client\Client;
+use Greenter\Model\Company\Company;
+use Greenter\Model\Company\Address;
+/************/
+
 use Yii;
 use common\helpers\h;
 use common\behaviors\FileBehavior;
 use common\models\masters\Clipro;
 use common\models\masters\Centros;
-class ComFactura extends \common\models\base\modelBase
+class ComFactura extends \common\models\base\BaseDocument
 {
     
     const SCE_CREACION_RAPIDA='scerapida';//Punto de venta ventas rapidas
+    CONST ST_PASSED_SUNAT=1;
+    CONST ST_MISSING_SUNAT=0;
+    CONST ST_REJECT_SUNAT=-1;
+    public $femision1=null;
+    public $fvencimiento1=null;
     public $dateorTimeFields=[
           'femision'=>self::_FDATE,
+        'femision1'=>self::_FDATE,
           'fvencimiento'=>self::_FDATE,
+        'fvencimiento1'=>self::_FDATE,
+        
     ];
+    /*public $booleanFields=[
+          'flag_sunat',
+    ];*/
+    public $total1=null;
     public static function tableName()
     {
         return '{{%com_factura}}';
@@ -20,10 +42,17 @@ class ComFactura extends \common\models\base\modelBase
     public function rules()
     {
         return [
+            
+             [[
+                'sunat_totexo','sunat_totigv','sunat_totimpuestos',
+                'descuento','subtotal','sunat_totisc','totalventa'
+               ],
+                 'safe'
+             ],            
              /*
              * Validacion del RUC O DNI en punto de venta
              */
-             [['serie','codestado','rucpro'], 'safe'],
+             [['serie','codestado','rucpro','total','flag_sunat'], 'safe'],
              ['rucpro', 'validaterucdni',/* 'on' => self::SCE_CREACION_RAPIDA*/],
              //[['rucpro'], 'required'],
             [['codcen','codsoc','sunat_tipodoc','rucpro'], 'required', 'message' => yii::t('base.errors','This field is T required')],
@@ -60,7 +89,7 @@ class ComFactura extends \common\models\base\modelBase
     
     public function validaterucdni($attribute,$params){
         //echo "salio"; die();
-        \yii::error('validando',__FUNCTION__);
+        //\yii::error('validando',__FUNCTION__);
         if($this->isInvoice()){
             YII::ERROR('Es factura',__FUNCTION__);
             if(empty($this->rucpro)){
@@ -74,28 +103,37 @@ class ComFactura extends \common\models\base\modelBase
                             ]); 
                
                 if(!$validatorRuc->validate($this->rucpro)){ 
-                   YII::ERROR('VALIDO BIEN EL RUC ',__FUNCTION__); 
+                   YII::ERROR('Agregando el error al campo rucpro ',__FUNCTION__); 
                            $this->addError('rucpro',yii::t('base.errors','Invalid format'));
-                            return ;  
+                             
                      }
            }
         }else{//En el caso que haya escogido boleta
-            YII::ERROR('Es boleta',__FUNCTION__);
+            //YII::ERROR('Es boleta',__FUNCTION__);
            if(empty($this->rucpro)){ //Si no llenó nada aquí tiene que llenar el nombre por lo menos
                if(empty($this->nombre_cliente)){
                  $this->addError('rucpro',yii::t('base.errors','This field is required'));
                  return;  
                }
             }else{//Si escribió DNI validarlo
-               if(!$this->rucpro===h::gsetting('general','DNI_anonimo')){
+                // YII::ERROR('eSCRIBIO DNI AH',__FUNCTION__);
+               if(!($this->rucpro===h::gsetting('general','DNI_anonimo'))){
+                    //YII::ERROR('NOE S ANMNIMO',__FUNCTION__);
                   $validatorDni=new \yii\validators\RegularExpressionValidator(
                      [
                         'pattern'=>h::gsetting('general', 'formatoDNI'),
                     ]);
+                 // YII::ERROR('VALIDANDO RUN BIOLETA',__FUNCTION__);
                   if(!$validatorDni->validate($this->rucpro)){ 
+                       // yii::error('encotor error en el dni de la boelta');
                            $this->addError('rucpro',yii::t('base.errors','Invalid format'));
                             return ;  
-                     } 
+                     } else{
+                         // yii::error('paso la validacion de la  de la boelta');
+                     }
+                         
+               }ELSE{
+                   
                }
                 
            } 
@@ -107,7 +145,7 @@ class ComFactura extends \common\models\base\modelBase
         return parent::beforeValidate();
     }
     
-    
+     
     public function behaviors() {
         return [
             
@@ -141,6 +179,11 @@ class ComFactura extends \common\models\base\modelBase
     {
         return $this->hasOne(\common\models\masters\Clipro::className(), ['rucpro' => 'rucpro']);
     }
+    
+    public function getSocio()
+    {
+        return $this->hasOne(\common\models\masters\Clipro::className(), ['codsoc' => 'codsoc']);
+    }
    
     public static function find()
     {
@@ -157,10 +200,11 @@ class ComFactura extends \common\models\base\modelBase
         IF($insert){
            //echo $this->currentDateInFormat(); die();
           $this->codestado=self::ST_CREATED;
-          $this->serie='F01';  
+          $this->serie='F001';  
           $this->numero= $this->serie.'-'.$this->correlative($this->serie);
           $this->femision=$this->currentDateInFormat();
           $this->hemision=date('h:i:s');
+          $this->flag_sunat=self::ST_MISSING_SUNAT; //Neutro pendiente de
           
         }        
         return parent::beforeSave($insert);
@@ -168,7 +212,8 @@ class ComFactura extends \common\models\base\modelBase
     
     public function afterSave($insert, $changedAttributes) {
         if($insert){
-            $this->preparePdf($this->numero);
+            //$this->refresh();
+           // $this->preparePdf($this->id);
         }
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -177,112 +222,333 @@ class ComFactura extends \common\models\base\modelBase
         $this->codestado=$status;
         return $this->save();
     }
-    
-   private function preparePdf($numero){
+    public function getDetails()
+    {
+        return $this->hasMany(ComFactudet::className(), ['factu_id' => 'id']);
+    }
+   public function preparePdf(){
+      
+       $socio=$this->socio;
+       $numero=$this->numero;
        $file=dirname(dirname(__DIR__)).'/com/views/com/templates/Invoice_template.php';
        $targetPath=yii::getAlias('@temp').'/'. $numero.'.pdf';
-       $fileQr=yii::getAlias('@temp').'/'. $numero.'QR.png';
-       
+       $fileQr=yii::getAlias('@temp').'/'. $numero.'QR.png';       
        $pdf=New \FPDF('P','mm',array(80,150)); 
-       
-      
-
-    $qrCode = (new \Da\QrCode\QrCode('This is my text'))
-    ->setSize(50)
-    ->setMargin(5);
-   // ->useForegroundColor(51, 153, 255);
-    
-    $qrCode->writeFile($fileQr);
-      //$cad= $qrCode->writeString();
-       
-       
-       $pdf->AddPage();
-       define('EURO',chr(128));
+        $qrCode = (new \Da\QrCode\QrCode('This is my text'))
+            ->setSize(50)
+            ->setMargin(5);   
+                $qrCode->writeFile($fileQr);      
+        $pdf->AddPage();
+                define('EURO',$this->codmon);
        // CABECERA
-$pdf->SetFont('Helvetica','',12);
-$pdf->Cell(60,4,'Lacodigoteca.com',0,1,'C');
-$pdf->SetFont('Helvetica','',8);
-$pdf->Cell(60,4,'C.I.F.: 01234567A',0,1,'C');
-$pdf->Cell(60,4,'C/ Arturo Soria, 1',0,1,'C');
-$pdf->Cell(60,4,'C.P.: 28028 Madrid (Madrid)',0,1,'C');
-$pdf->Cell(60,4,'999 888 777',0,1,'C');
-$pdf->Cell(60,4,'alfredo@lacodigoteca.com',0,1,'C');
+            $pdf->SetFont('Helvetica','',12);
+            $pdf->Cell(60,4,$socio->despro,0,1,'C');
+            $pdf->SetFont('Helvetica','',8);
+            $pdf->Cell(60,4,$socio->rucpro,0,1,'C');
+           // $pdf->Cell(60,4,'C/ Arturo Soria, 1',0,1,'C');
+            $pdf->Cell(60,4,$socio->firstAddress(),0,1,'C');
+            $pdf->Cell(60,4,$socio->telpro,0,1,'C');
+            $pdf->Cell(60,4,$socio->web,0,1,'C');
  
-// DATOS FACTURA        
-$pdf->Ln(5);
-$pdf->Cell(60,4,'Factura Simpl.: F2019-000001',0,1,'');
-$pdf->Cell(60,4,'Fecha: 28/10/2019',0,1,'');
-$pdf->Cell(60,4,'Metodo de pago: Tarjeta',0,1,'');
+        // DATOS FACTURA        
+            $pdf->Ln(5);
+            $pdf->Cell(60,4,'Factura Simpl.:'.$this->numero,0,1,'');
+            $pdf->Cell(60,4,'Fecha: '.$this->femision.':'.$this->hemision,0,1,'');
+            $pdf->Cell(60,4,'Metodo de pago:'.$this->tipopago,0,1,'');
  
-// COLUMNAS
-$pdf->SetFont('Helvetica', 'B', 7);
-$pdf->Cell(30, 10, 'Articulo', 0);
-$pdf->Cell(5, 10, 'Ud',0,0,'R');
-$pdf->Cell(10, 10, 'Precio',0,0,'R');
-$pdf->Cell(15, 10, 'Total',0,0,'R');
-$pdf->Ln(8);
-$pdf->Cell(60,0,'','T');
-$pdf->Ln(0);
+            // COLUMNAS
+            $pdf->SetFont('Helvetica', 'B', 7);
+            $pdf->Cell(30, 10, 'Producto', 0);
+            $pdf->Cell(5, 10, 'Ud',0,0,'R');
+            $pdf->Cell(10, 10, 'Precio',0,0,'R');
+            $pdf->Cell(15, 10, 'Total',0,0,'R');
+            $pdf->Ln(8);
+            $pdf->Cell(60,0,'','T');
+            $pdf->Ln(0);
  
-// PRODUCTOS
-$pdf->SetFont('Helvetica', '', 7);
-$pdf->MultiCell(30,4,'Manzana golden 1Kg que peude ser la panace a d ee abiail',0,'L'); 
-$pdf->Cell(35, -5, '2',0,0,'R');
-$pdf->Cell(10, -5, number_format(round(3,2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Cell(15, -5, number_format(round(2*3,2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Ln(3);
-$pdf->MultiCell(30,4,'Malla naranjas 3Kg',0,'L'); 
-$pdf->Cell(35, -5, '1',0,0,'R');
-$pdf->Cell(10, -5, number_format(round(1.25,2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Cell(15, -5, number_format(round(1.25,2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Ln(3);
-$pdf->MultiCell(30,4,'Uvas',0,'L'); 
-$pdf->Cell(35, -5, '5',0,0,'R');
-$pdf->Cell(10, -5, number_format(round(1,2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Cell(15, -5, number_format(round(1*5,2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Ln(3);
- 
+        // PRODUCTOS
+           
+            foreach($this->details as $detail){ 
+           
+                $pdf->MultiCell(30,4,$detail->descripcion,0,'L'); 
+                $pdf->Cell(35, -5, $detail->cant,0,0,'R');
+                $pdf->Cell(10, -5,$detail->punit.EURO,0,0,'R');
+                $pdf->Cell(15, -5, $detail->pventa.EURO,0,0,'R');
+                $pdf->Ln(3);               
+                            
+            }
+     $pdf->SetFont('Helvetica','',8);
 // SUMATORIO DE LOS PRODUCTOS Y EL IVA
-$pdf->Ln(6);
-$pdf->Cell(60,0,'','T');
-$pdf->Ln(2);    
-$pdf->Cell(25, 10, 'TOTAL SIN I.V.A.', 0);    
-$pdf->Cell(20, 10, '', 0);
-$pdf->Cell(15, 10, number_format(round((round(12.25,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Ln(3);    
-$pdf->Cell(25, 10, 'I.V.A. 21%', 0);    
-$pdf->Cell(20, 10, '', 0);
-$pdf->Cell(15, 10, number_format(round((round(12.25,2)),2)-round((round(2*3,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
-$pdf->Ln(3);    
-$pdf->Cell(25, 10, 'TOTAL', 0);    
-$pdf->Cell(20, 10, '', 0);
-$pdf->Cell(15, 10, number_format(round(12.25,2), 2, ',', ' ').EURO,0,0,'R');
+        $pdf->Ln(6);
+        $pdf->Cell(60,0,'','T');
+        $pdf->Ln(2);    
+        $pdf->Cell(25, 10, 'TOTAL SIN IGV', 0);    
+        $pdf->Cell(20, 10, '', 0);
+        $pdf->Cell(15, 10, number_format(round((round(12.25,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
+        $pdf->Ln(3);    
+        $pdf->Cell(25, 10, 'IGV 18%', 0);    
+        $pdf->Cell(20, 10, '', 0);
+        $pdf->Cell(15, 10, number_format(round((round(12.25,2)),2)-round((round(2*3,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
+        $pdf->Ln(3);    
+        $pdf->Cell(25, 10, 'TOTAL', 0);    
+        $pdf->Cell(20, 10, '', 0);
+        $pdf->Cell(15, 10, number_format(round(12.25,2), 2, ',', ' ').EURO,0,0,'R');
  
 // PIE DE PAGINA
-$pdf->Ln(10);
-$pdf->Cell(60,0,'EL PERIODO DE DEVOLUCIONES',0,1,'C');
-$pdf->Ln(3);
-$pdf->Cell(60,0,'CADUCA EL DIA  01/11/2019',0,1,'C');
-$pdf->Ln(2);
-$pdf->Image($fileQr);
-$pdf->Output($targetPath,'f');
-  $this->attachFromPath($targetPath); 
-  
-       
-       
-       /*$pdf=new \Mpdf\Mpdf();
-       // $stylesheet = file_get_contents(\yii::getAlias("@frontend/web/css/bootstrap.min.css")); // external css
-        //$stylesheet2 = file_get_contents(\yii::getAlias("@frontend/web/css/reporte.css")); // external css
-        //$pdf->WriteHTML($stylesheet, 1);
-       $pdf->WriteHTML( \Yii::$app->view->
-           renderFile($file,[]
-                         ));
-         $pdf-> Output($targetPath, \Mpdf\Output\Destination::FILE);
-      /*Yii::$app->html2pdf
-    ->convertFile($file, ['pageSize' => 'A4'])
-    ->saveAs($targetPath);*/
-      /*$pdf=new \mikehaertl\wkhtmlto\Pdf($file);
-      $pdf->saveAs($targetPath);*/
+        $pdf->Ln(10);
+        $pdf->Cell(60,0,'EL PERIODO DE DEVOLUCIONES',0,1,'C');
+        $pdf->Ln(3);
+        $pdf->Cell(60,0,'CADUCA EL DIA  01/11/2019',0,1,'C');
+        $pdf->Ln(2);
+        $pdf->Image($fileQr);
+        $pdf->Output($targetPath,'f');
+        $this->attachFromPath($targetPath); 
          
    }
+   
+ 
+  
+  
+  
+  public function setIgv(){
+      $this->sunat_totigv=$this->gIgv();
+      return $this;
+  }
+  private function gIgv(){
+       return $this->getDetails()->sum('igv');
+  }
+    
+  public function setIsc(){
+      $this->sunat_totisc=$this->gIsc();
+      return $this;
+  }
+  
+  private function gIsc(){
+       return $this->getDetails()->sum('isc');
+  }
+ 
+  /*
+   * Revisar
+   */
+  public function setSubtotal(){
+      $this->subtotal=$this->gSubtotal();
+      return $this;
+  }
+  
+  private function gSubtotal(){
+       return $this->getDetails()->sum('pventa');
+  }
+  /**/
+  
+  
+  
+  /*
+   * Total precio de venta, osea sin impuestos
+   */
+  public function setTotalVenta(){
+      $this->totalventa=$this->gTotalVenta();
+      return $this;
+  }
+  private function gTotalVenta(){
+       return $this->getDetails()->sum('pventa');
+  }
+  /*
+   * 
+   */
+  
+  
+  
+  public function setTotalImpuestos(){
+      $this->sunat_totimpuestos=$this->gTotalImpuestos();
+      return $this;
+  }
+  private function gTotalImpuestos(){
+       return $this->sunat_totisc+$this->sunat_totigv;
+  }
+  
+  
+  public function setTotalGravado(){
+      $this->sunat_totgrav=$this->gTotalGravado();
+      return $this;
+  }
+  
+  
+  private function gTotalGravado(){
+       return    $this->getDetails()->andWhere([
+           'sunat_codtipoafectacion'=>h::sunat()->gRaw('s.07.tafectacion')->g('GONERO')
+               ])->sum('pventa') ;
+  }
+  
+  
+  public function setTotalTotales(){
+      $this->total=$this->getDetails()->sum('punitgravado*cant') ;
+      return $this;
+  }
+  
+  
+  /*
+   * REFRESCA LOS CAMPOS NO NORMALIZAOS
+    QUE DEPENDEN DEL DETALLE 
+   */
+  public function refreshValues(){
+     return  $this->setIgv()->setIsc()->setTotalImpuestos()
+             ->setSubtotal()->setTotalGravado()->setTotalVenta()->
+             setTotalTotales()->save();
+  }
+  
+  public function isCreated(){
+      return(self::ST_CREATED==$this->codestado);
+  }
+  
+  public function isRemoved(){
+      return(self::ST_CANCELED==$this->codestado);
+  }
+   public function setRemoved(){
+      $this->codestado=self::ST_CANCELED;
+      return $this;
+  }
+  
+  public function isPassed(){
+      return(self::ST_PASSED==$this->codestado);
+  }
+  public function setPassed(){
+      $this->codestado=self::STA_PASSED;
+      return $this;
+  }
+  
+  public function isPassedSunat(){
+      return(self::ST_PASSED_SUNAT==$this->flag_sunat);
+  }
+  public function setPassedSunat(){
+      $this->flag_sunat=self::ST_PASSED_SUNAT;
+      return $this;
+  }
+  public function isRejectedSunat(){
+      return(self::ST_REJECT_SUNAT==$this->flag_sunat);
+  }
+  public function setRejectedSunat(){
+      $this->flag_sunat=self::ST_REJECT_SUNAT;
+      return $this;
+  }
+  
+  
+  public function hasInvoiceItems(){
+     return  $this->getDetails()->count()>0;
+  }
+  public function passInvoice(){
+      return $this->setPassed()->save();
+  }
+  public function removeInvoice(){
+      return $this->setRemoved()->save();
+  }
+  
+  
+  
+  /*
+   * Funcion para coger las clases de
+   * la libreria Greenter
+   */
+  public function createInvoiceGreenter(){
+      $socio=$this->socio;
+      $direccionSocio=$socio->firstAddress(true);
+      $company= (new Company())
+            ->setRuc($socio->rucpro)
+            ->setNombreComercial(substr($socio->despro,20))
+            ->setRazonSocial($socio->despro)
+            ->setAddress((new Address())
+                /*->setUbigueo('150101')
+                ->setDistrito('LIMA')
+                ->setProvincia('LIMA')
+                ->setDepartamento('LIMA')
+                ->setUrbanizacion('CASUARINAS')
+                ->setCodLocal('0000')*/
+                ->setDireccion($direccionSocio->direc))
+            //->setEmail('admin@greenter.com')
+            //->setTelephone('01-234455')
+              ;
+     $clipro=$this->clipro;
+     $direccionCliente=$clipro->firstAddress(true);
+       
+     $client = new Client();
+        $client->setTipoDoc('6') //Catalogo Sunat 06 TIPODOCIDENTIDAD  6= REGISTRO UNICO CONTRIBUYENTYE
+            ->setNumDoc($this->rucpro)
+            ->setRznSocial($clipro->despro)
+            ->setAddress((new Address())
+                ->setDireccion($direccionCliente->direc))
+            //->setEmail('client@corp.com')
+           // ->setTelephone('01-445566')
+                ;
+        
+      /*$invoice
+    ->setUblVersion('2.1')
+    ->setFecVencimiento(new \DateTime())
+    ->setTipoOperacion('0101')
+    ->setTipoDoc('01')
+    ->setSerie('F001')
+    ->setCorrelativo('125')
+    ->setFechaEmision(new \DateTime())
+    ->setFormaPago(new FormaPagoContado())
+    ->setTipoMoneda('PEN')
+    ->setCompany($util->shared->getCompany())
+    ->setClient($util->shared->getClient())
+    ->setMtoOperGravadas(200)
+    ->setMtoOperExoneradas(100)
+    ->setMtoIGV(36)
+    ->setTotalImpuestos(36)
+    ->setValorVenta(300)
+    ->setSubTotal(336)
+    ->setMtoImpVenta(336)
+    ;*/
+        //VAR_DUMP((((integer)(SUBSTR($this->numero,5))+0).''));DIE();
+      $invoice=New Invoice();
+      $invoice
+    ->setUblVersion('2.1')
+    ->setFecVencimiento(new \DateTime())
+    ->setTipoOperacion('0101')
+    ->setTipoDoc($this->sunat_tipodoc)
+    ->setSerie($this->serie)
+    ->setCorrelativo((((integer)(SUBSTR($this->numero,5))+0).''))
+    ->setFechaEmision(new \DateTime())
+    ->setFormaPago(new FormaPagoContado())
+    ->setTipoMoneda($this->codmon)
+    ->setCompany($company)
+    ->setClient($client)
+    ->setMtoOperGravadas($this->setTotalGravado()->sunat_totgrav+0)
+    //->setMtoOperExoneradas($vALOR)
+    ->setMtoIGV($this->sunat_totigv)
+    ->setTotalImpuestos($this->setTotalImpuestos()->sunat_totimpuestos)
+    ->setValorVenta($this->setTotalVenta()->totalventa)
+    ->setSubTotal($this->total)
+    ->setMtoImpVenta($this->total);
+      
+      return $invoice;
+  }
+  
+  /*
+   * Almacena los datos del envio
+   */
+  public function storeSend($object,$success){
+      $modelSend=New \frontend\modules\sunat\models\SunatSends();
+      $modelSend->mensaje=$object;
+       $modelSend->doc_id=$this->id;
+        $modelSend->tipodoc=$this->sunat_tipodoc;
+        $modelSend->resultado=$success;
+      return $modelSend->save();
+      //yii::error($modelSend->getErrors());
+  }
+  
+ public function iconStatusSunat(){
+     
+    if( $this->isRejectedSunat()){
+        $color='#ec0a0a';
+        $gly='glyphicon glyphicon-remove-sign';
+    }elseif($this->isPassedSunat()){
+        $color='#52be0a';
+        $gly='glyphicon glyphicon-send';
+    }else{
+        $color='#fcc218';
+        $gly='glyphicon glyphicon-info-sign';
+    }
+    return '<i style="font-size:1.5em;color:'.$color.'"><span class="'.$gly.'"></span>';
+ }
 }

@@ -23,6 +23,7 @@ class Clipro extends \common\models\base\modelBase
     public $withAudit=true;
     public $fecha;
     public $booleanFields=['socio'];
+    private $_lettersSociety=['A','B','C','D','E','F','G','H','I','J','K'];
    //const RUCPRO_ANONIMO='XXXXXXX';
     //public $booleanFields=[''];
     public static function tableName()
@@ -62,7 +63,7 @@ class Clipro extends \common\models\base\modelBase
         return [
             [['despro', 'rucpro'], 'required'],
             [['deslarga'], 'string'],
-            [['cci', 'codbanco','cuenta','deslarga','alias','socio'], 'safe'],
+            [['cci', 'codbanco','cuenta','deslarga','alias','socio','codsoc'], 'safe'],
             //[['rucpro'], 'match', 'pattern'=>h::gsetting('general','formatoDNI')],
            // [['rucpro'], 'match', 'pattern'=>self::patternDNI_RUC()],
             [['despro'], 'string', 'max' => 60],
@@ -125,15 +126,41 @@ class Clipro extends \common\models\base\modelBase
         return parent::beforeSave($insert);
     }
     
+    private function letterSociety(){
+        return $this->_lettersSociety[$this->howManySociety()];
+       
+    }
+    
+    private function howManySociety(){
+        return self::find()->andWhere(['socio'=>'1'])->count()+0;
+    }
    
     public function convierteSocio($socio=true){
-        $this->socio=$socio;
-        if(!$socio && !$this->canRevertSociedad())
-        $this->addError ('socio',yii::t('base.errors','Esta sociedad ya tiene datos relacionados'));
-        return $this->save();
+      
+        if($this->howManySociety()<=count($this->_lettersSociety)){
+           $this->socio=$socio;
+           $this->codsoc=$this->letterSociety();
+           if(!$socio && !$this->canRevertSociedad())
+           $this->addError ('socio',yii::t('base.errors','Esta sociedad ya tiene datos relacionados'));
+             return $this->save(); 
+        }else{
+            $this->addError('codpro',yii::t('base.errors','There are already enough companies'));
+        }
+        
     }
     
     private function canRevertSociedad(){
         return($this->getCentros()->count()>0)?false:true;
+    }
+    
+    public function firstAddress($model=false){
+        if(is_null($dir=$this->getDirecciones()->one())){
+            return null;
+        }else{
+            if($model) return $dir;
+            return $dir->direc;
+        }
+        
+        
     }
 }

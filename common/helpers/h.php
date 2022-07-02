@@ -45,7 +45,9 @@ class h {
     public static function  db(){
         return yii::$app->db;
     }
-    
+    public static function  sunat(){
+        return yii::$app->sunat;
+    }
     public static function  periodos(){
         return yii::$app->periodo;
     }
@@ -317,7 +319,8 @@ private static function resolveCambio($codmon,$fecha,$eshoy){
                 }      
 }
 
-public static function tipoCambio($codmon,$fecha=null){
+public static function tipoCambio($codmon=NULL,$fecha=null){
+    //$codmon=(is_null($codmon))?self::gsetting('general','moneda'):$codmon;
     $cache=self::cache();
     $carbonNow=Tipocambio::CarbonNow();
     $hoy=$carbonNow->format('Y-m-d');
@@ -338,7 +341,8 @@ public static function tipoCambio($codmon,$fecha=null){
           return self::resolveCambio($codmon, $fecha,true); 
        }   
      }else{//se trata de una fecha anterior
-       yii::error('FECHA ANTERIOR');       
+       //yii::error('FECHA ANTERIOR');   
+       //yii::error(self::resolveCambio($codmon, $fecha,false));
          return self::resolveCambio($codmon, $fecha,false); 
          }
     }

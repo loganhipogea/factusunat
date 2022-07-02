@@ -45,6 +45,31 @@ class buttonSubmitWidget extends Widget
   
      
   private function makeJs(){
+       if(substr(trim($this->idGrilla),0,1)=='['){
+           $idGrilla= \yii\helpers\Json::decode($this->idGrilla); 
+       }else{
+           $idGrilla= $this->idGrilla;
+       }
+       
+       $cadAux='';
+       $cadAux2='';
+    if(is_array($idGrilla)){
+       if(count($idGrilla)==1){
+           $cadAux.="$.pjax.reload('#".$grilla."');";
+       }else{
+           foreach($idGrilla as $index=>$grilla){
+          //$cadAux.="$.pjax.reload('#".$grilla."');";
+         
+          $cadAux.="$.pjax.reload({container:'#".$grilla."',async:false,timeout:6000});";
+           }
+       }
+       
+    }else{
+       $cadAux.="$.pjax.reload('#".$idGrilla."');"; 
+      // $cadAux2.="$.pjax.reload({container:'#".$this->idGrilla."',timeout:6000});";
+    }
+    
+    
    $cadenaJs="function psico_saves_widget(){
         var \$formulario=$('#".$this->idForm."');       
         $.ajax({
@@ -52,13 +77,14 @@ class buttonSubmitWidget extends Widget
             type: 'post',
             data:\$formulario.serialize(),
             success: function(data){
+          
                if(data.success=='1') {
                    if(data.type==1) {
-                       $('#".$this->idModal."').modal('hide');
-                        $.pjax.reload('#".$this->idGrilla."');
+                       $('#".$this->idModal."').modal('hide');                        
+                        ".$cadAux."  
                     }else{
                           $('#".$this->idModal."').modal('hide');
-                                $.pjax.reload({container: '#".$this->idGrilla."',timeout:6000});
+                                ".$cadAux."  
                      }
                }
                if(data.success=='3'){

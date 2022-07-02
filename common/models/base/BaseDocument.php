@@ -5,7 +5,7 @@ class BaseDocument extends \common\models\base\modelBase
 {
     const ST_CREATED='10';
     const ST_CANCELED='99';
-    const STA_PASSED='20';
+    const ST_PASSED='20';
     
     /*
      * CONSTANTES DE TIPO DE DOCUMENTO
