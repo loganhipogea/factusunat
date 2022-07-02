@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-use frontend\modules\com\helpers\comboHelper;
+use frontend\modules\com\helpers\ComboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
 
@@ -65,7 +65,7 @@ use common\helpers\h;
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <?= 
             $form->field($model, 'codestado')->
-            dropDownList(comboHelper::getCboEstadosFactu() ,
+            dropDownList(ComboHelper::getCboEstadosFactu() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                         //'enableAjaxValidation' => true,
                     // 'class'=>'probandoSelect2',
