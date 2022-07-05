@@ -147,8 +147,8 @@ class ComCajadia extends \common\models\base\modelBase
 $detiail1->setTipoDoc('03')
     ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
     ->setEstado('1')
-    ->setClienteTipo('1')
-    ->setClienteNro($voucher->sunat_tipdoccli)
+    ->setClienteTipo($voucher->sunat_tipdoccli)
+    ->setClienteNro($voucher->rucpro)
     ->setTotal(129.555)
     ->setMtoOperGravadas(20)
     ->setMtoIGV(3.6);
