@@ -154,8 +154,8 @@ $detiail1->setTipoDoc($voucher->sunat_tipodoc)
     ->setMtoIGV($voucher->sunat_totigv);
 
 
-   $detalles=[$detiail1];
-        /*foreach($this->vouchers as $voucher){            
+   //$detalles=[$detiail1];
+        foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
                 ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
@@ -170,7 +170,7 @@ $detiail1->setTipoDoc($voucher->sunat_tipodoc)
                // ->setMtoOtrosCargos(21)
                 ->setMtoIGV($voucher->sunat_totigv);
              $detalles[]=[$detalle];
-          }*/
+          }
             
             //var_dump($detalles);die();
             
