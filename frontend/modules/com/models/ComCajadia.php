@@ -194,7 +194,7 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
                array_push($detalles,$detalle);
           }
             
-            var_dump($detalles);die();
+            //var_dump($detalles);die();
             
             $sum = new Summary();
                 // Fecha Generacion menor que Fecha Resumen
