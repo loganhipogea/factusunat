@@ -140,9 +140,9 @@ class ComCajadia extends \common\models\base\modelBase
            ;
       
       
-      $voucher=$this->vouchers[0];
+      
         $detalles=[];
-        
+        $voucher=$this->vouchers[0];
    $detiail1 = new SummaryDetail();
 $detiail1->setTipoDoc($voucher->sunat_tipodoc)
     ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
@@ -152,10 +152,20 @@ $detiail1->setTipoDoc($voucher->sunat_tipodoc)
     ->setTotal($voucher->total)
     ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
     ->setMtoIGV($voucher->sunat_totigv);
+$voucher=$this->vouchers[1];
+$detiail2 = new SummaryDetail();
+$detiail2->setTipoDoc($voucher->sunat_tipodoc)
+    ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
+    ->setEstado('1')
+    ->setClienteTipo($voucher->sunat_tipdoccli)
+    ->setClienteNro($voucher->rucpro)
+    ->setTotal($voucher->total)
+    ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
+    ->setMtoIGV($voucher->sunat_totigv);
 
 
-   //$detalles=[$detiail1];
-        foreach($this->vouchers as $voucher){            
+   $detalles=[$detiail1,$detiail2];
+       /* foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
                 ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
@@ -170,7 +180,7 @@ $detiail1->setTipoDoc($voucher->sunat_tipodoc)
                // ->setMtoOtrosCargos(21)
                 ->setMtoIGV($voucher->sunat_totigv);
              $detalles[]=[$detalle];
-          }
+          }*/
             
             //var_dump($detalles);die();
             
