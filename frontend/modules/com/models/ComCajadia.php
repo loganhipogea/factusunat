@@ -163,8 +163,18 @@ $detiail2->setTipoDoc($voucher->sunat_tipodoc)
     ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
     ->setMtoIGV($voucher->sunat_totigv);
 
+$voucher=$this->vouchers[2];
+$detiail3 = new SummaryDetail();
+$detiail3->setTipoDoc($voucher->sunat_tipodoc)
+    ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
+    ->setEstado('1')
+    ->setClienteTipo($voucher->sunat_tipdoccli)
+    ->setClienteNro($voucher->rucpro)
+    ->setTotal($voucher->total)
+    ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
+    ->setMtoIGV($voucher->sunat_totigv);
 
-   $detalles=[$detiail1,$detiail2];
+   $detalles=[$detiail1,$detiail2,$detail3];
        /* foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
