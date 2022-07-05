@@ -174,9 +174,9 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
     ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
     ->setMtoIGV($voucher->sunat_totigv);
 
-   $detalles=[$detiail1,$detiail2,$detiail3];
-   var_dump($detalles);die();
-       /* foreach($this->vouchers as $voucher){            
+   //$detalles=[$detiail1,$detiail2,$detiail3];
+   //var_dump($detalles);die();
+        foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
                 ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
@@ -191,9 +191,9 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
                // ->setMtoOtrosCargos(21)
                 ->setMtoIGV($voucher->sunat_totigv);
              $detalles[]=[$detalle];
-          }*/
+          }
             
-            //var_dump($detalles);die();
+            var_dump($detalles);die();
             
             $sum = new Summary();
                 // Fecha Generacion menor que Fecha Resumen
