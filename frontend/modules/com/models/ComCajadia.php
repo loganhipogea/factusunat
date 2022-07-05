@@ -142,7 +142,7 @@ class ComCajadia extends \common\models\base\modelBase
    $detiail1 = new SummaryDetail();
 $detiail1->setTipoDoc('03')
     ->setSerieNro('B001-3')
-    ->setEstado('3')
+    ->setEstado('1')
     ->setClienteTipo('1')
     ->setClienteNro('00000000')
     ->setTotal(129.555)
