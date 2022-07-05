@@ -175,6 +175,7 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
     ->setMtoIGV($voucher->sunat_totigv);
 
    $detalles=[$detiail1,$detiail2,$detiail3];
+   var_dump($detalles);die();
        /* foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
