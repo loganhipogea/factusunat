@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use frontend\modules\com\helpers\ComboHelper;
+//use common\helpers\ComboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
 
@@ -15,7 +16,7 @@ use common\helpers\h;
 <div class="com-factura-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index-invoices-simple'],
+        'action' => ['index-cashes'],
         'method' => 'get',
         'options' => [
             'data-pjax' => 1
@@ -33,9 +34,9 @@ use common\helpers\h;
   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
       <?php 
       
-        echo $form->field($model, 'femision')->widget(
+        echo $form->field($model, 'fecha')->widget(
         DatePicker::classname(), [
-         'name' => 'femision',
+         'name' => 'fecha',
             'language' => h::app()->language,
             'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
@@ -49,9 +50,9 @@ use common\helpers\h;
   </div> 
   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
       <?php 
-        echo $form->field($model, 'femision1')->widget(
+        echo $form->field($model, 'fecha1')->widget(
         DatePicker::classname(), [
-         'name' => 'femision1',
+         'name' => 'fecha1',
             'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
@@ -62,33 +63,12 @@ use common\helpers\h;
                     ]);
                 ?>
   </div>   
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        <?= 
-            $form->field($model, 'codestado')->
-            dropDownList(ComboHelper::getCboEstadosFactu() ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
-                        //'enableAjaxValidation' => true,
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )  ?>
-     <?php //echo cboperiodos::widget(['model'=>$model,'attribute'=>'codperiodo', 'form'=>$form]) ?>
-  </div>
+      
     
-    
-    
-   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
-    <?=$form->field($model, 'rucpro')->textInput()?>
-   </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
-    <?=$form->field($model, 'nombre_cliente')->textInput()?>
-   </div>
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <?= 
-            $form->field($model, 'sunat_tipodoc')->
-            dropDownList(
-                    h::sunat()->graw('s.01.tdoc')->combo()->data
-                    ,
+            $form->field($model, 'codcen')->
+            dropDownList(ComboHelper::getCboCentros() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                         //'enableAjaxValidation' => true,
                     // 'class'=>'probandoSelect2',
@@ -97,28 +77,18 @@ use common\helpers\h;
                     )  ?>
      <?php //echo cboperiodos::widget(['model'=>$model,'attribute'=>'codperiodo', 'form'=>$form]) ?>
   </div>
-    
-    
+   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <?=$form->field($model, 'monto_papel')->textInput()?>
+   </div>
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
-    <?=$form->field($model, 'total')->textInput()?>
-    </div>
-     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
-    <?=$form->field($model, 'total1')->textInput()?>
-    </div>
- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        <?= 
-            $form->field($model, 'codmon')->
-            dropDownList(['PEN'=>'PEN','USD'=>'USD'] ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
-                        //'enableAjaxValidation' => true,
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )  ?>
-     <?php //echo cboperiodos::widget(['model'=>$model,'attribute'=>'codperiodo', 'form'=>$form]) ?>
-  </div>
-   
-    
+    <?=$form->field($model, 'monto_papel1')->textInput()?>
+   </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <?=$form->field($model, 'monto_efectivo')->textInput()?>
+   </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <?=$form->field($model, 'monto_efectivo1')->textInput()?>
+   </div>
 
     <?php ActiveForm::end(); ?>
 

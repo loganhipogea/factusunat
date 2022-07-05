@@ -50,12 +50,52 @@ use yii\widgets\Pjax;
         </div>
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
             <?= $form->field($model, 'sunat_tipodoc')->
-            dropDownList([$model::TYPE_DOC_INVOICE=>yii::t('base.names','Invoice'),$model::TYPE_DOC_VOUCHER=>yii::t('base.names','Voucher')],
+            dropDownList([
+                h::sunat()->graw('s.01.tdoc')->g('FACTURA')=>yii::t('base.names','Invoice'),
+                h::sunat()->graw('s.01.tdoc')->g('BOLETA')=>yii::t('base.names','Voucher')
+                ],
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
                     ) ?>
         </div>
+       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <?= $form->field($model, 'codmon')->
+            dropDownList([Tipocambio::COD_MONEDA_DOLAR=>Tipocambio::COD_MONEDA_DOLAR,
+                Tipocambio::COD_MONEDA_BASE=>Tipocambio::COD_MONEDA_BASE] ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        ]
+                    ) ?>
+        </div>
+        <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"> -->
+            <?PHP  /*echo $form->field($model, 'codsoc')->
+            dropDownList(['A'=>'SOCIEDAD','B'=>'SOCIEDAD2'] ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        ]
+                    )*/ ?>
+
+         <!--</div>-->
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <?= $form->field($model, 'sunat_tipdoccli')->
+            dropDownList(h::sunat()->graw('s.06.tdociden')->combo()->data ,
+                    [
+                        //'prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        ]
+                    ) ?>
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <?= $form->field($model, 'tipopago')->
+            dropDownList(ComboHelper::getTablesValues('com_ov.tipopago') ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        ]
+                    ) ?>
+        </div>
+   
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
           <?= $form->field($model, 'rucpro')->textInput(['maxlength' => true]) ?>
         </div>
@@ -65,7 +105,9 @@ use yii\widgets\Pjax;
          
          
          
-           <?php  /*= $form->field($model, 'despro')->textInput([
+           <?php 
+            
+           /*= $form->field($model, 'despro')->textInput([
                'id'=>'zona_pk',
                'disabled'=>true,
                //'value'=>(empty($model->rucodni))?'':$model->clipro->despro,
@@ -74,33 +116,7 @@ use yii\widgets\Pjax;
          
 
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <?= $form->field($model, 'codmon')->
-            dropDownList([Tipocambio::COD_MONEDA_DOLAR=>Tipocambio::COD_MONEDA_DOLAR,
-                Tipocambio::COD_MONEDA_BASE=>Tipocambio::COD_MONEDA_BASE] ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                        ]
-                    ) ?>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <?= $form->field($model, 'codsoc')->
-            dropDownList(['A'=>'SOCIEDAD','B'=>'SOCIEDAD2'] ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                        ]
-                    ) ?>
-
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <?= $form->field($model, 'tipopago')->
-            dropDownList(ComboHelper::getTablesValues('com_ov.tipopago') ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                        ]
-                    ) ?>
-        </div>
-   
+       
         
       
             <?php   
@@ -116,4 +132,20 @@ use yii\widgets\Pjax;
             ])  ?>
    </div> 
 </div>
-  
+ <?php $ruc=h::sunat()->graw('s.06.tdociden')->g('RUC');
+       $dni=h::sunat()->graw('s.06.tdociden')->g('DNI');
+       h::sunat()->clearCache();
+        $cadenaJs="$('#comfactura-sunat_tipodoc').on( 'change', function() {
+                   if($('#comfactura-sunat_tipodoc').val()=='".$model::TYPE_DOC_INVOICE."'){
+                        $(\"#comfactura-sunat_tipdoccli  option[value='".$ruc."']\").attr('selected', true);                       
+                       //$('#comfactura-sunat_tipdoccli').attr('disabled', 'disabled');
+                         }else{
+                           $('#comfactura-sunat_tipdoccli').removeAttr('disabled');
+                           $(\"#comfactura-sunat_tipdoccli  option[value='".$dni."']\").attr('selected', true);
+                       
+                        }
+                        });
+                    ";
+  // echo  \yii\helpers\Html::script($stringJs);
+   $this->registerJs($cadenaJs, \yii\web\View::POS_END);        
+        ?>

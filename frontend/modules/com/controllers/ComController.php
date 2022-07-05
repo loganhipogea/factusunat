@@ -190,14 +190,16 @@ class ComController extends baseController
          //h::sunat()->clearCache();
         $model = new \frontend\modules\com\models\ComFactura();
         $request = Yii::$app->getRequest();
-        if(!$request->isPost){
+        //if(!$request->isPost){
              $model->setAttributes([
             'codcen'=> \common\models\masters\Centros::find()->one()->codcen,
             'codsoc'=> 'A',
             'sunat_tipodoc'=> $model::TYPE_DOC_INVOICE,
+            'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('RUC'),
             'codmon'=> 'PEN',
+            'caja_id'=> \frontend\modules\com\Module::idCajaDia(\common\models\masters\Centros::find()->one()->codcen),
         ]);
-        }
+        //}
        
         //$model->setScenario($model::SCE_CREACION_RAPIDA);
          $models =[];// $this->getItemsOvdet();//Obenter los items detalles
@@ -208,7 +210,7 @@ class ComController extends baseController
          * Validacion ajax 
          */
         if ($request->isPost && $request->post('ajax') !== null) {
-           
+            yii::error('VALIDACION AJAX');
                 h::response()->format = \yii\web\Response::FORMAT_JSON;
                 //return \yii\widgets\ActiveForm::validate($model);
                  $data = Yii::$app->request->post('ComFactudet', []);
@@ -229,8 +231,9 @@ class ComController extends baseController
                       
                      if(count($result)==0){ //Si el encabezado va bien en todo
                      //Verificamos que se haya registrado por lo meno un hijo
+                         
                          if(count($data)==0){
-                             $result[\yii\helpers\Html::getInputId($model,'rucpro')] = [yii::t('base.errors','No child records have been registered')];
+                             $result[\yii\helpers\Html::getInputId($model,'nombre_cliente')] = [yii::t('base.errors','No child records have been registered')];
                               //$result['codsoc-numero']=yii::t('base.errors','No child records have been registered');
                               return $result;
                          }
@@ -272,7 +275,12 @@ class ComController extends baseController
                        $item++;
                     }
                      $model->refreshValues();
-                     $model->preparePdf();
+                     if($model->isInvoice()){
+                       $model->preparePdfInvoice();  
+                     }else{
+                       $model->preparePdfVoucher();  
+                     }
+                       
                      return $this->redirect(['view-invoice', 'id' => $model->id]);
                 }else{
                     var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
@@ -361,6 +369,7 @@ class ComController extends baseController
     
      public function actionOpenCash(){
         $model=New \frontend\modules\com\models\ComCajadia();
+        $model->fecha=$model::currentDateInFormat();
         if (h::request()->isAjax && $model->load(h::request()->post())) {
                 h::response()->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
@@ -369,7 +378,7 @@ class ComController extends baseController
         
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['crea-ov-plus']);
+            return $this->redirect(['index-cashes']);
         }
   
         return $this->render('create_caja_dia', [
@@ -488,6 +497,16 @@ class ComController extends baseController
         
    }
    
+  public function actionIndexInvoicesSimple(){
+      $searchModel = new \frontend\modules\com\models\ComFacturaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_simple', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+  }
+  
   public function actionIndexInvoices(){
       $searchModel = new ComVwFactudetSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -497,4 +516,31 @@ class ComController extends baseController
             'dataProvider' => $dataProvider,
         ]);
   }
+  
+  
+  public function actionIndexCashes()
+    {
+        $searchModel = new \frontend\modules\com\models\ComCajadiaSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('index_cashes', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+ public function actionUpdateCashday($id)
+    {
+        $model = \frontend\modules\com\models\ComCajadia::findOne($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['index-cashes', 'id' => $model->id]);
+        }else{
+            //print_r($model->getErrors());die();
+        }            
+
+        return $this->render('update_caja_dia', [
+            'model' => $model,
+        ]);
+    }
 }

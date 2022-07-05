@@ -11,6 +11,6 @@ class BaseDocument extends \common\models\base\modelBase
      * CONSTANTES DE TIPO DE DOCUMENTO
      */
     const TYPE_DOC_INVOICE='01';//factura
-    const TYPE_DOC_VOUCHER='02'; //boleta
+    const TYPE_DOC_VOUCHER='03'; //boleta
     
 }

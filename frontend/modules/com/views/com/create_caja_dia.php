@@ -6,13 +6,13 @@ $this->params['breadcrumbs'][] =
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="clipro-update">
-    <h4><?= Html::encode($this->title) ?></h4>
-<div class="box box-success">
+<div class="com-factura-index">
+   
+    
     <?= $this->render('_form_daily_cash', [
         'model' => $model,
     ]) ?>
 
 
-</div>
+
 </div>

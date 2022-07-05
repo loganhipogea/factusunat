@@ -1,9 +1,19 @@
 <?php
 
 namespace frontend\modules\com\models;
-
+use common\helpers\h;
 use Yii;
-
+/*
+ * Libreiras greenter
+ */
+use Greenter\Model\Sale\Invoice;
+use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
+use Greenter\Model\Client\Client;
+use Greenter\Model\Company\Company;
+use Greenter\Model\Company\Address;
+use Greenter\Model\Summary\SummaryDetail;
+use Greenter\Model\Summary\Summary;
+/************/
 /**
  * This is the model class for table "{{%com_cajadia}}".
  *
@@ -22,9 +32,12 @@ class ComCajadia extends \common\models\base\modelBase
     /**
      * {@inheritdoc}
      */
-    
-    public $dateOrTimeFields=[
-        'fecha'=>self::_FDATE
+    public $fecha1=null;
+     public $monto_papel1=null;
+      public $monto_efectivo1=null;
+    public $dateorTimeFields=[
+        'fecha'=>self::_FDATE,
+        'fecha1'=>self::_FDATE,
     ];
     public static function tableName()
     {
@@ -38,8 +51,10 @@ class ComCajadia extends \common\models\base\modelBase
     {
         return [
             [['caja_id'], 'integer'],
+            [['codcen'], 'safe'],
+           // [['fecha1'], 'integer'],
             [['monto_papel', 'monto_efectivo', 'diferencia'], 'number'],
-            [['fecha'], 'string', 'max' => 10],
+            //[['fecha'], 'string', 'max' => 10],
             [['estado'], 'string', 'max' => 1],
             [['fecha','caja_id'], 'unique', 'targetAttribute' =>['fecha','caja_id'] ],
             [['caja_id'], 'exist', 'skipOnError' => true, 'targetClass' => ComCajaventa::className(), 'targetAttribute' => ['caja_id' => 'id']],
@@ -71,6 +86,39 @@ class ComCajadia extends \common\models\base\modelBase
     {
         return $this->hasOne(ComCajaventa::className(), ['id' => 'caja_id']);
     }
+    
+    public function hasDocuments(){
+        return $this->getDocuments()->count()>0;
+    }
+    
+     public function getVouchers()
+    {
+       return $this->getDocuments()->where(
+                ['sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('BOLETA')]
+                );
+       
+       
+    }
+    
+ 
+    public function getInvoices()
+    {
+        return $this->getDocuments()->where(
+                ['sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('FACTURA')]
+                );
+     }
+    
+    public function getDocuments()
+    {
+     return $this->hasMany(ComFactura::className(), [
+            'caja_id'=>'id'
+            //'femision' => 'fecha',
+             //'codcen'=>'codcen',
+             //'sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('FACTURA'),
+            ]);
+       
+       }
+
 
     /**
      * {@inheritdoc}
@@ -80,4 +128,74 @@ class ComCajadia extends \common\models\base\modelBase
     {
         return new ComCajadiaQuery(get_called_class());
     }
+    
+    
+    public function createVouchersGreenter(){
+        
+      $company= (new Company())
+            ->setRuc('20100047218')
+            ->setNombreComercial('BOTICAS ARGENTINA')
+            ->setRazonSocial('BOTICAS ARGENTINA')
+           ;
+        $detalles=[];
+   /*$detiail1 = new SummaryDetail();
+$detiail1->setTipoDoc('03')
+    ->setSerieNro('B001-1')
+    ->setEstado('3')
+    ->setClienteTipo('1')
+    ->setClienteNro('00000000')
+    ->setTotal(129.555)
+    ->setMtoOperGravadas(20)
+    ->setMtoOperInafectas(24.4)
+    ->setMtoOperExoneradas(50)
+    ->setMtoOperExportacion(10.555)
+    ->setMtoOtrosCargos(21)
+    ->setMtoIGV(3.6);*/
+
+/*$detiail2 = new SummaryDetail();
+$detiail2->setTipoDoc('07')
+    ->setSerieNro('B001-4')
+    ->setDocReferencia((new Document())
+        ->setTipoDoc('03')
+        ->setNroDoc('0001-122'))
+    ->setEstado('1')
+    ->setClienteTipo('1')
+    ->setClienteNro('00000000')
+    ->setTotal(200)
+    ->setMtoOperGravadas(40)
+    ->setMtoOperExoneradas(30)
+    ->setMtoOperInafectas(120)
+    ->setMtoIGV(7.2)
+    ->setMtoISC(2.8);*/
+        foreach($this->vouchers as $voucher){            
+            $detalle = new SummaryDetail();
+            $detalle->setTipoDoc('03')
+                ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
+                 ->setEstado('1')
+                ->setClienteTipo($voucher->sunat_tipdoccli)
+               ->setClienteNro($voucher->rucpro)               
+               ->setTotal($voucher->total)
+              ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
+              // ->setMtoOperInafectas(24.4)
+               // ->setMtoOperExoneradas(50)
+               // ->setMtoOperExportacion(10.555)
+               // ->setMtoOtrosCargos(21)
+                ->setMtoIGV($voucher->sunat_totigv);
+             $detalles[]=[$detalle];
+          }
+            
+            //var_dump($detalles);die();
+            
+            $sum = new Summary();
+                // Fecha Generacion menor que Fecha Resumen
+            $sum->setFecGeneracion(new \DateTime('-3days'))
+                ->setFecResumen(new \DateTime('-1days'))
+                ->setCorrelativo('001')
+                ->setCompany($company)
+                ->setDetails($detalles);
+            return $sum;
+        
+    }
+    
+    
 }

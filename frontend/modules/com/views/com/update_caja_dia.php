@@ -6,9 +6,9 @@ use yii\helpers\Html;
 /* @var $model frontend\modules\com\models\ComOv */
 
 $this->title = Yii::t('base.names', 'Update daily: {name}', [
-    'name' => $model->codcaja,
+    'name' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Daily'), 'url' => ['index-daily-cashes']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Cashes'), 'url' => ['index-cashes']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('base.names', 'Update');
 ?>

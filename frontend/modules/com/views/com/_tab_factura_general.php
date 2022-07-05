@@ -83,7 +83,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <?= $form->field($model, 'sunat_tipodoc')->
-            dropDownList(['01'=>'FACTURA','02'=>'BOLETA'],
+            dropDownList(
+                [
+                 h::sunat()->graw('s.01.tdoc')->g('FACTURA')=>yii::t('base.names','Invoice'),
+                 h::sunat()->graw('s.01.tdoc')->g('BOLETA')=>yii::t('base.names','Voucher')
+                ]
+            ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         'disabled'=>true,
@@ -139,14 +144,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
          
 
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <?= $form->field($model, 'codmon')->
             dropDownList([Tipocambio::COD_MONEDA_DOLAR=>Tipocambio::COD_MONEDA_DOLAR,
                 Tipocambio::COD_MONEDA_BASE=>Tipocambio::COD_MONEDA_BASE] ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
-                        
-              'disabled'=>$deshabilitado
                         ]
                     ) ?>
         </div>
@@ -220,13 +223,15 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'idGrilla'=>'zona-pjax-socio'
       ])  ?>  
     
-     <?php echo inputAjaxWidget::widget([
+     <?php 
+     $docu=($model->isInvoice())?'invoice':'voucher';
+     echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'btn_fct_enviar-sunat',
             //'otherContainers'=>['pjax-monto','pjax-moneda'],
              'evento'=>'click',
             'tipo'=>'POST',
-            'ruta'=>Url::to(['/sunat/default/ajax-send-invoice-std','id'=>$model->id]),
+            'ruta'=>Url::to(['/sunat/default/ajax-send-'.$docu.'-std','id'=>$model->id]),
             'id_input'=>'btn_fct_enviar-sunat',
             'idGrilla'=>'pjax-sends-grilla'
       ])  ?>  

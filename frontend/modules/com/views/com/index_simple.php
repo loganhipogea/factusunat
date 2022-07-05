@@ -1,5 +1,5 @@
 <?php
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -32,6 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update}{view}',
                 'buttons' => [
+                     'update' => function($url, $model) {                        
+                        $options = [
+                            'title' => Yii::t('base.verbs', 'Update'),                            
+                        ];
+                         $url=Url::to(['/com/com/update-invoice','id'=>$model->id]);
+                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                     }
                     /*'update' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
