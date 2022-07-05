@@ -138,10 +138,14 @@ class ComCajadia extends \common\models\base\modelBase
             ->setNombreComercial('BOTICAS ARGENTINA')
             ->setRazonSocial('BOTICAS ARGENTINA')
            ;
+      
+      
+      $voucher=$this->vouchers[0];
         $detalles=[];
+        
    $detiail1 = new SummaryDetail();
 $detiail1->setTipoDoc('03')
-    ->setSerieNro('B001-3')
+    ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
     ->setEstado('1')
     ->setClienteTipo('1')
     ->setClienteNro('00000000')
