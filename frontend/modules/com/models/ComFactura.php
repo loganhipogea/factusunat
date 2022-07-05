@@ -220,6 +220,7 @@ class ComFactura extends \common\models\base\BaseDocument
     
     public function getSocio()
     {
+        
         return $this->hasOne(\common\models\masters\Clipro::className(), ['codsoc' => 'codsoc']);
     }
    
