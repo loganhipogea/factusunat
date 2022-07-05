@@ -149,9 +149,9 @@ $detiail1->setTipoDoc('03')
     ->setEstado('1')
     ->setClienteTipo($voucher->sunat_tipdoccli)
     ->setClienteNro($voucher->rucpro)
-    ->setTotal(129.555)
-    ->setMtoOperGravadas(20)
-    ->setMtoIGV(3.6);
+    ->setTotal($voucher->total)
+    ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
+    ->setMtoIGV($voucher->sunat_totigv);
 
 
    $detalles=[$detiail1];
