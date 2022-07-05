@@ -10,6 +10,7 @@ use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
 use Greenter\Model\Client\Client;
 use Greenter\Model\Company\Company;
+use Greenter\Model\Sale\Document;
 use Greenter\Model\Company\Address;
 use Greenter\Model\Summary\SummaryDetail;
 use Greenter\Model\Summary\Summary;
@@ -138,36 +139,23 @@ class ComCajadia extends \common\models\base\modelBase
             ->setRazonSocial('BOTICAS ARGENTINA')
            ;
         $detalles=[];
-   /*$detiail1 = new SummaryDetail();
+   $detiail1 = new SummaryDetail();
 $detiail1->setTipoDoc('03')
-    ->setSerieNro('B001-1')
+    ->setSerieNro('B001-3')
     ->setEstado('3')
     ->setClienteTipo('1')
     ->setClienteNro('00000000')
     ->setTotal(129.555)
     ->setMtoOperGravadas(20)
-    ->setMtoOperInafectas(24.4)
-    ->setMtoOperExoneradas(50)
-    ->setMtoOperExportacion(10.555)
-    ->setMtoOtrosCargos(21)
-    ->setMtoIGV(3.6);*/
+    //->setMtoOperInafectas(24.4)
+    //->setMtoOperExoneradas(50)
+    //->setMtoOperExportacion(10.555)
+   // ->setMtoOtrosCargos(21)
+    ->setMtoIGV(3.6);
 
-/*$detiail2 = new SummaryDetail();
-$detiail2->setTipoDoc('07')
-    ->setSerieNro('B001-4')
-    ->setDocReferencia((new Document())
-        ->setTipoDoc('03')
-        ->setNroDoc('0001-122'))
-    ->setEstado('1')
-    ->setClienteTipo('1')
-    ->setClienteNro('00000000')
-    ->setTotal(200)
-    ->setMtoOperGravadas(40)
-    ->setMtoOperExoneradas(30)
-    ->setMtoOperInafectas(120)
-    ->setMtoIGV(7.2)
-    ->setMtoISC(2.8);*/
-        foreach($this->vouchers as $voucher){            
+
+   $detalles=[$detiail1];
+       /* foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
                 ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
@@ -182,7 +170,7 @@ $detiail2->setTipoDoc('07')
                // ->setMtoOtrosCargos(21)
                 ->setMtoIGV($voucher->sunat_totigv);
              $detalles[]=[$detalle];
-          }
+          }*/
             
             //var_dump($detalles);die();
             
