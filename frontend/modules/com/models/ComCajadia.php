@@ -147,15 +147,11 @@ $detiail1->setTipoDoc('03')
     ->setClienteNro('00000000')
     ->setTotal(129.555)
     ->setMtoOperGravadas(20)
-    //->setMtoOperInafectas(24.4)
-    //->setMtoOperExoneradas(50)
-    //->setMtoOperExportacion(10.555)
-   // ->setMtoOtrosCargos(21)
     ->setMtoIGV(3.6);
 
 
-   //$detalles=[$detiail1];
-        foreach($this->vouchers as $voucher){            
+   $detalles=[$detiail1];
+        /*foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
                 ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
@@ -170,7 +166,7 @@ $detiail1->setTipoDoc('03')
                // ->setMtoOtrosCargos(21)
                 ->setMtoIGV($voucher->sunat_totigv);
              $detalles[]=[$detalle];
-          }
+          }*/
             
             //var_dump($detalles);die();
             
