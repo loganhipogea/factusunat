@@ -144,7 +144,7 @@ class ComCajadia extends \common\models\base\modelBase
         $detalles=[];
         
    $detiail1 = new SummaryDetail();
-$detiail1->setTipoDoc('03')
+$detiail1->setTipoDoc($voucher->sunat_tipodoc)
     ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
     ->setEstado('1')
     ->setClienteTipo($voucher->sunat_tipdoccli)
