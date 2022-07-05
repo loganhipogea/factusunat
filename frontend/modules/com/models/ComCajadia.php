@@ -190,7 +190,8 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
                // ->setMtoOperExportacion(10.555)
                // ->setMtoOtrosCargos(21)
                 ->setMtoIGV($voucher->sunat_totigv);
-             $detalles[]=[$detalle];
+             //$detalles[]=[$detalle];
+               array_push($detalles,$detalle);
           }
             
             var_dump($detalles);die();
