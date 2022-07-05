@@ -258,7 +258,7 @@ $util->showResponse($invoice, $cdr);
             $see = $util->getSee(SunatEndpoints::FE_BETA);
             $res = $see->send($invoice);
             $util->writeXml($invoice, $see->getFactory()->getLastXml());
-               //h::response()->format = \yii\web\Response::FORMAT_JSON;   
+               h::response()->format = \yii\web\Response::FORMAT_JSON;   
                     
          
                 if (!$res->isSuccess()) {
@@ -331,6 +331,7 @@ $util->showResponse($invoice, $cdr);
   
 
 if (!$res->isSuccess()) {
+    
     echo $util->getErrorResponse($res->getError());
     return;
 }
