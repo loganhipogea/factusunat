@@ -148,7 +148,7 @@ $detiail1->setTipoDoc('03')
     ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
     ->setEstado('1')
     ->setClienteTipo('1')
-    ->setClienteNro('00000000')
+    ->setClienteNro($voucher->sunat_tipdoccli)
     ->setTotal(129.555)
     ->setMtoOperGravadas(20)
     ->setMtoIGV(3.6);
