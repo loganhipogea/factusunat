@@ -658,8 +658,12 @@ class ComFactura extends \common\models\base\BaseDocument
        $modelSend->doc_id=$this->id;
         $modelSend->tipodoc=$this->sunat_tipodoc;
         $modelSend->resultado=$success;
-      return $modelSend->save();
-      //yii::error($modelSend->getErrors());
+      $grabo=$modelSend->save();
+      yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
+      $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$this->nameFileXml()));
+     $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$this->nameFileCdr()));
+     return $grabo;
+//yii::error($modelSend->getErrors());
   }
   
  public function iconStatusSunat(){
@@ -721,8 +725,16 @@ class ComFactura extends \common\models\base\BaseDocument
        return $invoice;
   }
   
+ private function nameFileXml(){
+     return $this->socio->rucpro.'-'.
+             $this->sunat_tipodoc.'-'.
+             $this->serie.'-'.(integer)(substr($this->numero,5)).'.xml';
+ }
  
- 
- 
+ private function nameFileCdr(){
+     return 'R-'.$this->socio->rucpro.'-'.
+             $this->sunat_tipodoc.'-'.
+             $this->serie.'-'.(integer)(substr($this->numero,5)).'.zip';
+ }
  
 }

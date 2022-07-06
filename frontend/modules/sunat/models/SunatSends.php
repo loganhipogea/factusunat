@@ -3,6 +3,8 @@
 namespace frontend\modules\sunat\models;
 use yii\helpers\Json;
 use common\helpers\h;
+use common\helpers\FileHelper;
+use common\behaviors\FileBehavior;
 use Greenter\Model\Response\Error;
 use Yii;
 
@@ -33,6 +35,15 @@ class SunatSends extends \common\models\base\modelBase
     public static function tableName()
     {
         return '{{%sunat_sends}}';
+    }
+    public function behaviors() {
+        return [
+            
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            
+        ];
     }
 
     /**

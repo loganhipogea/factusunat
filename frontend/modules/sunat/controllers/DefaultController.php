@@ -189,6 +189,13 @@ $util->showResponse($invoice, $cdr);
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
+                            
+                            /*
+                             * ADJUNTA LOS ARCHIVOS AL MODELO
+                             */
+                                
+                            
+                            
                             $transaccion=$model->getDb()->beginTransaction();
                              //var_dump($model->setRejectedSunat()->save(),$model->storeSend($cdrArray,false));
                            
@@ -213,7 +220,7 @@ $util->showResponse($invoice, $cdr);
         $model = SunatSends::findOne($_POST['expandRowKey']);
         if($model->resultado){
             //var_dump($model->mensaje);die();
-            return $this->renderPartial('_send_result_success', ['cdr'=>$model->mensaje]);
+            return $this->renderPartial('_send_result_success', ['model'=>$model,'cdr'=>$model->mensaje]);
         }else{ 
             //var_dump($model->mensaje);die();
             return $this->renderPartial('_send_result_error', ['error'=>$model->mensaje]);
@@ -306,11 +313,9 @@ $util->showResponse($invoice, $cdr);
                                $model->storeSend($cdrArray,true)){
                                 $transaccion->commit();
                             }else{
-                                $transaccion->rollback();
-                                
+                                $transaccion->rollback();                                
                                 return ['error' =>\yii::t('base.errors','There were some errors before send, please fix them, and try again')];  
-                            }
-                            
+                            }                            
                              return ['success' =>' -  '.\yii::t('base.errors','The document was send successfully')]; 
                     }
 
@@ -326,31 +331,39 @@ $util->showResponse($invoice, $cdr);
             $see = $util->getSee(SunatEndpoints::FE_BETA);
             $res = $see->send($sum);
             $util->writeXml($sum, $see->getFactory()->getLastXml());
-            
-            
-  
 
-if (!$res->isSuccess()) {
-    
-    echo $util->getErrorResponse($res->getError());
-    return;
-}
+        if (!$res->isSuccess()) {   
+                 $error=$res->getError();
+                            $errores=[
+                                'code'=>$error->getCode(),
+                                'message'=>$error->getMessage()
+                                ];
+                $transaccion=$model->getDb()->beginTransaction();
+                   if($model->setRejectedSunat()->save() &&                           
+                               $model->storeSend($errores,false)){
+                     //   echo $util->getErrorResponse($res->getError());
+                               } else{
+                                   
+                  }
+                
+                
+                return;
+          }
 
-/**@var $res SummaryResult*/
-$ticket = $res->getTicket();
-echo 'Ticket :<strong>' . $ticket .'</strong>';
+            /**@var $res SummaryResult*/
+            $ticket = $res->getTicket();
+            echo 'Ticket :<strong>' . $ticket .'</strong>';
 
-$res = $see->getStatus($ticket);
-if (!$res->isSuccess()) {
-    echo $util->getErrorResponse($res->getError());
-    return;
-}
+            $res = $see->getStatus($ticket);
+        if (!$res->isSuccess()) {
+                echo $util->getErrorResponse($res->getError());
+                return;
+            }
 
-$cdr = $res->getCdrResponse();
-$util->writeCdr($sum, $res->getCdrZip());
-
-$util->showResponse($sum, $cdr);
-die();
+            $cdr = $res->getCdrResponse();
+            $util->writeCdr($sum, $res->getCdrZip());
+            $util->showResponse($sum, $cdr);
+            die();
             
             
             

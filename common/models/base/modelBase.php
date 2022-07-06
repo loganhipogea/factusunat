@@ -860,7 +860,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                       // print_r($model->attributes);die();
                        
                  IF(!$model->insert()){
-                    // yii::error($model->getErrors(),__METHOD__);
+                     yii::error($model->getErrors(),__METHOD__);
                       //print_r($model->getErrors());die();
                      return (!$returnModel)?false:null;
                  }

@@ -1,4 +1,6 @@
-<?php ?>
+<?php
+use yii\helpers\Html;
+?>
 <div class="bs-callout <?php //echo $cdr->isAccepted() ? 'bs-callout-success' : 'bs-callout-danger' ?>">
     <h4>Respuesta</h4><br>
     <table class="table">
@@ -29,10 +31,12 @@
     <b>Adjuntos</b><br> 
     <?php $filename=''; ?>
     <ul class="list-group">
-        <li class="list-group-item"><a target="_blank" href="files/<?=$filename?>.xml"><i class="fa fa-file-code"></i>&nbsp;<?=$filename?>.xml</a></li>
+       <?php foreach($model->files as $file) {  ?>
+       <!-- <li class="list-group-item"><a target="_blank" href="files/xml"><i class="fa fa-file-code"></i>&nbsp;xml</a></li> -->
         <li class="list-group-item">
-            <a target="_blank" href="files/R-<?=$filename?>.zip"><i class="fa fa-file-archive"></i>&nbsp;R-<?=$filename?>.zip</a>&nbsp;
-            <a target="_blank" title="Ver CDR" href="examples/pages/cdr-viewer.php?f=files/R-<?=$filename?>.zip"><i class="fa fa-eye"></i></a>
+            <?php echo Html::a($file->url, $file->url, ['data-pjax'=>'0']);  ?>
+            <!--<a target="_blank" title="Ver CDR" href="examples/pages/cdr-viewer.php?f=files/R-<?=$filename?>.zip"><i class="fa fa-eye"></i></a> -->
         </li>
+       <?php  } ?>
     </ul>
 </div>

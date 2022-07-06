@@ -115,8 +115,13 @@ class baseMigration extends Migration
        $largo=$campos[$namefield]->size;unset($campos);
        $valor=(is_array($valor))?$valor:[$valor];
        foreach($valor as $key=>$val){
-          if(!self::fillCboValor($key, $realNameTable, $namefield, $val,  $largo))
-            break;
+          if(!self::fillCboValor($key, $realNameTable, $namefield, $val,  $largo)){
+             \yii::error('PUCHA EROOR');
+              break;   
+          }ELSE{
+           \yii::error('PUCHA BIEN CARA');
+          }
+            
        }
       
         
@@ -138,7 +143,7 @@ class baseMigration extends Migration
             if(is_string($key) && strlen($key) <=$largo){//Si ya hay uin valore predefinido respetarlo
                 $code=$key;
             }else{//Si no especificaron valores rellenarlos
-               $code='1'.str_pad($i, $largo-1, '0', STR_PAD_LEFT); 
+               $code='1'.str_pad($key, $largo-1, '0', STR_PAD_LEFT); 
             }            
             Combovalores::firstOrCreateStatic([
             'nombretabla'=>$realNameTable.'.'.$namefield,

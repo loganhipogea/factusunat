@@ -40,6 +40,10 @@ class ComCajadia extends \common\models\base\modelBase
         'fecha'=>self::_FDATE,
         'fecha1'=>self::_FDATE,
     ];
+        const ST_CREADO='10';
+        const ST_PASSED_SUNAT='20';
+        const ST_REJECT_SUNAT='99';
+    
     public static function tableName()
     {
         return '{{%com_cajadia}}';
@@ -207,5 +211,28 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
         
     }
     
+    public function isPassedSunat(){
+            return(self::ST_PASSED_SUNAT==$this->estado);
+            return $this;
+        }
+    public function setPassedSunat(){
+      $this->estado=self::ST_PASSED_SUNAT;
+      return $this;
+    }
+    public function isRejectedSunat(){
+      return(self::ST_REJECT_SUNAT==$this->estado);
+    }
+    public function setRejectedSunat(){
+      $this->estado=self::ST_REJECT_SUNAT;
+      return $this;
+    }
     
+    public function storeSend($errores,$success){
+            $modelSend=New \frontend\modules\sunat\models\SunatSends();
+            $modelSend->mensaje=$object;
+            $modelSend->doc_id=$this->id;
+            $modelSend->tipodoc=$this->sunat_tipodoc;
+            $modelSend->resultado=$success;
+        return $modelSend->save();
+    }
 }
