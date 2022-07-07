@@ -131,27 +131,20 @@ class SunatSendSumary extends \common\models\base\modelBase
         return $this->hasOne(\frontend\modules\com\models\ComCajadia::className(), ['id' => 'caja_id']);
     }
     
- public function nameFileXml(){
-         yii::error('NOMBREXML');
-         yii::error($this->cajadia->centro->socio->rucpro.'-RC-'.
-            date('Y').date('m').date('d').'-'.
-            $this->correlSend().'.xml');
+ public function nameFileXml(){        
      return $this->cajadia->centro->socio->rucpro.'-RC-'.
             date('Y').date('m').date('d').'-'.
             $this->correlSend().'.xml';
  }
  
  public function nameFileCdr(){
-      yii::error('NOMBREZIP');
-         yii::error('R-'.$this->cajadia->centro->socio->rucpro.'-RC-'.
-             date('Y').date('m').date('d').'-'.
-             $this->correlSend().'.zip');
+    
      return 'R-'.$this->cajadia->centro->socio->rucpro.'-RC-'.
              date('Y').date('m').date('d').'-'.
              $this->correlSend().'.zip';
  }
- private function correlSend(){
-    
-    return substr($this->numero,1);
+ public static function correlSend(){    
+   $digit= (string)(self::find()->andWhere(['ndia'=>date('z')])->count()+1);
+   return str_pad($digit, 3, '0');
  }
 }

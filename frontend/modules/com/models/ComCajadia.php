@@ -267,20 +267,20 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
       return $this;
     }
     
-    public function storeSend($errores,$success){
+    public function storeSend($errores,$success,$filename=null){
             $modelSend=New \frontend\modules\sunat\models\SunatSendSumary();
             $modelSend->mensaje=$errores;
             $modelSend->caja_id=$this->id;
             //$modelSend->tipodoc=$this->sunat_tipodoc;
             $modelSend->resultado=$success;
              $grabo=$modelSend->save();
-             $rutaXml=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileXml());
-             $rutaZip=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr());
+             //$rutaXml=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileXml());
+             //$rutaZip=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr());
       //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
-               if(file_exists($rutaXml))
-               $modelSend->attachFromPath($rutaXml);
-              if(file_exists($rutaZip))
-               $modelSend->attachFromPath($rutZip);
+              
+               $modelSend->attachFromPath($filename);
+              
+               $modelSend->attachFromPath('R-'.$filename);
                
                return $grabo;
             //$modelSend->validate();
@@ -315,6 +315,5 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
       ])->execute();
         
     }
-    
-   
+  
 }

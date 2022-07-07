@@ -10,6 +10,7 @@ use Greenter\Model\Sale\Legend;
 use Greenter\Ws\Services\SunatEndpoints;
 use frontend\modules\sunat\envio\src\Util;
 use frontend\modules\sunat\models\SunatSends;
+USE frontend\modules\sunat\models\SunatSendSumary;
 USE frontend\modules\com\models\ComFactura;
 use common\helpers\h;
 /**
@@ -343,6 +344,8 @@ $util->showResponse($invoice, $cdr);
             $util=Util::getInstance();
             $model= \frontend\modules\com\models\ComCajadia::findOne($id);            
              $sum = $model->createVouchersGreenter();
+             $sum->setCorrelativo(SunatSendSumary::correlSend());
+             
             // var_dump($sum->getDetails());die();                
             $see = $util->getSee(SunatEndpoints::FE_BETA);
             $res = $see->send($sum);
@@ -397,7 +400,7 @@ $util->showResponse($invoice, $cdr);
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
-                $model->storeSend($cdrArray,true);
+                $model->storeSend($cdrArray,true,$sum->getName());
                 $model->setPassedSunat()->save();
                  $model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
                return ['success' =>' -  '.\yii::t('base.errors','The summary was send successfully')]; 
