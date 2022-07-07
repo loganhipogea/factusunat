@@ -217,9 +217,10 @@ $util->showResponse($invoice, $cdr);
     }
     
   public function actionAjaxExpandSend(){
-      
+     
     if (isset($_POST['expandRowKey'])) {
-        $model = SunatSends::findOne($_POST['expandRowKey']);
+        $model = SunatSends::findOne($_POST['expandRowKey']+0);
+          VAR_DUMP($model->id);
         if($model->resultado){
             //var_dump($model->mensaje);die();
             return $this->renderPartial('_send_result_success', ['model'=>$model,'cdr'=>$model->mensaje]);
