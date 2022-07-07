@@ -242,7 +242,7 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
             
             $sum = new Summary();
                 // Fecha Generacion menor que Fecha Resumen
-            $sum->setFecGeneracion(new \DateTime($this->swichtDate('femision', false)))
+            $sum->setFecGeneracion(new \DateTime($this->swichtDate('fecha', false)))
                 ->setFecResumen(new \DateTime(date('Y-m-d')))
                 ->setCorrelativo('001')
                 ->setCompany($company)
