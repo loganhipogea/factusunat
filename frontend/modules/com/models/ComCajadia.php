@@ -242,8 +242,8 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
             
             $sum = new Summary();
                 // Fecha Generacion menor que Fecha Resumen
-            $sum->setFecGeneracion(new \DateTime('-3days'))
-                ->setFecResumen(new \DateTime('-1days'))
+            $sum->setFecGeneracion(new \DateTime($this->swichtDate('femision', false)))
+                ->setFecResumen(new \DateTime(date('Y-m-d')))
                 ->setCorrelativo('001')
                 ->setCompany($company)
                 ->setDetails($detalles);
@@ -274,10 +274,15 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
             //$modelSend->tipodoc=$this->sunat_tipodoc;
             $modelSend->resultado=$success;
              $grabo=$modelSend->save();
+             $rutaXml=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileXml());
+             $rutaZip=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr());
       //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
-      $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileXml()));
-     $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr()));
-     return $grabo;
+               if(file_exists($rutaXml))
+               $modelSend->attachFromPath($rutaXml);
+              if(file_exists($rutaZip))
+               $modelSend->attachFromPath($rutZip);
+               
+               return $grabo;
             //$modelSend->validate();
             //yii::error($modelSend->getErrors(),__FUNCTION__);
         //return $modelSend->save();

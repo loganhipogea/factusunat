@@ -190,7 +190,7 @@ CONST FIRE_METHOD='triggerUpload';
                 $files[] = $file;
             }
         } else {
-            yii::error('NO es file es direcrtorio', __METHOD__);
+            yii::error('NO es file ni direcrtorio', __METHOD__);
         }
 
         if (!empty($files)) {
