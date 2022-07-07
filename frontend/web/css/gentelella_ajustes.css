@@ -178,3 +178,19 @@ input:-internal-autofill-selected {
 .table-hover > tbody > tr > td.info:hover, .table-hover > tbody > tr > th.info:hover, .table-hover > tbody > tr.info:hover > td, .table-hover > tbody > tr:hover > .info, .table-hover > tbody > tr.info:hover > th {
     background-color:#ffffff;
 }
+
+
+/*Corriegiendo los badgets de BOOTSTEAP 
+*/
+.badge-danger {   
+    background-color: #fd7f7f !important;
+    border-radius: 5px;
+}
+.badge-success {   
+    background-color: #f9b821ed !important;
+    border-radius: 5px;
+}
+.badge-warning {   
+    background-color: #8fc20fed !important;
+    border-radius: 5px;
+}

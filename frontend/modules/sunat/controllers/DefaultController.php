@@ -10,6 +10,7 @@ use Greenter\Model\Sale\Legend;
 use Greenter\Ws\Services\SunatEndpoints;
 use frontend\modules\sunat\envio\src\Util;
 use frontend\modules\sunat\models\SunatSends;
+USE frontend\modules\com\models\ComFactura;
 use common\helpers\h;
 /**
  * Default controller for the `sunat` module
@@ -229,6 +230,21 @@ $util->showResponse($invoice, $cdr);
     } 
 
   }
+  public function actionAjaxExpandSummarySend(){
+      
+    if (isset($_POST['expandRowKey'])) {
+        $model = \frontend\modules\sunat\models\SunatSendSumary::findOne($_POST['expandRowKey']);
+        if($model->resultado){
+            //var_dump($model->mensaje);die();
+            return $this->renderPartial('_send_result_success', ['model'=>$model,'cdr'=>$model->mensaje]);
+        }else{ 
+            //var_dump($model->mensaje);die();
+            return $this->renderPartial('_send_result_error', ['error'=>$model->mensaje]);
+        }
+        
+    } 
+
+  }
   
  public function actionAjaxSendVoucherStd($id){
          require __DIR__ . '/../envio/vendor/autoload.php'; 
@@ -331,108 +347,63 @@ $util->showResponse($invoice, $cdr);
             $see = $util->getSee(SunatEndpoints::FE_BETA);
             $res = $see->send($sum);
             $util->writeXml($sum, $see->getFactory()->getLastXml());
-
-        if (!$res->isSuccess()) {   
+            h::response()->format = \yii\web\Response::FORMAT_JSON;   
+            /*
+             * En el caso de que falle el envio
+             */
+            if (!$res->isSuccess()) {   
                  $error=$res->getError();
                             $errores=[
                                 'code'=>$error->getCode(),
                                 'message'=>$error->getMessage()
                                 ];
-                $transaccion=$model->getDb()->beginTransaction();
-                   if($model->setRejectedSunat()->save() &&                           
-                               $model->storeSend($errores,false)){
-                     //   echo $util->getErrorResponse($res->getError());
-                               } else{
-                                   
-                  }
                 
+                //$transaccion=$model->getDb()->beginTransaction();
+                  $model->setRejectedSunat()->save();                           
+                  $model->storeSend($errores,false);
+                  
+                   return ['error' =>\yii::t('base.errors','There are some errors')];    
                 
-                return;
-          }
+             }
 
+             /*
+             * En el caso de que responda con un ticket
+              * Verificamos el estado del ticket
+             */
             /**@var $res SummaryResult*/
             $ticket = $res->getTicket();
-            echo 'Ticket :<strong>' . $ticket .'</strong>';
+            //echo 'Ticket :<strong>' . $ticket .'</strong>';
 
+             
             $res = $see->getStatus($ticket);
         if (!$res->isSuccess()) {
-                echo $util->getErrorResponse($res->getError());
-                return;
-            }
-
-            $cdr = $res->getCdrResponse();
-            $util->writeCdr($sum, $res->getCdrZip());
-            $util->showResponse($sum, $cdr);
-            die();
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-               h::response()->format = \yii\web\Response::FORMAT_JSON;   
-                    
-         
-                if (!$res->isSuccess()) {
-                            $error=$res->getError();
+                //echo $util->getErrorResponse($res->getError());
+                $error=$res->getError();
                             $errores=[
                                 'code'=>$error->getCode(),
                                 'message'=>$error->getMessage()
                                 ];
-                            $transaccion=$model->getDb()->beginTransaction();
-                            //;
-                           
-                            if($model->setRejectedSunat()->save() &&                           
-                               $model->storeSend($errores,false)){
-                                
-                                $transaccion->commit();
-                                \yii::error($model->setRejectedSunat()->save());
-                                \yii::error($model->storeSend($errores,false));
-                                \yii::error('Hizo commit');
-                            }else{
-                                \yii::error($model->setRejectedSunat()->save());
-                                \yii::error($model->storeSend($errores,false));
-                                \yii::error('Hizo rollback');
-                                $transaccion->rollback();
-                                //var_dump($model->setRejectedSunat()->save(),$model->storeSend($errores,false));
-                            
-                                return ['error' =>\yii::t('base.errors','There were some errors before send, please fix them, and try again')];   
-                            }
-                            //var_dump($res->getError());
-                            return ['error' =>\yii::t('base.errors','There are some errors')];  
-                        //echo $util->getErrorResponse($res->getError());
-                    }else{
-                         /**@var $res BillResult*/
-                            $cdr = $res->getCdrResponse();
-                            $util->writeCdr($invoice, $res->getCdrZip());
-                            $cdrArray=[
+                      // var_dump($errores);die();
+               $model->storeSend($errores,false);
+                $model->setRejectedSunat()->save(); 
+                $model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
+                 return ['error' =>\yii::t('base.errors','There are some errors')]; 
+           }else{
+               $cdr = $res->getCdrResponse();
+                $util->writeCdr($sum, $res->getCdrZip());
+                $cdrArray=[
                                 'id'=>$cdr->getId(),
                                 'code'=>$cdr->getCode(),
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
-                            $transaccion=$model->getDb()->beginTransaction();
-                             //var_dump($model->setRejectedSunat()->save(),$model->storeSend($cdrArray,false));
-                           
-                             if($model->setPassedSunat()->save() &&                           
-                               $model->storeSend($cdrArray,true)){
-                                $transaccion->commit();
-                            }else{
-                                $transaccion->rollback();
-                                
-                                return ['error' =>\yii::t('base.errors','There were some errors before send, please fix them, and try again')];  
-                            }
-                            
-                             return ['success' =>' -  '.\yii::t('base.errors','The document was send successfully')]; 
-                    }
-
-               
+                $model->storeSend($cdrArray,true);
+                $model->setPassedSunat()->save();
+                 $model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
+               return ['success' =>' -  '.\yii::t('base.errors','The summary was send successfully')]; 
+                   
+               // $util->showResponse($sum, $cdr); 
+        }           
+            die();               
     }
 }

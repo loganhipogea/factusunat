@@ -40,10 +40,11 @@ class ComCajadia extends \common\models\base\modelBase
         'fecha'=>self::_FDATE,
         'fecha1'=>self::_FDATE,
     ];
-        const ST_CREADO='10';
-        const ST_PASSED_SUNAT='20';
-        const ST_REJECT_SUNAT='99';
-    
+       
+        
+    CONST ST_PASSED_SUNAT=1;
+    CONST ST_MISSING_SUNAT=0;
+    CONST ST_REJECT_SUNAT=-1;
     public static function tableName()
     {
         return '{{%com_cajadia}}';
@@ -105,15 +106,51 @@ class ComCajadia extends \common\models\base\modelBase
        
     }
     
- 
+  public function getValidVouchers()
+    {
+       return $this->getValidDocuments()->where(
+                [
+                    'sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('BOLETA'),
+                    //'codestado' => self::ST_CANCELED,
+               ]
+                );
+       
+       
+    }
+    
     public function getInvoices()
     {
         return $this->getDocuments()->where(
                 ['sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('FACTURA')]
                 );
      }
+     
+      public function getValidInvoices()
+    {
+        return $this->getValidDocuments()->where(
+                ['sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('FACTURA')]
+                );
+     }
     
-    public function getDocuments()
+    public function getValidDocuments()
+    {
+     return $this->hasMany(ComFactura::className(), [
+            'caja_id'=>'id'
+            //'femision' => 'fecha',
+             //'codcen'=>'codcen',
+             //'sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('FACTURA'),
+            ])->andWhere(
+                       [
+                        '<>',
+                        'codestado',
+                        self::ST_CANCELED
+                    //'sunat_tipodoc' => h::sunat()->graw('s.01.tdoc')->g('BOLETA'),
+                    //'codestado' => self::ST_CANCELED,
+                     ] 
+                        );
+       
+       }
+   public function getDocuments()
     {
      return $this->hasMany(ComFactura::className(), [
             'caja_id'=>'id'
@@ -123,7 +160,6 @@ class ComCajadia extends \common\models\base\modelBase
             ]);
        
        }
-
 
     /**
      * {@inheritdoc}
@@ -228,11 +264,42 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
     }
     
     public function storeSend($errores,$success){
-            $modelSend=New \frontend\modules\sunat\models\SunatSends();
-            $modelSend->mensaje=$object;
-            $modelSend->doc_id=$this->id;
-            $modelSend->tipodoc=$this->sunat_tipodoc;
+            $modelSend=New \frontend\modules\sunat\models\SunatSendSumary();
+            $modelSend->mensaje=$errores;
+            $modelSend->caja_id=$this->id;
+            //$modelSend->tipodoc=$this->sunat_tipodoc;
             $modelSend->resultado=$success;
+            //$modelSend->validate();
+            //yii::error($modelSend->getErrors(),__FUNCTION__);
         return $modelSend->save();
     }
+    
+    
+    public function summarySell(){
+       return $this->getValidDocuments()->sum('total*cambio');
+    }
+    public function summaryVouchers(){
+       return $this->getValidVouchers()->sum('total*cambio');
+    }
+    public function summaryInvoices(){
+       return $this->getValidInvoices()->sum('total*cambio');
+    }
+    
+    public function hasSends(){
+        return \frontend\modules\sunat\models\SunatSendSumary::find()
+                ->andWhere(['caja_id'=>$this->id])->exists();
+    }
+    
+    public function setPassToVouchers($status){
+      $this->getDb()->createCommand("update {{%com_factura}} set flag_sunat=:flag where (caja_id=:vid and sunat_tipodoc=:tip and codestado <> :codes)",
+              [
+          'vid'=>$this->id,
+          'tip'=>h::sunat()->graw('s.01.tdoc')->g('BOLETA'),
+           'flag'=>$status,
+           'codes'=>ComFactura::ST_CANCELED
+          
+      ])->execute();
+        
+    }
+    
 }

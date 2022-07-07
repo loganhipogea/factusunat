@@ -45,7 +45,8 @@ class ComFactura extends \common\models\base\BaseDocument
             
              [[
                 'sunat_totexo','sunat_totigv','sunat_totimpuestos','caja_id',
-                'descuento','subtotal','sunat_totisc','totalventa','sunta_tipdoccli'
+                'descuento','subtotal','sunat_totisc','totalventa',
+                 'sunta_tipdoccli','cambio',
                ],
                  'safe'
              ],            
@@ -239,6 +240,10 @@ class ComFactura extends \common\models\base\BaseDocument
         IF($insert){
            //echo $this->currentDateInFormat(); die();
           $this->codestado=self::ST_CREATED;
+          /*
+           * Tipo cambio
+           */
+          $this->cambio=($this->codmon=='USD')?h::tipoCambio('USD')['compra']:1;
           if($this->isInvoice()){
             $this->serie='F001'; 
             $this->sunat_tipdoccli=h::sunat()->graw('s.06.tdociden')->g('RUC');

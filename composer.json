@@ -39,7 +39,8 @@
       "mikehaertl/phpwkhtmltopdf": "^2.5",
       "setasign/fpdf": "^1.8",
       "2amigos/qrcode-library": "~1.1",
-      "kartik-v/yii2-widget-datepicker": "dev-master"
+      "kartik-v/yii2-widget-datepicker": "dev-master",
+      "vilochane/yii2-barcode-generator": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

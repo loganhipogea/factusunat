@@ -3,6 +3,7 @@
 namespace frontend\modules\com\controllers;
 use common\helpers\h;
 use frontend\modules\com\models\ComOv;
+use frontend\modules\com\Module as MyModule;
 use frontend\modules\com\models\ComFactudet;
 use frontend\modules\com\models\ComFactura;
 use frontend\modules\com\ComOvSearch;
@@ -378,6 +379,9 @@ class ComController extends baseController
         
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //$model->refresh();
+            //h::session()->set(MyModule::SESSION_ID_CURRENT_CASH,$model->id);
+            
             return $this->redirect(['index-cashes']);
         }
   

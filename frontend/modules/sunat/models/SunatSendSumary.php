@@ -1,7 +1,8 @@
 <?php
 
 namespace frontend\modules\sunat\models;
-
+use yii\helpers\Json;
+use common\helpers\h;
 use Yii;
 
 /**
@@ -20,6 +21,15 @@ use Yii;
  */
 class SunatSendSumary extends \common\models\base\modelBase
 {
+    
+     public $booleanFields=['resultado'];
+    
+     public $dateorTimeFields=[
+          'cuando'=>self::_FDATETIME,
+          //'fvencimiento'=>self::_FDATE,
+    ];
+    const ST_SUCCESS='exito';
+    const ST_ERROR='error';
     /**
      * {@inheritdoc}
      */
@@ -35,13 +45,13 @@ class SunatSendSumary extends \common\models\base\modelBase
     {
         return [
             [['user_id', 'caja_id'], 'integer'],
-            [['mensaje'], 'string'],
+            //[['mensaje'], 'string'],
             [['ticket'], 'string', 'max' => 100],
             [['codopera'], 'string', 'max' => 3],
             [['motivo'], 'string', 'max' => 25],
             [['femision'], 'string', 'max' => 10],
             [['cuando'], 'string', 'max' => 19],
-            [['resultado'], 'string', 'max' => 1],
+            //[['resultado'], 'string', 'max' => 1],
         ];
     }
 
@@ -71,5 +81,33 @@ class SunatSendSumary extends \common\models\base\modelBase
     public static function find()
     {
         return new SunatSendSumaryQuery(get_called_class());
+    }
+    
+       public function afterFind(){
+          //YII::ERROR($this->mensaje,__FUNCTION__);
+        $this->mensaje=Json::decode($this->mensaje);
+        //YII::ERROR('luefgo de decode',__FUNCTION__);
+        //YII::ERROR($this->mensaje,__FUNCTION__);
+        //unserialize(preg_replace('/^O:\d+:"[^"]++"/', 'O:' . strlen($class) . ':"' . $class . '"', serialize($object)));
+        return parent::afterFind();
+    }
+    
+    public function beforeSave($insert){
+        //YII::ERROR($this->mensaje,__FUNCTION__);
+        //YII::ERROR($this->mensaje,__FUNCTION__);
+        $this->mensaje=Json::encode($this->mensaje);
+        $this->cuando=$this->currentDateInFormat(true);
+        $this->user_id=h::userId();
+       // $this->resultado=
+        return parent::beforeSave($insert);
+    }
+    
+    public function setSuccess(){
+        $this->resultado=true;
+        return $this;
+    }
+    public function setError(){
+        $this->resultado=false;
+        return $this;
     }
 }
