@@ -220,7 +220,7 @@ $util->showResponse($invoice, $cdr);
      
     if (isset($_POST['expandRowKey'])) {
         $model = SunatSends::findOne($_POST['expandRowKey']+0);
-          VAR_DUMP($model->id);die();
+          
         if($model->resultado){
             //var_dump($model->mensaje);die();
             return $this->renderPartial('_send_result_success', ['model'=>$model,'cdr'=>$model->mensaje]);
@@ -236,6 +236,7 @@ $util->showResponse($invoice, $cdr);
       
     if (isset($_POST['expandRowKey'])) {
         $model = \frontend\modules\sunat\models\SunatSendSumary::findOne($_POST['expandRowKey']);
+        VAR_DUMP($model->id);die();
         if($model->resultado){
             //var_dump($model->mensaje);die();
             return $this->renderPartial('_send_result_success', ['model'=>$model,'cdr'=>$model->mensaje]);
