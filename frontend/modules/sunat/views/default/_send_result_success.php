@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use common\helpers\FileHelper;
 ?>
 <div class="bs-callout <?php //echo $cdr->isAccepted() ? 'bs-callout-success' : 'bs-callout-danger' ?>">
     <h4>Respuesta</h4><br>
@@ -36,7 +37,9 @@ use yii\helpers\Html;
        foreach($model->files as $file) {  ?>
        <!-- <li class="list-group-item"><a target="_blank" href="files/xml"><i class="fa fa-file-code"></i>&nbsp;xml</a></li> -->
         <li class="list-group-item">
-            <?php echo Html::a($file->url, $file->url, ['data-pjax'=>'0']);  ?>
+            <?php 
+             $icono=(FileHelper::extensionFile($file->path)=='zip')?'compressed':'console';
+            echo Html::a('<span class="glyphicon glyphicon-'.$icono.'"></span>', $file->url, ['data-pjax'=>'0']);  ?>
             <!--<a target="_blank" title="Ver CDR" href="examples/pages/cdr-viewer.php?f=files/R-<?=$filename?>.zip"><i class="fa fa-eye"></i></a> -->
         </li>
        <?php  } ?>
