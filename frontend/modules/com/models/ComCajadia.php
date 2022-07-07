@@ -267,12 +267,13 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
       return $this;
     }
     
-    public function storeSend($errores,$success,$filename=null){
+    public function storeSend($errores,$success,$filename=null,$ticket=null){
             $modelSend=New \frontend\modules\sunat\models\SunatSendSumary();
             $modelSend->mensaje=$errores;
             $modelSend->caja_id=$this->id;
             //$modelSend->tipodoc=$this->sunat_tipodoc;
             $modelSend->resultado=$success;
+            $modelSend->ticket=$ticket;
              $grabo=$modelSend->save();
              $rutaBase=yii::getAlias('@frontend/modules/sunat/envio/files/');
              //$rutaZip=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr());

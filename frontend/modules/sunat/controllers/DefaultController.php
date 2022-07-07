@@ -368,7 +368,7 @@ $util->showResponse($invoice, $cdr);
                 
                 //$transaccion=$model->getDb()->beginTransaction();
                   $model->setRejectedSunat()->save();                           
-                  $model->storeSend($errores,false);
+                  $model->storeSend($errores,false,null,null);
                   
                    return ['error' =>\yii::t('base.errors','There are some errors')];    
                 
@@ -392,7 +392,7 @@ $util->showResponse($invoice, $cdr);
                                 'message'=>$error->getMessage()
                                 ];
                       // var_dump($errores);die();
-               $model->storeSend($errores,false);
+               $model->storeSend($errores,false,null,$ticket);
                 $model->setRejectedSunat()->save(); 
                 $model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
                  return ['error' =>\yii::t('base.errors','There are some errors')]; 
@@ -405,7 +405,7 @@ $util->showResponse($invoice, $cdr);
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
-                $model->storeSend($cdrArray,true,$sum->getName());
+                $model->storeSend($cdrArray,true,$sum->getName(),$ticket);
                 $model->setPassedSunat()->save();
                  $model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
                return ['success' =>' -  '.\yii::t('base.errors','The summary was send successfully')]; 
