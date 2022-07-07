@@ -38,8 +38,9 @@ use common\helpers\FileHelper;
        <!-- <li class="list-group-item"><a target="_blank" href="files/xml"><i class="fa fa-file-code"></i>&nbsp;xml</a></li> -->
         <li class="list-group-item">
             <?php 
-             $icono=(FileHelper::extensionFile($file->path)=='zip')?'compressed':'console';
-            echo Html::a('<span class=" btn btn-danger"><i class="glyphicon glyphicon-'.$icono.'"></i>hoala</span>', $file->url, ['data-pjax'=>'0']);  ?>
+            $ext=FileHelper::extensionFile($file->path);
+             $icono=($ext=='zip')?'compressed':'console';
+            echo Html::a('<span class=" btn btn-danger"><i class="glyphicon glyphicon-'.$icono.'"></i>'.yii::t('base.verbs','Download').' '.$ext.'</span>', $file->url, ['data-pjax'=>'0']);  ?>
             <!--<a target="_blank" title="Ver CDR" href="examples/pages/cdr-viewer.php?f=files/R-<?=$filename?>.zip"><i class="fa fa-eye"></i></a> -->
         </li>
        <?php  } ?>
