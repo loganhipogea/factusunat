@@ -32,7 +32,7 @@ use yii\helpers\Html;
     <?php $filename=''; ?>
     <ul class="list-group">
        <?php 
-       var_dump($model->id,$model->files);
+      
        foreach($model->files as $file) {  ?>
        <!-- <li class="list-group-item"><a target="_blank" href="files/xml"><i class="fa fa-file-code"></i>&nbsp;xml</a></li> -->
         <li class="list-group-item">
