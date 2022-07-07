@@ -111,4 +111,20 @@ class SunatSends extends \common\models\base\modelBase
         return $this;
     }
     
+     private function nameFileXml(){
+     return $this->centro->socio->rucpro.'-RC-'.
+            date('Y').date('m').date('d').'-'.
+            $this->correlSend().'.xml';
+ }
+ 
+ private function nameFileCdr(){
+     return 'R-'.$this->centro->socio->rucpro.'-RC-'.
+             date('Y').date('m').date('d').'-'.
+             $this->correlSend().'.zip';
+ }
+ private function correlSend(){
+    
+    return str_pad($valor.'', 3, '0');
+ }
+    
 }

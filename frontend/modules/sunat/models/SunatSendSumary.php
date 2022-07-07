@@ -4,7 +4,7 @@ namespace frontend\modules\sunat\models;
 use yii\helpers\Json;
 use common\helpers\h;
 use Yii;
-
+use common\behaviors\FileBehavior;
 /**
  * This is the model class for table "{{%sunat_send_sumary}}".
  *
@@ -21,7 +21,7 @@ use Yii;
  */
 class SunatSendSumary extends \common\models\base\modelBase
 {
-    
+    public $prefijo='1';
      public $booleanFields=['resultado'];
     
      public $dateorTimeFields=[
@@ -35,6 +35,7 @@ class SunatSendSumary extends \common\models\base\modelBase
      */
     public static function tableName()
     {
+         
         return '{{%sunat_send_sumary}}';
     }
 
@@ -44,6 +45,7 @@ class SunatSendSumary extends \common\models\base\modelBase
     public function rules()
     {
         return [
+             [['ndia', 'numero'], 'safe'],
             [['user_id', 'caja_id'], 'integer'],
             //[['mensaje'], 'string'],
             [['ticket'], 'string', 'max' => 100],
@@ -73,7 +75,15 @@ class SunatSendSumary extends \common\models\base\modelBase
             'caja_id' => Yii::t('base.names', 'Caja ID'),
         ];
     }
-
+ public function behaviors() {
+        return [
+            
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      * @return SunatSendSumaryQuery the active query used by this AR class.
@@ -96,8 +106,13 @@ class SunatSendSumary extends \common\models\base\modelBase
         //YII::ERROR($this->mensaje,__FUNCTION__);
         //YII::ERROR($this->mensaje,__FUNCTION__);
         $this->mensaje=Json::encode($this->mensaje);
-        $this->cuando=$this->currentDateInFormat(true);
-        $this->user_id=h::userId();
+        if($insert){
+            $this->cuando=$this->currentDateInFormat(true);
+            $this->ndia=date('z');
+             $this->user_id=h::userId();
+             $this->numero=$this->correlativo('numero',4, 'ndia');
+        }
+        
        // $this->resultado=
         return parent::beforeSave($insert);
     }
@@ -110,4 +125,33 @@ class SunatSendSumary extends \common\models\base\modelBase
         $this->resultado=false;
         return $this;
     }
+    
+    public function getCajadia(){
+      
+        return $this->hasOne(\frontend\modules\com\models\ComCajadia::className(), ['id' => 'caja_id']);
+    }
+    
+ public function nameFileXml(){
+         yii::error('NOMBREXML');
+         yii::error($this->cajadia->centro->socio->rucpro.'-RC-'.
+            date('Y').date('m').date('d').'-'.
+            $this->correlSend().'.xml');
+     return $this->cajadia->centro->socio->rucpro.'-RC-'.
+            date('Y').date('m').date('d').'-'.
+            $this->correlSend().'.xml';
+ }
+ 
+ public function nameFileCdr(){
+      yii::error('NOMBREZIP');
+         yii::error('R-'.$this->cajadia->centro->socio->rucpro.'-RC-'.
+             date('Y').date('m').date('d').'-'.
+             $this->correlSend().'.zip');
+     return 'R-'.$this->cajadia->centro->socio->rucpro.'-RC-'.
+             date('Y').date('m').date('d').'-'.
+             $this->correlSend().'.zip';
+ }
+ private function correlSend(){
+    
+    return substr($this->numero,1);
+ }
 }

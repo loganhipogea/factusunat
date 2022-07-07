@@ -66,9 +66,9 @@ class Centros extends modelBase
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSociedad()
+    public function getSocio()
     {
-        return $this->hasOne(Sociedades::className(), ['socio' => 'codsoc']);
+        return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
     }
     public function getAlmacenes()
     {

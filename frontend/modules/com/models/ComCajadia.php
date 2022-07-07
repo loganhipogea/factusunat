@@ -92,6 +92,10 @@ class ComCajadia extends \common\models\base\modelBase
     {
         return $this->hasOne(ComCajaventa::className(), ['id' => 'caja_id']);
     }
+    public function getCentro()
+    {
+        return $this->hasOne(\common\models\masters\Centros::className(), ['codcen' => 'codcen']);
+    }
     
     public function hasDocuments(){
         return $this->getDocuments()->count()>0;
@@ -269,9 +273,14 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
             $modelSend->caja_id=$this->id;
             //$modelSend->tipodoc=$this->sunat_tipodoc;
             $modelSend->resultado=$success;
+             $grabo=$modelSend->save();
+      //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
+      $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileXml()));
+     $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr()));
+     return $grabo;
             //$modelSend->validate();
             //yii::error($modelSend->getErrors(),__FUNCTION__);
-        return $modelSend->save();
+        //return $modelSend->save();
     }
     
     
@@ -302,4 +311,5 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
         
     }
     
+   
 }

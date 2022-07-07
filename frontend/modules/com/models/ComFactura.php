@@ -664,7 +664,7 @@ class ComFactura extends \common\models\base\BaseDocument
         $modelSend->tipodoc=$this->sunat_tipodoc;
         $modelSend->resultado=$success;
       $grabo=$modelSend->save();
-      yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
+      //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
       $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$this->nameFileXml()));
      $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$this->nameFileCdr()));
      return $grabo;

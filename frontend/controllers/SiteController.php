@@ -70,6 +70,10 @@ class SiteController extends Controller
         ];
     }
 
+    
+    public function actionPio(){
+        echo date('Y').date('m').date('d');
+    }
     /**
      * Displays homepage.
      *
