@@ -277,13 +277,13 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
              $rutaBase=yii::getAlias('@frontend/modules/sunat/envio/files/');
              //$rutaZip=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr());
       //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
-               yii::error('verifiacndo el attach');
-                yii::error('Nombre de archivos es ');
-                yii::error($rutaBase.$filename);
+              // yii::error('verifiacndo el attach');
+                //yii::error('Nombre de archivos es ');
+                //yii::error($rutaBase.$filename);
                 if(is_file($rutaBase.$filename)){
-                     yii::error('Es un archivo  ');
+                    // yii::error('Es un archivo  ');
                 }else{
-                    yii::error('NO es un archivo '); 
+                   // yii::error('NO es un archivo '); 
                 }
                $modelSend->attachFromPath($rutaBase.$filename.'.xml');
               

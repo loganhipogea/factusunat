@@ -31,7 +31,9 @@ use yii\helpers\Html;
     <b>Adjuntos</b><br> 
     <?php $filename=''; ?>
     <ul class="list-group">
-       <?php foreach($model->files as $file) {  ?>
+       <?php 
+       var_dump($model->files);
+       foreach($model->files as $file) {  ?>
        <!-- <li class="list-group-item"><a target="_blank" href="files/xml"><i class="fa fa-file-code"></i>&nbsp;xml</a></li> -->
         <li class="list-group-item">
             <?php echo Html::a($file->url, $file->url, ['data-pjax'=>'0']);  ?>
