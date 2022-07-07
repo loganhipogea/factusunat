@@ -29,7 +29,7 @@ class Module extends \yii\base\Module
        
       // \yii::error('moduilir');
        if($sesion->has(self::SESSION_ID_CURRENT_CASH)){
-           $sesion->remove(self::SESSION_ID_CURRENT_CASH); die();
+           //$sesion->remove(self::SESSION_ID_CURRENT_CASH); die();
            $valorSesion=$sesion->get(self::SESSION_ID_CURRENT_CASH);
           // \yii::error('tiene sesion');
            //\yii::error($sesion->get('idcajadeldia'));
