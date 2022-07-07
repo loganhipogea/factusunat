@@ -274,13 +274,13 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
             //$modelSend->tipodoc=$this->sunat_tipodoc;
             $modelSend->resultado=$success;
              $grabo=$modelSend->save();
-             //$rutaXml=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileXml());
+             $rutaBase=yii::getAlias('@frontend/modules/sunat/envio/files/');
              //$rutaZip=yii::getAlias('@frontend/modules/sunat/envio/files/'.$modelSend->nameFileCdr());
       //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
+               
+               $modelSend->attachFromPath($rutaBase.$filename);
               
-               $modelSend->attachFromPath($filename);
-              
-               $modelSend->attachFromPath('R-'.$filename);
+               $modelSend->attachFromPath('R-'.$rutaBase.$filename);
                
                return $grabo;
             //$modelSend->validate();
