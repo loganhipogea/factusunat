@@ -234,9 +234,12 @@ $util->showResponse($invoice, $cdr);
   }
   public function actionAjaxExpandSummarySend(){
       
-    if (isset($_POST['expandRowKey'])) {
-        $model = \frontend\modules\sunat\models\SunatSendSumary::findOne($_POST['expandRowKey']);
-        VAR_DUMP($model->id);die();
+            
+    if (h::request()->isAjax) {
+        $id = h::request()->post('expandRowKey');
+        $model = SunatSendSumary::findOne($id);
+        
+        
         if($model->resultado){
             //var_dump($model->mensaje);die();
             return $this->renderPartial('_send_result_success', ['model'=>$model,'cdr'=>$model->mensaje]);

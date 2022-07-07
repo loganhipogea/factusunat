@@ -249,6 +249,9 @@ use yii\widgets\Pjax;
                     //'headerOptions' => ['class' => 'kartik-sheet-style'], 
                     'expandOneOnly' => true
                 ],
+                                        
+                                     
+                                        
          [
             //'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'resultado',
