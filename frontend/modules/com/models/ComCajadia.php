@@ -287,7 +287,7 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
                 }
                $modelSend->attachFromPath($rutaBase.$filename.'.xml');
               
-               $modelSend->attachFromPath('R-'.$rutaBase.$filename.'.zip');
+               $modelSend->attachFromPath($rutaBase.'R-'.$filename.'.zip');
                
                return $grabo;
             //$modelSend->validate();
