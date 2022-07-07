@@ -285,9 +285,9 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
                 }else{
                     yii::error('NO es un archivo '); 
                 }
-               $modelSend->attachFromPath($rutaBase.$filename);
+               $modelSend->attachFromPath($rutaBase.$filename.'.xml');
               
-               $modelSend->attachFromPath('R-'.$rutaBase.$filename);
+               $modelSend->attachFromPath('R-'.$rutaBase.$filename.'.zip');
                
                return $grabo;
             //$modelSend->validate();
