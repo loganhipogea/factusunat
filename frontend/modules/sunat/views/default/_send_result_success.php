@@ -39,7 +39,7 @@ use common\helpers\FileHelper;
         <li class="list-group-item">
             <?php 
              $icono=(FileHelper::extensionFile($file->path)=='zip')?'compressed':'console';
-            echo Html::a('<span class="glyphicon glyphicon-'.$icono.'"></span>', $file->url, ['data-pjax'=>'0']);  ?>
+            echo Html::a('<span class=" btn btn-danger">hoala</span>', $file->url, ['data-pjax'=>'0']);  ?>
             <!--<a target="_blank" title="Ver CDR" href="examples/pages/cdr-viewer.php?f=files/R-<?=$filename?>.zip"><i class="fa fa-eye"></i></a> -->
         </li>
        <?php  } ?>
