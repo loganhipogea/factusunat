@@ -24,6 +24,7 @@ use yii\widgets\Pjax;
     $formato=h::formato();
     $grid_zone='grilla_general';
     $moneda=h::gsetting('general', 'moneda');
+    $hasChilds=$model->hasDocuments();
     
     $form = ActiveForm::begin([
         'id'=>'Form_general',
@@ -32,14 +33,36 @@ use yii\widgets\Pjax;
     
     <div class="form-group">
                 <div class="btn-group">
-        <?= Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
-    
-        <?php echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
+         <?php  
+                if($model->isCreated())
+                echo  Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']);
+           ?>
+             <?php  
+                if($model->isPassed() && !$model->isNewRecord)
+                 echo Html::button("<span class=\"fa fa-check\"></span>Cerrar", 
+                          [
+                              //'id'=>'btn_fct_enviar-sunat',
+                              'class' => 'btn btn-info']
+                          ); 
+           ?> 
+            <?php  
+                if($model->isPassed() && !$model->isNewRecord)
+                 echo Html::button("<span class=\"fa fa-check\"></span>Cerrar", 
+                          [
+                              //'id'=>'btn_fct_enviar-sunat',
+                              'class' => 'btn btn-info']
+                          ); 
+           ?>   
+            <?php if(!$model->isSendSuccessToSunat()){ 
+                   echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
                           [
                               'id'=>'btn_fct_enviar-sunat',
                               'class' => 'btn btn-warning']
-                          ); 
-        ?>
+                          );
+              }?> 
+        
+        
+       
                 </div>
      </div>
    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -47,6 +70,7 @@ use yii\widgets\Pjax;
             dropDownList(ComboHelper::getCboCajas() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                        'disabled'=>$hasChilds
                         ]
                     ) ?>
     </div>
@@ -63,7 +87,7 @@ use yii\widgets\Pjax;
                             //'dateFormat' => h::getFormatShowDate(),
                             'options'=>[
                                 'class'=>'form-control',
-                                'disabled'=>!$model->hasDocuments()
+                                'disabled'=>$hasChilds
                                 ]
                             ]) ?>
 
@@ -73,18 +97,11 @@ use yii\widgets\Pjax;
             dropDownList(ComboHelper::getCboCentros() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                        'disabled'=>$hasChilds
                         ]
                     ) ?>
     </div>
-   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"> 
-     <span class="badge badge-pill badge-primary"><?php 
-     //echo  $model->getInvoices()->createCommand()->rawSql;
-     echo $model->getInvoices()->count()?></span>
-      <span class="badge badge-pill badge-danger"><?=$model->getVouchers()->count()?></span>
-
-   </div>
    
-    
    
     <?php  ActiveForm::end() ?>
      <?php 
@@ -221,8 +238,11 @@ use yii\widgets\Pjax;
         
          Pjax::begin(['id'=>$send_zone]);
      if($model->hasSends()){ 
+         
          ?>
+     <span id="boton_show" class=" btn btn-danger"><i class="glyphicon glyphicon-arrow-down"></i>Ver envíos</span>
      <div class="box box-success">
+      <div id="div_resumen_envios" style="display:none;">
       <?php 
    $gridColumns=[
        
@@ -288,6 +308,7 @@ use yii\widgets\Pjax;
          
        
    ];
+   
    echo grid::widget([
     'dataProvider'=> new \yii\data\ActiveDataProvider([
             'query'=> frontend\modules\sunat\models\SunatSendSumary::find()->andWhere([
@@ -304,9 +325,16 @@ use yii\widgets\Pjax;
        ]);
    ?> 
      </div>
+     </div>
      <?php
       Pjax::end();      
           } ?>
 </div>
     </div>
+  <?php
+  $cadena="$('#boton_show').click(function(){
+        $('#div_resumen_envios').toggle('slow');
+        });";
+    $this->registerJs($cadena, \yii\web\View::POS_END);
   
+  ?>

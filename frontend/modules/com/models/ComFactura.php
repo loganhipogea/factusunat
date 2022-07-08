@@ -542,7 +542,7 @@ class ComFactura extends \common\models\base\BaseDocument
       return(self::ST_PASSED==$this->codestado);
   }
   public function setPassed(){
-      $this->codestado=self::STA_PASSED;
+      $this->codestado=self::ST_PASSED;
       return $this;
   }
   

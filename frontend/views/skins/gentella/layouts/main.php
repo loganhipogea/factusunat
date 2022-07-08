@@ -49,7 +49,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/" class="site_title"><i class="fa fa-paw"></i> <span><?=h::app()->name?></span></a>
+                    <a href="/" class="site_title"><?=Html::img('@web/img/logo_neozolver.svg', ['alt' => 'Logo','width'=>40,'height'=>40]); ?>  <span><?=h::app()->name?></span></a>
                 </div>
                 <div class="clearfix"></div>
 

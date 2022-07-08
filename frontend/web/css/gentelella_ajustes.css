@@ -27,7 +27,7 @@ Aumentar el tamaño de la letra del menu
  .nav-sm .nav.side-menu li a {
     
     font-weight: 400;
-    font-size: 14px;
+    font-size: 10px;
     padding: 10px 5px;
 }
 
@@ -36,18 +36,11 @@ Corregir los colores feos del menu lateral
 cunado salian fondos blancos  y letras grises
 al pasar el mouse a:hover,a:active,a:focus,
 */
-.nav-sm ul.nav.child_menu a:hover,
-.nav-sm ul.nav.child_menu a:active,
-.nav-sm ul.nav.child_menu a:focus ,
-.nav.child_menu>li>a:hover,
-.nav.child_menu>li>a:active,
-.nav.child_menu>li>a:focus,
-.nav.side-menu>li.active>a
-{
-    color:#999999 !important;
-    background: #2c3b4b !important;;
-}
 
+.nav-sm ul.nav.child_menu a:hover, .nav-sm ul.nav.child_menu a:active, .nav-sm ul.nav.child_menu a:focus, .nav.child_menu>li>a:hover, .nav.child_menu>li>a:active, .nav.child_menu>li>a:focus, .nav.side-menu>li.active>a {
+    color: #fffbfb !important;
+    background: #581a4b !important;
+}
 
 div.box {
      height:auto !important;    
@@ -193,4 +186,41 @@ input:-internal-autofill-selected {
 .badge-warning {   
     background-color: #8fc20fed !important;
     border-radius: 5px;
+}
+
+
+/*
+AJUSTES PARA EL PANEL IZQUIERDO DEL MENU
+*/
+.left_col {
+    background: #671a60;
+}
+.nav_title {
+   
+    background: #4b2a54 !important;
+
+}
+.sidebar-footer a:hover {
+    background: #3c084d !important;
+}
+
+a:hover {
+    color: #fdf8f7 !important;;
+
+}
+.sidebar-footer a {
+    
+    background: #4b2a54 !important;
+  
+}
+.sidebar-footer {
+    
+    background: #4b2a54 !important;
+   
+}
+
+.nav-sm ul.nav.child_menu {
+   
+    background: #671a60 !important;
+   
 }

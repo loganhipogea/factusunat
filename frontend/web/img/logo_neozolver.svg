@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100"
+   height="100"
+   viewBox="0 0 26.458332 26.458332"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="logo_neozolver.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.5862247"
+     inkscape:cx="-34.988737"
+     inkscape:cy="127.34639"
+     inkscape:window-width="1008"
+     inkscape:window-height="728"
+     inkscape:window-x="2"
+     inkscape:window-y="-20"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     units="px"
+     width="100px"
+     height="100px" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="star"
+       style="opacity:0.731517;fill:#ffffff;fill-opacity:0.95343679;stroke-width:2.77641"
+       id="path8010"
+       inkscape:flatsided="false"
+       sodipodi:sides="4"
+       sodipodi:cx="509.48071"
+       sodipodi:cy="274.9332"
+       sodipodi:r1="175.73524"
+       sodipodi:r2="72.321602"
+       sodipodi:arg1="0.78539816"
+       sodipodi:arg2="-0.62165589"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       transform="matrix(0.09473705,0.00727838,-0.00817589,0.09523148,-32.784191,-16.722826)"
+       inkscape:transform-center-y="-2.0365537e-06"
+       inkscape:transform-center-x="-1.8386806e-06"
+       d="M 633.7443,399.19678 568.27204,232.81439 385.21713,399.19678 551.59952,333.72453 385.21713,150.66961 450.68938,317.052 633.7443,150.66961 467.36191,216.14187 Z" />
+  </g>
+</svg>

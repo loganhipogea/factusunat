@@ -255,6 +255,7 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
             return(self::ST_PASSED_SUNAT==$this->estado);
             return $this;
         }
+     
     public function setPassedSunat(){
       $this->estado=self::ST_PASSED_SUNAT;
       return $this;
@@ -307,9 +308,13 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
        return $this->getValidInvoices()->sum('total*cambio');
     }
     
-    public function hasSends(){
+    public function sendsQuery(){
         return \frontend\modules\sunat\models\SunatSendSumary::find()
-                ->andWhere(['caja_id'=>$this->id])->exists();
+                ->andWhere(['caja_id'=>$this->id]);
+    }
+    
+    public function hasSends(){
+        return $this->sendsQuery()->exists();
     }
     
     public function setPassToVouchers($status){
@@ -323,5 +328,51 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
       ])->execute();
         
     }
+  public function isSendSuccessToSunat($model=false){
+      if($this->hasSends()){
+          if(!$model)
+          return $this->sendsQuery()->orderBy(['id'=>SORT_DESC])->one()->resultado;
+          return $this->sendsQuery()->orderBy(['id'=>SORT_DESC])->one();
+          }
+      return false;
+  }
   
+  public function ticket(){
+      if($model=$this->isSendSuccessToSunat(true))
+       return $model->ticket;
+       return null;
+      
+  }
+  
+  public function beforeSave($insert) {
+      if($insert){
+          $this->estado=self::ST_CREATED;
+      }
+      return parent::beforeSave($insert);
+  }
+  
+   public function isCreated(){
+      return(self::ST_CREATED==$this->estado);
+  }
+  
+  public function isRemoved(){
+      return(self::ST_CANCELED==$this->estado);
+  }
+   public function setRemoved(){
+      $this->estado=self::ST_CANCELED;
+      return $this;
+  }
+   public function isPassed(){
+      return(self::ST_PASSED==$this->estado);
+  }
+  public function setPassed(){
+      $this->estado=self::STA_PASSED;
+      $this->refreshAmounts();
+      return $this;
+  }
+  
+  private function refreshAmounts(){
+      $this->monto_papel=$this->summarySell();
+  }
+      
 }
