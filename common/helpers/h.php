@@ -66,6 +66,12 @@ class h {
         return yii::$app->user;
     }
     
+    public static function  money(){
+        
+       // var_dump(yii::$app->user);die();
+        return yii::$app->moneda;
+    }
+    
     public static function  userId($username=null){
       if(!is_null($username)){
           $registro=User::findByUsername($username);
@@ -295,6 +301,8 @@ class h {
 public static function userNameExists($username){
    return (!is_null(User::findByUsername($username)));
 }
+
+
 
 
 

@@ -7,6 +7,7 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'moneda'=>['class' => 'common\components\Moneda',],
         'html2pdf' => [
             'class' => 'yii2tech\html2pdf\Manager',
             'viewPath' => '@app/views/pdf',

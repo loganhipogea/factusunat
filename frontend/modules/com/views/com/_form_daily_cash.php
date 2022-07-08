@@ -59,7 +59,9 @@ use yii\widgets\Pjax;
                               'id'=>'btn_fct_enviar-sunat',
                               'class' => 'btn btn-warning']
                           );
-              }?> 
+              }
+             
+              ?> 
         
         
        
@@ -103,9 +105,12 @@ use yii\widgets\Pjax;
     </div>
    
    
-    <?php  ActiveForm::end() ?>
-     <?php 
+    <?php 
      
+    ActiveForm::end()
+        ?>
+     <?php 
+     if(!$model->isNewRecord){
      Pjax::begin(['id'=>$grid_zone]);
    if(false){
   $column=[
@@ -186,6 +191,7 @@ use yii\widgets\Pjax;
     //'responsive'=>true,
     //'hover'=>true
        ]);
+   
    ?> 
    
          
@@ -329,6 +335,10 @@ use yii\widgets\Pjax;
      <?php
       Pjax::end();      
           } ?>
+     
+     <?php
+       } //Fin del isenew RECORD
+     ?>
 </div>
     </div>
   <?php

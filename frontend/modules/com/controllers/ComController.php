@@ -275,12 +275,9 @@ class ComController extends baseController
                         }
                        $item++;
                     }
-                     $model->refreshValues();
-                     if($model->isInvoice()){
+                     $model->refreshValues();                     
                        $model->preparePdfInvoice();  
-                     }else{
-                       $model->preparePdfVoucher();  
-                     }
+                     
                        
                      return $this->redirect(['view-invoice', 'id' => $model->id]);
                 }else{
@@ -371,20 +368,24 @@ class ComController extends baseController
      public function actionOpenCash(){
         $model=New \frontend\modules\com\models\ComCajadia();
         $model->fecha=$model::currentDateInFormat();
+        $model->setCreated();
+        
         if (h::request()->isAjax && $model->load(h::request()->post())) {
                 h::response()->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
         }
         
-        
+       
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if (h::request()->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
             //$model->refresh();
             //h::session()->set(MyModule::SESSION_ID_CURRENT_CASH,$model->id);
             
             return $this->redirect(['index-cashes']);
+        }ELSE{
+            print_r($model->getErrors());DIE();
         }
-  
+    
         return $this->render('create_caja_dia', [
             'model' => $model,
         ]);
@@ -546,5 +547,11 @@ class ComController extends baseController
         return $this->render('update_caja_dia', [
             'model' => $model,
         ]);
+    }
+    
+    public function actionTestPdf($id){
+       $model= ComFactura::findOne($id);
+       $model->preparePdfInvoice();
+       //$this->render('test_pdf',['model'=>$model]);
     }
 }

@@ -7,8 +7,8 @@ namespace frontend\modules\sunat;
  */
 class Module extends \yii\base\Module
 {
-   
-    
+   CONST NAME_BOLETA_ELECTRONICA='BOLETA ELECTRONICA';
+  CONST NAME_FACTURA_ELECTRONICA='FACTURA ELECTRONICA';
     
     public $catalogs=[
         
@@ -29,6 +29,7 @@ class Module extends \yii\base\Module
 
         // custom initialization code goes here
     }
+    
     
     
     

@@ -61,7 +61,7 @@ class ComCajadia extends \common\models\base\modelBase
            // [['fecha1'], 'integer'],
             [['monto_papel', 'monto_efectivo', 'diferencia'], 'number'],
             //[['fecha'], 'string', 'max' => 10],
-            [['estado'], 'string', 'max' => 1],
+            [['estado'], 'string', 'max' => 2],
             [['fecha','caja_id'], 'unique', 'targetAttribute' =>['fecha','caja_id'] ],
             [['caja_id'], 'exist', 'skipOnError' => true, 'targetClass' => ComCajaventa::className(), 'targetAttribute' => ['caja_id' => 'id']],
         ];
@@ -368,6 +368,11 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
   public function setPassed(){
       $this->estado=self::STA_PASSED;
       $this->refreshAmounts();
+      return $this;
+  }
+  public function setCreated(){
+      $this->estado=self::ST_CREATED;
+     // $this->refreshAmounts();
       return $this;
   }
   

@@ -15,6 +15,7 @@ use common\helpers\h;
 use common\behaviors\FileBehavior;
 use common\models\masters\Clipro;
 use common\models\masters\Centros;
+use frontend\modules\sunat\Module as ModuloSunat;
 class ComFactura extends \common\models\base\BaseDocument
 {
     
@@ -22,6 +23,7 @@ class ComFactura extends \common\models\base\BaseDocument
     CONST ST_PASSED_SUNAT=1;
     CONST ST_MISSING_SUNAT=0;
     CONST ST_REJECT_SUNAT=-1;
+    const CHARACTER_SEPARATOR_FOR_DATA_QR='|';
     public $femision1=null;
     public $fvencimiento1=null;
     public $dateorTimeFields=[
@@ -219,6 +221,11 @@ class ComFactura extends \common\models\base\BaseDocument
         return $this->hasOne(\common\models\masters\Clipro::className(), ['rucpro' => 'rucpro']);
     }
     
+    public function getCaja()
+    {
+        return $this->hasOne(ComCajadia::className(), ['id' => 'caja_id']);
+    }
+    
     public function getSocio()
     {
         
@@ -280,38 +287,66 @@ class ComFactura extends \common\models\base\BaseDocument
    public function preparePdfInvoice(){      
        $socio=$this->socio;
        $numero=$this->numero;
+       $formato=h::formato();
+       h::money()->setCurrentMoneyInCache($this->codmon);
        $file=dirname(dirname(__DIR__)).'/com/views/com/templates/Invoice_template.php';
        $targetPath=yii::getAlias('@temp').'/'. $numero.'.pdf';
        $fileQr=yii::getAlias('@temp').'/'. $numero.'QR.png';       
        $pdf=New \FPDF('P','mm',array(80,150)); 
-        $qrCode = (new \Da\QrCode\QrCode('This is my text'))
-            ->setSize(50)
-            ->setMargin(5);   
+        $qrCode = (new \Da\QrCode\QrCode($this->generateNameForQr()))
+            ->setSize(100)
+            ->setMargin(1);   
                 $qrCode->writeFile($fileQr);      
         $pdf->AddPage();
                 define('EURO',$this->codmon);
        // CABECERA
-            $pdf->SetFont('Helvetica','',9);
-            $pdf->Cell(60,4,$socio->despro,0,1,'C');
-            $pdf->SetFont('Helvetica','',8);
-            $pdf->Cell(60,4,$socio->rucpro,0,1,'C');
+            $pdf->SetFont('Helvetica','B',8);
+            /*
+             *      ANCHO 70 ; ALTO 10; TEXTO, , BORDE 0, POSICION 1,'CENTRADO 'C'
+             */
+            $pdf->Cell(70,4,$socio->despro,0,1,'C');
+            $pdf->SetFont('Helvetica','',6);
+            $pdf->Cell(60,3,$socio->rucpro,0,1,'C');
            // $pdf->Cell(60,4,'C/ Arturo Soria, 1',0,1,'C');
-            $pdf->Cell(60,4,$socio->firstAddress(),0,1,'C');
-            $pdf->Cell(60,4,$socio->telpro,0,1,'C');
-            $pdf->Cell(60,4,$socio->web,0,1,'C');
- 
+            $pdf->Cell(60,3,$socio->firstAddress(),0,1,'C');
+            $pdf->Cell(60,3,$socio->telpro,0,1,'C');
+            $pdf->Cell(60,3,$socio->web,0,1,'C');
+            
+        /*
+         * TITULO DEL VOUCHER 
+         */
+            $nombreDoc=($this->isInvoice())?ModuloSunat::NAME_FACTURA_ELECTRONICA:ModuloSunat::NAME_BOLETA_ELECTRONICA;
+            $pdf->Cell(60,0,'','T',0,'CT');
+            $pdf->Ln(2);
+            $pdf->Cell(60,0,$nombreDoc,0,1,'C');
+            $pdf->Ln(2);
+            $pdf->Cell(60,0,$this->numero,0,1,'C');
+            $pdf->Ln(2);
+            $pdf->Cell(60,0,'','T',0,'CT');
+           
         // DATOS FACTURA        
-            $pdf->Ln(5);
-            $pdf->Cell(60,4,'Factura Simpl.:'.$this->numero,0,1,'');
-            $pdf->Cell(60,4,'Fecha: '.$this->femision.':'.$this->hemision,0,1,'');
-            $pdf->Cell(60,4,'Metodo de pago:'.$this->tipopago,0,1,'');
- 
+            $pdf->Ln(1);
+            //$pdf->Cell(60,4,'Factura Simpl.:'.$this->numero,0,1,'L');
+            $pdf->Cell(30,6,'Fecha: '.$this->femision.':'.$this->hemision,0,0,'');
+            $pdf->Cell(30,6,'Metodo de pago:'.$this->tipopago,0,0,'');
+            $pdf->Ln(2);
+            $pdf->Cell(30,6,'Sucursal: '.$this->codcen,0,0,'');
+            $pdf->Cell(30,6,'Caja:'.$this->caja->caja->nombre,0,0,'');
+            $pdf->Ln(2);
+            $pdf->Cell(60,6,'Cliente: '.$this->nombre_cliente,0,0,'');
+            $pdf->Ln(2);
+            $pdf->Cell(60,6,'DNI/RUC:'.$this->rucpro,0,0,'');
+            $pdf->Ln(2);
             // COLUMNAS
-            $pdf->SetFont('Helvetica', 'B', 7);
-            $pdf->Cell(30, 10, 'Producto', 0);
-            $pdf->Cell(5, 10, 'Ud',0,0,'R');
-            $pdf->Cell(10, 10, 'Precio',0,0,'R');
-            $pdf->Cell(15, 10, 'Total',0,0,'R');
+            $pdf->SetFont('Helvetica', '', 7);
+            //$pdf->Cell(30, 10, 'Producto', 0);
+            $pdf->Cell(5, 10, 'Item',0,0,'R');
+            $pdf->Cell(10, 10, 'Codart',0,0,'R');
+            $pdf->Cell(5, 10, 'Um',0,0,'R');
+            $pdf->Cell(10, 10, 'Cant',0,0,'R');
+            $pdf->Cell(10, 10, 'Punit',0,0,'R');
+            $pdf->Cell(10, 10, 'D Unit',0,0,'R');
+            $pdf->Cell(10, 10, 'Total',0,0,'R');
             $pdf->Ln(8);
             $pdf->Cell(60,0,'','T');
             $pdf->Ln(0);
@@ -320,124 +355,63 @@ class ComFactura extends \common\models\base\BaseDocument
            
             foreach($this->details as $detail){ 
            
-                $pdf->MultiCell(30,4,$detail->descripcion,0,'L'); 
-                $pdf->Cell(35, -5, $detail->cant,0,0,'R');
-                $pdf->Cell(10, -5,$detail->punit.EURO,0,0,'R');
-                $pdf->Cell(15, -5, $detail->pventa.EURO,0,0,'R');
-                $pdf->Ln(3);               
-                            
+                //$pdf->MultiCell(30,5,$detail->descripcion,0,'L'); 
+                $pdf->Cell(5,5, $detail->item,0,0,'R');
+                $pdf->Cell(10, 5,$detail->codart,0,0,'R');
+                $pdf->Cell(5, 5, $detail->codum,0,0,'R');
+                $pdf->Cell(10, 5, $detail->cant,0,0,'R');
+                $pdf->Cell(10, 5, $detail->punit+$detail->descuento,0,0,'R');
+                $pdf->Cell(10, 5, $detail->descuento,0,0,'R');
+                $pdf->Cell(10, 5, $detail->punit*$detail->cant,0,0,'R');
+                $pdf->Ln(3);   
+                 $pdf->SetFont('Courier', 'B', 6);
+                    $pdf->Cell(60, 4, $detail->descripcion,0,0,'L'); 
+                  $pdf->SetFont('Helvetica', '', 7);
+                $pdf->Ln(3); 
             }
-     $pdf->SetFont('Helvetica','',8);
-// SUMATORIO DE LOS PRODUCTOS Y EL IVA
-        $pdf->Ln(6);
+     $pdf->SetFont('Helvetica','',7);
+
+        $pdf->Ln(1);
         $pdf->Cell(60,0,'','T');
-        $pdf->Ln(2);    
-        $pdf->Cell(25, 10, 'TOTAL SIN IGV', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, number_format(round((round(12.25,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
-        $pdf->Ln(3);    
-        $pdf->Cell(25, 10, 'IGV 18%', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, number_format(round((round(12.25,2)),2)-round((round(2*3,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
-        $pdf->Ln(3);    
-        $pdf->Cell(25, 10, 'TOTAL', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, number_format(round(12.25,2), 2, ',', ' ').EURO,0,0,'R');
- 
-// PIE DE PAGINA
-        $pdf->Ln(10);
-        $pdf->Cell(60,0,'EL PERIODO DE DEVOLUCIONES',0,1,'C');
-        $pdf->Ln(3);
-        $pdf->Cell(60,0,'CADUCA EL DIA  01/11/2019',0,1,'C');
+        $pdf->Ln(2);
+        $pdf->Cell(20, 4, '', 0,0);
+        $pdf->Cell(25, 4, 'Op gravadas',0, 0,'L');
+        $pdf->Cell(15, 4, $formato->asDecimal($this->sunat_totgrav,2),0,0,'R');
+       
+        $pdf->Ln(4);
+       
+        
+         $pdf->Cell(20, 4, '', 0);
+        $pdf->Cell(25, 4, 'Total Dcto.', 0,0,'L');
+        $pdf->Cell(15,4, $formato->asDecimal(empty($this->descuento)?'':$this->descuento,2),0,0,'R');
+        $pdf->Ln(4);
+        
+        
+        $pdf->Cell(20, 4, '', 0);
+        $pdf->Cell(25, 4, 'IGV '.(h::gsetting('general', 'igv')*100).' %',0,0,'L');
+        $pdf->Cell(15, 4, $formato->asDecimal($this->sunat_totigv,2),0,0,'R');
+        $pdf->Ln(4);
+        $pdf->SetFont('Helvetica','B',7);
+        $pdf->Cell(20, 4, '', 0);
+        $pdf->Cell(25, 4, 'Total',0,0,'L');
+        $pdf->Cell(15, 4,h::money()->money['simbolo'].$formato->asDecimal($this->total,2),0,0,'R');
+        $pdf->SetFont('Helvetica','',7);
+        $pdf->Ln(4);
+  
+          $pdf->Cell(30,7,'Pagó: '.$this->codcen,0,0,'');
+            $pdf->Cell(30,7,'Vuelto:'.$this->caja->caja->nombre,0,0,'');
+            $pdf->Ln(4);
+       // $pdf->Ln(10);
+       
         $pdf->Ln(2);
         $pdf->Image($fileQr);
+        //$pdf->Output('D');
         $pdf->Output($targetPath,'f');
-        $this->attachFromPath($targetPath); 
+        $this->attachFromPath($targetPath);
+        //return $targetPath;
          
    }
    
-   /*
-    * BOLETA DE VENTA
-    */
-   public function preparePdfVoucher(){      
-       $socio=$this->socio;
-       $numero=$this->numero;
-       $file=dirname(dirname(__DIR__)).'/com/views/com/templates/Invoice_template.php';
-       $targetPath=yii::getAlias('@temp').'/'. $numero.'.pdf';
-       $fileQr=yii::getAlias('@temp').'/'. $numero.'QR.png';       
-       $pdf=New \FPDF('P','mm',array(80,150)); 
-        $qrCode = (new \Da\QrCode\QrCode('This is my text'))
-            ->setSize(50)
-            ->setMargin(5);   
-                $qrCode->writeFile($fileQr);      
-        $pdf->AddPage();
-                define('EURO',$this->codmon);
-       // CABECERA
-            $pdf->SetFont('Helvetica','',12);
-            $pdf->Cell(60,4,$socio->despro,0,1,'C');
-            $pdf->SetFont('Helvetica','',8);
-            $pdf->Cell(60,4,$socio->rucpro,0,1,'C');
-           // $pdf->Cell(60,4,'C/ Arturo Soria, 1',0,1,'C');
-            $pdf->Cell(60,4,$socio->firstAddress(),0,1,'C');
-            $pdf->Cell(60,4,$socio->telpro,0,1,'C');
-            $pdf->Cell(60,4,$socio->web,0,1,'C');
- 
-        // DATOS FACTURA        
-            $pdf->Ln(5);
-            $pdf->Cell(60,4,'Factura Simpl.:'.$this->numero,0,1,'');
-            $pdf->Cell(60,4,'Fecha: '.$this->femision.':'.$this->hemision,0,1,'');
-            $pdf->Cell(60,4,'Metodo de pago:'.$this->tipopago,0,1,'');
- 
-            // COLUMNAS
-            $pdf->SetFont('Courier', '', 7);
-            $pdf->Cell(30, 10, 'Producto', 0);
-            $pdf->Cell(5, 10, 'Ud',0,0,'R');
-            $pdf->Cell(10, 10, 'Precio',0,0,'R');
-            $pdf->Cell(15, 10, 'Total',0,0,'R');
-            $pdf->Ln(8);
-            $pdf->Cell(60,0,'','T');
-            $pdf->Ln(0);
- 
-        // PRODUCTOS
-           
-            foreach($this->details as $detail){ 
-           
-                $pdf->MultiCell(30,4,$detail->descripcion,0,'L'); 
-                $pdf->Cell(35, -5, $detail->cant,0,0,'R');
-                $pdf->Cell(15, -5,$detail->punit,0,0,'R');
-                $pdf->Cell(10, -5, $detail->pventa,0,0,'R');
-                $pdf->Ln(3);               
-                            
-            }
-     $pdf->SetFont('Helvetica','',8);
-// SUMATORIO DE LOS PRODUCTOS Y EL IVA
-        $pdf->Ln(6);
-        $pdf->Cell(60,0,'','T');
-        $pdf->Ln(2);    
-        $pdf->Cell(25, 10, 'TOTAL SIN IGV', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, number_format(round((round(12.25,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
-        $pdf->Ln(3);    
-        $pdf->Cell(25, 10, 'IGV 18%', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, number_format(round((round(12.25,2)),2)-round((round(2*3,2)/1.21),2), 2, ',', ' ').EURO,0,0,'R');
-        $pdf->Ln(3);    
-        $pdf->Cell(25, 10, 'TOTAL', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, number_format(round(12.25,2), 2, ',', ' ').EURO,0,0,'R');
- 
-// PIE DE PAGINA
-        $pdf->Ln(10);
-        $pdf->Cell(60,0,'EL PERIODO DE DEVOLUCIONES',0,1,'C');
-        $pdf->Ln(3);
-        $pdf->Cell(60,0,'CADUCA EL DIA  01/11/2019',0,1,'C');
-        $pdf->Ln(2);
-        $pdf->Image($fileQr);
-        $pdf->Output($targetPath,'f');
-        $this->attachFromPath($targetPath); 
-         
-   }
-  
   
   
   public function setIgv(){
@@ -560,7 +534,10 @@ class ComFactura extends \common\models\base\BaseDocument
       $this->flag_sunat=self::ST_REJECT_SUNAT;
       return $this;
   }
-  
+  public function setCreated(){
+      $this->flag_sunat=self::ST_CREATED;
+      return $this;
+  }
   
   public function hasInvoiceItems(){
      return  $this->getDetails()->count()>0;
@@ -730,16 +707,20 @@ class ComFactura extends \common\models\base\BaseDocument
        return $invoice;
   }
   
- private function nameFileXml(){
-     return $this->socio->rucpro.'-'.
-             $this->sunat_tipodoc.'-'.
-             $this->serie.'-'.(integer)(substr($this->numero,5)).'.xml';
- }
- 
- private function nameFileCdr(){
-     return 'R-'.$this->socio->rucpro.'-'.
-             $this->sunat_tipodoc.'-'.
-             $this->serie.'-'.(integer)(substr($this->numero,5)).'.zip';
+ private function generateNameForQr(){
+     $arrayPieces=[
+         $this->socio->rucpro,
+         $this->sunat_tipodoc,
+         $this->serie,
+         substr($this->numero,5),
+         $this->sunat_totigv,
+          $this->total,
+         $this->swichtDate('femision', false),
+         $this->sunat_tipdoccli,
+         $this->rucpro,
+     ];
+     return join(self::CHARACTER_SEPARATOR_FOR_DATA_QR,
+            $arrayPieces);
  }
  
 }
