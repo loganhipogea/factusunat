@@ -383,7 +383,7 @@ class ComController extends baseController
             
             return $this->redirect(['index-cashes']);
         }ELSE{
-            print_r($model->getErrors());DIE();
+            //print_r($model->getErrors());DIE();
         }
     
         return $this->render('create_caja_dia', [
