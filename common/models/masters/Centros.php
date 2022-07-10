@@ -104,7 +104,7 @@ class Centros extends modelBase
         $sesion=\yii::$app->session;
         if($sesion->has(self::CURRENT_CENTER_KEY_SESION) && !empty($sesion->get(self::CURRENT_CENTER_KEY_SESION))){
             return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
-            var_dump($sesion->get(self::CURRENT_CENTER_KEY_SESION));die();
+            
         }else{
             //echo "se foe";die();
           return \yii::$app->controller->redirect(['/profile/select-center'])
@@ -120,6 +120,7 @@ class Centros extends modelBase
     
     public static function codcen(){      
        $array_company=self::currentCenter();
+       if(is_array($array_company))
        return $array_company['codcen'];
     } 
    
