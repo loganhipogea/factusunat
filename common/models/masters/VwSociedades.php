@@ -67,6 +67,7 @@ class VwSociedades extends \common\models\base\modelBase
     public static function currentCompany(){
         $sesion=\yii::$app->session;
         if($sesion->has(self::CURRENT_COMPANY_KEY_SESION)){
+            VAR_DUMP($sesion->get(self::CURRENT_COMPANY_KEY_SESION));DIE();
             return $sesion->get(self::CURRENT_COMPANY_KEY_SESION);
         }else{
           return \yii::$app->controller->redirect(['/profile/select-company'])
