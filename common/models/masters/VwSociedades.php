@@ -92,7 +92,7 @@ class VwSociedades extends \common\models\base\modelBase
     } 
     public static function despro(){      
        $array_company=self::currentCompany();
-       //var_dump($array_company);die();
+       var_dump($array_company);die();
        return $array_company['despro'];
     } 
     
