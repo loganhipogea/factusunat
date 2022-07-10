@@ -2,6 +2,7 @@
 
 namespace frontend\modules\com;
 use common\helpers\h;
+use common\filters\FilterCurrentCompany;
 /**
  * com module definition class
  */
@@ -22,6 +23,18 @@ class Module extends \yii\base\Module
 
         // custom initialization code goes here
     }
+    
+     public function behaviors(){
+        return[
+           /*[
+            'class' => FilterCurrentCompany::className(), 
+            'except' => [
+                
+                ],
+            ],*/
+        ];
+    }
+    
     
     public static function idCajaDia($codcen){
         

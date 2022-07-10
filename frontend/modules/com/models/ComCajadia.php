@@ -181,45 +181,9 @@ class ComCajadia extends \common\models\base\modelBase
             ->setRuc('20100047218')
             ->setNombreComercial('BOTICAS ARGENTINA')
             ->setRazonSocial('BOTICAS ARGENTINA')
-           ;
-      
-      
-      
+           ;      
         $detalles=[];
-        $voucher=$this->vouchers[0];
-   $detiail1 = new SummaryDetail();
-$detiail1->setTipoDoc($voucher->sunat_tipodoc)
-    ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
-    ->setEstado('1')
-    ->setClienteTipo($voucher->sunat_tipdoccli)
-    ->setClienteNro($voucher->rucpro)
-    ->setTotal($voucher->total)
-    ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
-    ->setMtoIGV($voucher->sunat_totigv);
-$voucher=$this->vouchers[1];
-$detiail2 = new SummaryDetail();
-$detiail2->setTipoDoc($voucher->sunat_tipodoc)
-    ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
-    ->setEstado('1')
-    ->setClienteTipo($voucher->sunat_tipdoccli)
-    ->setClienteNro($voucher->rucpro)
-    ->setTotal($voucher->total)
-    ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
-    ->setMtoIGV($voucher->sunat_totigv);
-
-$voucher=$this->vouchers[2];
-$detiail3 = new SummaryDetail();
-$detiail3->setTipoDoc($voucher->sunat_tipodoc)
-    ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
-    ->setEstado('1')
-    ->setClienteTipo($voucher->sunat_tipdoccli)
-    ->setClienteNro($voucher->rucpro)
-    ->setTotal($voucher->total)
-    ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
-    ->setMtoIGV($voucher->sunat_totigv);
-
-   //$detalles=[$detiail1,$detiail2,$detiail3];
-   //var_dump($detalles);die();
+ 
         foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
             $detalle->setTipoDoc('03')
@@ -229,13 +193,8 @@ $detiail3->setTipoDoc($voucher->sunat_tipodoc)
                ->setClienteNro($voucher->rucpro)               
                ->setTotal($voucher->total)
               ->setMtoOperGravadas($voucher->setTotalGravado()->sunat_totgrav+0)
-              // ->setMtoOperInafectas(24.4)
-               // ->setMtoOperExoneradas(50)
-               // ->setMtoOperExportacion(10.555)
-               // ->setMtoOtrosCargos(21)
-                ->setMtoIGV($voucher->sunat_totigv);
-             //$detalles[]=[$detalle];
-               array_push($detalles,$detalle);
+               ->setMtoIGV($voucher->sunat_totigv);
+              array_push($detalles,$detalle);
           }
             
             //var_dump($detalles);die();

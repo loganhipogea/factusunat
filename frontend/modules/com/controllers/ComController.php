@@ -2,10 +2,14 @@
 
 namespace frontend\modules\com\controllers;
 use common\helpers\h;
+use common\models\masters\Centros;
+use common\models\masters\VwSociedades;
+use common\filters\FilterCurrentCenter;
 use frontend\modules\com\models\ComOv;
 use frontend\modules\com\Module as MyModule;
 use frontend\modules\com\models\ComFactudet;
 use frontend\modules\com\models\ComFactura;
+use common\models\masters\Maestrocompo;
 use frontend\modules\com\ComOvSearch;
 use frontend\controllers\base\baseController;
 use frontend\modules\com\models\ComVwFactudetSearch;
@@ -29,11 +33,9 @@ class ComController extends baseController
         return array_merge(
             parent::behaviors(),
             [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+                'filterCenter' => [
+                    'class' =>FilterCurrentCenter::className(),
+                    
                 ],
             ]
         );
@@ -188,17 +190,18 @@ class ComController extends baseController
     }
    
      public function actionCreaOvPlus(){ 
-         //h::sunat()->clearCache();
-        $model = new \frontend\modules\com\models\ComFactura();
+        $model = new ComFactura();
         $request = Yii::$app->getRequest();
-        //if(!$request->isPost){
-             $model->setAttributes([
-            'codcen'=> \common\models\masters\Centros::find()->one()->codcen,
-            'codsoc'=> 'A',
-            'sunat_tipodoc'=> $model::TYPE_DOC_INVOICE,
-            'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('RUC'),
-            'codmon'=> 'PEN',
-            'caja_id'=> \frontend\modules\com\Module::idCajaDia(\common\models\masters\Centros::find()->one()->codcen),
+        /*
+         * Colocando valores por default en ComFactura
+         */
+         $model->setAttributes([
+            'codcen'=> Centros::codcen(),
+            'codsoc'=> VwSociedades::codsoc(),
+            'sunat_tipodoc'=> $model::TYPE_DOC_VOUCHER,
+            //'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('DNI'),
+            'codmon'=>h::gsetting('general','moneda'),
+            'caja_id'=> MyModule::idCajaDia(Centros::codcen()),
         ]);
         //}
        
@@ -554,4 +557,37 @@ class ComController extends baseController
        $model->preparePdfInvoice();
        //$this->render('test_pdf',['model'=>$model]);
     }
+    
+     public function actionCreateStock() {
+
+         $this->layout = "install";
+         $model=New Maestrocompo();
+         $model->setScenario($model::SCE_PTO_VENTA);
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                    
+                  return ['success'=>1,'id'=>$model->codpro];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_stock', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    } 
 }

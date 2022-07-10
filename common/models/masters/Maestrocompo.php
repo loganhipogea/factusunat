@@ -5,23 +5,14 @@ use common\behaviors\FileBehavior;
 use Yii;
 use common\helpers\h;
 /**
- * This is the model class for table "{{%maestrocompo}}".
- *
- * @property int $id
- * @property string $codart
- * @property string $descripcion
- * @property string $marca
- * @property string $modelo
- * @property string $numeroparte
- * @property string $codum
- * @property string $peso
- *
+
  * @property Ums $codum0
  */
 class Maestrocompo extends \common\models\base\modelBase
 {
-    
-  
+   public $cant_stock=''; //PROPIEDAD PARA SIMULAR UN INGRESO RAPIDO DE STICK EN PUNTO DE VENTA  
+    CONST SCE_BATCH='batch';
+    CONST SCE_PTO_VENTA='pto_venta';
     /**
      * {@inheritdoc}
      */
@@ -76,10 +67,14 @@ class Maestrocompo extends \common\models\base\modelBase
     
     public function scenarios() {
         $scenarios = parent::scenarios();
-        $scenarios['batch'] = [
+        $scenarios[self::SCE_BATCH] = [
             'codart', 'descripcion','codum',
             'codtipo', 'codean', 'numeroparte',
             'marca', 'regsan'];
+        $scenarios[self::SCE_PTO_VENTA] = [
+            'codart', 'descripcion','codum',
+            'codtipo', 'codean', 
+            'marca','cant_stock'];        
        return $scenarios;
     }
     /**
@@ -135,6 +130,11 @@ class Maestrocompo extends \common\models\base\modelBase
             return 1;
         }
     }
+    
+   
+  public function createStock(){
+      
+  }  
     
     
  }

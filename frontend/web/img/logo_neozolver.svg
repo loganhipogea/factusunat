@@ -11,6 +11,7 @@
    sodipodi:docname="logo_neozolver.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -24,26 +25,48 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.5862247"
-     inkscape:cx="-34.988737"
-     inkscape:cy="127.34639"
-     inkscape:window-width="1008"
-     inkscape:window-height="728"
-     inkscape:window-x="2"
-     inkscape:window-y="-20"
-     inkscape:window-maximized="0"
+     inkscape:cx="50.74943"
+     inkscape:cy="127.66161"
+     inkscape:window-width="1024"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      units="px"
      width="100px"
      height="100px" />
   <defs
-     id="defs2" />
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4734">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop4730" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop4732" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4734"
+       id="linearGradient4736"
+       x1="496.3548"
+       y1="266.47183"
+       x2="585.28571"
+       y2="440.08246"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Capa 1"
      inkscape:groupmode="layer"
      id="layer1">
     <path
        sodipodi:type="star"
-       style="opacity:0.731517;fill:#ffffff;fill-opacity:0.95343679;stroke-width:2.77641"
+       style="opacity:0.731517;fill:url(#linearGradient4736);fill-opacity:1;stroke-width:2.77641"
        id="path8010"
        inkscape:flatsided="false"
        sodipodi:sides="4"

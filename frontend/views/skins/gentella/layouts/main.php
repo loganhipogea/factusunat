@@ -261,6 +261,15 @@ echo ModalAjax::widget([
                             </a>
                             
                         </li>
+                        <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-industry" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
+                                <?php 
+                                echo \common\models\masters\VwSociedades::despro() ?>
+                               
+                            </a>
+                            
+                        </li>
                     </ul>
                 </nav>
             </div>

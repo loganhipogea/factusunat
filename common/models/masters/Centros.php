@@ -23,6 +23,7 @@ class Centros extends modelBase
     /**
      * {@inheritdoc}
      */
+    const CURRENT_CENTER_KEY_SESION='key_center_sesion';
     public static function tableName()
     {
         return '{{%centros}}';
@@ -98,5 +99,26 @@ class Centros extends modelBase
       }
    }
     
+  
+     public static function currentCenter(){
+        $sesion=\yii::$app->session;
+        if($sesion->has(self::CURRENT_CENTER_KEY_SESION)){
+            return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
+        }else{
+          return \yii::$app->controller->redirect(['/profile/select-center'])
+         ->send();
+        }        
+      }
+    
+    public  function storeCenter(){
+       $sesion=\yii::$app->session;
+       $sesion->set(self::CURRENT_CENTER_KEY_SESION,$this->attributes);
+       return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
+    }
+    
+    public static function codcen(){      
+       $array_company=self::currentCenter();
+       return $array_company['codcen'];
+    } 
    
 }

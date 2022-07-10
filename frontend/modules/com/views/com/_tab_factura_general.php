@@ -70,7 +70,14 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                               'id'=>'btn_fct_enviar-sunat',
                               'class' => 'btn btn-warning']
                           );   
-                  }  
+                  } 
+                  if($model->isPassedSunat()){ 
+                  echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
+                          [
+                              'id'=>'btn_fct_anular-sunat',
+                              'class' => 'btn btn-danger']
+                          );   
+                  } 
                 
                ?>
              
@@ -212,6 +219,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'id_input'=>'btn_fct_aprobar',
             'idGrilla'=>'zona-pjax-socio'
       ])  ?>  
+    
+    
      <?php echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'btn_fct_anular',
@@ -235,7 +244,18 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'id_input'=>'btn_fct_enviar-sunat',
             'idGrilla'=>'pjax-sends-grilla'
       ])  ?>  
-    
+    <?php 
+     //$docu=($model->isInvoice())?'invoice':'voucher';
+     echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_fct_anular-sunat',
+            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/sunat/default/ajax-down-invoice-sunat','id'=>$model->id]),
+            'id_input'=>'btn_fct_anular-sunat',
+            'idGrilla'=>'pjax-sends-grilla'
+      ])  ?> 
 
     
    <?php 

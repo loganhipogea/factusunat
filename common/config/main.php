@@ -7,6 +7,14 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'formatter' => [
+            //'dateFormat' => 'dd.MM.yyyy',
+            'decimalSeparator' => '.',
+            'thousandSeparator' => ',',
+           // 'currencyCode' => 'EUR',
+       ],
+        
+        
         'moneda'=>['class' => 'common\components\Moneda',],
         'html2pdf' => [
             'class' => 'yii2tech\html2pdf\Manager',

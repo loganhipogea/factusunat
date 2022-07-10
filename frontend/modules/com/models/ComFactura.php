@@ -6,7 +6,7 @@ namespace frontend\modules\com\models;
 use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
 use Greenter\Model\Client\Client;
-use Greenter\Model\Company\Company;
+
 use Greenter\Model\Company\Address;
 /************/
 
@@ -16,6 +16,10 @@ use common\behaviors\FileBehavior;
 use common\models\masters\Clipro;
 use common\models\masters\Centros;
 use frontend\modules\sunat\Module as ModuloSunat;
+use common\models\masters\VwSociedades;
+USE Greenter\Model\Voided\Voided;
+use Greenter\Model\Voided\VoidedDetail;
+USE Greenter\Model\Company\Company;
 class ComFactura extends \common\models\base\BaseDocument
 {
     
@@ -48,7 +52,7 @@ class ComFactura extends \common\models\base\BaseDocument
              [[
                 'sunat_totexo','sunat_totigv','sunat_totimpuestos','caja_id',
                 'descuento','subtotal','sunat_totisc','totalventa',
-                 'sunta_tipdoccli','cambio',
+                 'sunta_tipdoccli','cambio','tipopago'
                ],
                  'safe'
              ],            
@@ -116,19 +120,19 @@ class ComFactura extends \common\models\base\BaseDocument
         //echo "salio"; die();
         //\yii::error('validando',__FUNCTION__);
         if($this->isInvoice()){
-            YII::ERROR('Es factura',__FUNCTION__);
+            //YII::ERROR('Es factura',__FUNCTION__);
             if(empty($this->rucpro)){
-                 YII::ERROR('RUC VACION',__FUNCTION__);
+                 //YII::ERROR('RUC VACION',__FUNCTION__);
                 $this->addError('rucpro',yii::t('base.errors','This field is required'));
                 return ;               
             }else{//Si escribió RUC validarlo
-                 YII::ERROR('VALIDANDO EL RUC',__FUNCTION__);
+                // YII::ERROR('VALIDANDO EL RUC',__FUNCTION__);
                 $validatorRuc=new \yii\validators\RegularExpressionValidator([
                     'pattern'=>h::gsetting('general', 'formatoRUC'),
                             ]); 
                
                 if(!$validatorRuc->validate($this->rucpro)){ 
-                   YII::ERROR('Agregando el error al campo rucpro ',__FUNCTION__); 
+                   //YII::ERROR('Agregando el error al campo rucpro ',__FUNCTION__); 
                            $this->addError('rucpro',yii::t('base.errors','Invalid format'));
                              
                      }
@@ -142,17 +146,17 @@ class ComFactura extends \common\models\base\BaseDocument
                  * Segun los valores del campo 
                  * sunat_tipdoccli
                  */
-            yii::error('es boleta');
-            yii::error($this->isClientWithDni());
+            //yii::error('es boleta');
+            //yii::error($this->isClientWithDni());
             if($this->isClientWithDni()){ //VALIDAR EL DNI  
-                 yii::error('patenr');
-                 yii::error(h::gsetting('general', 'formatoDNI'));
+                // yii::error('patenr');
+                 //yii::error(h::gsetting('general', 'formatoDNI'));
                      $validatorDni=new \yii\validators\RegularExpressionValidator(
                      [
                         'pattern'=>h::gsetting('general', 'formatoDNI'),
                     ]);
                   if(!$validatorDni->validate($this->rucpro)){ 
-                          yii::error('Encontro un error en la validaicon dni ');
+                          //yii::error('Encontro un error en la validaicon dni ');
                          $this->addError('rucpro',yii::t('base.errors','Invalid format'));
                             return ;  
                      }
@@ -173,12 +177,6 @@ class ComFactura extends \common\models\base\BaseDocument
         }
     }
     
-    public function beforeValidate() {
-        $this->codcen=Centros::find()->one()->codcen;
-        if($this->isInvoice())$this->sunat_tipdoccli=h::sunat ()-> 
-              graw('s.01.tdoc')->g('FACTURA');
-        return parent::beforeValidate();
-    }
     
      
     public function behaviors() {
@@ -245,6 +243,7 @@ class ComFactura extends \common\models\base\BaseDocument
     
     public function beforeSave($insert) {
         IF($insert){
+            //yii::error($this->attributes);
            //echo $this->currentDateInFormat(); die();
           $this->codestado=self::ST_CREATED;
           /*
@@ -253,7 +252,7 @@ class ComFactura extends \common\models\base\BaseDocument
           $this->cambio=($this->codmon=='USD')?h::tipoCambio('USD')['compra']:1;
           if($this->isInvoice()){
             $this->serie='F001'; 
-            $this->sunat_tipdoccli=h::sunat()->graw('s.06.tdociden')->g('RUC');
+            //$this->sunat_tipdoccli=h::sunat()->graw('s.06.tdociden')->g('RUC');
           }else{
             $this->serie='B001';
             //$this->sunat_tipdoccli=h::sunat()->graw('s.06.tdociden')->g('DNI');
@@ -408,6 +407,7 @@ class ComFactura extends \common\models\base\BaseDocument
         //$pdf->Output('D');
         $pdf->Output($targetPath,'f');
         $this->attachFromPath($targetPath);
+        @unlink($targetPath);
         //return $targetPath;
          
    }
@@ -563,51 +563,21 @@ class ComFactura extends \common\models\base\BaseDocument
             ->setNombreComercial(substr($socio->despro,20))
             ->setRazonSocial($socio->despro)
             ->setAddress((new Address())
-                /*->setUbigueo('150101')
-                ->setDistrito('LIMA')
-                ->setProvincia('LIMA')
-                ->setDepartamento('LIMA')
-                ->setUrbanizacion('CASUARINAS')
-                ->setCodLocal('0000')*/
                 ->setDireccion($direccionSocio->direc))
-            //->setEmail('admin@greenter.com')
-            //->setTelephone('01-234455')
               ;
      $clipro=$this->clipro;
      $direccionCliente=$clipro->firstAddress(true);
        
      $client = new Client();
-        $client->setTipoDoc('6') //Catalogo Sunat 06 TIPODOCIDENTIDAD  6= REGISTRO UNICO CONTRIBUYENTYE
+     //var_dump($this->sunat_tipdoccli);die();
+        $client->setTipoDoc($this->sunat_tipdoccli) //Catalogo Sunat 06 TIPODOCIDENTIDAD  6= REGISTRO UNICO CONTRIBUYENTYE
             ->setNumDoc($this->rucpro)
             ->setRznSocial($clipro->despro)
             ->setAddress((new Address())
                 ->setDireccion($direccionCliente->direc))
-            //->setEmail('client@corp.com')
-           // ->setTelephone('01-445566')
-                ;
-        
-      /*$invoice
-    ->setUblVersion('2.1')
-    ->setFecVencimiento(new \DateTime())
-    ->setTipoOperacion('0101')
-    ->setTipoDoc('01')
-    ->setSerie('F001')
-    ->setCorrelativo('125')
-    ->setFechaEmision(new \DateTime())
-    ->setFormaPago(new FormaPagoContado())
-    ->setTipoMoneda('PEN')
-    ->setCompany($util->shared->getCompany())
-    ->setClient($util->shared->getClient())
-    ->setMtoOperGravadas(200)
-    ->setMtoOperExoneradas(100)
-    ->setMtoIGV(36)
-    ->setTotalImpuestos(36)
-    ->setValorVenta(300)
-    ->setSubTotal(336)
-    ->setMtoImpVenta(336)
-    ;*/
-        //VAR_DUMP((((integer)(SUBSTR($this->numero,5))+0).''));DIE();
-      $invoice=New Invoice();
+               ;
+      
+         $invoice=New Invoice();
       $invoice
     ->setUblVersion('2.1')
     ->setFecVencimiento(new \DateTime())
@@ -634,17 +604,19 @@ class ComFactura extends \common\models\base\BaseDocument
   /*
    * Almacena los datos del envio
    */
-  public function storeSend($object,$success){
+  public function storeSend($object,$success,$filename,$ticket=null){
       $modelSend=New \frontend\modules\sunat\models\SunatSends();
       $modelSend->mensaje=$object;
        $modelSend->doc_id=$this->id;
         $modelSend->tipodoc=$this->sunat_tipodoc;
         $modelSend->resultado=$success;
       $grabo=$modelSend->save();
-      //yii::error('@frontend/modules/sunat/envio/files/'.$this->nameFileXml());
-      $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$this->nameFileXml()));
-     $modelSend->attachFromPath(yii::getAlias('@frontend/modules/sunat/envio/files/'.$this->nameFileCdr()));
-     return $grabo;
+       $rutaBase=yii::getAlias('@frontend/modules/sunat/envio/files/');            
+               $modelSend->attachFromPath($rutaBase.$filename.'.xml');              
+               $modelSend->attachFromPath($rutaBase.'R-'.$filename.'.zip');
+               //unlink($rutaBase.$filename.'.xml');
+                //unlink($rutaBase.'R-'.$filename.'.zip');
+       return $grabo;
 //yii::error($modelSend->getErrors());
   }
   
@@ -721,6 +693,30 @@ class ComFactura extends \common\models\base\BaseDocument
      ];
      return join(self::CHARACTER_SEPARATOR_FOR_DATA_QR,
             $arrayPieces);
+ }
+  private function companyGreenter(){
+      $company=new Company();
+            $company->setRuc(VwSociedades::rucpro())
+            ->setNombreComercial(substr(VwSociedades::despro(),0,20))
+            ->setRazonSocial(VwSociedades::despro());
+    return $company;  
+  }
+ public function createVoidedGreenter(){
+     $company=$this->companyGreenter(); 
+            $detalle = new VoidedDetail();
+            $detalle->setTipoDoc($this->sunat_tipodoc)
+                ->setSerie($this->serie)
+               ->setCorrelativo(substr($this->numero,5))
+               ->setDesMotivoBaja('ERROR EN CÁLCULOS');
+      $detalles=[$detalle]; 
+            $sum = new Voided();
+                // Fecha Generacion menor que Fecha Resumen
+            $sum->setFecGeneracion(new \DateTime($this->swichtDate('femision', false)))
+                 ->setFecComunicacion(new \DateTime())
+                ->setCorrelativo('001')
+                ->setCompany($company)
+                ->setDetails($detalles);
+         return $sum;
  }
  
 }

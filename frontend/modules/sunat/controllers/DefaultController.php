@@ -11,8 +11,13 @@ use Greenter\Ws\Services\SunatEndpoints;
 use frontend\modules\sunat\envio\src\Util;
 use frontend\modules\sunat\models\SunatSends;
 USE frontend\modules\sunat\models\SunatSendSumary;
+USE Greenter\Model\Summary\Summary;
+USE Greenter\Model\Company\Company;
 USE frontend\modules\com\models\ComFactura;
+use common\models\masters\VwSociedades;
 use common\helpers\h;
+use Greenter\Model\Voided;
+USE frontend\modules\sunat\Module as ModuloSunat;
 /**
  * Default controller for the `sunat` module
  */
@@ -122,7 +127,7 @@ $util->showResponse($invoice, $cdr);
     public function actionAjaxSendInvoiceStd($id){
          require __DIR__ . '/../envio/vendor/autoload.php'; 
             $util=Util::getInstance();
-            $model=\frontend\modules\com\models\ComFactura::findOne($id);
+            $model=ComFactura::findOne($id);
              $invoice = $model->createInvoiceGreenter();
              $items = [];
         foreach($model->details as $detail){            
@@ -134,9 +139,9 @@ $util->showResponse($invoice, $cdr);
                 ->setMtoValorUnitario($detail->punit+0)
                 ->setMtoValorVenta($detail->pventa+0)
                 ->setMtoBaseIgv($detail->pventa+0)
-                ->setPorcentajeIgv(18)
+                ->setPorcentajeIgv(h::gsetting('general','igv')*100)
                 ->setIgv($detail->igv+0)
-                ->setTipAfeIgv('10') // Catalog: 07
+                ->setTipAfeIgv(h::sunat()->graw('s.07.tafectacion')->g('GONERO')) // Catalog: 07
                 ->setTotalImpuestos($detail->igv+0) ///REVISAR ESTO
                 ->setMtoPrecioUnitario(round($detail->punitgravado+0,2)) //REVISAR: DEBE DE AGFRGARSE TODOS TODOS LOS IMPUETROS Y RESTAR EL DESCUENTRO
                 ;
@@ -163,16 +168,16 @@ $util->showResponse($invoice, $cdr);
                             //;
                            
                             if($model->setRejectedSunat()->save() &&                           
-                               $model->storeSend($errores,false)){
+                               $model->storeSend($errores,false,$invoice->getName())){
                                 
                                 $transaccion->commit();
-                                \yii::error($model->setRejectedSunat()->save());
-                                \yii::error($model->storeSend($errores,false));
-                                \yii::error('Hizo commit');
+                                //\yii::error($model->setRejectedSunat()->save());
+                               // \yii::error($model->storeSend($errores,false));
+                                //\yii::error('Hizo commit');
                             }else{
-                                \yii::error($model->setRejectedSunat()->save());
-                                \yii::error($model->storeSend($errores,false));
-                                \yii::error('Hizo rollback');
+                                //\yii::error($model->setRejectedSunat()->save());
+                                //\yii::error($model->storeSend($errores,false));
+                               // \yii::error('Hizo rollback');
                                 $transaccion->rollback();
                                 //var_dump($model->setRejectedSunat()->save(),$model->storeSend($errores,false));
                             
@@ -200,9 +205,9 @@ $util->showResponse($invoice, $cdr);
                             
                             $transaccion=$model->getDb()->beginTransaction();
                              //var_dump($model->setRejectedSunat()->save(),$model->storeSend($cdrArray,false));
-                           
+                            //$model->storeSend($cdrArray,true,$invoice->getName());
                              if($model->setPassedSunat()->save() &&                           
-                               $model->storeSend($cdrArray,true)){
+                               $model->storeSend($cdrArray,true,$invoice->getName())){
                                 $transaccion->commit();
                             }else{
                                 $transaccion->rollback();
@@ -332,7 +337,7 @@ $util->showResponse($invoice, $cdr);
                              //var_dump($model->setRejectedSunat()->save(),$model->storeSend($cdrArray,false));
                            
                              if($model->setPassedSunat()->save() &&                           
-                               $model->storeSend($cdrArray,true)){
+                               $model->storeSend($cdrArray,true,$invoice->getName())){
                                 $transaccion->commit();
                             }else{
                                 $transaccion->rollback();                                
@@ -414,4 +419,65 @@ $util->showResponse($invoice, $cdr);
         }           
             die();               
     }
+    
+ 
+    
+  public function actionAjaxDownInvoiceSunat($id){ 
+      require __DIR__ . '/../envio/vendor/autoload.php';
+      $util=Util::getInstance();
+     $model= ComFactura::findOne($id);
+     $voided=$model->createVoidedGreenter();  
+    $voided->setCorrelativo(SunatSendSumary::correlSend());
+             
+        $see = $util->getSee(SunatEndpoints::FE_BETA);
+        $res = $see->send($voided);
+            $util->writeXml($voided, $see->getFactory()->getLastXml());
+         h::response()->format = \yii\web\Response::FORMAT_JSON;   
+            /*
+             * En el caso de que falle el envio
+             */
+            if (!$res->isSuccess()) {   
+                 $error=$res->getError();
+                            $errores=[
+                                'code'=>$error->getCode(),
+                                'message'=>$error->getMessage()
+                                ];
+                
+                //$transaccion=$model->getDb()->beginTransaction();
+                  $model->setRejectedSunat()->save();                           
+                  $model->storeSend($errores,false,null,null);
+                  
+                   return ['error' =>\yii::t('base.errors','There are some errors')];    
+                
+             }
+            $ticket = $res->getTicket();
+           $res = $see->getStatus($ticket);
+        if (!$res->isSuccess()) {
+                $error=$res->getError();
+                            $errores=[
+                                'code'=>$error->getCode(),
+                                'message'=>$error->getMessage()
+                                ];
+                      // var_dump($errores);die();
+               $model->storeSend($errores,false,null,$ticket);
+                //$model->setRejectedSunat()->save(); 
+                //$model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
+                 return ['error' =>\yii::t('base.errors','There are some errors')]; 
+           }else{
+               $cdr = $res->getCdrResponse();
+                $util->writeCdr($sum, $res->getCdrZip());
+                $cdrArray=[
+                                'id'=>$cdr->getId(),
+                                'code'=>$cdr->getCode(),
+                                'description'=>$cdr->getDescription(),
+                                'notes'=>$cdr->getNotes(),
+                            ];
+                $model->storeSend($cdrArray,true,$voided->getName(),$ticket);
+                //$model->setRejectedSunat()->save();
+                $model->setRemoved()->save();
+                 //$model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
+               return ['success' =>' -  '.\yii::t('base.errors','The summary was send successfully')]; 
+             }    
+  }
+    
 }

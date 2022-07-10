@@ -88,7 +88,8 @@ $zonaAjax='grilla-centros'
    ];
    echo grid::widget([
     'dataProvider'=> new \yii\data\ActiveDataProvider([
-            'query'=> common\models\masters\Centros::find(),
+            'query'=> common\models\masters\Centros::find()
+            ->andWhere(['codpro'=>$model->codpro]),
             ]
             ),
    // 'filterModel' => $searchModel,
