@@ -3,6 +3,7 @@
 namespace common\models\masters;
 use common\models\config\Parametros;
 use common\models\base\modelBase;
+use common\helpers\h;
 use common\models\masters\CentrosParametros;
 use common\models\base\modelBaseTrait;
 use Yii;
@@ -36,6 +37,7 @@ class Centros extends modelBase
     {
         $reglas= [
             [['codcen', 'nomcen'], 'required'],
+             [['codcen', 'nomcen','codpro'], 'safe'],
              [['codcen'], 'match','pattern'=>'/[1-9]{1}[0-9]{1,4}$/'],
             [['descricen'], 'string'],
             [['codcen'], 'string', 'max' => 4],
@@ -100,7 +102,7 @@ class Centros extends modelBase
    }
     
     private static function keySesion(){
-        return \yii::$app->name.'_'.self::CURRENT_CENTER_KEY_SESION;
+        return h::userId().'_'.self::CURRENT_CENTER_KEY_SESION;
     }
   
      public static function currentCenter(){

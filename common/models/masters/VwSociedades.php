@@ -2,6 +2,7 @@
 
 namespace common\models\masters;
 use yii\helpers\Url;
+use common\helpers\h;
 use Yii;
 
 /**
@@ -64,7 +65,7 @@ class VwSociedades extends \common\models\base\modelBase
     }
     
     public function keySesion(){
-        return \yii::$app->name.'_'.self::CURRENT_COMPANY_KEY_SESION;
+        return   h::userId().'_'.self::CURRENT_COMPANY_KEY_SESION;
     }
     public static function currentCompany(){
         $sesion=\yii::$app->session;

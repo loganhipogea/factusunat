@@ -11,6 +11,7 @@ use yii\filters\AccessControl;
 USE common\helpers\h;
 use common\models\UserSociedades;
 use yii\base\UnknownPropertyException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
