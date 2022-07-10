@@ -66,7 +66,7 @@ class VwSociedades extends \common\models\base\modelBase
     
     public static function currentCompany(){
         $sesion=\yii::$app->session;
-        if($sesion->has(self::CURRENT_COMPANY_KEY_SESION) && !empty(self::CURRENT_COMPANY_KEY_SESION)){
+        if($sesion->has(self::CURRENT_COMPANY_KEY_SESION) && !empty($sesion->get(self::CURRENT_COMPANY_KEY_SESION))){
            // VAR_DUMP($sesion->get(self::CURRENT_COMPANY_KEY_SESION));DIE();
             return $sesion->get(self::CURRENT_COMPANY_KEY_SESION);
         }else{

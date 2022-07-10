@@ -102,7 +102,7 @@ class Centros extends modelBase
   
      public static function currentCenter(){
         $sesion=\yii::$app->session;
-        if($sesion->has(self::CURRENT_CENTER_KEY_SESION) && !empty(self::CURRENT_CENTER_KEY_SESION)){
+        if($sesion->has(self::CURRENT_CENTER_KEY_SESION) && !empty($sesion->get(self::CURRENT_CENTER_KEY_SESION))){
             return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
         }else{
           return \yii::$app->controller->redirect(['/profile/select-center'])
