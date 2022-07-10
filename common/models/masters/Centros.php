@@ -106,7 +106,7 @@ class Centros extends modelBase
             return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
             var_dump($sesion->get(self::CURRENT_CENTER_KEY_SESION));die();
         }else{
-            echo "se foe";die();
+            //echo "se foe";die();
           return \yii::$app->controller->redirect(['/profile/select-center'])
          ->send();
         }        
