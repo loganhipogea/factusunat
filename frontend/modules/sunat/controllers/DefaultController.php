@@ -465,7 +465,7 @@ $util->showResponse($invoice, $cdr);
                  return ['error' =>\yii::t('base.errors','There are some errors')]; 
            }else{
                $cdr = $res->getCdrResponse();
-                $util->writeCdr($sum, $res->getCdrZip());
+                $util->writeCdr($voided, $res->getCdrZip());
                 $cdrArray=[
                                 'id'=>$cdr->getId(),
                                 'code'=>$cdr->getCode(),
