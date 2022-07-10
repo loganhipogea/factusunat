@@ -81,7 +81,7 @@ class VwSociedades extends \common\models\base\modelBase
     
     public  function storeCompany(){
        $sesion=\yii::$app->session;
-       $sesion->set(self::keySesion());
+       $sesion->set(self::keySesion(),$this->attributes);
        return $sesion->get(self::keySesion());
     }
     
