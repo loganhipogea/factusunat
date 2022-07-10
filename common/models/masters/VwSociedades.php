@@ -68,9 +68,9 @@ class VwSociedades extends \common\models\base\modelBase
     }
     public static function currentCompany(){
         $sesion=\yii::$app->session;
-        if($sesion->has($this->keySesion()) && !empty($this->keySesion())){
+        if($sesion->has(self::keySesion()) && !empty(self::keySesion())){
            // VAR_DUMP($sesion->get(self::CURRENT_COMPANY_KEY_SESION));DIE();
-            return $sesion->get($this->keySesion());
+            return $sesion->get(self::keySesion());
         }else{
            $sesion->set('permiso',true);
             return \yii::$app->controller->redirect(['/profile/select-company'])
@@ -81,8 +81,8 @@ class VwSociedades extends \common\models\base\modelBase
     
     public  function storeCompany(){
        $sesion=\yii::$app->session;
-       $sesion->set($this->keySesion());
-       return $sesion->get($this->keySesion());
+       $sesion->set(self::keySesion());
+       return $sesion->get(self::keySesion());
     }
     
     public static function codsoc(){      
