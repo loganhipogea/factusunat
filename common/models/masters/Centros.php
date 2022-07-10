@@ -99,11 +99,14 @@ class Centros extends modelBase
       }
    }
     
+    private function keySesion(){
+        return \yii::$app->name.'_'.self::CURRENT_CENTER_KEY_SESION;
+    }
   
      public static function currentCenter(){
         $sesion=\yii::$app->session;
-        if($sesion->has(self::CURRENT_CENTER_KEY_SESION) && !empty($sesion->get(self::CURRENT_CENTER_KEY_SESION))){
-            return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
+        if($sesion->has($this->keySesion()) && !empty($this->keySesion())){
+            return $sesion->get($this->keySesion());
             
         }else{
             //echo "se foe";die();
@@ -114,8 +117,8 @@ class Centros extends modelBase
     
     public  function storeCenter(){
        $sesion=\yii::$app->session;
-       $sesion->set(self::CURRENT_CENTER_KEY_SESION,$this->attributes);
-       return $sesion->get(self::CURRENT_CENTER_KEY_SESION);
+       $sesion->set($this->keySesion(),$this->attributes);
+       return $sesion->get($this->keySesion());
     }
     
     public static function codcen(){      
