@@ -102,7 +102,7 @@ class m220710_153503_createdatabasica extends baseMigration
                 [
                     'codcaja','codsoc','codcen','nombre',
                 ],[
-            [ 'CJ01','A','7050' ,  'CAJA PRINCIPAL', ],
+            [ 'CJ01','A','7050' ,  'CAJA PRINC', ],
                        ]
                      )->execute();
        /* ComCajaventa::firstOrCreateStatic( [
