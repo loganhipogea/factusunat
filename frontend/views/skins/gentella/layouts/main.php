@@ -265,7 +265,10 @@ echo ModalAjax::widget([
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-industry" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
                                 <?php 
-                                echo \common\models\masters\VwSociedades::despro() ?>
+                                if(\yii::$app->sesion->get('permiso'))
+                                echo \common\models\masters\VwSociedades::despro();
+                                 \yii::$app->sesion->set('permiso',false);
+                                ?>
                                
                             </a>
                             

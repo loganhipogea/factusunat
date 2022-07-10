@@ -67,11 +67,12 @@ class VwSociedades extends \common\models\base\modelBase
     public static function currentCompany(){
         $sesion=\yii::$app->session;
         if($sesion->has(self::CURRENT_COMPANY_KEY_SESION)){
-            VAR_DUMP($sesion->get(self::CURRENT_COMPANY_KEY_SESION));DIE();
+           // VAR_DUMP($sesion->get(self::CURRENT_COMPANY_KEY_SESION));DIE();
             return $sesion->get(self::CURRENT_COMPANY_KEY_SESION);
         }else{
-          return \yii::$app->controller->redirect(['/profile/select-company'])
-         ->send();
+           $sesion->set('permiso',true);
+            return \yii::$app->controller->redirect(['/profile/select-company'])
+            ->send();
         }        
     }
     
@@ -92,7 +93,7 @@ class VwSociedades extends \common\models\base\modelBase
     } 
     public static function despro(){      
        $array_company=self::currentCompany();
-       var_dump($array_company);die();
+       //var_dump($array_company);die();
        return $array_company['despro'];
     } 
     
