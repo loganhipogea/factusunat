@@ -85,15 +85,18 @@ class VwSociedades extends \common\models\base\modelBase
     
     public static function codsoc(){      
        $array_company=self::currentCompany();
+       if(is_array($array_company))
        return $array_company['codsoc'];
     } 
     public static function rucpro(){      
        $array_company=self::currentCompany();
+       if(is_array($array_company))
        return $array_company['rucpro'];
     } 
     public static function despro(){      
        $array_company=self::currentCompany();
        //var_dump($array_company);die();
+       if(is_array($array_company))
        return $array_company['despro'];
     } 
     
