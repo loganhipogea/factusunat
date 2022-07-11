@@ -245,13 +245,14 @@ class baseMigration extends Migration
    }
    
    public function dropFk(){
-       
-           $this->dropForeignKey(
+       if($this->existsFk($this->paramsFk[0], $this->nameFk())){
+         $this->dropForeignKey(
                    $this->nameFk(),
                    $this->paramsFk[0]
                    );
-           $this->deleteLogFk();
-       } 
+           $this->deleteLogFk(); 
+       }           
+    } 
        
    }
             

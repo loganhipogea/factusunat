@@ -53,6 +53,7 @@ class SunatSends extends \common\models\base\modelBase
     {
         return [
             [['user_id'], 'integer'],
+            [['caja_id','ndia','numero','ticket'], 'safe'],
             //[['mensaje'], 'string'],
             [['username'], 'string', 'max' => 255],
             [['cuando',], 'string', 'max' => 19],

@@ -131,11 +131,26 @@ class Maestrocompo extends \common\models\base\modelBase
         }
     }
     
-   
-  public function createStock(){
+  private function attributesStock($codal){
+      return [
+          'codart'=>$this->codart,
+          'codcen'=> Almacenes::findOne($codal)->codcen,
+          'cant'=>0,
+          'um'=>$this->codum,
+          'codal'=>$codal,
+      ];
       
+  }
+  /*
+   * Registra una fila de stock con cantidad cero
+   */ 
+  public function createStock($codal){
+      $stock= new \frontend\modules\logi\models\Stock();
+      $stock->setAttributes($this->attributesStock($codal));
+      return $stock->save();      
   }  
-    
-    
+  
+  
+ 
  }
 

@@ -20,6 +20,8 @@ use common\models\masters\VwSociedades;
 USE Greenter\Model\Voided\Voided;
 use Greenter\Model\Voided\VoidedDetail;
 USE Greenter\Model\Company\Company;
+use Greenter\Model\Summary\SummaryDetail;
+use Greenter\Model\Summary\Summary;
 class ComFactura extends \common\models\base\BaseDocument
 {
     
@@ -605,9 +607,11 @@ class ComFactura extends \common\models\base\BaseDocument
    * Almacena los datos del envio
    */
   public function storeSend($object,$success,$filename,$ticket=null){
+     // var_dump($filename);die();
       $modelSend=New \frontend\modules\sunat\models\SunatSends();
       $modelSend->mensaje=$object;
        $modelSend->doc_id=$this->id;
+        $modelSend->ticket=$ticket;
         $modelSend->tipodoc=$this->sunat_tipodoc;
         $modelSend->resultado=$success;
       $grabo=$modelSend->save();
@@ -640,24 +644,15 @@ class ComFactura extends \common\models\base\BaseDocument
    * Funcion para coger las clases de
    * la libreria Greenter
    */
-  public function createVoucherGreenter(){
-           
-            
-            $socio=$this->socio;
-            $company= (new Company())
-            ->setRuc($socio->rucpro)
-            ->setNombreComercial(substr($socio->despro,20))
-            ->setRazonSocial($socio->despro);
-    /*
-     * Client segun el tipo de documento ingresado
-     */        
+  public function createVoucherGreenter(){           
+            $company= $this->companyGreenter();
           
                $client = new Client();
                 $client->setTipoDoc($this->sunat_tipdoccli)
                  ->setNumDoc($this->rucpro)
                     ->setRznSocial($this->nombre_cliente);
           
-            
+             
             // Venta
         $invoice = new Invoice();
         $invoice
@@ -676,6 +671,7 @@ class ComFactura extends \common\models\base\BaseDocument
             ->setValorVenta($this->setTotalVenta()->totalventa)
             ->setSubTotal($this->total)
             ->setMtoImpVenta($this->total);
+        
        return $invoice;
   }
   
@@ -695,13 +691,17 @@ class ComFactura extends \common\models\base\BaseDocument
             $arrayPieces);
  }
   private function companyGreenter(){
+      $socio=$this->socio;      
       $company=new Company();
-            $company->setRuc(VwSociedades::rucpro())
-            ->setNombreComercial(substr(VwSociedades::despro(),0,20))
-            ->setRazonSocial(VwSociedades::despro());
+            $company->setRuc($socio->rucpro)
+            ->setNombreComercial(substr($socio->despro,0,20))
+            ->setRazonSocial($socio->despro);
+            //var_dump(VwSociedades::rucpro());die();
+        
     return $company;  
   }
- public function createVoidedGreenter(){
+  
+ public function createVoidedInvoiceGreenter(){
      $company=$this->companyGreenter(); 
             $detalle = new VoidedDetail();
             $detalle->setTipoDoc($this->sunat_tipodoc)
@@ -716,7 +716,33 @@ class ComFactura extends \common\models\base\BaseDocument
                 ->setCorrelativo('001')
                 ->setCompany($company)
                 ->setDetails($detalles);
+           
          return $sum;
  }
+ 
+ public function createVoidedVoucherGreenter(){
+     
+        $detalle = new SummaryDetail();
+        $detalle->setTipoDoc($this->sunat_tipodoc)
+    ->setSerieNro($this->serie.'-'.(integer)substr($this->numero,5))
+    ->setEstado(h::sunat()->graw('s.19.estitem')->g('ANULAR'))
+    ->setClienteTipo($this->sunat_tipdoccli)
+    ->setClienteNro($this->rucpro)
+    ->setTotal($this->total)
+    ->setMtoOperGravadas(20)
+    //->setMtoOperInafectas(24.4)
+    //->setMtoOperExoneradas(50)
+    //->setMtoOperExportacion(10.555)
+    //->setMtoOtrosCargos(21)
+    ->setMtoIGV($this->sunat_totigv);         
+            $sum = new Summary();
+                // Fecha Generacion menor que Fecha Resumen
+            $sum->setFecGeneracion(new \DateTime($this->swichtDate('femision', false)))
+                ->setFecResumen(new \DateTime(date('Y-m-d')))
+                ->setCorrelativo('001')
+                ->setCompany($this->companyGreenter())
+                ->setDetails([$detalle]);
+            return $sum;
+   }
  
 }

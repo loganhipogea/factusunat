@@ -44,6 +44,11 @@ use yii\widgets\Pjax;
         ]); ?>  
         <div class="form-group">
         <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?php 
+        $url= Url::to(['/com/com/create-material','gridName'=>'non3e','idModal'=>'buscarvalor']);
+             echo  Html::button('<span class="fa fa-user"></span>'.yii::t('base.verbs','Crear material'), ['href' => $url, 'title' => 'Nuevo material ','id'=>'btn_contacts','gridName'=>'sa',    'class' => 'botonAbre btn btn-success']); 
+         ?>
+        
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
              <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>

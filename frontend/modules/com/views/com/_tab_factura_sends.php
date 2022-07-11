@@ -64,6 +64,14 @@ $zonaAjax='pjax-sends-grilla'
             'width' => '210px',*/
             
          ],  
+                 [
+            //'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'ticket',
+           /* 'pageSummary' => 'Total',
+            'vAlign' => 'middle',
+            'width' => '210px',*/
+            
+         ], 
         [
             //'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'username',

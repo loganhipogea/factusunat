@@ -245,6 +245,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'idGrilla'=>'pjax-sends-grilla'
       ])  ?>  
     <?php 
+    if($model->isInvoice()){
+        $ruta='/sunat/default/ajax-down-invoice-sunat';
+    }elseif($model->isBoleta()){
+        $ruta='/sunat/default/ajax-down-voucher-sunat';
+    }else{
+       $ruta=''; 
+    }
      //$docu=($model->isInvoice())?'invoice':'voucher';
      echo inputAjaxWidget::widget([
             //'isHtml'=>true,
@@ -252,7 +259,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             //'otherContainers'=>['pjax-monto','pjax-moneda'],
              'evento'=>'click',
             'tipo'=>'POST',
-            'ruta'=>Url::to(['/sunat/default/ajax-down-invoice-sunat','id'=>$model->id]),
+            'ruta'=>Url::to([$ruta,'id'=>$model->id]),
             'id_input'=>'btn_fct_anular-sunat',
             'idGrilla'=>'pjax-sends-grilla'
       ])  ?> 

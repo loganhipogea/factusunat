@@ -22,7 +22,7 @@
         "daxslab/yii2-coreui": "*",
         "synamen/yii2-tabler-theme": "~1.0",
         "yiister/yii2-gentelella": "~1.0",
-        "dmstr/yii2-adminlte-asset": "^2.1",
+         "dmstr/yii2-adminlte-asset": "^2.4",
         "dlds/yii2-metronic": "dev-master",
         "yii2mod/yii2-settings": "*", 
         "2amigos/yii2-chartjs-widget": "~2.0",
@@ -40,7 +40,8 @@
       "setasign/fpdf": "^1.8",
       "2amigos/qrcode-library": "~1.1",
       "kartik-v/yii2-widget-datepicker": "dev-master",
-      "vilochane/yii2-barcode-generator": "dev-master"
+      "vilochane/yii2-barcode-generator": "dev-master",
+      "kartik-v/yii2-icons": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

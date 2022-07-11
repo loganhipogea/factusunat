@@ -64,7 +64,7 @@ class VwSociedades extends \common\models\base\modelBase
         return new VwSociedadesQuery(get_called_class());
     }
     
-    public function keySesion(){
+    public static function keySesion(){
         return   h::userId().'_'.self::CURRENT_COMPANY_KEY_SESION;
     }
     public static function currentCompany(){

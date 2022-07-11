@@ -199,7 +199,7 @@ class ComController extends baseController
             'codcen'=> Centros::codcen(),
             'codsoc'=> VwSociedades::codsoc(),
             'sunat_tipodoc'=> $model::TYPE_DOC_VOUCHER,
-            //'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('DNI'),
+            'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('DNI'),
             'codmon'=>h::gsetting('general','moneda'),
             'caja_id'=> MyModule::idCajaDia(Centros::codcen()),
         ]);
@@ -558,7 +558,7 @@ class ComController extends baseController
        //$this->render('test_pdf',['model'=>$model]);
     }
     
-     public function actionCreateStock() {
+     public function actionCreateMaterial() {
 
          $this->layout = "install";
          $model=New Maestrocompo();
@@ -573,8 +573,27 @@ class ComController extends baseController
                return ['success'=>2,'msg'=>$datos];  
             }else{
                 if($model->save()){
-                    
-                  return ['success'=>1,'id'=>$model->codpro];  
+                   $model->refresh();
+                   $model->createStock('1203');
+                   $content=""
+                           . " $('div[class*=\"js-input-plus\"]').trigger('click');   "
+                           . "  v_maximo=0;
+                                  $('#monet').find('input[name*=\"[subtotal]\"]').each(function(){
+                                                            var_index=$(this).parent().parent().attr('data-index'); 
+                                                                    if(v_maximo < var_index ){
+                                                                    v_maximo=var_index
+                                                                    } //fin de if
+                                                     
+                                 });//fin del each          "
+                           . "   $('#comfactudet-'+v_maximo+'-'+'descripcion_fake').text('".$model->codart."'+'-'+'".$model->descripcion."');
+                                 $('#comfactudet-'+v_maximo+'-'+'cant').val(1);
+                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').val(0);
+                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').trigger('change');
+                                 $('#comfactudet-'+v_maximo+'-'+'codart').val('".$model->codart."');
+                                 $('#comfactudet-'+v_maximo+'-'+'descripcion').val('".$model->descripcion."');"
+                           . "";
+                  echo  yii\helpers\Html::script($content);
+                 // return ['success'=>1,'id'=>.$model->codart];  
                 }else{
                     
                 }                
@@ -582,7 +601,7 @@ class ComController extends baseController
         }else{
            return $this->renderAjax('modal_stock', [
                         'model' => $model,
-                        'id' => $id,
+                        //'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
                         //'cantidadLibres'=>$cantidadLibres,

@@ -63,15 +63,7 @@ use common\behaviors\FileBehavior;
         <?= Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
-<html><div id="showBarcode"></div></html> <!--This element id should be passed on to options-->
-<?php use barcode\barcode\BarcodeGenerator;
-        $optionsArray = array(
-        'elementId'=> 'showBarcode', /* div or canvas id*/
-        'value'=> '4797001018719', /* value for EAN 13 be careful to set right values for each barcode type */
-        'type'=>'ean13',/*supported types  ean8, ean13, upc, std25, int25, code11, code39, code93, code128, codabar, msi, datamatrix*/
+ <!--This element id should be passed on to options-->
 
-            );
-        echo BarcodeGenerator::widget($optionsArray);
-   ?> 
     <?php ActiveForm::end(); ?>
 </div>

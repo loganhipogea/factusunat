@@ -108,4 +108,27 @@ class Stock extends \common\models\base\modelBase
     {
         return new StockQuery(get_called_class());
     }
+    public function setCodigo($codigo){
+        $this->codart=$codigo;
+        return $this;
+    }
+    public function setCentro($codcen){
+        $this->codart=$codcen;
+        return $this;
+    }
+    public function setCant($cant){
+        $this->codart=$cant;
+        return $this;
+    }
+    public function setUm($um){
+        $this->codart=$um;
+        return $this;
+    }
+    public function setCodal($alm){
+        $this->codart=$alm;
+        return $this;
+    }
+    
+    
+    
 }

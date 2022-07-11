@@ -119,29 +119,8 @@ $zonaAjax='grilla-centros'
     <?php Pjax::end(); ?>    
    
 <?php
-$url= Url::to(['/masters/clipro/agrega-centro','id'=>$model->codpro,'gridName'=>$zonaAjax,'idModal'=>'buscarvalor']);
- 
-  echo  Html::button('<span class="fa fa-user"></span>'.yii::t('base.verbs','Crear Sucursal'), ['href' => $url, 'title' => 'Nuevo Centro de '.$model->despro,'id'=>'btn_contacts','gridName'=>$zonaAjax,    'class' => 'botonAbre btn btn-success']); 
-
-  
- /* use lo\widgets\modal\ModalAjax;
-
-echo ModalAjax::widget([
-    'id' => 'createCompany',
-    'header' => 'Create Company',
-    'toggleButton' => [
-        'label' => 'New Company',
-        'class' => 'btn btn-primary pull-right',
-        'id'=>'mibotonmodal'
-       // 'style'=>'visibility:hidden',
-        
-    ],
-    'url' => $url, // Ajax view with form to load
-    'ajaxSubmit' => true, // Submit the contained form as ajax, true by default
-    //para que no se esconda la ventana cuando presionas una tecla fuera del marco
-    'clientOptions' => ['tabindex'=>'','backdrop' => 'static', 'keyboard' => FALSE]
-    // ... any other yii2 bootstrap modal option you need
-]);*/
+    $url= Url::to(['/masters/clipro/agrega-centro','id'=>$model->codpro,'gridName'=>$zonaAjax,'idModal'=>'buscarvalor']);
+   echo  Html::button('<span class="fa fa-user"></span>'.yii::t('base.verbs','Crear Sucursal'), ['href' => $url, 'title' => 'Nuevo Centro de '.$model->despro,'id'=>'btn_contacts','gridName'=>$zonaAjax,    'class' => 'botonAbre btn btn-success']); 
  ?>  
    
    
