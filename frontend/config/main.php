@@ -29,6 +29,9 @@ return [
         'sunat'=>[
             'class'=>'common\components\SunatCatalog',
         ],
+         'comboValores'=>[
+            'class'=>'common\components\ComboCatalog',
+        ],
         
         'view' => [
                'theme' => [

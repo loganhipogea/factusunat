@@ -94,7 +94,7 @@ use yii\widgets\Pjax;
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <?= $form->field($model, 'tipopago')->
-            dropDownList(ComboHelper::getTablesValues('com_ov.tipopago') ,
+            dropDownList(ComboHelper::getTablesValues('com_factura.tipopago') ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
@@ -139,9 +139,9 @@ use yii\widgets\Pjax;
 </div>
  <?php $ruc=h::sunat()->graw('s.06.tdociden')->g('RUC');
        $dni=h::sunat()->graw('s.06.tdociden')->g('DNI');
-       h::sunat()->clearCache();
+      // h::sunat()->clearCache();
         $cadenaJs="$('#comfactura-sunat_tipodoc').on( 'change', function() {
-                   if($('#comfactura-sunat_tipodoc').val()=='".$model::TYPE_DOC_INVOICE."'){
+                   if($('#comfactura-sunat_tipodoc').val()=='".h::sunat()->graw('s.01.tdoc')->g('FACTURA')."'){
                         $(\"#comfactura-sunat_tipdoccli  option[value='".$ruc."']\").attr('selected', true);                       
                        //$('#comfactura-sunat_tipdoccli').attr('disabled', 'disabled');
                          }else{

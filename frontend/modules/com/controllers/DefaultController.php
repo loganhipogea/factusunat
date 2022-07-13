@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\modules\com\controllers;
-
+use yii\helpers\Url;
 use yii\web\Controller;
 
 /**
@@ -16,5 +16,10 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+    
+     public function actionConfig()
+    {
+        return $this->redirect(Url::toRoute(['/config/settings-module','module'=>\Yii::$app->controller->module->id]));
     }
 }

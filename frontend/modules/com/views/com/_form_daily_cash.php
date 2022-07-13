@@ -7,8 +7,12 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
 use frontend\modules\com\helpers\ComboHelper;
 use common\helpers\h;
 use kartik\grid\GridView as grid;
+use common\models\masters\VwSociedades;
+USE common\models\masters\Centros;
+use common\widgets\cbodepwidget\cboDepWidget as Combodep;
 use kartik\date\DatePicker;
 use yii\widgets\Pjax;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComOv */
@@ -33,27 +37,13 @@ use yii\widgets\Pjax;
     
     <div class="form-group">
                 <div class="btn-group">
+          <?php Pjax::begin(['id'=>'zona_botones']);?>
          <?php  
-                if($model->isCreated())
+                if($model->isCreated() or $model->isNewRecord)
                 echo  Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']);
            ?>
-             <?php  
-                if($model->isPassed() && !$model->isNewRecord)
-                 echo Html::button("<span class=\"fa fa-check\"></span>Cerrar", 
-                          [
-                              //'id'=>'btn_fct_enviar-sunat',
-                              'class' => 'btn btn-info']
-                          ); 
-           ?> 
-            <?php  
-                if($model->isPassed() && !$model->isNewRecord)
-                 echo Html::button("<span class=\"fa fa-check\"></span>Cerrar", 
-                          [
-                              //'id'=>'btn_fct_enviar-sunat',
-                              'class' => 'btn btn-info']
-                          ); 
-           ?>   
-            <?php if(!$model->isSendSuccessToSunat()){ 
+           
+            <?php if(!$model->isSendSuccessToSunat() or $model->isPassed()){ 
                    echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
                           [
                               'id'=>'btn_fct_enviar-sunat',
@@ -62,14 +52,50 @@ use yii\widgets\Pjax;
               }
              
               ?> 
-        
+               <?php if($model->isCreated()){ 
+                   echo Html::button("<span class=\"fa fa-paper-plane\"></span>Cerrar", 
+                          [
+                              'id'=>'btn_fct_aprobar_local',
+                              'class' => 'btn btn-success']
+                          );
+              }
+             
+              ?> 
+        <?php Pjax::end();?>
+         
+         
         
        
                 </div>
      </div>
+     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"> 
+    <?php echo ComboDep::widget([
+               'model'=>$model,               
+               'form'=>$form,
+               'data'=> ComboHelper::getCboCentros(VwSociedades::codpro()),
+               'campo'=>'codcen',
+               'idcombodep'=>'comcajadia-caja_id',
+              
+                   'source'=>[\frontend\modules\com\models\ComCajaventa::className()=>
+                                [
+                                  'campoclave'=>'id' , //columna clave del modelo ; se almacena en el value del option del select 
+                                        'camporef'=>'nombre',//columna a mostrar 
+                                        'campofiltro'=>'codcen'  
+                                ]
+                             ],
+                 'inputOptions'=>[
+                                'class'=>'form-control',
+                                'disabled'=>$hasChilds
+                                ]
+                      ]
+        )  ?>
+ </div>       
+          
+   
+         
    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
      <?= $form->field($model, 'caja_id')->
-            dropDownList(ComboHelper::getCboCajas() ,
+            dropDownList(($model->isNewRecord)?[]:ComboHelper::getCboCajas($model->codcen) ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         'disabled'=>$hasChilds
@@ -94,15 +120,7 @@ use yii\widgets\Pjax;
                             ]) ?>
 
    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-     <?= $form->field($model, 'codcen')->
-            dropDownList(ComboHelper::getCboCentros() ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                        'disabled'=>$hasChilds
-                        ]
-                    ) ?>
-    </div>
+    
    
    
     <?php 
@@ -180,11 +198,27 @@ use yii\widgets\Pjax;
                     }
                 ],
    ];
-   echo grid::widget([
-    'dataProvider'=> new \yii\data\ActiveDataProvider([
+         $dataProvider=new \yii\data\ActiveDataProvider([
         'query'=> frontend\modules\com\models\ComFactura::find()-> 
                 andWhere(['caja_id'=>$model->id])
-    ]),
+    ]);
+   echo ExportMenu::widget([
+    'dataProvider' => $dataProvider,  
+    'clearBuffers' => true,
+    'columns' => [
+       'codsoc',
+            'numero',
+            'femision',            
+           'sunat_tipodoc',
+            'total',
+           'flag_sunat'
+        ],
+    'dropdownOptions' => [
+        'label' => yii::t('base.names','Exportar'),
+        'class' => 'btn btn-primary'
+    ]
+]).''. grid::widget([
+    'dataProvider'=> $dataProvider,
    // 'filterModel' => $searchModel,
        'summary' => '',
     'columns' => $gridColumns,
@@ -236,6 +270,18 @@ use yii\widgets\Pjax;
             'tipo'=>'POST',
             'ruta'=>Url::to(['/sunat/default/ajax-send-sum-vouchers','id'=>$model->id]),
             'id_input'=>'btn_fct_enviar-sunat',
+            'idGrilla'=>$grid_zone
+      ])  ?>  
+      <?php 
+      $send_zone='zona_errores_envio';
+      echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_fct_aprobar_local',
+            'otherContainers'=>['zona_botones'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/com/com/ajax-close-cash','id'=>$model->id]),
+            'id_input'=>'btn_fct_aprobar_local',
             'idGrilla'=>$grid_zone
       ])  ?>  
     

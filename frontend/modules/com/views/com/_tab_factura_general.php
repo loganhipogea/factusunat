@@ -36,10 +36,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         ]); ?>  
         
       <div class="col-md-12">
-            <div class="form-group no-margin">
+            <div class="form-group">
                 <div class="btn-group">
+                <?php Pjax::begin(['id'=>'zona_botones']); ?>
+                    
+                   
                  <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-info']) ?>
-       
+                
                 
                <?php 
                  
@@ -72,7 +75,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                           );   
                   } 
                   if($model->isPassedSunat()){ 
-                  echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
+                  echo Html::button("<span class=\"fa fa-paper-plane\"></span>Baja Sunat", 
                           [
                               'id'=>'btn_fct_anular-sunat',
                               'class' => 'btn btn-danger']
@@ -81,14 +84,21 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                 
                ?>
              
-               
+               <?php Pjax::end(); ?>
               </div>  
             </div>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
              <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+           <?php  Pjax::begin(['id'=>'zona_estados']); ?>
+                     
+             <?= $form->field($model, 'codestado')->textInput(['value'=>$model->statusText(),'disabled'=>true,'maxlength' => true]) ?>
+           <?php Pjax::end(); ?>
+                    
+       </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <?= $form->field($model, 'sunat_tipodoc')->
             dropDownList(
                 [
@@ -102,7 +112,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                         ]
                     ) ?>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <?php  //h::settings()->invalidateCache();  ?>
                        <?= $form->field($model, 'femision')->widget(DatePicker::class, [
                              'language' => h::app()->language,
@@ -157,12 +167,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                 Tipocambio::COD_MONEDA_BASE=>Tipocambio::COD_MONEDA_BASE] ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                         'disabled'=>$deshabilitado
                         ]
                     ) ?>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <?= $form->field($model, 'codsoc')->
-            dropDownList(['A'=>'SOCIEDAD','B'=>'SOCIEDAD2'] ,
+            dropDownList(ComboHelper::getCboSociedades() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         
@@ -173,7 +184,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <?= $form->field($model, 'tipopago')->
-            dropDownList(ComboHelper::getTablesValues('com_ov.tipopago') ,
+            dropDownList(ComboHelper::getTablesValues('com_factura.tipopago') ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         
@@ -185,9 +196,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
          <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
              <?= $form->field($model, 'subtotal')->textInput(['disabled'=>true,'maxlength' => true]) ?>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-             <?= $form->field($model, 'sunat_totisc')->textInput(['disabled'=>true,'maxlength' => true]) ?>
-        </div>
+        
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
              <?= $form->field($model, 'sunat_totigv')->textInput(['disabled'=>true,'maxlength' => true]) ?>
         </div>
@@ -212,7 +221,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     <?php echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'btn_fct_aprobar',
-            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+            'otherContainers'=>['zona_botones','zona_estados'],
              'evento'=>'click',
             'tipo'=>'POST',
             'ruta'=>Url::to(['/com/com/ajax-pass-invoice','id'=>$model->id]),
@@ -224,7 +233,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
      <?php echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'btn_fct_anular',
-            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+            'otherContainers'=>['zona_botones','zona_estados'],
              'evento'=>'click',
             'tipo'=>'POST',
             'ruta'=>Url::to(['/com/com/ajax-remove-invoice','id'=>$model->id]),
@@ -237,7 +246,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
      echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'btn_fct_enviar-sunat',
-            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+           'otherContainers'=>['zona_botones','zona_estados'],
              'evento'=>'click',
             'tipo'=>'POST',
             'ruta'=>Url::to(['/sunat/default/ajax-send-'.$docu.'-std','id'=>$model->id]),
@@ -256,7 +265,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
      echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'btn_fct_anular-sunat',
-            //'otherContainers'=>['pjax-monto','pjax-moneda'],
+                      'otherContainers'=>['zona_botones','zona_estados'],
              'evento'=>'click',
             'tipo'=>'POST',
             'ruta'=>Url::to([$ruta,'id'=>$model->id]),

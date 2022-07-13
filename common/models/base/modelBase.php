@@ -156,16 +156,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
 
 {
    use modelBaseTrait;
-    const ST_CREATED='10';
-    const ST_CANCELED='99';
-    const ST_PASSED='20';
     
-    /*
-     * CONSTANTES DE TIPO DE DOCUMENTO
-     */
-    const TYPE_DOC_INVOICE='01';//factura
-    const TYPE_DOC_VOUCHER='02'; //boleta 
-   
    
     const PREFIX_ADVANCED = '@';
     const PREFIX_BASIC = '/';
@@ -1460,9 +1451,39 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
    * Devuelve el nombre de la tabla de la base de dartos pero sine l prefijo
    * Es una lastima  que el framework no lo tenga como funcion nativa en el SchemaBuilder
    */
-  public static function RawTableName(){
+  private static function RawTableName(){
      return str_replace('}}','', str_replace('{{%','',static::tableName()));
   }
+  
+   private static function keyCombo($attribute){
+     return self::RawTableName().'.'.$attribute;
+  }
+  
+  public function dataComboValores($attribute){
+     $dependency=New \yii\caching\DbDependency(['sql'=>'SELECT COUNT(*) FROM {{%combovalores}}']);
+        $result = self::getDb()->cache(
+                                             function ($db) use($attribute) {   
+                                              return \common\models\masters\Combovalores::find()->andWhere(
+                                                        [
+                                                            'nombretabla'=>self::keyCombo($attribute),
+                                                            //'codigo'=>$this->keyCombo($attribute),
+                                                        ])->asArray()->all();
+                                                        }, 
+                                    60*60*24*365,
+                                    $dependency);
+           $result=array_combine(
+                   array_column($result, 'codigo'),
+                    array_column($result, 'valor'),
+                   );
+         
+       return  $result; 
+  }
+  public function comboValueText($attribute){
+      //var_dump($this->{$attribute});
+     //print_r($this->dataComboValores($attribute));die();
+       return $this->dataComboValores($attribute)[$this->{$attribute}];      
+  }
+ 
   
   
   

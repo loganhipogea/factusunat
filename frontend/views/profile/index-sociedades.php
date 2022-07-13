@@ -22,6 +22,7 @@ $this->title = Yii::t('base.verbs', 'Assign company for: ').h::userName();
 
 
      <?php
+     
      $zonaAjax='cliprodsdspj';
      Pjax::begin(['id'=>$zonaAjax]); ?>
     <?php 
@@ -33,6 +34,7 @@ $this->title = Yii::t('base.verbs', 'Assign company for: ').h::userName();
     </div>
    
     <?php
+   
  echo GridView::widget([
         'dataProvider' => new MyProvider([
             'query'=> common\models\masters\VwSociedades::find()
@@ -88,6 +90,7 @@ $this->title = Yii::t('base.verbs', 'Assign company for: ').h::userName();
         ]); 
     ?>
     <?php
+     
      echo inputAjaxWidget::widget([
             //'isHtml'=>true,
              'id'=>'a_id_god',
@@ -112,7 +115,7 @@ $this->title = Yii::t('base.verbs', 'Assign company for: ').h::userName();
     
     <?php Pjax::end(); ?>
 
-    
+  
 </div>
 
 

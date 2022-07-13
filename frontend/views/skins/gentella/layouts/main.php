@@ -9,6 +9,8 @@ use dmstr\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\helpers\h;
+USE common\models\masters\VwSociedades;
+USE common\models\masters\Centros;
 
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
@@ -252,7 +254,39 @@ echo ModalAjax::widget([
                                 </li>
                             </ul>
                         </li>
-
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
+                                    <?php 
+                                if(\yii::$app->session->has(VwSociedades::keysesion())){
+                                    yii::error('en el layourt main, emcomntro la sesion SOCIEDADES');
+                                     echo substr(VwSociedades::despro(),0,15); 
+                                }else{
+                                    yii::error('en el layourt main, NO emcomntro la sesion SCIEDADE');
+                                }
+                               
+                                if(\yii::$app->session->has(Centros::keysesion())){
+                                    yii::error('en el layourt main, emcomntro ELCENTRO ');
+                                    echo '->'.substr(Centros::nomcen(),0,10); 
+                                }else{
+                                    yii::error('en el layourt main, NO emcomntro la sesion CENTROS');
+                                }
+                                      
+                                ?>
+                                <span class=" fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <?PHP $socis=common\helpers\ComboHelper::getCboSociedadesWithCodpro(true);   ?>
+                                <?PHP  foreach($socis as $codpro=>$despro) { ?>
+                                <li>
+                                    <?=Html::a(substr($despro,0,40),Url::to(['/profile/set-company','codpro'=>$codpro]),['pjax'=>'0']) ?>
+                                </li>
+                                <?PHP  } 
+                                
+                                ?>
+                               
+                            </ul>
+                        </li>
                         
                          <li role="presentation" class="dropdown">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -261,17 +295,8 @@ echo ModalAjax::widget([
                             </a>
                             
                         </li>
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-industry" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
-                                <?php 
-                                if(\yii::$app->session->has(\common\models\masters\VwSociedades::keysesion()))
-                                echo \common\models\masters\VwSociedades::despro();                               
-                                ?>
-                               
-                            </a>
-                            
-                        </li>
+                        
+                        
                     </ul>
                 </nav>
             </div>

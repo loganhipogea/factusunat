@@ -6,6 +6,16 @@ AJUSTES DEL MODAL
 }
 
 /*
+AJUSTES PARA EL MENU LATERAL EL BODY DEBE DE COIDIR CO EL COLOR
+*/
+body {
+    
+    background: #671a60 !important;
+    
+}
+
+
+/*
 Corregir el color del link dl sandwih
 del menu principal 
 y tambien los links d elos tabs
@@ -223,4 +233,10 @@ a:hover {
    
     background: #671a60 !important;
    
+}
+
+table td .btn {
+  padding: 2px 6px 2px 6px !important;  
+  margin-right: 0px !important; 
+  margin-left: 0px !important; 
 }

@@ -17,6 +17,8 @@ use Yii;
 class VwSociedades extends \common\models\base\modelBase
 {
     
+    private $_data=null;
+    
     const CURRENT_COMPANY_KEY_SESION='current_compay';
     /**
      * {@inheritdoc}
@@ -69,27 +71,43 @@ class VwSociedades extends \common\models\base\modelBase
     }
     public static function currentCompany(){
         $sesion=\yii::$app->session;
-        if($sesion->has(self::keySesion()) && !empty(self::keySesion())){
-           // VAR_DUMP($sesion->get(self::CURRENT_COMPANY_KEY_SESION));DIE();
+        if($sesion->has(self::keySesion())){
+            yii::error('Encontro el key sesion');
+           //VAR_DUMP($sesion->get(self::keySesion()));
             return $sesion->get(self::keySesion());
         }else{
+             yii::error('NO Encontro el key sesion, redireccionando');
            //$sesion->set('permiso',true);
-            return \yii::$app->controller->redirect(['/profile/select-company'])
-            ->send();
+            return  \yii::$app->controller->redirect(['/profile/select-company']);
+            yii::error('despues de redireciconarFi');
+             
         }        
     }
     
     
-    public  function storeCompany(){
+    public  function storeCompany($attributes=null){
        $sesion=\yii::$app->session;
-       $sesion->set(self::keySesion(),$this->attributes);
+       if(is_null($attributes))$attributes=$this->attributes;
+       $sesion->set(self::keySesion(),$attributes);
        return $sesion->get(self::keySesion());
     }
     
-    public static function codsoc(){      
-       $array_company=self::currentCompany();
+    public static function codsoc(){  
+        yii::error('inocando a currnetCompany',__FUNCTION__);
+        
+      $array_company=self::currentCompany();
+       //yii::error($array_company,__FUNCTION__);
        if(is_array($array_company))
        return $array_company['codsoc'];
+    } 
+    
+    public static function codpro(){  
+        yii::error('inocando a currnetCompany',__FUNCTION__);
+        
+       $array_company=self::currentCompany();
+       //yii::error($array_company,__FUNCTION__);
+       if(is_array($array_company))
+       return $array_company['codpro'];
     } 
     public static function rucpro(){      
        $array_company=self::currentCompany();
@@ -97,10 +115,49 @@ class VwSociedades extends \common\models\base\modelBase
        return $array_company['rucpro'];
     } 
     public static function despro(){      
-       $array_company=self::currentCompany();
+      $array_company=self::currentCompany();
        //var_dump($array_company);die();
        if(is_array($array_company))
        return $array_company['despro'];
     } 
+  public static function getData(){        
+            return self::prepareData();
+        
+    }
+    
+    private static function prepareData(){
+        $dependency=New \yii\caching\DbDependency(['sql'=>'SELECT COUNT(*) FROM {{%centros}}']);
+        $result = self::getDb()->cache(
+                                             function ($db) {                                               
+                                                return  self::find()->asArray()->all();
+                                                        }, 
+                                    60*60*24*365,
+                                    $dependency);
+       return  $result;
+    }
+    
+   public static function societyList($except=false){
+       $data=self::prepareData();
+       $data=array_combine(array_column($data,'codsoc'),
+      array_column($data,'despro')
+              );
+       if($except && array_key_exists(self::codsoc(), $data)){
+           unset($data[self::codsoc()]);
+       }
+     RETURN   $data;
+   }
+   
+   public static function companiesList($except=false){
+     $data=self::prepareData();
+     //VAR_DUMP($data);DIE();
+       $data=array_combine(array_column($data,'codpro'),
+      array_column($data,'despro')
+              );
+       
+       if(\yii::$app->session->has(self::keySesion()) && $except && array_key_exists(self::codpro(), $data)){
+           unset($data[self::codpro()]);
+       }
+     RETURN   $data;
+   }
     
 }

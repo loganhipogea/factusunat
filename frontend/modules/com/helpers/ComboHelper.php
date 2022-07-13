@@ -4,16 +4,18 @@ use frontend\modules\com\models\ComFactura;
 USE yii;
 use \yii\helpers\ArrayHelper;
 class ComboHelper extends \common\helpers\ComboHelper{
-     public static function getCboCajas($codcen=null){
-       if(is_null($codcen)){
-          return ArrayHelper::map(
-                          \frontend\modules\com\models\ComCajaventa::find()->all(),
+    
+     public static function getCboCajas($codcen=null){ 
+         $query= \frontend\modules\com\models\ComCajaventa::find();
+         if(is_null($codcen)){
+             
+            return ArrayHelper::map($query->all(),
+                'id','nombre');
+         }else{
+           return ArrayHelper::map($query->andWhere(['codcen'=>$codcen])->all(),
                 'id','nombre');  
-       }else{
-           
-       }
-       
-    }
+         }
+      }
     
     public static function getCboEstadosFactu(){
        return [
@@ -23,12 +25,12 @@ class ComboHelper extends \common\helpers\ComboHelper{
            ComFactura::ST_CREATED=>yii::t('base.names','Created'),
            ];
     }
-    public static function getCboFlagSunat(){
+    /*public static function getCboFlagSunat(){
        return [
            ComFactura::ST_PASSED_SUNAT=>yii::t('base.names','Aceptada-SUNAT'),
            ComFactura::ST_REJECT_SUNAT=>yii::t('base.names','Rechazada-SUNAT'),
          //  ComFactura::ST_PASSED_SUNAT=>yii::t('base.names','Passed SUNAT'),
            ComFactura::ST_MISSING_SUNAT=>yii::t('base.names','No enviada-SUNAT'),
            ];
-    }
+    }*/
 }

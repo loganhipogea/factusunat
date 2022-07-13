@@ -13,6 +13,7 @@ use common\models\masters\Maestrocompo;
 use frontend\modules\com\ComOvSearch;
 use frontend\controllers\base\baseController;
 use frontend\modules\com\models\ComVwFactudetSearch;
+use frontend\modules\com\models\ComCajadia;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use kartik\date\DatePicker;
@@ -198,7 +199,7 @@ class ComController extends baseController
          $model->setAttributes([
             'codcen'=> Centros::codcen(),
             'codsoc'=> VwSociedades::codsoc(),
-            'sunat_tipodoc'=> $model::TYPE_DOC_VOUCHER,
+            'sunat_tipodoc'=> h::sunat()->graw('s.01.tdoc')->g('BOLETA'),
             'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('DNI'),
             'codmon'=>h::gsetting('general','moneda'),
             'caja_id'=> MyModule::idCajaDia(Centros::codcen()),
@@ -528,6 +529,7 @@ class ComController extends baseController
   
   public function actionIndexCashes()
     {
+      
         $searchModel = new \frontend\modules\com\models\ComCajadiaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -566,6 +568,8 @@ class ComController extends baseController
          $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
+            yii::error(h::request()->post());
+            yii::error($model->attributes);
              h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){
@@ -574,26 +578,9 @@ class ComController extends baseController
             }else{
                 if($model->save()){
                    $model->refresh();
-                   $model->createStock('1203');
-                   $content=""
-                           . " $('div[class*=\"js-input-plus\"]').trigger('click');   "
-                           . "  v_maximo=0;
-                                  $('#monet').find('input[name*=\"[subtotal]\"]').each(function(){
-                                                            var_index=$(this).parent().parent().attr('data-index'); 
-                                                                    if(v_maximo < var_index ){
-                                                                    v_maximo=var_index
-                                                                    } //fin de if
-                                                     
-                                 });//fin del each          "
-                           . "   $('#comfactudet-'+v_maximo+'-'+'descripcion_fake').text('".$model->codart."'+'-'+'".$model->descripcion."');
-                                 $('#comfactudet-'+v_maximo+'-'+'cant').val(1);
-                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').val(0);
-                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').trigger('change');
-                                 $('#comfactudet-'+v_maximo+'-'+'codart').val('".$model->codart."');
-                                 $('#comfactudet-'+v_maximo+'-'+'descripcion').val('".$model->descripcion."');"
-                           . "";
-                  echo  yii\helpers\Html::script($content);
-                 // return ['success'=>1,'id'=>.$model->codart];  
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1,'campos'=>$model->attributes];  
                 }else{
                     
                 }                
@@ -608,5 +595,30 @@ class ComController extends baseController
           
             ]);  
         }
+    }
+    
+   public function actionAjaxCloseCash($id){       
+        if (h::request()->isAjax) {
+            //$id=h::request()->get('valorInput');
+           // var_dump($val);die();
+            $model = ComCajadia::findOne($id);
+            $model->setPassed()->refreshAmounts()->save();
+             h::response()->format = yii\web\Response::FORMAT_JSON;  
+             return ['success'=>yii::t('base.errors','Cash was closed successfully')];
+            
+         }     
+   }
+   
+   public function actionAjaxExpandAttachments(){
+     
+    if (isset($_POST['expandRowKey'])) {
+        $model = ComFactura::findOne($_POST['expandRowKey']+0);
+         return $this->renderPartial('view_attachments', ['model'=>$model]);
+        
+        
     } 
+
+  }
+  
+  
 }

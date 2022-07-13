@@ -10,6 +10,7 @@ use yii\web\Response;
 use yii\filters\AccessControl;
 USE common\helpers\h;
 use common\models\UserSociedades;
+USE common\models\masters\VwSociedades;
 use yii\base\UnknownPropertyException;
 use yii\web\NotFoundHttpException;
 
@@ -118,6 +119,7 @@ class ProfileController extends \common\controllers\base\baseController
          $sesion=\yii::$app->session;
          $model=\common\models\masters\VwSociedades::find(['codpro'=>$codpro])->one();
          $model->storeCompany();
+         $sesion->remove(\common\models\masters\Centros::keySesion());
          $url=$sesion->get('mi-ex-url');
          $sesion->remove('mi-ex-url');
          $sesion->setFlash('success',yii::t('base.names','Company {company} was selected',['company'=>$model->despro]));
@@ -132,16 +134,28 @@ class ProfileController extends \common\controllers\base\baseController
   }
   
   public function actionSelectCenter(){
-      return $this->render('index-centers');
+      $codpro=null; 
+      if(\yii::$app->session->has(\common\models\masters\VwSociedades::keysesion()))
+          $codpro=\common\models\masters\VwSociedades::codpro(); 
+      //echo $codpro; die();
+      return $this->render('index-centers',['codpro'=>$codpro]);
     }
     
     
    public function actionSetCenter(){
        $codcen=h::request()->get('codcen',null);
+       
      if(!is_null($codcen)){
          $sesion=\yii::$app->session;
-         $model= \common\models\masters\Centros::find(['codcen'=>$codcen])->one();
+         $model= \common\models\masters\Centros::find()->andWhere(['codcen'=>$codcen])->one();
+         //print_r( $model->attributes);die();
          $model->storeCenter();
+         //$socio=$model->socio->codsoc;
+         //yii::error($model->socio->attributes,__FUNCTION__);
+         //yii::error($model->attributes,__FUNCTION__);
+          //yii::error($model->attributes,__FUNCTION__);
+         (new VwSociedades())->storeCompany($model->socio->attributes);
+         
          $url=$sesion->get('mi-ex-url');
          $sesion->remove('mi-ex-url');
          $sesion->setFlash('success',yii::t('base.names','Center {center} was selected',['center'=>$model->nomcen]));
@@ -154,6 +168,7 @@ class ProfileController extends \common\controllers\base\baseController
     }
    
      public function actionSelectCompany(){
+         yii::error('ingresando al controlador',__FILE__);
       return $this->render('index-sociedades');
     }
   

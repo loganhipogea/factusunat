@@ -60,7 +60,7 @@ class ComCajadiaSearch extends ComCajadia
             // $query->where('0=1');
             return $dataProvider;
         }
-
+   
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -81,16 +81,16 @@ class ComCajadiaSearch extends ComCajadia
                             $query->andFilterWhere([
                                     'between',
                                     'monto_efectivo',
-                                    $this->total-0.001,
-                                    $this->total1+0.001
+                                    $this->monto_efectivo-0.001,
+                                    $this->monto_efectivo1+0.001
                                 ]);
               }
               if(!empty($this->monto_papel) && !empty($this->monto_papel1)){
                             $query->andFilterWhere([
                                     'between',
                                     'monto_papel',
-                                    $this->total-0.001,
-                                    $this->total1+0.001
+                                    $this->monto_papel-0.001,
+                                    $this->monto_papel1+0.001
                                 ]);
               }
               //echo $query->createCommand()->rawSql;die();

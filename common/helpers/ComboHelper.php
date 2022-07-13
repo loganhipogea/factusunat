@@ -28,10 +28,20 @@ class ComboHelper  {
                 'codpro','despro');
     }
     
-    public static function getCboCentros(){
-        return ArrayHelper::map(
-                \common\models\masters\Centros::find()->all(),
+    public static function getCboCentros($codpro=null){
+        $query= \common\models\masters\Centros::find();        
+        if(!is_null($codpro)){
+            return ArrayHelper::map(
+                $query->
+                 andWhere(['codpro'=>$codpro])->
+                all(),
                 'codcen','nomcen');
+        }else{
+            return ArrayHelper::map(
+                $query->all(),
+                'codcen','nomcen'); 
+        }
+         
     }
     
     public static function getCboTables(){
@@ -206,6 +216,7 @@ class ComboHelper  {
     }
     
      public static function getCboAlmacenes($centro=null){
+         
          if(is_null($centro))
          return ArrayHelper::map(
                         \common\models\masters\Almacenes::find()->
@@ -217,5 +228,17 @@ class ComboHelper  {
                  andWhere(['codcen'=>$centro])->
                 all(),
                 'codal','nomal');
+    }
+    
+    
+    
+    /*
+     * EXCEPT  true si deseas que  omita la sociedad actual selccionada y almacenada en sesion 
+     */
+    public static function getCboSociedades($except=false){
+        return \common\models\masters\VwSociedades::societyList($except);
+    }
+    public static function getCboSociedadesWithCodpro($except=false){
+        return \common\models\masters\VwSociedades::companiesList($except);
     }
 }

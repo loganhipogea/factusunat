@@ -26,9 +26,10 @@ class ComFactura extends \common\models\base\BaseDocument
 {
     
     const SCE_CREACION_RAPIDA='scerapida';//Punto de venta ventas rapidas
-    CONST ST_PASSED_SUNAT=1;
-    CONST ST_MISSING_SUNAT=0;
-    CONST ST_REJECT_SUNAT=-1;
+    CONST ST_PASSED_SUNAT='30';
+    //CONST ST_MISSING_SUNAT=0;
+    CONST ST_REJECT_SUNAT='40';
+    CONST ST_VOIDED_SUNAT='48';
     const CHARACTER_SEPARATOR_FOR_DATA_QR='|';
     public $femision1=null;
     public $fvencimiento1=null;
@@ -39,6 +40,21 @@ class ComFactura extends \common\models\base\BaseDocument
         'fvencimiento1'=>self::_FDATE,
         
     ];
+    
+    public function estados(){
+        
+        return 
+                parent::estados() +
+                [
+                self::ST_PASSED_SUNAT=>\yii::t('base.names','SUNAT-ACEP'),
+                self::ST_REJECT_SUNAT=>\yii::t('base.names','SUNAT-RECH'),
+                self::ST_VOIDED_SUNAT=>\yii::t('base.names','SUNAT-BAJA'),
+                //self::ST_CANCELED=>\yii::t('base.names','ANULADO'),
+                ]
+                ;
+    }
+        
+
     /*public $booleanFields=[
           'flag_sunat',
     ];*/
@@ -66,7 +82,7 @@ class ComFactura extends \common\models\base\BaseDocument
              //['nombre_cliente', 'validateChilds',/* 'on' => self::SCE_CREACION_RAPIDA*/],
              //[['rucpro'], 'required'],
             [['codcen','nombre_cliente','codsoc',
-                'sunat_tipodoc','rucpro','sunat_tipdoccli'], 'required', 'message' => yii::t('base.errors','This field is T required')],
+                'sunat_tipodoc','rucpro','sunat_tipdoccli','tipopago'], 'required', 'message' => yii::t('base.errors','This field is T required')],
             [['codsoc'], 'string', 'max' => 1],
             [['numero'], 'string', 'max' => 13],
             [['femision', 'fvencimiento'], 'string', 'max' => 10],
@@ -210,6 +226,7 @@ class ComFactura extends \common\models\base\BaseDocument
             'codestado' => Yii::t('base.names', 'Estado'),
             'nombre_cliente' => Yii::t('base.names', 'Cliente'),
             'sunat_tipodoccli' => Yii::t('base.names', 'Doc id'),
+             'sunat_totigv' => Yii::t('base.names', 'Igv'),
             'femision1' => Yii::t('base.names', 'F. emi f'),
            
             ];
@@ -263,7 +280,7 @@ class ComFactura extends \common\models\base\BaseDocument
           $this->numero= $this->serie.'-'.$this->correlative($this->serie);
           $this->femision=$this->currentDateInFormat();
           $this->hemision=date('h:i:s');
-          $this->flag_sunat=self::ST_MISSING_SUNAT; //Neutro pendiente de
+         // $this->flag_sunat=self::ST_MISSING_SUNAT; //Neutro pendiente de
           
         }        
         return parent::beforeSave($insert);
@@ -284,6 +301,10 @@ class ComFactura extends \common\models\base\BaseDocument
     public function getDetails()
     {
         return $this->hasMany(ComFactudet::className(), ['factu_id' => 'id']);
+    }
+     public function getSends()
+    {
+        return $this->hasMany(\frontend\modules\sunat\models\SunatSends::className(), ['doc_id' => 'id']);
     }
    public function preparePdfInvoice(){      
        $socio=$this->socio;
@@ -329,7 +350,7 @@ class ComFactura extends \common\models\base\BaseDocument
             $pdf->Ln(1);
             //$pdf->Cell(60,4,'Factura Simpl.:'.$this->numero,0,1,'L');
             $pdf->Cell(30,6,'Fecha: '.$this->femision.':'.$this->hemision,0,0,'');
-            $pdf->Cell(30,6,'Metodo de pago:'.$this->tipopago,0,0,'');
+            $pdf->Cell(30,6,'Metodo de pago:'.$this->comboValueText('tipopago'),0,0,'');
             $pdf->Ln(2);
             $pdf->Cell(30,6,'Sucursal: '.$this->codcen,0,0,'');
             $pdf->Cell(30,6,'Caja:'.$this->caja->caja->nombre,0,0,'');
@@ -487,7 +508,9 @@ class ComFactura extends \common\models\base\BaseDocument
   
   
   public function setTotalTotales(){
-      $this->total=$this->getDetails()->sum('punitgravado*cant') ;
+     // $this->total=$this->getDetails()->sum('punitgravado*cant');
+      //echo $this->getDetails()->sum('punitgravado*cant')->create
+      $this->total=$this->sunat_totimpuestos+$this->subtotal;
       return $this;
   }
   
@@ -523,21 +546,21 @@ class ComFactura extends \common\models\base\BaseDocument
   }
   
   public function isPassedSunat(){
-      return(self::ST_PASSED_SUNAT==$this->flag_sunat);
+      return(self::ST_PASSED_SUNAT==$this->codestado);
   }
   public function setPassedSunat(){
-      $this->flag_sunat=self::ST_PASSED_SUNAT;
+      $this->codestado=self::ST_PASSED_SUNAT;
       return $this;
   }
   public function isRejectedSunat(){
-      return(self::ST_REJECT_SUNAT==$this->flag_sunat);
+      return(self::ST_REJECT_SUNAT==$this->codestado);
   }
   public function setRejectedSunat(){
-      $this->flag_sunat=self::ST_REJECT_SUNAT;
+      $this->codestado=self::ST_REJECT_SUNAT;
       return $this;
   }
   public function setCreated(){
-      $this->flag_sunat=self::ST_CREATED;
+      $this->codestado=self::ST_CREATED;
       return $this;
   }
   
@@ -744,5 +767,89 @@ class ComFactura extends \common\models\base\BaseDocument
                 ->setDetails([$detalle]);
             return $sum;
    }
- 
+   
+  public function canCancel(){
+      return in_array($this->codestado,
+              [
+                  self::ST_CREATED,
+                  self::ST_PASSED,
+                 // self::ST_PASSED_SUNAT,
+              ]);
+  }
+   public function canAprobe(){
+      return in_array($this->codestado,
+              [
+                  self::ST_CREATED,                  
+              ]);
+      
+  }
+   public function canSendSunat(){
+      return in_array($this->codestado,
+              [                 
+                  self::ST_PASSED,
+                  self::ST_REJECT_SUNAT,
+              ]);
+  }
+  public function canVoidSunat(){
+      return in_array($this->codestado,
+              [                 
+                  self::ST_PASSED_SUNAT,
+                  self::ST_REJECT_SUNAT,
+              ]);
+  }
+ public function canRebuildReport(){
+       return in_array($this->codestado,
+              [                 
+                  self::ST_PASSED,
+                  self::ST_CREATED,
+              ]);
+  }
+  public function canTransport(){
+      return in_array($this->codestado,
+              [                 
+                  self::ST_PASSED,
+                  self::ST_PASSED_SUNAT,
+                  self::ST_REJECT_SUNAT,
+                  //self::ST_VOIDED_SUNAT,
+              ]); 
+  }
+  
+  public function lastSend(){
+     RETURN  $this->getSends()->orderBy(['cuando'=>SORT_DESC])->one();
+  }
+  /*
+   * El adjunto
+   */
+  public function pathPdf(){
+      if($this->hasAttachments())
+      return $this->files[0];
+      return '';
+  }
+  /*
+   * El adjunto del ultimo cdr
+   */
+  public function urlCdr(){
+    if(!is_null($modSend=$this->lastSend())){
+        yii::error('no es nulo el ulñtimo send EL ID ES  '.$modSend->id,__FUNCTION__);
+      return $modSend->urlCdr();
+    }else{
+        yii::error('No encontro el ulñtim send ',__FUNCTION__);
+        return '';
+    }
+      
+  }
+  /*
+   * El adjunto del ultimo Xml
+   */
+  public function urlXml(){
+    if(!is_null($modSend=$this->lastSend())){
+        return $modSend->urlXml(); 
+    }else{
+        return '';
+    }
+  }
+  
+  public function hasSends(){
+      return $this->getSends()->count()>0;
+  }
 }

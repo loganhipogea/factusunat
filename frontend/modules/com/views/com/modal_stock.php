@@ -24,19 +24,13 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
         <div class="col-md-12">
             <div class="form-group no-margin">
             <?php
-          $operacion=($model->isNewRecord)?'create-material':'edit-detail-invoice';
           
-          $url=\yii\helpers\Url::to(['/com/com/'.$operacion]);
-              
+            
            ?>
-           <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
-                  ['idModal'=>$idModal,
-                    'idForm'=>'myformulario',
-                      'url'=> $url,
-                     'idGrilla'=>$gridName, 
-                      ]
-                  )?>
-            </div>
+           <?php
+           echo Html::button("Agregar",['onclick'=>"saves_widget()", 'class' => 'btn btn-success']);
+           ?>
+           </div>
         </div>
     </div>
      
@@ -74,7 +68,109 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
       </div>
     <?php ActiveForm::end(); ?>
      
+    <?php  
+    $url=Url::to(['/com/com/create-material']); 
+   $cadenaJs="function saves_widget(){
+        var \$formulario=$('#myformulario');       
+        $.ajax({
+            url:'".$url."',
+            type: 'post',
+            data:\$formulario.serialize(),
+            success: function(data){
+          
+               if(data.success=='1') {
+                   if(data.type==1) {
+                       $('#".$idModal."').modal('hide'); 
+                          
+                        
 
+
+
+
+
+
+
+                         $('div[class*=\"js-input-plus\"]').trigger('click');   
+                           v_maximo=0;
+                                  $('#monet').find('input[name*=\"[subtotal]\"]').each(function(){
+                                                            var_index=$(this).parent().parent().attr('data-index'); 
+                                                                    if(v_maximo < var_index ){
+                                                                    v_maximo=var_index
+                                                                    } //fin de if
+                                                     
+                                 });//fin del each          
+                              $('#comfactudet-'+v_maximo+'-'+'descripcion_fake').text('descripcon aqui');
+                                 $('#comfactudet-'+v_maximo+'-'+'cant').val(1);
+                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').val(0);
+                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').trigger('change');
+                                 $('#comfactudet-'+v_maximo+'-'+'codart').val('codigo aqui');
+                                 $('#comfactudet-'+v_maximo+'-'+'descripcion').val('descripcion otra vez qui');
+                           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                    }else{
+                          $('#".$idModal."').modal('hide');
+                              
+                          
+                         $('div[class*=\"js-input-plus\"]').trigger('click');   
+                           v_maximo=0;
+                                  $('#monet').find('input[name*=\"[subtotal]\"]').each(function(){
+                                                            var_index=$(this).parent().parent().attr('data-index'); 
+                                                                    if(v_maximo < var_index ){
+                                                                    v_maximo=var_index
+                                                                    } //fin de if
+                                                     
+                                 });//fin del each    
+                                 console.log(data.campos.codart);
+                              $('#comfactudet-'+v_maximo+'-'+'descripcion_fake').text(data.campos.codart+'-'+data.campos.descripcion);
+                                 $('#comfactudet-'+v_maximo+'-'+'cant').val(1);
+                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').val(0);
+                                 $('#comfactudet-'+v_maximo+'-'+'punitgravado').trigger('change');
+                                 $('#comfactudet-'+v_maximo+'-'+'codart').val(data.campos.codart);
+                                 $('#comfactudet-'+v_maximo+'-'+'descripcion').val(data.campos.descripcion);
+                           
+
+
+                               
+                     }
+               }
+               if(data.success=='3'){
+                      var msg=data.msg;
+                      var n = Noty('id');
+                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ msg);
+                        $.noty.setType(n.options.id, 'error'); 
+                    }
+               if(data.success=='2') {
+                   var msg=data.msg;
+                   if(msg){
+                       $.each(msg,function(key,val){
+                           var div=$('.field-'+key);
+                           div.addClass(' has-error');
+                           div.find('.help-block').html(val);
+                       });
+                   }
+               }
+            }
+              });
+    }";
+   $this->registerJs($cadenaJs, \yii\web\View::POS_HEAD);
+
+
+    ?>
 </div>
     </div>
 </div>

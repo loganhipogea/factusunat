@@ -65,7 +65,7 @@ use common\helpers\h;
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <?= 
             $form->field($model, 'codestado')->
-            dropDownList(ComboHelper::getCboEstadosFactu() ,
+            dropDownList($model->estados() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                         //'enableAjaxValidation' => true,
                     // 'class'=>'probandoSelect2',
@@ -99,13 +99,16 @@ use common\helpers\h;
   </div>
     
     
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
     <?=$form->field($model, 'total')->textInput()?>
     </div>
-     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
     <?=$form->field($model, 'total1')->textInput()?>
     </div>
- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+    <?=$form->field($model, 'numero')->textInput()?>
+    </div>
+ <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <?= 
             $form->field($model, 'codmon')->
             dropDownList(['PEN'=>'PEN','USD'=>'USD'] ,

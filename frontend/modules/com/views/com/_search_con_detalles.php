@@ -65,7 +65,7 @@ use common\helpers\h;
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <?= 
             $form->field($model, 'codestado')->
-            dropDownList(ComboHelper::getCboEstadosFactu() ,
+            dropDownList($model->estados(),
                     ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                         //'enableAjaxValidation' => true,
                     // 'class'=>'probandoSelect2',

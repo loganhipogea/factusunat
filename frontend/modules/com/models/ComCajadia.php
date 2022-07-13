@@ -14,6 +14,7 @@ use Greenter\Model\Sale\Document;
 use Greenter\Model\Company\Address;
 use Greenter\Model\Summary\SummaryDetail;
 use Greenter\Model\Summary\Summary;
+USE common\models\masters\VwSociedades;
 /************/
 /**
  * This is the model class for table "{{%com_cajadia}}".
@@ -28,7 +29,7 @@ use Greenter\Model\Summary\Summary;
  *
  * @property ComCajaventa $caja
  */
-class ComCajadia extends \common\models\base\modelBase
+class ComCajadia extends \common\models\base\BaseDocument
 {
     /**
      * {@inheritdoc}
@@ -176,17 +177,17 @@ class ComCajadia extends \common\models\base\modelBase
     
     
     public function createVouchersGreenter(){
-        
+        $socio=$this->centro->socio;
       $company= (new Company())
-            ->setRuc('20100047218')
-            ->setNombreComercial('BOTICAS ARGENTINA')
-            ->setRazonSocial('BOTICAS ARGENTINA')
+            ->setRuc($socio->rucpro)
+            ->setNombreComercial($socio->despro)
+            ->setRazonSocial($socio->despro)
            ;      
         $detalles=[];
  
         foreach($this->vouchers as $voucher){            
             $detalle = new SummaryDetail();
-            $detalle->setTipoDoc('03')
+            $detalle->setTipoDoc(h::sunat()->graw('s.01.tdoc')->g('BOLETA'))
                 ->setSerieNro($voucher->serie.'-'.(integer)substr($voucher->numero,5))
                  ->setEstado('1')
                 ->setClienteTipo($voucher->sunat_tipdoccli)
@@ -325,8 +326,8 @@ class ComCajadia extends \common\models\base\modelBase
       return(self::ST_PASSED==$this->estado);
   }
   public function setPassed(){
-      $this->estado=self::STA_PASSED;
-      $this->refreshAmounts();
+      $this->estado=self::ST_PASSED;
+      //$this->refreshAmounts();
       return $this;
   }
   public function setCreated(){
@@ -335,8 +336,11 @@ class ComCajadia extends \common\models\base\modelBase
       return $this;
   }
   
-  private function refreshAmounts(){
+  public function refreshAmounts(){
       $this->monto_papel=$this->summarySell();
+       return $this;
   }
+  
+  
       
 }

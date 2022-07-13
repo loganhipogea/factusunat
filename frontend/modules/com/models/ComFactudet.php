@@ -148,7 +148,7 @@ class ComFactudet extends \common\models\base\modelBase
     }
     
     public function isInvoice(){
-        return ($this->sunat_tipodoc==self::TYPE_DOC_INVOICE)?true:false;
+        return ($this->sunat_tipodoc==h::sunat()->graw('s.01.tdoc')->g('FACTURA'))?true:false;
     } 
     public function beforeSave($insert) {
         $this->refreshValues();

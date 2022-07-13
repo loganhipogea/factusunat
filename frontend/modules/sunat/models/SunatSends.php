@@ -127,5 +127,38 @@ class SunatSends extends \common\models\base\modelBase
     
     return str_pad($valor.'', 3, '0');
  }
-    
+ 
+ public function urlCdr(){
+     $url='';
+     if($this->hasAttachments()){
+         yii::error('tiene attach');
+         foreach($this->files as $file){
+             yii::error('recorriendo el for '.$file->type);
+           if($file->type=='zip'){
+               yii::error('ENCONTRO EL ZIP Y DEVUELVE EL URL '.$file->type); 
+               $url=$file->url;break;
+           } 
+         }
+         yii::error('DEVUEVE EL URL HALLADO Y ES '.$url);
+      return $url;   
+             
+     }else{
+         yii::error('SEND NO TIENE ADJUNTOS DEVUIELVE BNLACO ');
+      return $url;   
+     }
+ }
+ public function urlXml(){
+   $url='';
+     if($this->hasAttachments()){
+         foreach($this->files as $file){
+           if($file->type=='xml'){
+               $url=$file->url;break;
+           } 
+         }
+      return $url;   
+             
+     }else{
+      return $url;   
+     }  
+ }   
 }

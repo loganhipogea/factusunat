@@ -1,5 +1,6 @@
 <?php
-return [   
+return [ 
+    'Pass'=>'Aprobar',
     'Signup'=>'Alta de Usuario',
     'Back to Home'=>'Ir al inicio',
     'Login'=>'Autenticar',
@@ -7,10 +8,12 @@ return [
     'Save'=>'Guardar',
     'Send'=>'Enviar',
     'Undo'=>'Deshacer',
+    'Undo send'=>'Anular envío',
     'Import'=>'Importar',
     'Export'=>'Exportar',
     'Find'=>'Buscar',
     'Confirm'=>'Confirmar',
+    'Cancel this document'=>'Anular este documento',
     'Create'=>'Crear',
     'Delete'=>'Eliminar',
     'Update'=>'Editar',
@@ -20,6 +23,7 @@ return [
     'View'=>'Visualizar',
     'Create {algo}'=>'Crear {algo}',
     'Update Clipro: {name}'=>'Editar compañía: {name}',
+    'Update {document}: {number}'=>'Editar {document}: {number}',
     'Choose a Value'=>'Elija un valor',
     'Request password reset'=>'Reestablecer Contraseña',
     'Create User'=>'Crear Usuario',

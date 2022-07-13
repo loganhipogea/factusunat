@@ -26,8 +26,28 @@ use Yii;
  * @property string|null $nombre_cliente
  * @property float|null $total
  */
-class ComVwFactudet extends \common\models\base\modelBase
+class ComVwFactudet extends \common\models\base\BaseDocument
 {
+    CONST ST_PASSED_SUNAT='30';
+    //CONST ST_MISSING_SUNAT=0;
+    CONST ST_REJECT_SUNAT='40';
+    CONST ST_VOIDED_SUNAT='48';
+   
+    public function estados(){
+        
+        return 
+                parent::estados() +
+                [
+                self::ST_PASSED_SUNAT=>\yii::t('base.names','SUNAT-ACEP'),
+                self::ST_REJECT_SUNAT=>\yii::t('base.names','SUNAT-RECH'),
+                self::ST_VOIDED_SUNAT=>\yii::t('base.names','SUNAT-BAJA'),
+                //self::ST_CANCELED=>\yii::t('base.names','ANULADO'),
+                ]
+                ;
+    }
+        
+    
+    
     
      public $femision1=null;
     public $fvencimiento1=null;

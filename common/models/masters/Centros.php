@@ -73,6 +73,11 @@ class Centros extends modelBase
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
     }
+    
+    public function getClipro()
+    {
+        return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
+    }
     public function getAlmacenes()
     {
         return $this->hasMany(Almacenes::className(), ['codcen' => 'codcen']);
@@ -101,7 +106,7 @@ class Centros extends modelBase
       }
    }
     
-    private static function keySesion(){
+    public static function keySesion(){
         return h::userId().'_'.self::CURRENT_CENTER_KEY_SESION;
     }
   
@@ -123,10 +128,19 @@ class Centros extends modelBase
        return $sesion->get(self::keySesion());
     }
     
-    public static function codcen(){      
+    public static function codcen(){  
+        yii::error('INVOCVANDO AL A FUNCION CURRENT_CENTER()',__FUNCTION__);
        $array_company=self::currentCenter();
+        yii::error('ARRAY_Center ES:',__FUNCTION__);
+        yii::error($array_company,__FUNCTION__);
+      
        if(is_array($array_company))
        return $array_company['codcen'];
     } 
-   
+   public static function nomcen(){  
+        $array_company=self::currentCenter();
+       
+       if(is_array($array_company))
+       return $array_company['nomcen'];
+    } 
 }

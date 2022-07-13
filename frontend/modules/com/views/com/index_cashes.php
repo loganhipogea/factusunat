@@ -1,13 +1,14 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
+use common\helpers\h;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\com\ComFacturaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('base.names', 'Caja');
+$this->title = Yii::t('base.names', 'Sell Summary');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="com-factura-index">
@@ -15,7 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h4><?= Html::encode($this->title) ?></h4>
     <div class="box box-success">
      <div class="box-body">
-    <?php Pjax::begin(); ?>
+    <?php 
+    $frm=h::formato();
+    Pjax::begin();
+    ?>
     <?php  echo $this->render('_search_cashes', ['model' => $searchModel]); ?>
 
     
@@ -63,8 +67,20 @@ $this->params['breadcrumbs'][] = $this->title;
                
            'codcen',
             'fecha',
-            'monto_efectivo',
-            'monto_papel',
+            'caja.nombre',
+            'centro.nomcen',
+                 ['attribute'=>'monto_efectivo',
+                     'value'=>function($model) use($frm){
+                        return $frm->asDecimal($model->monto_efectivo,2);
+                     }
+                  ],
+            
+            ['attribute'=>'monto_papel',
+                'contentOptions'=>['style'=>'text-align:right;'],
+                     'value'=>function($model) use($frm){
+                        return $frm->asDecimal($model->monto_papel,2);
+                     }
+                  ],
             //'sunat_tipodoc',
            
         ],

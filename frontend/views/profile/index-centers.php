@@ -32,9 +32,14 @@ $this->title = Yii::t('base.verbs', 'Assign center for: ').h::userName();
     </div>
    
     <?php
+     if(is_null($codpro)){
+         $query=common\models\masters\Centros::find();
+     }else{
+       $query=common\models\masters\Centros::find()->andWhere(['codpro'=>$codpro]);  
+     }
  echo GridView::widget([
         'dataProvider' => new MyProvider([
-            'query'=> common\models\masters\Centros::find()
+            'query'=> $query,
         ]),
        // 'filterModel' => $searchModel,
         // 'summary' => '',
@@ -54,12 +59,19 @@ $this->title = Yii::t('base.verbs', 'Assign center for: ').h::userName();
                 ],
                  
                                         [
-                    'attribute' => 'despro',
+                    'attribute' => 'nomcen',
                         'format' => 'raw',
                         'value' => function ($model) {
                             return Html::a($model->nomcen,
                                     Url::to(['profile/set-center','codcen'=>$model->codcen]),
                                     []);
+                                },
+                ],
+                 [
+                'attribute' => 'despro',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            return $model->clipro->despro;
                                 },
                 ],
                     

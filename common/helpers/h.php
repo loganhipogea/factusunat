@@ -48,6 +48,9 @@ class h {
     public static function  sunat(){
         return yii::$app->sunat;
     }
+    public static function  combo(){
+        return yii::$app->comboValores;
+    }
     public static function  periodos(){
         return yii::$app->periodo;
     }
@@ -309,6 +312,7 @@ public static function userNameExists($username){
 private static function resolveCambio($codmon,$fecha,$eshoy){
       $tipoCambio=New Tipocambio();
       if($codmon==Tipocambio::COD_MONEDA_DOLAR){
+           yii::error('sacando el tipo cambio de la API');
                 $filaCambio=$tipoCambio->getChangeFromApi($codmon,$fecha);
       }else{
          $filaCambio=[]; 
@@ -316,7 +320,7 @@ private static function resolveCambio($codmon,$fecha,$eshoy){
                 if(count($filaCambio)>0){
                        if($eshoy)
                         //Almacenamos por 12 horas
-                         self::cache()->set(self::PREFIX_CACHE_TIPO_CAMBIO,$filaCambio,60*60*12);
+                         self::cache()->set(self::PREFIX_CACHE_TIPO_CAMBIO,$filaCambio,60*60*24);
                         return $filaCambio;                    
                 }else{                    
                    if(!is_null($model=Tipocambio::getChange($codmon, $fecha))){  
@@ -337,9 +341,12 @@ public static function tipoCambio($codmon=NULL,$fecha=null){
        yii::error('es de hoy ');
        if($filaCambio=$cache->get(self::PREFIX_CACHE_TIPO_CAMBIO)){          
          $carbonLastFecha=Carbon::parse($filaCambio['ultima']);
-         //verificando el vencimiento         
-         if($carbonLastFecha->lt($carbonNow->subDay()->endOfDay())){
-            //Si es una cache del dia anterior actualizar            
+         //verificando el vencimiento    
+           yii::error('Ultima fecha '.$carbonLastFecha->format('Y-m-d H:s:i'));
+           yii::error('Fecha actual, comienzo del dia '.$carbonNow->subSeconds(60*60*24)->format('Y-m-d H:s:i'));
+         if($carbonLastFecha->lt($carbonNow->subSeconds(60*60*24))){
+            //Si es una cache del dia anterior actualizar  
+            yii::error('OPS cache vencido',__FUNCTION__);
             return self::resolveCambio($codmon, $fecha,true);
          }else{
              yii::error('del cache...ok',__FUNCTION__);

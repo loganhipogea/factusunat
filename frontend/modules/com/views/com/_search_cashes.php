@@ -77,16 +77,16 @@ use common\helpers\h;
                     )  ?>
      <?php //echo cboperiodos::widget(['model'=>$model,'attribute'=>'codperiodo', 'form'=>$form]) ?>
   </div>
-   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+   <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
     <?=$form->field($model, 'monto_papel')->textInput()?>
    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
     <?=$form->field($model, 'monto_papel1')->textInput()?>
    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
     <?=$form->field($model, 'monto_efectivo')->textInput()?>
    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
     <?=$form->field($model, 'monto_efectivo1')->textInput()?>
    </div>
 

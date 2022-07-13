@@ -47,6 +47,7 @@ return [
     'Place Name'=>'Nombre lugar',
     'District'=>'Distrito',
     'Province'=>'Provincia',
+    'Sell Summary'=>'Resumen de ventas',
     'Departament'=>'Departamento',
      'Latitude'=>'Latitud',
      'Meridian'=>'Meridiano',
@@ -54,6 +55,7 @@ return [
     'Voucher'=>'Boleta venta',
     'Materials'=>'Materiales',
     'Units of measure'=>'Unidades de medida',
+    'Update daily cash: {name}'=>'Actualizar caja: {name} ',
 ];
 
 ?>
