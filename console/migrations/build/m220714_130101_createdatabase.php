@@ -4,6 +4,7 @@ use common\models\masters\Clipro;
 use common\models\masters\Centros;
 use frontend\modules\com\modelBase\ComSeriesFactura;
 use common\models\masters\Almacenes;
+use common\helpers\h;
 USE frontend\modules\com\models\ComCajaventa;
 class m220714_130101_createdatabase extends baseMigration
 {
