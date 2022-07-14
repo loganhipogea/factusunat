@@ -1,6 +1,6 @@
 <?php
 
-
+use yii\db\Migration;
 /**
  * Class m220714_013414_createprimeraserie
  */
