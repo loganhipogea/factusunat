@@ -151,8 +151,7 @@ class m220714_130101_createdatabase extends baseMigration
          * BORRANDO la series 
          */
         ComSeriesFactura::deleteAll();
-        ComSeriesFactura::getDb()->getTransaction()->commit();
-        
+        $this->getDb()->getTransaction()->commit();
          /*****************
          * BORRANDO EL  PUNTO DE VENTA O CAJA EN ESTA SCUURSAL
          */
@@ -162,8 +161,7 @@ class m220714_130101_createdatabase extends baseMigration
                     'codcen'=>'7050',
                     
                     ]);
-        ComSeriesFactura::getDb()->getTransaction()->commit();
-        
+        $this->getDb()->getTransaction()->commit();
         
         /*****************
          * BORRANDO UN ALMACEN CORRESPONDIENTE A ESTE
@@ -175,8 +173,7 @@ class m220714_130101_createdatabase extends baseMigration
                     
                     ]
                 );
-        ComSeriesFactura::getDb()->getTransaction()->commit();
-        
+        $this->getDb()->getTransaction()->commit();
         /*****************
          * BORARNDO UN CENTRO COPRRESPONDIENTE A ESTA 
          * EM,PRESA
@@ -187,8 +184,7 @@ class m220714_130101_createdatabase extends baseMigration
                    
                     ]                
                 );
-        ComSeriesFactura::getDb()->getTransaction()->commit();
-        
+        $this->getDb()->getTransaction()->commit();
          /*****************
          * BORRANDO UNA EMPRESA TIPO SOCIEDAD
          */
@@ -196,8 +192,7 @@ class m220714_130101_createdatabase extends baseMigration
                 [                   
                     'rucpro'=>'20000000000',                                       
                 ]); 
-        ComSeriesFactura::getDb()->getTransaction()->commit();
-        
+       $this->getDb()->getTransaction()->commit(); 
     }
 
    
