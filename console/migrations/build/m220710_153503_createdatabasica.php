@@ -18,7 +18,7 @@ class m220710_153503_createdatabasica extends baseMigration
              batchInsert(
                      '{{%clipro}}',
              ['codpro','despro','rucpro','socio','codsoc'],[
-            ['100001','MI EMPRESA S.A.','20000000','1','A'],
+            ['1000000001','MI EMPRESA S.A.','20000000000','1','A'],
                                                 ]
                      )->execute();
          
@@ -165,7 +165,7 @@ class m220710_153503_createdatabasica extends baseMigration
          */
         Clipro::deleteAll(
                 [                   
-                    'rucpro'=>'10115533',                                       
+                    'rucpro'=>'20000000000',                                       
                 ]);        
     }
 
