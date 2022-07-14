@@ -41,7 +41,7 @@ class m220714_130101_createdatabase extends baseMigration
              batchInsert(
                      '{{%centros}}',
              ['codcen','nomcen','codpro'],[
-            ['7050','CENTRO 1','100001'],
+            ['7050','CENTRO 1','1000000001'],
                        ]
                      )->execute();
          
