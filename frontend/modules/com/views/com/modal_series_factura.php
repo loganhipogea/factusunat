@@ -31,6 +31,7 @@ use yii\widgets\Pjax;
     <div class="col-md-12">
             <div class="form-group">
             <?php
+            echo h::gsetting('com','formatoSeries');
           $operacion=($model->isNewRecord)?'create':'edit';
           
           $url=\yii\helpers\Url::to(['/com/com/modal-'.$operacion.'-serie','id'=>$id]);
