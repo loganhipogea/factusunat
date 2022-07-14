@@ -30,4 +30,5 @@ return [
     'Create company'=>'Crear empresa',
     'Update Material: {name}'=>'Editar Material: {name}',
     'Update {param}'=>'Editar {param}',
+    'You must set the serial for document {document} in {center}'=>'Debe de colocar la serie para {document} en el centro {center}',
 ];

@@ -26,9 +26,7 @@ return [
         ],
     ],
     'components' => [
-        'sunat'=>[
-            'class'=>'common\components\SunatCatalog',
-        ],
+        
          'comboValores'=>[
             'class'=>'common\components\ComboCatalog',
         ],

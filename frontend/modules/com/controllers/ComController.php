@@ -621,4 +621,74 @@ class ComController extends baseController
   }
   
   
+  public function actionModalCreateSerie() {
+         $id=h::request()->get('codcen');
+         //var_dump($id);die();
+         $this->layout = "install";
+         $model=New \frontend\modules\com\modelBase\ComSeriesFactura();
+         //$model->setScenario($model::SCE_PTO_VENTA);
+         $model->codcen=$id;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_series_factura', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+   public function actionModalEditSerie($id) {
+
+         $this->layout = "install";
+         $model=\frontend\modules\com\modelBase\ComSeriesFactura::findOne($id);
+         //$model->setScenario($model::SCE_PTO_VENTA);
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_series_factura', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
 }

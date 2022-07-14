@@ -143,4 +143,6 @@ class Centros extends modelBase
        if(is_array($array_company))
        return $array_company['nomcen'];
     } 
+    
+    
 }

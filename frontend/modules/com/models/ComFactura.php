@@ -22,6 +22,7 @@ use Greenter\Model\Voided\VoidedDetail;
 USE Greenter\Model\Company\Company;
 use Greenter\Model\Summary\SummaryDetail;
 use Greenter\Model\Summary\Summary;
+use frontend\modules\com\modelBase\ComSeriesFactura;
 class ComFactura extends \common\models\base\BaseDocument
 {
     
@@ -40,7 +41,7 @@ class ComFactura extends \common\models\base\BaseDocument
         'fvencimiento1'=>self::_FDATE,
         
     ];
-    
+    private $_serie=null;
     public function estados(){
         
         return 
@@ -269,14 +270,9 @@ class ComFactura extends \common\models\base\BaseDocument
            * Tipo cambio
            */
           $this->cambio=($this->codmon=='USD')?h::tipoCambio('USD')['compra']:1;
-          if($this->isInvoice()){
-            $this->serie='F001'; 
-            //$this->sunat_tipdoccli=h::sunat()->graw('s.06.tdociden')->g('RUC');
-          }else{
-            $this->serie='B001';
-            //$this->sunat_tipdoccli=h::sunat()->graw('s.06.tdociden')->g('DNI');
-          }
-            
+         
+            $this->setSerie();
+          
           $this->numero= $this->serie.'-'.$this->correlative($this->serie);
           $this->femision=$this->currentDateInFormat();
           $this->hemision=date('h:i:s');
@@ -851,5 +847,17 @@ class ComFactura extends \common\models\base\BaseDocument
   
   public function hasSends(){
       return $this->getSends()->count()>0;
+  }
+  
+  public function serie(){
+      
+    if(is_null($this->_serie)){        
+          $this->_serie= ComSeriesFactura::serie($this->sunat_tipodoc,$this->codcen); 
+       }
+       
+      return $this->_serie;
+    }
+  public function setSerie(){
+      $this->serie=$this->serie();
   }
 }

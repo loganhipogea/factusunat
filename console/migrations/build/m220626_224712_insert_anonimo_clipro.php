@@ -13,6 +13,7 @@ class m220626_224712_insert_anonimo_clipro extends baseMigration
             'rucpro'=>h::getIfNotPutSetting('general','DNI_anonimo', 'XXX'),
             'despro'=>h::getIfNotPutSetting('general','nombre_anonimo', 'ANONIMUS PERSON'),
             ];
+        h::settings()->invalidateCache();
        // Clipro::firstOrCreateStatic($att, NULL,$att);
         \Yii::$app->db->createCommand()->
              batchInsert(
@@ -36,6 +37,7 @@ class m220626_224712_insert_anonimo_clipro extends baseMigration
         \Yii::$app->db->createCommand()->delete('{{%clipro}}', $att)->execute();
         h::settings()->remove('general','DNI_anonimo');
         h::settings()->remove('general','nombre_anonimo');
+        h::settings()->invalidateCache();
         
     }
 

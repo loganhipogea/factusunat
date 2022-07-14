@@ -7,6 +7,9 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'sunat'=>[
+            'class'=>'common\components\SunatCatalog',
+        ],
         
         'formatter' => [
             //'dateFormat' => 'dd.MM.yyyy',

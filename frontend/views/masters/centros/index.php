@@ -2,8 +2,9 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+
 use yii\widgets\Pjax;
+use kartik\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\masters\CentrosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('base.names', 'Create Centros'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <div style='overflow:auto;'>
+   
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
          'summary' => '',
@@ -52,7 +54,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ],
          
-         
+              [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                            return GridView::ROW_COLLAPSED;
+                                }, 
+                    'detail' => function ($model, $key, $index, $column) {
+                            return $this->render('series_factura.php',['model'=>$model]);
+                            },
+                   
+                   'expandOneOnly' => true
+                ],  
          
          
          
@@ -66,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
+        
 </div>
     </div>
 </div>
