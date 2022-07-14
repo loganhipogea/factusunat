@@ -61,7 +61,7 @@ class Clipro extends \common\models\base\modelBase
     {
        
         return [
-            [['codpro'], 'unique','targetAttribute'=>['numero']], 
+            //[['codpro'], 'unique','targetAttribute'=>['clipro']], 
             [['despro', 'rucpro'], 'required'],
             [['deslarga'], 'string'],
             [['cci', 'codbanco','cuenta','deslarga','alias','socio','codsoc'], 'safe'],

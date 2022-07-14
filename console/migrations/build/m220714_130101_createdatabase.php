@@ -161,7 +161,7 @@ class m220714_130101_createdatabase extends baseMigration
                     'codcen'=>'7050',
                     
                     ]);
-        $this->getDb()->getTransaction()->commit();
+        //$this->getDb()->getTransaction()->commit();
         
         /*****************
          * BORRANDO UN ALMACEN CORRESPONDIENTE A ESTE
@@ -173,7 +173,7 @@ class m220714_130101_createdatabase extends baseMigration
                     
                     ]
                 );
-        $this->getDb()->getTransaction()->commit();
+       // $this->getDb()->getTransaction()->commit();
         /*****************
          * BORARNDO UN CENTRO COPRRESPONDIENTE A ESTA 
          * EM,PRESA
@@ -184,7 +184,7 @@ class m220714_130101_createdatabase extends baseMigration
                    
                     ]                
                 );
-        $this->getDb()->getTransaction()->commit();
+       // $this->getDb()->getTransaction()->commit();
          /*****************
          * BORRANDO UNA EMPRESA TIPO SOCIEDAD
          */
@@ -192,7 +192,7 @@ class m220714_130101_createdatabase extends baseMigration
                 [                   
                     'rucpro'=>'20000000000',                                       
                 ]); 
-       $this->getDb()->getTransaction()->commit(); 
+       //$this->getDb()->getTransaction()->commit(); 
     }
 
    
