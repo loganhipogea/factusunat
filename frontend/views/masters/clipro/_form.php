@@ -24,7 +24,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
         'enableAjaxValidation' => true]); ?>
     <div class="box-footer">
         <div class="col-md-12">
-            <div class="form-group no-margin">
+            <div class="form-group ">
                 <div class="btn-group">
                 
                 <?= Html::submitButton("<span class=\"fa fa-cog\"></span>".($model->isNewRecord) ? 'Grabar' : 'Grabar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

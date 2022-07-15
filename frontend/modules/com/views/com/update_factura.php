@@ -8,7 +8,7 @@ use common\helpers\h;
 $this->title = Yii::t('base.verbs', 'Update {document}: {number}', [
     'document' =>h::sunat()->graw('s.01.tdoc')->getText($model->sunat_tipodoc),'number' => $model->numero,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Invoices'), 'url' => ['index-invoices']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Invoices'), 'url' => ['index-invoices-simple']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Update');
 ?>

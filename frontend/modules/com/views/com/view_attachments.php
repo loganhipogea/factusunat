@@ -24,7 +24,9 @@ use yii\widgets\DetailView;
          <?php }?>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <?php if($model->hasSends()) { ?>
+         <?php if($model->hasSends()) { ?>
+         <?php $envio=$model->lastSend();?>
+        <h4>ULTIMO ENVIO: <?=$envio->comboValueText('tipo');?></h4>
          <?php if(!empty($model->urlCdr()) &&!empty($model->urlXml()) ) { ?>
         <table class="table">
         <tbody>
@@ -49,7 +51,7 @@ use yii\widgets\DetailView;
             
         </tbody>
     </table>
-        <?php } else{  $envio=$model->lastSend();?>
+        <?php } else{  ?>
         <p class="text-aqua">El último envío <?=$envio->cuando?> a SUNAT registra errores:</p>
             <table>
                 <thead>

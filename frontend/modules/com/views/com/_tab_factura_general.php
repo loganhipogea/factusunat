@@ -26,8 +26,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         <?php 
        $deshabilitado=(
                 $model->isPassed() ||
-                $model->isRemoved() /*||
-               !$model->isCreated() ||*/
+                $model->isRemoved()||
+                $model->isPassedSunat()||
+                 $model->isRejectedSunat()
                );
         
         $form = ActiveForm::begin([
@@ -36,13 +37,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         ]); ?>  
         
       <div class="col-md-12">
-            <div class="form-group">
-                <div class="btn-group">
-                <?php Pjax::begin(['id'=>'zona_botones']); ?>
-                    
-                   
-                 <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-info']) ?>
+            
                 
+                <?php Pjax::begin(['id'=>'zona_botones']); ?>
+                <div class="btn-group">    
+                <?php if( !$deshabilitado) {?>   
+                 <?= Html::submitButton('<span class="fa fa-save"></span>- -'.Yii::t('base.names', 'Save'), ['class' => 'btn btn-primary']) ?>
+                <?php } ?>   
                 
                <?php 
                  
@@ -83,10 +84,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                   } 
                 
                ?>
-             
+              </div> 
                <?php Pjax::end(); ?>
-              </div>  
-            </div>
+              
+           
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
              <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>

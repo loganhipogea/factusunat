@@ -164,28 +164,16 @@ $util->showResponse($invoice, $cdr);
                                 'code'=>$error->getCode(),
                                 'message'=>$error->getMessage()
                                 ];
-                            $transaccion=$model->getDb()->beginTransaction();
-                            //;
-                           
+                            $transaccion=$model->getDb()->beginTransaction();                           
                             if($model->setRejectedSunat()->save() &&                           
-                               $model->storeSend($errores,false,$invoice->getName())){
-                                
+                               $model->storeSend($errores,false,$invoice->getName(),null, SunatSends::TYPE_SEND_INVOICE)){
                                 $transaccion->commit();
-                                //\yii::error($model->setRejectedSunat()->save());
-                               // \yii::error($model->storeSend($errores,false));
-                                //\yii::error('Hizo commit');
-                            }else{
-                                //\yii::error($model->setRejectedSunat()->save());
-                                //\yii::error($model->storeSend($errores,false));
-                               // \yii::error('Hizo rollback');
+                                }else{
                                 $transaccion->rollback();
-                                //var_dump($model->setRejectedSunat()->save(),$model->storeSend($errores,false));
-                            
                                 return ['error' =>\yii::t('base.errors','There were some errors before send, please fix them, and try again')];   
                             }
-                            //var_dump($res->getError());
-                            return ['error' =>\yii::t('base.errors','There are some errors')];  
-                        //echo $util->getErrorResponse($res->getError());
+                             return ['error' =>\yii::t('base.errors','There are some errors')];  
+                        
                     }else{
                          /**@var $res BillResult*/
                             $cdr = $res->getCdrResponse();
@@ -200,21 +188,15 @@ $util->showResponse($invoice, $cdr);
                             /*
                              * ADJUNTA LOS ARCHIVOS AL MODELO
                              */
-                                
-                            
-                            
                             $transaccion=$model->getDb()->beginTransaction();
-                             //var_dump($model->setRejectedSunat()->save(),$model->storeSend($cdrArray,false));
-                            //$model->storeSend($cdrArray,true,$invoice->getName());
-                             if($model->setPassedSunat()->save() &&                           
-                               $model->storeSend($cdrArray,true,$invoice->getName())){
+                            if($model->setPassedSunat()->save() &&                           
+                               $model->storeSend($cdrArray,true,$invoice->getName(),null, SunatSends::TYPE_SEND_INVOICE)){
                                 $transaccion->commit();
                             }else{
                                 $transaccion->rollback();
                                 
                                 return ['error' =>\yii::t('base.errors','There were some errors before send, please fix them, and try again')];  
-                            }
-                            
+                            }                            
                              return ['success' =>' -  '.\yii::t('base.errors','The document was send successfully')]; 
                     }
 
@@ -305,16 +287,10 @@ $util->showResponse($invoice, $cdr);
                             //;
                            //var_dump($invoice->getCompany()->getRazonSocial());die();
                             if($model->setRejectedSunat()->save() &&                           
-                               $model->storeSend($errores,false,$invoice->getName())){
+                               $model->storeSend($errores,false,$invoice->getName(),null, SunatSends::TYPE_SEND_VOUCHER)){
                                 
                                 $transaccion->commit();
-                                \yii::error($model->setRejectedSunat()->save());
-                                \yii::error($model->storeSend($errores,false,$invoice->getName()));
-                                \yii::error('Hizo commit');
-                            }else{
-                                \yii::error($model->setRejectedSunat()->save());
-                                \yii::error($model->storeSend($errores,false,$invoice->getName()));
-                                \yii::error('Hizo rollback');
+                              }else{
                                 $transaccion->rollback();
                                 //var_dump($model->setRejectedSunat()->save(),$model->storeSend($errores,false));
                             
@@ -337,7 +313,7 @@ $util->showResponse($invoice, $cdr);
                              //var_dump($model->setRejectedSunat()->save(),$model->storeSend($cdrArray,false));
                            
                              if($model->setPassedSunat()->save() &&                           
-                               $model->storeSend($cdrArray,true,$invoice->getName())){
+                               $model->storeSend($cdrArray,true,$invoice->getName(),null, SunatSends::TYPE_SEND_VOUCHER)){
                                 $transaccion->commit();
                             }else{
                                 $transaccion->rollback();                                
@@ -373,7 +349,7 @@ $util->showResponse($invoice, $cdr);
                 
                 //$transaccion=$model->getDb()->beginTransaction();
                   $model->setRejectedSunat()->save();                           
-                  $model->storeSend($errores,false,null,null);
+                  $model->storeSend($errores,false,null,null, SunatSends::TYPE_SEND_SUMMARY);
                   
                    return ['error' =>\yii::t('base.errors','There are some errors')];    
                 
@@ -397,7 +373,7 @@ $util->showResponse($invoice, $cdr);
                                 'message'=>$error->getMessage()
                                 ];
                       // var_dump($errores);die();
-               $model->storeSend($errores,false,null,$ticket);
+               $model->storeSend($errores,false,null,$ticket, SunatSends::TYPE_SEND_SUMMARY);
                 $model->setRejectedSunat()->save(); 
                 $model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
                  return ['error' =>\yii::t('base.errors','There are some errors')]; 
@@ -410,7 +386,7 @@ $util->showResponse($invoice, $cdr);
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
-                $model->storeSend($cdrArray,true,$sum->getName(),$ticket);
+                $model->storeSend($cdrArray,true,$sum->getName(),$ticket, SunatSends::TYPE_SEND_SUMMARY);
                 $model->setPassedSunat()->save();
                  $model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
                return ['success' =>' -  '.\yii::t('base.errors','The summary was send successfully')]; 
@@ -445,7 +421,7 @@ $util->showResponse($invoice, $cdr);
                 
                 //$transaccion=$model->getDb()->beginTransaction();
                   $model->setRejectedSunat()->save();                           
-                  $model->storeSend($errores,false,null,null);
+                  $model->storeSend($errores,false,null,null, SunatSends::TYPE_SEND_VOID_INVOICE);
                   
                    return ['error' =>\yii::t('base.errors','There are some errors')];    
                 
@@ -459,8 +435,8 @@ $util->showResponse($invoice, $cdr);
                                 'message'=>$error->getMessage()
                                 ];
                       // var_dump($errores);die();
-               $model->storeSend($errores,false,null,$ticket);
-                //$model->setRejectedSunat()->save(); 
+               $model->storeSend($errores,false,null,$ticket, SunatSends::TYPE_SEND_VOID_INVOICE);
+                $model->setRejectedSunat()->save(); 
                 //$model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
                  return ['error' =>\yii::t('base.errors','There are some errors')]; 
            }else{
@@ -472,7 +448,7 @@ $util->showResponse($invoice, $cdr);
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
-                $model->storeSend($cdrArray,true,$voided->getName(),$ticket);
+                $model->storeSend($cdrArray,true,$voided->getName(),$ticket, SunatSends::TYPE_SEND_VOID_INVOICE);
                 //$model->setRejectedSunat()->save();
                 $model->setRemoved()->save();
                  //$model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
@@ -503,7 +479,7 @@ $util->showResponse($invoice, $cdr);
                 
                 //$transaccion=$model->getDb()->beginTransaction();
                   $model->setRejectedSunat()->save();                           
-                  $model->storeSend($errores,false,null,null);
+                  $model->storeSend($errores,false,null,null, SunatSends::TYPE_SEND_VOID_VOUCHER);
                   
                    return ['error' =>\yii::t('base.errors','There are some errors')];    
                 
@@ -517,7 +493,7 @@ $util->showResponse($invoice, $cdr);
                                 'message'=>$error->getMessage()
                                 ];
                       // var_dump($errores);die();
-               $model->storeSend($errores,false,$voided->getName(),$ticket);
+               $model->storeSend($errores,false,$voided->getName(),$ticket, SunatSends::TYPE_SEND_VOID_VOUCHER);
                 //$model->setRejectedSunat()->save(); 
                 //$model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
                  return ['error' =>\yii::t('base.errors','There are some errors')]; 
@@ -530,7 +506,7 @@ $util->showResponse($invoice, $cdr);
                                 'description'=>$cdr->getDescription(),
                                 'notes'=>$cdr->getNotes(),
                             ];
-                $model->storeSend($cdrArray,true,$voided->getName(),$ticket);
+                $model->storeSend($cdrArray,true,$voided->getName(),$ticket, SunatSends::TYPE_SEND_VOID_VOUCHER);
                 //$model->setRejectedSunat()->save();
                 $model->setRemoved()->save();
                  //$model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);

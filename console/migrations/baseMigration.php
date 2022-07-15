@@ -139,9 +139,10 @@ class baseMigration extends Migration
                   $code=self::selectLetter($key);  
                   return true;                  
               }
-        }else{            
-            if(is_string($key) && strlen($key) <=$largo){//Si ya hay uin valore predefinido respetarlo
-                $code=$key;
+        }else{  
+            //var_dump($key,strlen($key) <=$largo );die();
+            if(strlen($key) <=$largo && substr($key,0,1)<>'0'){//Si ya hay uin valore predefinido respetarlo
+                $code=$key.'';
             }else{//Si no especificaron valores rellenarlos
                $code='1'.str_pad($key, $largo-1, '0', STR_PAD_LEFT); 
             }            

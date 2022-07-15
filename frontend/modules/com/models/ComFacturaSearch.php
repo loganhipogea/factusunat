@@ -120,6 +120,7 @@ class ComFacturaSearch extends ComFactura
                                     $this->total1+0.001
                                 ]);
               }
+              $query->orderBy(['id'=>SORT_DESC]);
         return $dataProvider;
     }
 }

@@ -29,6 +29,14 @@ class SunatSends extends \common\models\base\modelBase
     ];
     const ST_SUCCESS='exito';
     const ST_ERROR='error';
+    
+    const TYPE_SEND_INVOICE='10';
+    const TYPE_SEND_VOUCHER='20';
+    const TYPE_SEND_SUMMARY='30'; 
+    const TYPE_SEND_CREDIT_NOTE='40';
+    const TYPE_SEND_DEBIT_NOTE='50';
+    const TYPE_SEND_VOID_INVOICE='60';
+    const TYPE_SEND_VOID_VOUCHER='70';
     /**
      * {@inheritdoc}
      */
@@ -53,7 +61,7 @@ class SunatSends extends \common\models\base\modelBase
     {
         return [
             [['user_id'], 'integer'],
-            [['caja_id','ndia','numero','ticket'], 'safe'],
+            [['caja_id','ndia','numero','ticket','tipo'], 'safe'],
             //[['mensaje'], 'string'],
             [['username'], 'string', 'max' => 255],
             [['cuando',], 'string', 'max' => 19],
@@ -112,21 +120,10 @@ class SunatSends extends \common\models\base\modelBase
         return $this;
     }
     
-     private function nameFileXml(){
-     return $this->centro->socio->rucpro.'-RC-'.
-            date('Y').date('m').date('d').'-'.
-            $this->correlSend().'.xml';
- }
+     
  
- private function nameFileCdr(){
-     return 'R-'.$this->centro->socio->rucpro.'-RC-'.
-             date('Y').date('m').date('d').'-'.
-             $this->correlSend().'.zip';
- }
- private function correlSend(){
-    
-    return str_pad($valor.'', 3, '0');
- }
+
+ 
  
  public function urlCdr(){
      $url='';

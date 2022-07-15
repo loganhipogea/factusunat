@@ -625,12 +625,13 @@ class ComFactura extends \common\models\base\BaseDocument
   /*
    * Almacena los datos del envio
    */
-  public function storeSend($object,$success,$filename,$ticket=null){
+  public function storeSend($object,$success,$filename,$ticket=null,$type){
      // var_dump($filename);die();
       $modelSend=New \frontend\modules\sunat\models\SunatSends();
       $modelSend->mensaje=$object;
        $modelSend->doc_id=$this->id;
         $modelSend->ticket=$ticket;
+        $modelSend->tipo=$type;
         $modelSend->tipodoc=$this->sunat_tipodoc;
         $modelSend->resultado=$success;
       $grabo=$modelSend->save();

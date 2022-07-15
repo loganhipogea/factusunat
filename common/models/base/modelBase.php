@@ -1481,7 +1481,9 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
   public function comboValueText($attribute){
       //var_dump($this->{$attribute});
      //print_r($this->dataComboValores($attribute));die();
-       return $this->dataComboValores($attribute)[$this->{$attribute}];      
+       if(!empty($this->{$attribute}))
+       return $this->dataComboValores($attribute)[$this->{$attribute}];
+       return '';
   }
  
   

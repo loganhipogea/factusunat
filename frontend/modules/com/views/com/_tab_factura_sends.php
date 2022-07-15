@@ -50,6 +50,14 @@ $zonaAjax='pjax-sends-grilla'
                 ],
          [
             //'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'tipo',
+            'format'=>'raw',
+             'value'=>function($model){
+                 return $model->comboValueText('tipo');                
+                }
+         ],  
+         [
+            //'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'resultado',
             'format'=>'raw',
              'value'=>function($model){
@@ -63,8 +71,9 @@ $zonaAjax='pjax-sends-grilla'
             'vAlign' => 'middle',
             'width' => '210px',*/
             
-         ],  
-                 [
+         ], 
+                          
+           [
             //'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'ticket',
            /* 'pageSummary' => 'Total',
@@ -97,7 +106,7 @@ $zonaAjax='pjax-sends-grilla'
             'query'=> SunatSends::find()->andWhere([
                 'doc_id'=>$model->id,
                 'tipodoc'=>$model->sunat_tipodoc,
-                ]),
+                ])->orderBy(['cuando'=>SORT_DESC]),
             ]
             ),
    // 'filterModel' => $searchModel,

@@ -12,7 +12,7 @@ class m220714_011956_addparamserieregex extends Migration
      */
     public function safeUp()
     {
-       h::getIfNotPutSetting('com','formatoSeries','/[A-Z]{2}[0-9]{1}[1-9]$/');
+       h::getIfNotPutSetting('com','formatoSeries','/[A-Z]{1}[0-9]{2}[1-9]{1}$/');
       h::settings()->invalidateCache();
        
     }

@@ -53,15 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
          
          [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}{aprobe}{send}{void}',
+                'template' => '{delete}{aprobe}{send}{void}',
                 'buttons' => [
-                     'update' => function($url, $model) {                        
+                     /*'update' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
                          $url=Url::to(['/com/com/update-invoice','id'=>$model->id]);
                          return Html::a('<span class="btn btn-sm btn-success glyphicon glyphicon-pencil"></span>', $url, $options);
-                     },
+                     },*/
                      
                      'delete' => function($url, $model) {                        
                         $options = [
@@ -72,12 +72,16 @@ $this->params['breadcrumbs'][] = $this->title;
                          $options=['family'=>'holas','rel'=>$url,'id'=>$model->id];
                          return Html::a('<span  class="btn btn-sm  btn-danger  glyphicon glyphicon-trash"></span>', 'javascript:void(0)', $options);
                      }, 
-                      'aprobe' => function($url, $model) {                        
+                      'aprobe' => function($url, $model) {
+                         $url=Url::to(['/com/com/ajax-pass-invoice','id'=>$model->id]);
+                         
                         $options = [
-                            'title' => Yii::t('base.verbs', 'Pass'),                            
+                            'id'=>$model->id,
+                            'title' => Yii::t('base.verbs', 'Pass'), 
+                            'family'=>'holas',
+                            'rel'=>$url
                         ];
-                         $url=Url::to(['/com/com/update-invoice','id'=>$model->id]);
-                         return Html::a('<span class="btn btn-sm  btn-success  glyphicon glyphicon-ok"></span>', $url, $options);
+                         return Html::a('<span class="btn btn-sm  btn-primary  glyphicon glyphicon-ok"></span>', 'javascript:void(0)', $options);
                      },
                       'send' => function($url, $model) {                        
                         $options = [
@@ -131,7 +135,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format'=>'raw',
                    'contentOptions'=>['style'=>'color:#711b88 !important; '],
                     'value'=>function($model){
-                        return $model->numero;
+                    return  Html::a($model->numero,Url::to([
+                        'update-invoice',
+                        'id'=>$model->id
+                            ]),['data-pjax'=>'0']);
                     }
                 ],
             'femision',
