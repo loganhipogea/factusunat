@@ -25,7 +25,7 @@ class m220714_130101_createdatabase extends baseMigration
         /*****************
          * CREANDO UNA EMPRESA TIPO SOCIEDAD
          */
-       /*  \Yii::$app->db->createCommand()->
+         \Yii::$app->db->createCommand()->
              batchInsert(
                      '{{%clipro}}',
              ['codpro','despro','rucpro','socio','codsoc'],[
@@ -33,27 +33,27 @@ class m220714_130101_createdatabase extends baseMigration
                                                 ]
                      )->execute();
          
-       */
+       
        
         /*****************
          * CREANDO UN CENTRO COPRRESPONDIENTE A ESTA 
          * EM,PRESA
          */
-        /* \Yii::$app->db->createCommand()->
+         \Yii::$app->db->createCommand()->
              batchInsert(
                      '{{%centros}}',
              ['codcen','nomcen','codpro'],[
             ['7050','CENTRO 1','1000000001'],
                        ]
                      )->execute();
-         */
+         
         
         //$codcen= Centros::find()->andWhere(['codcen'=>'7050'])->one()->codcen;
         /*****************
          * CREANDO UN ALMACEN CORRESPONDIENTE A ESTE
          * CENTRO
          */
-        /* \Yii::$app->db->createCommand()->
+         \Yii::$app->db->createCommand()->
              batchInsert(
                      '{{%almacenes}}',
                 ['codal','nomal','codcen','tipo',
@@ -69,11 +69,11 @@ class m220714_130101_createdatabase extends baseMigration
                        ]
                      )->execute();
         
-        */
+        
         /*****************
          * CREANDO NU PUNTO DE VENTA O CAJA EN ESTA SCUURSAL
          */
-         /* \Yii::$app->db->createCommand()->
+          \Yii::$app->db->createCommand()->
              batchInsert(
                      '{{%com_cajaventa}}',
                 [
@@ -83,11 +83,11 @@ class m220714_130101_createdatabase extends baseMigration
                        ]
                      )->execute();
       
-        */
+        
             /*****************
          * CREA UNA PRIMERA SERIE PARA LA FACTUERA Y LA BOLETA
          */
-        /* \Yii::$app->db->createCommand()->
+         \Yii::$app->db->createCommand()->
              batchInsert(
                      '{{%com_series_factura}}',
              ['codcen','serie','tipodoc'],[
@@ -95,7 +95,7 @@ class m220714_130101_createdatabase extends baseMigration
             ['7050','B001',h::sunat()->graw('s.01.tdoc')->g('BOLETA')],
                                                 ]
                      )->execute();
-                     */
+                     
     }
 
     /**
@@ -106,46 +106,46 @@ class m220714_130101_createdatabase extends baseMigration
           /*****************
          * BORRANDO la series 
          */
-       // ComSeriesFactura::deleteAll();
+        ComSeriesFactura::deleteAll();
          /*****************
          * BORRANDO EL  PUNTO DE VENTA O CAJA EN ESTA SCUURSAL
          */
-        /*ComCajaventa::deleteAll( [
+        ComCajaventa::deleteAll( [
                     'codcaja'=>'CJ001',
                     'codsoc'=>'A',
                     'codcen'=>'7050',
                     
-                    ]);*/
+                    ]);
         
         /*****************
          * BORRANDO UN ALMACEN CORRESPONDIENTE A ESTE
          * CENTRO
          */
-        /*Almacenes::deleteAll(
+        Almacenes::deleteAll(
                 [
                     'codal'=>'8020',
                     
                     ]
-                );*/
+                );
        
         /*****************
          * BORARNDO UN CENTRO COPRRESPONDIENTE A ESTA 
          * EM,PRESA
          */
-        /*Centros::deleteAll(
+        Centros::deleteAll(
                 [
                     'codcen'=>'7050',
                    
                     ]                
-                );*/
+                );
        
          /*****************
          * BORRANDO UNA EMPRESA TIPO SOCIEDAD
          */
-       /* Clipro::deleteAll(
+        Clipro::deleteAll(
                 [                   
                     'rucpro'=>'20000000000',                                       
-                ]); */
+                ]); 
        
     }
 
