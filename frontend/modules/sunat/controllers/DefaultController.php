@@ -288,7 +288,7 @@ $util->showResponse($invoice, $cdr);
                         ->setCode('1000')
                         ->setValue('SON TRESCIENTOS TREINTA Y SEIS CON OO/100 SOLES')
                 ]);    
-            $see = $util->getSee(SunatEndpoints::FE_PRODUCCION /*SunatEndpoints::FE_BETA*/);
+            $see = $util->getSee(SunatEndpoints::FE_BETA /*SunatEndpoints::FE_BETA*/);
             $res = $see->send($invoice);
             $util->writeXml($invoice, $see->getFactory()->getLastXml());
                h::response()->format = \yii\web\Response::FORMAT_JSON;   
@@ -480,7 +480,7 @@ $util->showResponse($invoice, $cdr);
      $model= ComFactura::findOne($id);
      $voided=$model->createVoidedVoucherGreenter();  
     $voided->setCorrelativo(SunatSendSumary::correlSend());             
-        $see = $util->getSee(SunatEndpoints::FE_PRODUCCION);
+        $see = $util->getSee(SunatEndpoints::FE_BETA);
         $res = $see->send($voided);
             $util->writeXml($voided, $see->getFactory()->getLastXml());
          h::response()->format = \yii\web\Response::FORMAT_JSON;   

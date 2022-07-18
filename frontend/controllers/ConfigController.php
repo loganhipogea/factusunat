@@ -42,9 +42,10 @@ class ConfigController extends Controller
 
     
    public function actionSettingsModule(){
-       $moduleId=h::request()->get('module');
+       $moduleId=h::request()->get('module','sunat');
        if(yii::$app->hasModule( $moduleId)){
            $items=Setting::find()->andWhere(['section'=>$moduleId])->all();
+           var_dump(Setting::find()->andWhere(['section'=>$moduleId])->createCommand()->rawSql,$items);die();
            //$items=$this->getItemsToUpdate();
     if (Model::loadMultiple($items, Yii::$app->request->post()) && 
         Model::validateMultiple($items)) {

@@ -11,8 +11,9 @@ class m220715_140955_additemmenusunat extends migrationMenu
     public function safeUp()
     {
        migrationMenu::insertOption('SUNAT', null,null,'crosshairs');
-       migrationMenu::insertOption('Config', '/sunat/default/config','SUNAT','cog');
        
+       migrationMenu::insertOption('Config', '/sunat/default/config','SUNAT','cog');
+       migrationMenu::insertOption('Usuarios', '/config/default/settings-module','SUNAT','users');
     }
 
     /**
@@ -23,7 +24,7 @@ class m220715_140955_additemmenusunat extends migrationMenu
         migrationMenu::deleteOption('Config', '/sunat/default/config','SUNAT','cog');
        
         migrationMenu::deleteOption('SUNAT', null,null,'crosshairs');
-        
+         migrationMenu::insertOption('Usuarios', '/config/default/settings-module','SUNAT');
     }
 
 }
