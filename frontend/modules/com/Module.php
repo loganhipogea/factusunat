@@ -45,7 +45,7 @@ class Module extends \yii\base\Module
        $sesion=h::session();
        
        \yii::error('moduilir');
-       if($sesion->has()){
+       if($sesion->has($this->keysesion())){
            //$sesion->remove(self::SESSION_ID_CURRENT_CASH); die();
            $valorSesion=$sesion->get($this->keysesion());
            \yii::error('tiene sesion',__FUNCTION__);
