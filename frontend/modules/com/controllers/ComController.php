@@ -235,7 +235,9 @@ class ComController extends baseController
                         }
                        $item++;
                     }
-                     $model->refreshValues();                     
+                     $model->refreshValues(); 
+                     yii::error('attributos del modelo');
+                     yii::error($model->attributes);
                        $model->preparePdfInvoice();  
                      
                        
