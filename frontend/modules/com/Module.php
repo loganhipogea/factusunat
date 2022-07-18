@@ -36,15 +36,18 @@ class Module extends \yii\base\Module
         ];
     }
     
+    private function keysesion(){
+        return \common\models\masters\VwSociedades::codsoc().self::SESSION_ID_CURRENT_CASH;
+    }
     
     public static function idCajaDia($codcen){
         
        $sesion=h::session();
        
        \yii::error('moduilir');
-       if($sesion->has(self::SESSION_ID_CURRENT_CASH)){
+       if($sesion->has()){
            //$sesion->remove(self::SESSION_ID_CURRENT_CASH); die();
-           $valorSesion=$sesion->get(self::SESSION_ID_CURRENT_CASH);
+           $valorSesion=$sesion->get($this->keysesion());
            \yii::error('tiene sesion',__FUNCTION__);
            \yii::error($sesion->get('idcajadeldia'));
            if($valorSesion['fecha']==date('Y-m-d')){
@@ -56,7 +59,7 @@ class Module extends \yii\base\Module
                 \yii::error('la sesion NO ES DE HOY, REMOVIENDO'); 
                  \yii::error($valorSesion['fecha']);
                 \yii::error(date('Y-m-d'));
-              $sesion->remove(self::SESSION_ID_CURRENT_CASH); 
+              $sesion->remove($this->keysesion()); 
               if(is_null($reg=models\ComCajadia::find()->where(['codcen'=>$codcen,'fecha'=>date('Y-m-d')])->one())){
               yii::error('redireccionado NO SE ENCONTRO LA CAJA DEL DIA');
               yii::error(models\ComCajadia::find()->where(['codcen'=>$codcen,'fecha'=>date('Y-m-d')])->createCommand()->rawSql);
@@ -65,7 +68,7 @@ class Module extends \yii\base\Module
                      yii::error('si se encontro la caja del dia');
              
                         $valores=['id_caja'=>$reg->id+0,'fecha'=>date('Y-m-d')];
-                        $sesion->set(self::SESSION_ID_CURRENT_CASH,$valores);
+                        $sesion->set($this->keysesion(),$valores);
                     return $reg->id;
                 }
            }
@@ -79,7 +82,7 @@ class Module extends \yii\base\Module
                return h::currentController()->redirect(['/com/com/open-cash'])->send();
            }else{
                $valores=['id_caja'=>$reg->id+0,'fecha'=>date('Y-m-d')];
-               $sesion->set(self::SESSION_ID_CURRENT_CASH,$valores);
+               $sesion->set($this->keysesion(),$valores);
                return $reg->id;
            }
        }
