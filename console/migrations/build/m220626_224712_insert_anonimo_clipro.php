@@ -19,9 +19,10 @@ class m220626_224712_insert_anonimo_clipro extends baseMigration
              batchInsert(
                      '{{%clipro}}',
              ['codpro','rucpro','despro'],[
-                                ['0000000000',$att['rucpro'],$att['despro']],                                
+                                ['000000',$att['rucpro'],$att['despro']],                                
                                 ]
                      )->execute();
+        
          
          }
 
