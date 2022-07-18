@@ -480,7 +480,7 @@ $util->showResponse($invoice, $cdr);
      $model= ComFactura::findOne($id);
      $voided=$model->createVoidedVoucherGreenter();  
     $voided->setCorrelativo(SunatSendSumary::correlSend());             
-        $see = $util->getSee(SunatEndpoints::FE_BETA);
+        $see = $util->getSee(SunatEndpoints::FE_PRODUCCION);
         $res = $see->send($voided);
             $util->writeXml($voided, $see->getFactory()->getLastXml());
          h::response()->format = \yii\web\Response::FORMAT_JSON;   
