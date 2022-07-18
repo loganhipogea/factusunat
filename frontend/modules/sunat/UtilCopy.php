@@ -46,7 +46,7 @@ final class Util
         $see = new See();
         $see->setService($endpoint);
 //        $see->setCodeProvider(new XmlErrorCodeProvider());
-        $certificate = file_get_contents(__DIR__ . '/../../certificado.p12');
+        $certificate = file_get_contents(__DIR__ . '/../../certificate.pem');
         if ($certificate === false) {
             throw new Exception('No se pudo cargar el certificado');
         }
