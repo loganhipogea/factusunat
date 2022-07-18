@@ -51,8 +51,8 @@ final class Util
             throw new Exception('No se pudo cargar el certificado');
         }
         $see->setCertificate($certificate);
-        var_dump(VwSociedades::rucpro(), SunatAccess::usr(), SunatAccess::pwd());
-        die();
+        //var_dump(VwSociedades::rucpro(), SunatAccess::usr(), SunatAccess::pwd());
+        //die();
         /**
          * Clave SOL
          * Ruc     = 20000000001
