@@ -6,7 +6,8 @@ use console\migrations\baseMigration;
  * Class m220627_010317_create_table_com_caja
  */
 class m220627_010317_create_table_com_caja extends baseMigration
-{public $table='{{%com_cajaventa}}';    
+{
+    public $table='{{%com_cajaventa}}';    
     public function safeUp()
     {
      

@@ -11,7 +11,7 @@ USE yii\widgets\Pjax;
      <?php Pjax::begin(['id'=>'pjax-valores']);  ?> 
     <?php $form = ActiveForm::begin(); ?>
     <table class="table table-condensed table-hover table-bordered table-striped">
-        <tr><th>Type</th><th>key</th><th>Value</th><th>Description</th></tr>
+        <tr><th><?=yii::t('base.names','Type')?></th><th><?=yii::t('base.names','Key')?></th><th><?=yii::t('base.names','Value')?></th><th><?=yii::t('base.names','Descripcion')?></th></tr>
         <?php foreach($items as $i=>$item): ?>
             <tr>
                 <td class="form-group"><?= $item->type ?></td>

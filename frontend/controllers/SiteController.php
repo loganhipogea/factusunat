@@ -293,6 +293,8 @@ class SiteController extends Controller
         ]);
     }
     
-   
+   public function actionIndexCompanies(){
+      return $this->render('index-companies');
+   }
     
 }

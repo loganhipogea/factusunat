@@ -120,8 +120,9 @@ class ProfileController extends \common\controllers\base\baseController
          $model=\common\models\masters\VwSociedades::find(['codpro'=>$codpro])->one();
          $model->storeCompany();
          $sesion->remove(\common\models\masters\Centros::keySesion());
-         $url=$sesion->get('mi-ex-url');
-         $sesion->remove('mi-ex-url');
+         
+         $url=$sesion->has('mi-ex-url')?$sesion->get('mi-ex-url'):\Yii::$app->request->referrer;
+         $sesion->remove('mi-ex-url');         
          $sesion->setFlash('success',yii::t('base.names','Company {company} was selected',['company'=>$model->despro]));
         return  $this->redirect($url)->send();
          

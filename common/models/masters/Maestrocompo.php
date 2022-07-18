@@ -39,6 +39,7 @@ class Maestrocompo extends \common\models\base\modelBase
         return [
             [['descripcion','codtipo','codum'], 'required'],
             [['codart'], 'string', 'max' => 14],
+            [['codean'], 'string', 'max' => 14],
             [['descripcion'], 'string', 'max' => 60],
             [['marca', 'modelo', 'numeroparte'], 'string', 'max' => 30],
             [['codum', 'peso'], 'string', 'max' => 4],

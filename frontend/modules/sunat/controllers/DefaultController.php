@@ -15,8 +15,15 @@ USE Greenter\Model\Summary\Summary;
 USE Greenter\Model\Company\Company;
 USE frontend\modules\com\models\ComFactura;
 use common\models\masters\VwSociedades;
+Use yii\helpers\StringHelper;
 use common\helpers\h;
+use yii\helpers\Url;
 use Greenter\Model\Voided;
+
+use frontend\modules\sunat\models\SunatAccess;
+USE yii\widgets\ActiveForm;
+use yii\web\Response;
+USE YII;
 USE frontend\modules\sunat\Module as ModuloSunat;
 /**
  * Default controller for the `sunat` module
@@ -27,6 +34,16 @@ class DefaultController extends Controller
      * Renders the index view for module
      * @return string
      */
+    
+    public function actions() {
+      parent::actions();
+      return [           
+          'config'=> [
+                        'class' => 'common\actions\ActionConfigModule',
+                       ],
+            ];
+      
+    }
     public function actionIndex()
     {
         return $this->render('index');
@@ -271,7 +288,7 @@ $util->showResponse($invoice, $cdr);
                         ->setCode('1000')
                         ->setValue('SON TRESCIENTOS TREINTA Y SEIS CON OO/100 SOLES')
                 ]);    
-            $see = $util->getSee(SunatEndpoints::FE_BETA);
+            $see = $util->getSee(SunatEndpoints::FE_PRODUCCION /*SunatEndpoints::FE_BETA*/);
             $res = $see->send($invoice);
             $util->writeXml($invoice, $see->getFactory()->getLastXml());
                h::response()->format = \yii\web\Response::FORMAT_JSON;   
@@ -494,7 +511,7 @@ $util->showResponse($invoice, $cdr);
                                 ];
                       // var_dump($errores);die();
                $model->storeSend($errores,false,$voided->getName(),$ticket, SunatSends::TYPE_SEND_VOID_VOUCHER);
-                //$model->setRejectedSunat()->save(); 
+                $model->setRejectedSunat()->save(); 
                 //$model->setPassToVouchers(ComFactura::ST_REJECT_SUNAT);
                  return ['error' =>\yii::t('base.errors','There are some errors')]; 
            }else{
@@ -508,9 +525,84 @@ $util->showResponse($invoice, $cdr);
                             ];
                 $model->storeSend($cdrArray,true,$voided->getName(),$ticket, SunatSends::TYPE_SEND_VOID_VOUCHER);
                 //$model->setRejectedSunat()->save();
+                
                 $model->setRemoved()->save();
                  //$model->setPassToVouchers(ComFactura::ST_PASSED_SUNAT);
                return ['success' =>' -  '.\yii::t('base.errors','The summary was send successfully')]; 
              }    
+  }
+  
+  public function actionCreateCredentials(){
+      $sociedadAttr= VwSociedades::currentCompany();
+      if(SunatAccess::find()->
+              where(['codsoc'=> VwSociedades::codsoc()])->exists()){
+          $this->redirect(['update-credentials','codsoc'=>VwSociedades::codsoc()]);
+      }
+      $access=new SunatAccess();
+      $access->codsoc=$sociedadAttr['codsoc'];
+      
+       if (h::request()->isAjax && $access->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($access);
+        }
+        
+        
+        //VAR_DUMP($access->attributes,$access->load(h::request()->post()),$access->attributes,$access->save());die();
+        if ($access->load(h::request()->post()) && $access->save()) {
+            h::session()->setFlash('success',\yii::t('base.verbs','Credentials for {} was stored successfully',['company'=>$sociedadAttr['despro']]));
+            return $this->redirect(Url::to(['/site/index-companies']));
+        }else{
+            //print_r($access->getErrors());DIE();
+            
+        }
+
+        
+      
+      return $this->render('sunat_change_password',
+              [
+                  'sociedadAttr'=>$sociedadAttr,
+                  'model'=>$access
+              ]);
+  }
+  
+   public function actionUpdateCredentials($codsoc){
+       
+        /*$encryptedData = StringHelper::base64UrlEncode(Yii::$app->getSecurity()->encryptByPassword('HOLIS', 'PAPU'));
+        $data = Yii::$app->getSecurity()->decryptByPassword(StringHelper::base64UrlDecode($encryptedData), 'PAPU');
+        VAR_DUMP($data);DIE();*/
+       
+       
+       
+       $model=SunatAccess::find()->andWhere('codsoc=:codsoc', [':codsoc' => $codsoc])->one();
+       //var_dump($model->attributes);die();
+       
+       if(is_null($model)){
+           echo "hola";
+       }
+      $sociedadAttr= VwSociedades::currentCompany();
+     // VAR_DUMP($sociedadAttr);DIE();
+      
+       if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        
+        //VAR_DUMP($access->attributes,$access->load(h::request()->post()),$access->attributes,$access->save());die();
+        if ($model->load(h::request()->post()) && $model->save()) {
+            h::session()->setFlash('success',\yii::t('base.verbs','Credentials for {} was stored successfully',['company'=>$model->socio->despro]));
+            return $this->redirect(Url::to(['/site/index-companies']));
+        }else{
+            //print_r($access->getErrors());DIE();
+            
+        }
+
+        
+      
+      return $this->render('sunat_change_password',
+              [
+                  'sociedadAttr'=>$sociedadAttr,
+                  'model'=>$model
+              ]);
   }
 }

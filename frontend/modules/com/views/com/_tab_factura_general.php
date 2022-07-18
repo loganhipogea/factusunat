@@ -67,8 +67,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                               'class' => 'btn btn-danger']
                           );   
                   }  
-                  if($model->isPassed()  && (!$model->isPassedSunat() || $model->isRejectedSunat() ) //Si esta aprobada
-                          ){ 
+                  if($model->isPassed()  && !$model->isPassedSunat() || $model->isRejectedSunat() ) //Si esta aprobada
+                          { 
                   echo Html::button("<span class=\"fa fa-paper-plane\"></span>Enviar Sunat", 
                           [
                               'id'=>'btn_fct_enviar-sunat',

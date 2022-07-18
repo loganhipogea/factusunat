@@ -9,17 +9,22 @@ use yii\web\Controller;
  */
 class DefaultController extends Controller
 {
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
+   public function actions() {
+      parent::actions();
+      return [           
+          'config'=> [
+                        'class' => 'common\actions\ActionConfigModule',
+                       ],
+            ];
+      
+    }
     public function actionIndex()
     {
         return $this->render('index');
     }
     
-     public function actionConfig()
+    /* public function actionConfig()
     {
         return $this->redirect(Url::toRoute(['/config/settings-module','module'=>\Yii::$app->controller->module->id]));
-    }
+    }*/
 }
