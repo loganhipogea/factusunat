@@ -7,6 +7,7 @@ class m220715_151841_sunatuserclavesol_table extends baseMigration
     {
     
         if(!$this->existsTable($this->table)) {
+            
             $this->createTable($this->table, [
             'id' => $this->primaryKey(),
             'codsoc'=>$this->string(2)->append($this->collateColumn()),
@@ -26,7 +27,7 @@ class m220715_151841_sunatuserclavesol_table extends baseMigration
     public function safeDown()
     {
         if($this->existsTable($this->table)){
-        $this->dropTable($this->table);
+         $this->dropTable($this->table);
         }
     }
 }
