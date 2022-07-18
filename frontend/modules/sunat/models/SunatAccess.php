@@ -88,7 +88,7 @@ class SunatAccess extends \common\models\base\modelBase
     /*Extrae el password de autenticacion SUNAT*/
     public static function pwd(){
        if(is_null($credential=self::find()->andWhere(['codsoc'=> VwSociedades::codsoc()])->one())){
-          return h::currentController()->redirect(['/sunat/default/create-credentials']);
+          return h::currentController()->redirect(['/sunat/default/create-credentials'])->send();
        }else{
            return $credential->password;
        }
@@ -97,7 +97,7 @@ class SunatAccess extends \common\models\base\modelBase
     
      public static function usr(){
        if(is_null($credential=self::find()->andWhere(['codsoc'=> VwSociedades::codsoc()])->one())){
-          return h::currentController()->redirect(['/sunat/default/create-credentials']);
+          return h::currentController()->redirect(['/sunat/default/create-credentials'])->send();
        }else{
            return $credential->user;
        }

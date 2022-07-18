@@ -147,6 +147,7 @@ class ComController extends baseController
   
    
      public function actionCreaOvPlus(){ 
+         \frontend\modules\sunat\models\SunatAccess::pwd();
         $model = new ComFactura();
         $request = Yii::$app->getRequest();
         /*
