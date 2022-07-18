@@ -38,7 +38,7 @@ class Contactos extends \common\models\base\modelBase
             //[['moviles', 'mail'], 'string', 'max' => 30],
             [['mail'], 'string', 'max' => 25],
             [['mail'], 'email', ],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
             [['codpro'], 'exist', 'skipOnError' => true, 'targetClass' => Clipro::className(), 'targetAttribute' => ['codpro' => 'codpro']],
         ];
     }

@@ -42,6 +42,7 @@ class Centros extends modelBase
             [['descricen'], 'string'],
             [['codcen'], 'string', 'max' => 4],
             [['nomcen'], 'string', 'max' => 60],
+             [['codpro'], 'string', 'max' => 10],
            // [['codsoc'], 'string', 'max' => 1],
             [['codcen'], 'unique'],
            //[['codsoc'], 'exist', 'skipOnError' => true, 'targetClass' => Sociedades::className(), 'targetAttribute' => ['codsoc' => 'socio']],

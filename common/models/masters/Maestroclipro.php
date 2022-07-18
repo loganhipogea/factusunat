@@ -57,7 +57,7 @@ class Maestroclipro extends \common\models\base\modelBase
             [['vencimiento', 'tiempoentrega'], 'integer'],
             [['precio'], 'number'],
             [['venta', 'param3'], 'string', 'max' => 1],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
             [['codart'], 'string', 'max' => 14],
             [['codcen'], 'string', 'max' => 5],
             [['codmon'], 'string', 'max' => 4],

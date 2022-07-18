@@ -33,7 +33,7 @@ public $namecliente;
     {
         return [
             [['codpro', 'descripcion'], 'required'],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
             [['descripcion'], 'string', 'max' => 26],
             [['codigo'], 'string', 'max' => 3],
             [['codpro'], 'exist', 'skipOnError' => true, 'targetClass' => Clipro::className(), 'targetAttribute' => ['codpro' => 'codpro']],

@@ -73,7 +73,7 @@ class Direcciones extends \common\models\base\modelBase
             [['distrito'], 'string', 'max' => 25],
             [['provincia', 'departamento'], 'string', 'max' => 30],
             [['latitud', 'meridiano'], 'string', 'max' => 15],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
         ];
     }
 
