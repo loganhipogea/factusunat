@@ -24,6 +24,15 @@ return [
          'com' => [
             'class' => 'frontend\modules\com\Module',
         ],
+         'cc' => [
+            'class' => 'frontend\modules\cc\Module',
+        ],
+        'op' => [
+            'class' => 'frontend\modules\op\OpModule',
+        ],
+        'mat' => [
+            'class' => 'frontend\modules\mat\Module',
+        ],
     ],
     'components' => [
         

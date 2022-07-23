@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\masters\TrabajadoresSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('base.actions', 'Trabajadores');
+$this->title = Yii::t('base.verbs', 'Trabajadores');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php
@@ -42,7 +42,7 @@ if (Yii::$app->session->hasFlash('info')): ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('base.actions', 'Create Worker'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('base.verbs', 'Create Worker'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

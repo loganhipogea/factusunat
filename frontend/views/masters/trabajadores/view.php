@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\masters\Trabajadores */
 
-$this->title = yii::t('base.actions','Visualizar {name}',['name'=>$model->nombrecompleto]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('base.actions', 'Trabajadores'), 'url' => ['index']];
+$this->title = yii::t('base.verbs','Visualizar {name}',['name'=>$model->nombrecompleto]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('base.verbs', 'Trabajadores'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $model->id;
         <?= Html::a(Yii::t('base.verbs', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('control.errors', '¿Desea eliminar este registro?'),
+                'confirm' => Yii::t('base.errors', '¿Desea eliminar este registro?'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -46,7 +46,7 @@ echo DetailView::widget([
     'attributes'=>[
         [
         'group'=>true,
-        'label'=>yii::t('base.forms','Información Personal'),
+        'label'=>yii::t('base.names','Información Personal'),
         //'rowOptions'=>['class'=>'alert alert-danger'],
         'groupOptions'=>['class'=>'alert alert-warning']
           ],
@@ -61,7 +61,7 @@ echo DetailView::widget([
         
          [
         'group'=>true,
-         'label'=>yii::t('base.forms','Información Laboral'),
+         'label'=>yii::t('base.names','Información Laboral'),
         //'rowOptions'=>['class'=>'alert alert-danger'],
         'groupOptions'=>['class'=>'alert alert-warning']
         //'groupOptions'=>['class'=>'text-center']

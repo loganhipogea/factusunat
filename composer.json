@@ -28,6 +28,7 @@
         "2amigos/yii2-chartjs-widget": "~2.0",
         "kartik-v/yii2-export": "dev-master",
         "kartik-v/yii2-tabs-x": "dev-master",
+        "2amigos/yii2-ckeditor-widget" : "~2.1",
         "shifrin/yii2-noty": "^1.0",
         "loveorigami/yii2-modal-ajax": "@dev",
         "kartik-v/yii2-editable": "@dev",
@@ -41,7 +42,8 @@
       "2amigos/qrcode-library": "~1.1",
       "kartik-v/yii2-widget-datepicker": "dev-master",
       "vilochane/yii2-barcode-generator": "dev-master",
-      "kartik-v/yii2-icons": "@dev"
+      "kartik-v/yii2-icons": "@dev",
+      "kartik-v/yii2-detail-view": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

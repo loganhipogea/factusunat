@@ -122,7 +122,7 @@ class Clipro extends \common\models\base\modelBase
         //var_dump($insert);die();
         if($insert){
             $this->socio=false;
-            $this->codpro=$this->correlativo('codpro');
+            //$this->codpro=$this->correlativo('codpro');
         }
         return parent::beforeSave($insert);
     }
