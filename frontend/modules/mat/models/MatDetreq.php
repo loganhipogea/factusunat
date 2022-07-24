@@ -26,7 +26,7 @@ implements ReqInterface
     const SCE_IMPUTADO='sce_imputado';
     const SCE_SERVICIO='sce_servicio';
     const TIPO_MATERIALE='MAT';
-    const TIPO_SERVICIO='SERV';
+    const TIPO_SERVICIO='SER';
     //const SC='sce_imputado';
    public $boolean_fields=['activo'];
    private $_cantreal=null;
@@ -61,7 +61,7 @@ implements ReqInterface
     {
         return [
              [['cant'] ,'required'],
-            [['codart'] ,'safe'],
+            [['codart','tipo'] ,'safe'],
              [['cant','req_id','cant','item','tipo',
                  'um','activo','descripcion','texto','os_id','detos_id','proc_id'], 'safe'],
             [['detos_id','proc_id','os_id'] ,'required', 'on'=>self::SCE_IMPUTADO],

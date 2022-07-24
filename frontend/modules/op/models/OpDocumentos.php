@@ -22,6 +22,10 @@ use common\helpers\h;
  */
 class OpDocumentos extends \common\models\base\modelBase
 {
+    
+    public $dateorTimeFields=[
+        'cuando'=>self::_FDATETIME
+    ];
     /**
      * {@inheritdoc}
      */
@@ -52,7 +56,7 @@ class OpDocumentos extends \common\models\base\modelBase
             [['proc_id', 'os_id', 'detos_id',], 'required'],
             [['proc_id', 'os_id', 'detos_id', 'user_id'], 'integer'],
             [['detalles'], 'string'],
-            [['codocu'], 'safe'],
+            [['codocu','cuando','version'], 'safe'],
             [['descripcion'], 'string', 'max' => 40],
             [['role'], 'string', 'max' => 90],
             [['os_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpOs::className(), 'targetAttribute' => ['os_id' => 'id']],
@@ -119,8 +123,14 @@ class OpDocumentos extends \common\models\base\modelBase
     public function beforeSave($insert) {
         if($insert){
             $this->user_id=h::userId();
+            
         }
         
         return parent::beforeSave($insert);
+    }
+   
+    public function triggerUpload(){
+        $this->cuando=$this->currentDateInFormat();
+        $this->save();
     }
 }

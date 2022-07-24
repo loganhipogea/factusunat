@@ -7,6 +7,7 @@ use frontend\modules\op\models\OpOs;
 use frontend\modules\op\models\OpOsSearch;
 use frontend\modules\op\models\OpProcesos;
 use frontend\modules\op\models\OpProcesosSearch;
+use frontend\modules\op\models\OpDocumentosSearch;
 use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -103,6 +104,11 @@ class ProcController extends baseController
           $searchOs = new OpOsSearch();
           $dataProviderOs = $searchOs->searchByProc(
                 h::request()->queryParams,$model->id);
+       
+         
+         $searchOsDocs = new OpDocumentosSearch();
+          $dataProviderDocs = $searchOsDocs->searchByProc(
+                h::request()->queryParams,$model->id);
         
         
         
@@ -121,7 +127,9 @@ class ProcController extends baseController
 
         return $this->render('update', [
             'model' => $model,
-            'dataProviderOs'=>$dataProviderOs
+            'dataProviderOs'=>$dataProviderOs,
+            'dataProviderDocs'=>$dataProviderDocs,
+            'searchOsDocs'=>$searchOsDocs
         ]);
     }
 
@@ -286,6 +294,7 @@ class ProcController extends baseController
           $model= \frontend\modules\mat\models\MatDetreq::instance();
           $model->setAttributes([
               'req_id'=>$model->detectaIdReq(),
+              'proc_id'=>$modelPadre->proc_id,
               'os_id'=>$modelPadre->os_id,
               'detos_id'=>$modelPadre->id,  
               'tipo'=>$model::TIPO_MATERIALE,
@@ -352,9 +361,12 @@ class ProcController extends baseController
          // var_dump($model->detectaIdReq());die();
           $model->setAttributes([
               'req_id'=>$model->detectaIdReq(),
+               'proc_id'=>$modelPadre->proc_id,
               'os_id'=>$modelPadre->id,
-              //'detos_id'=>$modelPadre->id,              
+              'detos_id'=>$modelPadre->id,  
+              'tipo'=>$model::TIPO_MATERIALE,              
           ]);
+         
            $datos=[];
         if(h::request()->isPost){
             
@@ -383,13 +395,9 @@ class ProcController extends baseController
       
        public function actionModalEditaDoc($id){
           $this->layout = "install";
-          //$modelPadre= \frontend\modules\op\models\OpOsDet::findOne($id);
-          $model= \frontend\modules\op\models\OpDocumentos::instance();
-         // var_dump($model->detectaIdReq());die();
-          
-           $datos=[];
-        if(h::request()->isPost){
-            
+          $model= \frontend\modules\op\models\OpDocumentos::findOne($id);
+          $datos=[];
+        if(h::request()->isPost){            
             $model->load(h::request()->post());
              h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
@@ -397,7 +405,6 @@ class ProcController extends baseController
                return ['success'=>2,'msg'=>$datos];  
             }else{
                 $model->save(); 
-                //$model->assignStudentsByRandom();
                   return ['success'=>1,'id'=>$model->id];
             }
         }else{
@@ -477,7 +484,23 @@ class ProcController extends baseController
                   } else{
                       yii::error('NO encontro');
                   }  
-                return ['success'=>yii::t('sta.errors','Se creó una solicitud de compra')];
+                return ['success'=>yii::t('base.errors','Se creó una solicitud de compra')];
+            }   
+   }
+   
+    public function actionAjaxRenderImages($id){
+       if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model= \frontend\modules\op\models\OpOsdet::findOne($id))){
+                   return  $this->renderPartial('gallery_images',
+                           [
+                               'model'=>$model,
+                            ]);
+                                                     
+                  } else{
+                     
+                  }  
+                return ['success'=>yii::t('base.errors','Se creó una solicitud de compra')];
             }   
    }
 }

@@ -48,6 +48,7 @@ class inputAjaxWidget extends \yii\base\Widget
    $this->getView()->registerJs("$(document).ready(function() {
     $('#".$this->id_input."').on('".$this->evento."',function(){
     var_input=$('#".$this->id_input."').val();
+        alert('hilka');
   $.ajax({ 
    url:'".$this->ruta."',
    type:'".$this->tipo."',
@@ -80,7 +81,7 @@ success: function (data) {// success callback function
          }
     $cadena="$(document).ready(function() {
     $('#".$this->id_input."').on('".$this->evento."',function(){
-      
+       alert('hilkadsds ');
     
   $.ajax({ 
    url:'".$this->ruta."',
@@ -121,6 +122,8 @@ success: function (data) {// success callback function
     //$cadena2="alert('hola compadre);";
    $this->getView()->registerJs($cadena,$this->posicion);
   }  
+  
+  
  
  
 }

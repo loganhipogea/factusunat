@@ -43,7 +43,7 @@ use kartik\grid\GridView;
             'template' => '{edit}{delete}{attach}{change}',
                'buttons' => [
                     'attach' => function($url, $model) {  
-                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
                             'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
@@ -64,24 +64,16 @@ use kartik\grid\GridView;
                         'delete' => function ($url,$model) {
                               
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);                              
-                                    return \yii\helpers\Html::a('<span class="btn btn-primary glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                    return \yii\helpers\Html::a('<span class="btn btn-primary glyphicon glyphicon-trash"></span>', 'javascript:void(0)', [
+                                                'title'=>$url,
+                                        /*'id'=>$model->codparam,*/
+                                        'family'=>'holas',
+                                        'id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/
+                                        ]);
                              
                               
 			    },
-                        'attach' => function($url, $model) {  
-                          $url=\yii\helpers\Url::toRoute(['/op/proc/modal-agrega-doc','id'=>$model->id,'gridName'=>'pjax-detserv','idModal'=>'buscarvalor']);
-                        $options = [
-                            'title' => Yii::t('base.names', 'Subir Archivo'),
-                            //'aria-label' => Yii::t('rbac-admin', 'Activate'),
-                            //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
-                            'data-method' => 'get',
-                            //'data-pjax' => '0',
-                        ];
-                        return Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
-                        //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
-                     
                         
-                        },
                        'change' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/op/proc/ajax-compra-det-os','id'=>$model->id]);
                         
@@ -96,7 +88,17 @@ use kartik\grid\GridView;
                 'value' => function ($model, $key, $index, $column) {
                             return GridView::ROW_COLLAPSED;
                                 },
-                     'detailUrl' =>Url::toRoute(['/op/proc/ajax-expand-opera']),
+                                        
+                     'detail'=>function ($model, $key, $index, $column){
+                                    
+                         
+                        return  $this->render('_expand_operacion',[
+                            'id'=>$model->id,
+                            'model'=>$model,
+                            ]);            
+                     },
+                                       
+                     //'detailUrl' =>Url::toRoute(['/op/proc/ajax-expand-opera']),
                     //'headerOptions' => ['class' => 'kartik-sheet-style'], 
                     'expandOneOnly' => true
                 ], 

@@ -1,31 +1,6 @@
 <?php
-
 namespace frontend\modules\op\models;
-
 use Yii;
-
-/**
- * This is the model class for table "{{%op_osdet}}".
- *
- * @property int $id
- * @property int $proc_id
- * @property int $os_id
- * @property string $finicio
- * @property string $termino
- * @property string $descripcion
- * @property string $item
- * @property string $emplazamiento
- * @property string $codtra
- * @property string $tipo
- * @property string $tarifa
- * @property string $detalle
- * @property string $valor
- * @property string $numero
- * @property string $interna
- *
- * @property OpProcesos $proc
- * @property OpOs $os
- */
 class OpOsdet extends \common\models\base\modelBase
 {
    public $booleanFields = [
@@ -69,6 +44,7 @@ class OpOsdet extends \common\models\base\modelBase
             [['proc_id', 'os_id'], 'integer'],
             [['detalle'], 'string'],
             [['valor'], 'number'],
+            [['tipo'], 'safe'],
             //[['numero'], 'required'],
             [['finicio', 'termino'], 'string', 'max' => 19],
             [['descripcion'], 'string', 'max' => 40],

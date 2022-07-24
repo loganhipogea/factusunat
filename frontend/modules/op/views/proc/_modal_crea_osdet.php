@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-
+use common\helpers\h;
 use frontend\modules\mat\helpers\ComboHelper;
 
  //use kartik\date\DatePicker;
 use kartik\datetime\DateTimePicker;
 use common\widgets\selectwidget\selectWidget;
-use common\helpers\h;
+
 
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\sigi\models\Edificios */
@@ -46,9 +46,20 @@ use common\helpers\h;
     </div>
       <div class="box-body">
      
-   
+     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <?= 
+                   //$model->activo=false;
+            $form->field($model, 'tipo')->
+            dropDownList($model->dataComboValores('tipo'),
+                    ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    )  ?>
+
+        </div>   
           
- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
       <?= $form->field($model, 'finicio')->widget(DateTimePicker::class, [
                             'language' => h::app()->language,
                            'pluginOptions'=>[
@@ -64,7 +75,7 @@ use common\helpers\h;
                                 ]
                             ]) ?>
  </div>
-   <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
       <?= $form->field($model, 'termino')->widget(DateTimePicker::class, [
                             'language' => h::app()->language,
                            'pluginOptions'=>[

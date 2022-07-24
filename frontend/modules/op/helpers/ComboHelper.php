@@ -29,11 +29,17 @@ class ComboHelper extends Combito
                 'id','descripcion');
     }
     
-    public static function os(){ 
+    public static function os($proc_id=null){ 
+           if(is_null($proc_id))
                 return ArrayHelper::map(
                                 \frontend\modules\op\models\OpOs::find()->all()
                ,
                 'id','descripcion');
+         return ArrayHelper::map(
+                                \frontend\modules\op\models\OpOs::find()
+                                ->andWhere(['proc_id'=>$proc_id])->all()
+               ,
+                'id','descripcion');   
     }
     
     public static function planes(){ 

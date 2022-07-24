@@ -43,7 +43,8 @@
       "kartik-v/yii2-widget-datepicker": "dev-master",
       "vilochane/yii2-barcode-generator": "dev-master",
       "kartik-v/yii2-icons": "@dev",
-      "kartik-v/yii2-detail-view": "dev-master"
+      "kartik-v/yii2-detail-view": "dev-master",
+      "kartik-v/yii2-widget-datetimepicker": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

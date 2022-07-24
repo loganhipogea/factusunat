@@ -5,17 +5,19 @@ use common\helpers\h;
  use yii\widgets\Pjax;
 use yii\grid\GridView;
 use frontend\modules\op\helpers\ComboHelper;
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 ?>
 <div class="box-body">
     <br>
    
  
-        
-    <?php Pjax::begin(['id'=>'pjax-expand','timeout'=>false]); ?>
+     <?php $zonaAjax='pjax-expand'.$model->id;   ?>   
+    <?php Pjax::begin(['id'=>$zonaAjax,'timeout'=>false]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
     </div>
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <?php $form = \yii\widgets\ActiveForm::begin([
         'id'=>'myformulario',
@@ -27,13 +29,15 @@ use frontend\modules\op\helpers\ComboHelper;
      ?> 
         
     </div>
-<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
     <p class="text-fuchsia"><i style="font-size:1.5em; font-weight:600"><span class="fa fa-list-ol" ></span><?=Yii::t('base.names', 'Documentos anexados')?></p></i>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
     <div style='overflow:auto;'>
     <?= GridView::widget([
         'id'=>'grilla-documentos',
-                'dataProvider' =>$dataprovider,
+                'dataProvider' =>new \yii\data\ActiveDataProvider([
+                    'query'=> frontend\modules\op\models\OpDocumentos::find()->andWhere(['detos_id'=>$id])
+                ]),
          //'filterModel' => $searchModel,
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
@@ -62,13 +66,13 @@ use frontend\modules\op\helpers\ComboHelper;
                         },
                                 
                                 'edit' => function ($url,$model) {
-			    $url= Url::to(['/op/proc/mod-edit-osdet','id'=>$model->id,'gridName'=>'pjax-detmat','idModal'=>'buscarvalor']);
+			    $url= Url::to(['/op/proc/modal-edita-doc','id'=>$model->id,'gridName'=>'pjax-detmat','idModal'=>'buscarvalor']);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {
                               
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);                              
-                                    return \yii\helpers\Html::a('<span class="btn btn-primary glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                    return \yii\helpers\Html::a('<span class="btn btn-primary glyphicon glyphicon-trash"></span>', 'javascript:void(0)', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'pigmalion','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              
                               
 			    }
@@ -94,7 +98,17 @@ use frontend\modules\op\helpers\ComboHelper;
                              } 
                 
                 ],
+               ['attribute' => 'tipo',
+                'format'=>'raw',
+                'value'=>function($model){
+                        if($model->hasAttachments()){
+                            return Html::a($model->files[0]->type,$model->files[0]->url,['data-pjax'=>'0']);
+                        } else{
+                            return '';
+                        }                     
+                             } 
                 
+                ],  
                 
           
         ],
@@ -107,16 +121,66 @@ use frontend\modules\op\helpers\ComboHelper;
                'class' => 'botonAbre btn btn-primary'
                ]); */
     ?>
-   
-    
+    <?php 
+   echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgruidBancosss',
+            'idGrilla'=>$zonaAjax,
+            'family'=>'pigmalion',
+          'type'=>'POST',
+           'evento'=>'click',
+           //'refrescar'=>false,
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]); 
+   ?>
+    <?php Pjax::end(); ?>
+   <?php
+      $url= Url::to(['modal-agrega-doc','id'=>$model->id,'gridName'=>$zonaAjax,'idModal'=>'buscarvalor']);
+   echo  Html::button(yii::t('base.verbs','Agregar adjunto'), 
+           ['href' => $url, 'title' => yii::t('base.names','Agregar Op'),
+               'id'=>'btn_cuentas_edi',
+               'class' => 'botonAbre btn btn-primary'
+               ]); 
+    ?>
 </div>
     
   </div>        
-     
-    <?php Pjax::end(); ?>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <br>
+        <p class="text-fuchsia"><i style="font-size:1.1em; font-weight:600"><span class="fa fa-list-ol" ></span><?=Yii::t('base.names', 'Registro visual')?></p>
+         
+        <?php echo Html::button("<span class=\"fa fa-paper-plane\"></span>Ver", 
+                          [
+                              'id'=>'btn_images_x'.$model->id,
+                              'class' => 'btn btn-warning']
+                          );  
+      ?>
+        <?php Pjax::begin(['id'=>'zona_pk']) ?>
+        <?php Pjax::end();?>
+        <?php /*echo inputAjaxWidget::widget([
+            'id'=>'btn_images_x'.$model->id,
+            'isHtml'=>true,
+            'evento'=>'click',
+            'tipo'=>'POST',
+            'isDivReceptor'=>true,
+            'ruta'=>Url::to(['/op/proc/ajax-render-images/','id'=>$model->id]),
+            'id_input'=>'btn_images_x'.$model->id,
+            'idGrilla'=>'zona_pk',
+            'posicion'=> \yii\web\View::POS_END,
+            ]) */ ?>
+   
+    </div>
+    <?php
+      $this->registerJs("$(document).ready(function() { 
 
-</div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+  $('#btn_images_x".$model->id."').on('click',function() {
+    alert('hola');
+      });
+});",\yii\web\View::POS_END);
+    ?>
+
+   
         
         
     </div>   

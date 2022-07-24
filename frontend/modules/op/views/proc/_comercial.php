@@ -2,6 +2,11 @@
 use yii\widgets\ActiveForm;
 
 ?>
+ <?php
+    $aprobado=false;
+    $form = ActiveForm::begin([
+    'fieldClass'=>'\common\components\MyActiveField'
+    ]); ?>
 <div class="box-body">
 <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'numoc')->textInput(['maxlength' => true]) ?>
@@ -19,3 +24,4 @@ use yii\widgets\ActiveForm;
   </div>
      
  </div>
+  <?php ActiveForm::end(); ?>

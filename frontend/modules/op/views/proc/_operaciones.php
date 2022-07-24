@@ -1,6 +1,5 @@
 <?php
   use yii\helpers\Url;
-
  use yii\widgets\Pjax;
  use yii\helpers\Html;
 use yii\grid\GridView;
@@ -15,10 +14,7 @@ use yii\grid\GridView;
 ?>     
 
 <div class="box-body">
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    
+    <?php Pjax::begin(); ?>   
     <div style='overflow:auto;'>
     <?= GridView::widget([
         'id'=>'grilla-os',
@@ -26,42 +22,30 @@ use yii\grid\GridView;
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
         'filterModel' => New \frontend\modules\op\models\OpOsSearch(),
-        'columns' => [
-            
-         
-        
+        'columns' => [ 
          ['attribute' => 'numero',
+                'contentOptions'=>['style'=>'width:80px;'],
                 'format'=>'raw',
                 'value'=>function($model){
                         return Html::a($model->numero, Url::to(['edita-os','id'=>$model->id]),['target'=>'_blank']);                        
                              } 
                 
+                ],         
+            ['attribute' => 'descripcion',
+                //'format'=>'raw',
+                'value'=>function($model){
+                        return $model->descripcion;                        
+                             }                 
                 ],
-         
-             ['attribute' => 'Proveedor',
+            'fechaprog',
+            //'fechaini',           
+            ['attribute' => 'Ejecuta',
                 'format'=>'raw',
                 'value'=>function($model){
-                        return $model->cliente->despro;                        
-                             } 
-                
+                        return substr($model->cliente->despro,0,20);                        
+                             }                 
                 ], 
-         
-
            
-            
-            'fechaprog',
-            'fechaini',
-            'descripcion',
-            
-            //'codpro',
-            //'descripcion',
-            //'tipo',
-            //'codestado',
-            //'textocomercial:ntext',
-            //'textointerno:ntext',
-            //'textotecnico:ntext',
-
-          
         ],
     ]); ?>
     <?php Pjax::end(); ?>

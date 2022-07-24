@@ -1,7 +1,7 @@
 <?php
  use kartik\date\DatePicker;
 use yii\helpers\Html;
-
+use yii\widgets\ActiveForm;
 use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
 
@@ -9,10 +9,14 @@ use common\helpers\h;
 /* @var $model frontend\modules\op\models\OpProcesos */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+ <?php
+    $aprobado=false;
+    $form = ActiveForm::begin([
+    'fieldClass'=>'\common\components\MyActiveField'
+    ]); ?>
 <div class="op-procesos-form">
     <br>
-   
+  
       <div class="box-header">
         <div class="col-md-12">
             <div class="form-group no-margin">
@@ -117,3 +121,4 @@ use common\helpers\h;
 
 </div>
     </div>
+ <?php ActiveForm::end(); ?> 

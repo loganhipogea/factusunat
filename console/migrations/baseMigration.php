@@ -136,7 +136,12 @@ class baseMigration extends Migration
               if($valor=='Z'){
                   return false;
               }else {
-                  $code=self::selectLetter($key);  
+                  $code=self::selectLetter($key); 
+                  Combovalores::firstOrCreateStatic([
+            'nombretabla'=>$realNameTable.'.'.$namefield,
+            'codigo'=>$code,
+             'valor'=>$valor,
+            ]);
                   return true;                  
               }
         }else{  

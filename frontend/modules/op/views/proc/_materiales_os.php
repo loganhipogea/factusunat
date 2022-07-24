@@ -17,9 +17,11 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
     <div style='overflow:auto;'>
-    <?= GridView::widget([
+    <?php 
+    //echo $dataProviderMateriales->query->createCommand()->rawSql;
+    echo GridView::widget([
         'id'=>'grilla-materiales',
-                'dataProvider' =>$dataProviderMateriales,
+         'dataProvider' =>$dataProviderMateriales,
          'filterModel' => $searchModel,
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
@@ -64,9 +66,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                 ],
                             
                             ['attribute' => 'detos_id',
+                                'format'=>'raw',
                'filter'=> ComboHelper::actividadesOs($model->id),
                 'value'=>function($model){
-                        return $model->detos_id;                        
+                        return '<span class="fa fa-list" ></span>';                        
                              } 
                 
                 ],
@@ -83,8 +86,17 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'um',
              ['attribute' => 'descridetalle',
                 'format'=>'raw',
+                'contentOptions'=>['style'=>'width:80%;'],
                 'value'=>function($model){
                         return $model->descridetalle;                        
+                             } 
+                
+                ],
+         ['attribute' => 'numero',
+                'format'=>'raw',
+                'contentOptions'=>['style'=>'width:10%;'],
+                'value'=>function($model){
+                        return Html::a($model->numero,Url::to(['/mat/mat/update/','id'=>$model->req_id]),['data-pjax'=>'0']);                        
                              } 
                 
                 ],
@@ -103,7 +115,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     ]); ?>
     <?php
       $url= Url::to(['modal-agrega-det-req-libre','id'=>$model->id,'gridName'=>'pjax-detmat','idModal'=>'buscarvalor']);
-   echo  Html::button(yii::t('base.verbs','Agregar operación'), 
+   echo  Html::button(yii::t('base.verbs','Agregar material'), 
            ['href' => $url, 'title' => yii::t('base.names','Agregar Op'),
                'id'=>'btn_cuentas_edi',
                'class' => 'botonAbre btn btn-primary'

@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel frontend\modules\op\models\OpProcesosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Op Procesos');
+$this->title = Yii::t('base.names', 'Procesos');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h4><?= Html::encode($this->title) ?></h4>
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Op Procesos'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('base.names', 'Crear proceso'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     
     <div style='overflow:auto;'>
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
          
          [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}{view}',
+                'template' => '{update}',
                 'buttons' => [
                     'update' => function($url, $model) {                        
                         $options = [
@@ -63,10 +63,23 @@ $this->params['breadcrumbs'][] = $this->title;
          
          
 
-            'id',
-            'numero',
+           // 'id',
+            [
+                'attribute'=>'numero',
+                'contentOptions'=>['width'=>'50px;'],
+               /* 'value'=>function ($model){
+                        return $model->cliente->despro;
+                }*/
+            ],
+            'descripcion',
+            [
+                'attribute'=>'Cliente',
+                'value'=>function ($model){
+                        return $model->cliente->despro;
+                }
+            ],
             'fechaprog',
-            'fechaini',
+           // 'fechaini',
             'numoc',
             //'codpro',
             //'descripcion',
