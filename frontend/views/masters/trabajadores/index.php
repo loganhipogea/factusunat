@@ -50,25 +50,14 @@ if (Yii::$app->session->hasFlash('info')): ?>
         'filterModel' => $searchModel,
          'summary' => '',
         'columns' => [
-           
-
             'codigotra',
             'ap',
             'am',
             'nombres',
             'dni',            
-            //'ppt',
-            //'pasaporte',
-            //'codpuesto',
-            //'cumple',
             'fecingreso',
-            //'domicilio',
-            //'telfijo',
-            //'telmoviles',
-            //'referencia',
-
-            ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{update}{view}{delete}',
+           ['class' => 'yii\grid\ActionColumn',
+                'template'=>'{update}{view}{delete}{docu}',
                 'buttons'=>[
                     'update'=>function($url,$model){
                         $url=\yii\helpers\Url::toRoute(['update','id'=>$model->id]);
@@ -89,7 +78,15 @@ if (Yii::$app->session->hasFlash('info')): ?>
                              'delete' => function ($url,$model) {
 			   $url = \yii\helpers\Url::toRoute($this->context->id.'/deletemodel-for-ajax');
                               return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
-                            }
+                            },
+                      'docu'=>function($url,$model){
+                        $url=\yii\helpers\Url::toRoute(['assign-document','id'=>$model->id]);
+                        return \yii\helpers\Html::a(
+                                '<span class="btn btn-primary glyphicon glyphicon-folder-open"></span>',
+                                $url,
+                                ['data-pjax'=>'0']
+                                );
+                     },
                    ]
                 ],
         ],

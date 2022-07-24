@@ -383,4 +383,94 @@ class TrabajadoresController extends baseController
 
         throw new NotFoundHttpException(Yii::t('control.errors', 'The requested page does not exist.'));
     }
+    
+    
+    public function actionAssignDocument($id){
+         $model=$this->findModel($id);
+         return $this->render('_traba_docu',['model'=>$model]);
+    }
+    
+    public function actionModalAssignDocument($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $modelTrabajador= \common\models\masters\Trabajadores::findOne($id);
+        $model=New \common\models\masters\Docutrabajadores();
+        //$model->codpro=$modelCentros->codpro;
+        $model->codtra=$modelTrabajador->codigotra;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codtra];
+            }
+        }else{
+           return $this->renderAjax('modal_crea_documento', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    } 
+    
+    public function actionModalEditDocument($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $model= \common\models\masters\DocuTrabajadores::findOne($id);
+       // $model=New \common\models\masters\Docutrabajadores();
+        //$model->codpro=$modelCentros->codpro;
+        //$model->codtra=$modelTrabajador->codigotra;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codtra];
+            }
+        }else{
+           return $this->renderAjax('modal_crea_documento', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    
+    public function actionAjaxExpandAttachments(){
+     
+    if (isset($_POST['expandRowKey'])) {
+        $model = \common\models\masters\Docutrabajadores::findOne($_POST['expandRowKey']+0);
+         return $this->renderPartial('view_attachments', ['model'=>$model]);
+        
+        
+    } 
+
+  }
+   
 }

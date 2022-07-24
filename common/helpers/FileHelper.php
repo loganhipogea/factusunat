@@ -301,7 +301,8 @@ public static function extensionFile($filePath,$conpunto=false){
 
 
 public static function isImage($filePath){
-   $ext=self::extensionFile($filePath);
+   $ext= strtolower(self::extensionFile($filePath));
+   //var_dump($ext,self::extImages());die();
    return in_array($ext,self::extImages());
 }
 
