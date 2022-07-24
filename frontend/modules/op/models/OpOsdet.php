@@ -115,6 +115,7 @@ class OpOsdet extends \common\models\base\modelBase
         if($insert){
           $this->item='1'.str_pad($this->os->getDetalles()->count()+1,2,'0',STR_PAD_LEFT);
           $this->interna=true;  
+          $this->numero='';
         }
         return parent::beforeSave($insert);
     }
