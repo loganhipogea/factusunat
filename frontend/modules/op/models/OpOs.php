@@ -138,7 +138,7 @@ class OpOs extends \common\models\base\modelBase
            $this->item='1'.str_pad($this->proceso->getOrdenes()->count()+1,2,'0',STR_PAD_LEFT);
             
            $this->numero =$this->proceso->numero.'-'.$this->item;  
-           var_dump( $this->numero);die();
+          // var_dump( $this->numero);die();
            
         }       
         return parent::beforeSave($insert);
