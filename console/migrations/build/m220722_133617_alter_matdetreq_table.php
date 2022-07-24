@@ -18,6 +18,9 @@ class m220722_133617_alter_matdetreq_table extends baseMigration
         if(!$this->existsColumn($table,'fechaprog')){         
            $this->addColumn($table, 'fechaprog', $this->char(10));
         }
+        if(!$this->existsColumn($table,'tipo')){         
+           $this->addColumn($table, 'tipo', $this->char(3));
+        }
        
     }
 
@@ -34,6 +37,9 @@ class m220722_133617_alter_matdetreq_table extends baseMigration
         }
          if($this->existsColumn($table,'fechaprog')){         
            $this->dropColumn($table, 'fechaprog');
+        }
+        if($this->existsColumn($table,'tipo')){         
+           $this->dropColumn($table, 'tipo');
         }
     }
     /*
