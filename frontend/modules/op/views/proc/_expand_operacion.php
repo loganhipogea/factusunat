@@ -7,6 +7,7 @@ use yii\grid\GridView;
 use frontend\modules\op\helpers\ComboHelper;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
+use common\helpers\FileHelper as Fl;
 ?>
 <div class="box-body">
     <br>
@@ -51,7 +52,9 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'template' => '{attach}{edit}{delete}',
                'buttons' => [
                     'attach' => function($url, $model) {  
-                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                        $ext= json_encode(Fl::extEngineers()+Fl::extDocs());
+                        //$ext=['doc','docx','xls','xlsx','ppt','ppt'];
+                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'extension'=>$ext,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
                             'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),

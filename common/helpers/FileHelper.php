@@ -233,6 +233,10 @@ public static function extDocs(){
     return array('ppt','pptx','doc','docx','xls','xlsx','pdf','jpg','jpeg'); 
 }
 
+public static function extEngineers(){
+   return array('dwg','mpp','rws','ipt','idw');   
+}
+
 public static function randomNameFile($ext){
     if(!(substr($ext,0,1)=='.'))
       $ext='.'.$ext;    
