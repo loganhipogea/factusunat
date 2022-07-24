@@ -9,10 +9,13 @@ use common\helpers\h;
 ?>     
 
 <div class="box-body">
-    <?php Pjax::begin(['id'=>'pjax_repositorio']); ?>
+    <?php 
+    //(SDPSDSD
+    Pjax::begin(['id'=>'pjax_repositorio']); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     
+ 
     <div style='overflow:auto;'>
     <?= GridView::widget([
         'id'=>'grilla-repositorio',
