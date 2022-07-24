@@ -56,7 +56,7 @@ class OpOs extends \common\models\base\modelBase
             [['numero'], 'string', 'max' => 10],
             [['fechaprog', 'fechaini'], 'string', 'max' => 10],
             [['codtra',], 'string', 'max' => 6],
-            [['codpro',], 'string', 'max' => 6],
+            [['codpro',], 'string', 'max' => 10],
             [['descripcion'], 'string', 'max' => 40],
             [['tipo'], 'string', 'max' => 1],
             [['codestado'], 'string', 'max' => 2],
