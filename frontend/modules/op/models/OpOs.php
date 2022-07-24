@@ -134,6 +134,7 @@ class OpOs extends \common\models\base\modelBase
      public function beforeSave($insert) {
        // yii::error('funcion beforeSave  '.date('Y-m-d H:i:s'));
         if ($insert) { 
+            var_dump($this->proceso->numero,$this->item);die();
            $this->item='1'.str_pad($this->proceso->getOrdenes()->count()+1,2,'0',STR_PAD_LEFT);
            $this->numero =$this->proceso->numero.'-'.$this->item;   
            
