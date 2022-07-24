@@ -421,7 +421,7 @@ class ProcController extends baseController
       }
        public function actionModalAgregaDoc($id){
           $this->layout = "install";
-          $modelPadre= \frontend\modules\op\models\OpOsDet::findOne($id);
+          $modelPadre= \frontend\modules\op\models\OpOsdet::findOne($id);
           //var_dump($modelPadre);die();
           $model= \frontend\modules\op\models\OpDocumentos::instance();
          // var_dump($model->detectaIdReq());die();
