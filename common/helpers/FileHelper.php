@@ -230,7 +230,7 @@ class FileHelper extends FileHelperOriginal {
 
 
 public static function extDocs(){
-    return array('ppt','pptx','doc','docx','xls','xlsx','pdf','jpg','jpeg'); 
+    return ['ppt','pptx','doc','docx','xls','xlsx','pdf','jpg','jpeg']; 
 }
 
 public static function extEngineers(){
