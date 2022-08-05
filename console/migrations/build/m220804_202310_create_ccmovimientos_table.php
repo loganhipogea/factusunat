@@ -40,7 +40,7 @@ class m220804_202310_create_ccmovimientos_table extends baseMigration
        $this->paramsFk=[
            $this->table,
            'cuenta_id',
-           '{{%cc_cuentas}}',
+           '{{%cuentas}}',
            'id'
              ];
        $this->addFk();
