@@ -14,7 +14,8 @@ class m220805_024340_itemmenu extends baseMigration
     migrationMenu::insertOption('Documentos', '/documentos/index','Maestros','list');
     migrationMenu::insertOption('Sociedades', '/site/index-companies','Maestros','factory');
     migrationMenu::insertOption('Bancos', '/masters/basico/bancos','Maestros','build');
-         
+    migrationMenu::insertOption('Personas', '/masters/trabajadores/index','Maestros','build');
+           
            
          
          
@@ -31,7 +32,8 @@ class m220805_024340_itemmenu extends baseMigration
     migrationMenu::deleteOption('Documentos', '/documentos/index','Maestros');
     migrationMenu::deleteOption('Sociedades', '/site/index-companies','Maestros');
     migrationMenu::deleteOption('Bancos', '/masters/basico/bancos','Maestros');
-         
+    migrationMenu::deleteOption('Trabajadores', '/masters/trabajadores/index','Maestros');
+          
          
    
     }
