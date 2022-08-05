@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\masters\Trabajadores */
 
-$this->title = Yii::t('base.actions', 'Crear Banco');
+$this->title = Yii::t('base.names', 'Crear Banco');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Bancos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
