@@ -86,7 +86,7 @@ use common\helpers\h;
                'form'=>$form,
                'data'=> ComboHelper::procesos(),
                'campo'=>'proc_id',
-               'idcombodep'=>'oplibro-os_id',
+               'idcombodep'=>'optareodet-os_id',
               
                    'source'=>[\frontend\modules\op\models\OpOs::className()=>
                                 [
@@ -108,7 +108,7 @@ use common\helpers\h;
                'form'=>$form,
                'data'=> ($model->isNewRecord)?ComboHelper::Os($model->idProc()):ComboHelper::Os($model->proc_id),
                'campo'=>'os_id',
-               'idcombodep'=>'oplibro-detos_id',              
+               'idcombodep'=>'optareodet-detos_id',              
                    'source'=>[\frontend\modules\op\models\OpOsdet::className()=>
                                 [
                                   'campoclave'=>'id' , //columna clave del modelo ; se almacena en el value del option del select 
@@ -148,14 +148,14 @@ echo "detos_id=>".$model->detos_id."<br>";*/
      <?= $form->field($model, 'detalle')->textArea(['maxlength' => true,/*'disabled'=>!$model->activo,*/]) ?>
  </div>        
   <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">  
-    <?= 
+    <?php /*echo 
             $form->field($model, 'tarifa_id')->
             dropDownList(ComboHelper::planes(),
                     ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>!$model->activo,
                         ]
-                    )  ?>
+                    ) */ ?>
 </div>        
   
   

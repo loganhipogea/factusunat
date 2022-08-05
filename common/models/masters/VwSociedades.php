@@ -73,7 +73,7 @@ class VwSociedades extends \common\models\base\modelBase
         $sesion=\yii::$app->session;
         if($sesion->has(self::keySesion())){
             yii::error('Encontro el key sesion');
-           //VAR_DUMP($sesion->get(self::keySesion()));
+          // VAR_DUMP($sesion->get(self::keySesion()));die();
             return $sesion->get(self::keySesion());
         }else{
              yii::error('NO Encontro el key sesion, redireccionando');
@@ -159,5 +159,8 @@ class VwSociedades extends \common\models\base\modelBase
        }
      RETURN   $data;
    }
-    
+  public static function currentCompanyModel(){
+     // var_dump(['codsoc'=>self::codsoc()]);die();
+     return VwSociedades::find()->andWhere(['codsoc'=>self::codsoc()])->one();
+  }  
 }

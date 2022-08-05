@@ -219,7 +219,7 @@ class CcCompras extends \common\models\base\modelBase
        
        
        if($this->hasChanged('monto')){
-           if($this->isChild() && $this->padre->completo())
+           if($this->isChild() && !IS_NULL($this->padre) && $this->padre->completo())
            $this->adderror('monto',Yii::t('app', 'El monto de este comprobante no es modificable, el fondo ya está rendido'));
            if($this->acumulado() >0)
             $this->adderror('monto',Yii::t('app', 'El monto de este comprobante no es modificable, tiene calificaciones. Primero elimine las califiaciones'));

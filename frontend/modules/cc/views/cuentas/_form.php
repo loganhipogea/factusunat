@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use frontend\modules\sigi\helpers\comboHelper;
+use common\helpers\ComboHelper;
+
 use common\widgets\selectwidget\selectWidget;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 /* @var $this yii\web\View */

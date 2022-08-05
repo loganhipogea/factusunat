@@ -252,8 +252,10 @@ class CuentasController extends baseController
        $model=New \frontend\modules\cc\models\CcCompras();
        $model->movimiento_id=$id;
        $datos=[];
-        if(h::request()->isPost){            
+        if(h::request()->isPost){ 
+           
             $model->load(h::request()->post());
+             //print_r($model->attributes);die();
              h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){
@@ -338,6 +340,7 @@ class CuentasController extends baseController
        $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
+            print_r($model->attributes);die();
              h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){
@@ -364,11 +367,11 @@ class CuentasController extends baseController
    
    public function actionModCreaRendicion($id){
     $this->layout = "install";
-    $modelCompra= \frontend\modules\cc\models\CcRendicion::findOne($id);
+    $modelCompra= \frontend\modules\cc\models\CcMovimientos::findOne($id);
       
     $model=New \frontend\modules\cc\models\CcCompras();
-     
-        $model->parent_id=$id;
+     $model->parent_id=$id;
+        $model->movimiento_id=$id;
        $datos=[];
         if(h::request()->isPost){ 
             //ECHO "EL ESCEANRIO ES ".$model->getScenario();die();
@@ -386,7 +389,7 @@ class CuentasController extends baseController
                   return ['success'=>1,'id'=>$model->id];
             }
         }else{
-           return $this->renderAjax('_modal_crea_comprobante', [
+           return $this->renderAjax('_modal_crea_rendicion', [
                         'model' => $model,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
@@ -402,10 +405,10 @@ class CuentasController extends baseController
             $model = \frontend\modules\cc\models\CcRendicion::findOne($id);
              h::response()->format = Response::FORMAT_JSON;
              IF($model->CreaDocCompensacion()){
-                return ['success' => yii::t('sta.messages', 'Se ha efectuado la compensación')];
+                return ['success' => yii::t('base.verbs', 'Se ha efectuado la compensación')];
            
              }ELSE{
-                 return ['error' => yii::t('sta.messages', 'Error : {error}',['error'=>$model->getFirstError()])];
+                 return ['error' => yii::t('base.errors', 'Error : {error}',['error'=>$model->getFirstError()])];
             
              }
 

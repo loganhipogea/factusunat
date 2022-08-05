@@ -1,7 +1,7 @@
 <?php
 
 
-
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 use common\helpers\h;
  use yii\helpers\Url;
 use kartik\grid\GridView;
@@ -29,12 +29,17 @@ use frontend\modules\op\helpers\ComboHelper;
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">
-            <div class="form-group no-margin">
-                
+            <div class="form-group">
+               <div class="btn-group">  
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
-            
-
+        <?php  echo Html::button("<span class=\"fa fa-cog\"></span>Report", 
+                          [
+                              'id'=>'btn_fct_aprobar',
+                              'class' => 'btn btn-danger']
+                          );       
+                        ?>
             </div>
+             </div>
         </div>
     </div>
       <div class="box-body">
@@ -85,7 +90,25 @@ use frontend\modules\op\helpers\ComboHelper;
         ]);  ?>
 
  </div> 
-             
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+        <?php echo  $form->field($model, 'proc_id')->
+            dropDownList(ComboHelper::procesos(),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    )  ?>
+ </div> 
+   <?php if(!$model->isNewRecord)  { ?>
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+        <?php echo  $form->field($model, 'esferiado')->
+         checkbox(['disabled'=>true]);?>
+ </div>  
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+        <?php echo  $form->field($model, 'semana')->
+                textInput(['disabled'=>true]);?>
+ </div>  
+   <?php } ?>        
   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"> 
     <?php /*echo ComboDep::widget([
                'model'=>$model,               
@@ -142,7 +165,16 @@ use frontend\modules\op\helpers\ComboHelper;
  </div>
      
     <?php ActiveForm::end(); ?>
-
+      <?php echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_tareo_pdf',
+            'otherContainers'=>['pjax-det'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/op/proc/ajax-build-tareo-pdf','id'=>$model->id]),
+            'id_input'=>'btn_fct_aprobar',
+            'idGrilla'=>'pjax-det'
+      ])  ?>  
            
     <?php Pjax::begin(['id'=>'pjax-det','timeout'=>false]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -169,7 +201,7 @@ use frontend\modules\op\helpers\ComboHelper;
                     'attach' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
-                            'title' => Yii::t('sta.labels', 'Colocar en el maletín'),
+                            'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',
@@ -195,7 +227,7 @@ use frontend\modules\op\helpers\ComboHelper;
                         'attach' => function($url, $model) {  
                           $url=\yii\helpers\Url::toRoute(['/op/proc/modal-agrega-doc','id'=>$model->id,'gridName'=>'pjax-det','idModal'=>'buscarvalor']);
                         $options = [
-                            'title' => Yii::t('sta.labels', 'Subir Archivo'),
+                            'title' => Yii::t('base.names', 'Subir Archivo'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',
@@ -236,7 +268,7 @@ use frontend\modules\op\helpers\ComboHelper;
                  ['attribute' => 'tipo',
                 'format'=>'raw',
                 'value'=>function($model){
-                        return $model->comboValueField('tipo');                        
+                        return $model-> comboValueText('tipo');                        
                              } 
                 
                 ],          
@@ -246,7 +278,7 @@ use frontend\modules\op\helpers\ComboHelper;
     <?php
       $url= Url::to(['modal-agrega-libro','id'=>$model->id,'gridName'=>'pjax-det','idModal'=>'buscarvalor']);
    echo  Html::button(yii::t('base.verbs','Agregar operación'), 
-           ['href' => $url, 'title' => yii::t('sta.labels','Agregar Op'),
+           ['href' => $url, 'title' => yii::t('base.names','Agregar Op'),
                'id'=>'btn_cuentas_edi',
                'class' => 'botonAbre btn btn-primary'
                ]); 

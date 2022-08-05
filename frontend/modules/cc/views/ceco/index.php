@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel frontend\modules\cc\models\CcCcSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Cc Ccs');
+$this->title = Yii::t('app', 'Colectores');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cc-cc-index">
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Cc Cc'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Crear colector'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <div style='overflow:auto;'>
     <?= GridView::widget([
@@ -55,17 +55,23 @@ $this->params['breadcrumbs'][] = $this->title;
                          }
                     ]
                 ],
-         
-         
-         
-         
-         
-
-            'id',
             'codigo',
-            'parent_id',
+            
             'descripcion',
-            'activo',
+            ['attribute'=>'parent_id',
+             'value'=>function ($model){
+                    if($model->parent_id >0)
+                        return $model->padre->codigo;
+                    return '';
+             }
+                
+            ],
+            [
+            'class' => 'yii\grid\CheckboxColumn',
+            'checkboxOptions' => function($model) {
+                return ['checked' => $model->activo,'disabled'=>true];
+            }
+        ],
 
           
         ],

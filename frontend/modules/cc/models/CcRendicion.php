@@ -171,7 +171,7 @@ class CcRendicion extends \common\models\base\modelBase
             ]); 
            return $model->save();
         }else{
-            $this->addError('glosa',yii::t('base.errors'),'Este documento ya tiene documento de compensación');
+            $this->addError('glosa',yii::t('base.errors','Este documento ya tiene documento de compensación'));
             return false;            
         }
     }
@@ -260,9 +260,16 @@ class CcRendicion extends \common\models\base\modelBase
            
    }
    
-   public function completo(){      
-      return $this->monto==$this->acumulado(); 
-   
+   public function completo(){
+     if(!empty($this->monto)){
+         yii::error($this->monto,__FUNCTION__);
+         yii::error($this->acumulado(),__FUNCTION__);
+         return $this->monto==$this->acumulado(); 
+         
+     }
+        
+      
+      return false;
    }
    
    

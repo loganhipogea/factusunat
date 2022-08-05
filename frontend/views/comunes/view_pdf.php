@@ -17,7 +17,7 @@ if(FileHelper::isImage($urlFile)) { ?>
 <div style="overflow:auto">
     <?php echo Html::img($urlFile,['width'=>300,'height'=>300]); ?>
 </div>
-<?php  }elseif($ext=='pdf') {?>
+<?php  }elseif($ext=='pdf') { ?>
 
 <embed src="<?=$urlFile?>"  type="application/pdf" 
        width="<?=$width?>" height="<?=$height?>" 

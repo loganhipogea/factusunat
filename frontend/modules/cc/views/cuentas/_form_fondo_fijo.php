@@ -7,7 +7,7 @@ use common\helpers\h;
 use yii\widgets\Pjax;
 use kartik\grid\GridView;
 use common\helpers\FileHelper;
-use frontend\modules\sigi\helpers\comboHelper;
+use common\helpers\comboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
@@ -33,7 +33,7 @@ use frontend\modules\cc\models\CcGastos;
       
           
         <div class="col-md-12">
-            <div class="form-group no-margin">
+            <div class="form-group ">
             <div class="btn-group">
           <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Guardar'), ['class' => 'btn btn-success']) ?>
            <?php    $url=\yii\helpers\Url::toRoute(['/finder/selectimage',
@@ -43,7 +43,7 @@ use frontend\modules\cc\models\CcGastos;
                 'extension'=> \yii\helpers\Json::encode(array_merge(['pdf','jpg','png','svg','jpeg'])),
                'nombreclase'=> str_replace('\\','_',get_class($model))
                ]); ?>
-            <?=(!$model->isNewRecord)?Html::button('<span class="fa fa-clip"></span>   '.Yii::t('sta.labels', 'Adjuntar imagen'), ['class' => 'botonAbre btn btn-success','href' => $url,'id'=>'btn-add-usuarios']):''?> 
+            <?=(!$model->isNewRecord)?Html::button('<span class="fa fa-clip"></span>   '.Yii::t('base.names', 'Adjuntar imagen'), ['class' => 'botonAbre btn btn-success','href' => $url,'id'=>'btn-add-usuarios']):''?> 
  
 
                   
@@ -105,7 +105,7 @@ use frontend\modules\cc\models\CcGastos;
                     
                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
                              <?php Pjax::begin(['id'=>'pjax-monto']); ?> 
-                            <?= $form->field($model, 'monto')->textInput(['disabled'=>$bloqueado,]) ?>
+                            <?= $form->field($model, 'monto_a_rendir')->textInput(['disabled'=>true,]) ?>
                             <?php Pjax::end(); ?> 
                    </div> 
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -121,11 +121,11 @@ use frontend\modules\cc\models\CcGastos;
        <div class="btn-group">   
     <?php
     // $url= Url::to(['cuentas/mod-crea-rendicion','id'=>$model->id,'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-    // echo  Html::button(yii::t('sta.labels','Costo directo'), ['href' => $url, 'title' => yii::t('sta.labels','Costo directo'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+    // echo  Html::button(yii::t('base.names','Costo directo'), ['href' => $url, 'title' => yii::t('base.names','Costo directo'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
     /* $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_indirecto(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Costo indirecto'), ['href' => $url, 'title' => yii::t('sta.labels','Costo indirecto'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-danger']); 
+     echo  Html::button(yii::t('base.names','Costo indirecto'), ['href' => $url, 'title' => yii::t('base.names','Costo indirecto'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-danger']); 
    $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_orden(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Colector'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar a Colector'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-warning']); 
+     echo  Html::button(yii::t('base.names','Colector'), ['href' => $url, 'title' => yii::t('base.names','Agregar a Colector'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-warning']); 
    */
    echo ".";
    ?>
@@ -182,7 +182,7 @@ use frontend\modules\cc\models\CcGastos;
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model)),'extension'=> \yii\helpers\Json::encode(array_merge(['pdf'], FileHelper::extImages())),
                            ]);
                         $options = [
-                            'title' => Yii::t('sta.labels', 'Colocar en el maletín'),
+                            'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                              'data-method' => 'get',
@@ -288,7 +288,7 @@ use frontend\modules\cc\models\CcGastos;
     ]); ?>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
             <p class="text-right">
-                 <?=yii::t('base.labels','Monto rendido : '). '  S/. '.$formato->asDecimal($model->acumulado(),2) ?>
+                 <?=yii::t('base.names','Monto rendido : '). '  S/. '.$formato->asDecimal($model->acumulado(),2) ?>
             </p>
                        
         </div> 
@@ -311,20 +311,20 @@ use frontend\modules\cc\models\CcGastos;
        
     <?php
      if($avance >100){
-           echo  Html::button(yii::t('sta.labels','Compensar'), [ 'title' => yii::t('sta.labels','Compensar'),'id'=>'btn_compensar', 'class' => 'btn btn-warning']); 
+           echo  Html::button(yii::t('base.names','Compensar'), [ 'title' => yii::t('base.names','Compensar'),'id'=>'btn_compensar', 'class' => 'btn btn-warning']); 
     
        }elseif ($avance==100) {
-            echo  Html::button(yii::t('sta.labels','Revertir Compensación'), [ 'title' => yii::t('sta.labels','Revertir'),'id'=>'btn_revertir_compensacion', 'class' => 'btn btn-danger']); 
+            echo  Html::button(yii::t('base.names','Revertir Compensación'), [ 'title' => yii::t('base.names','Revertir'),'id'=>'btn_revertir_compensacion', 'class' => 'btn btn-danger']); 
     
       }elseif($avance <100){
           $url= Url::to(['cuentas/mod-crea-rendicion','id'=>$model->id,'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-            echo  Html::button(yii::t('sta.labels','Agregar Comprobante'), ['href' => $url, 'title' => yii::t('sta.labels','Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+            echo  Html::button(yii::t('base.names','Agregar Comprobante'), ['href' => $url, 'title' => yii::t('base.names','Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      
       }
      /* $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_indirecto(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Costo indirecto'), ['href' => $url, 'title' => yii::t('sta.labels','Costo indirecto'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-danger']); 
+     echo  Html::button(yii::t('base.names','Costo indirecto'), ['href' => $url, 'title' => yii::t('base.names','Costo indirecto'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-danger']); 
    $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_orden(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Colector'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar a Colector'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-warning']); 
+     echo  Html::button(yii::t('base.names','Colector'), ['href' => $url, 'title' => yii::t('base.names','Agregar a Colector'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-warning']); 
    */
 
    ?>               

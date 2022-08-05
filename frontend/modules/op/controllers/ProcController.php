@@ -503,4 +503,17 @@ class ProcController extends baseController
                 return ['success'=>yii::t('base.errors','Se creó una solicitud de compra')];
             }   
    }
+   
+   public function actionAjaxBuildTareoPdf($id){
+       if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model= \frontend\modules\op\models\OpTareo::findOne($id))){
+                   $model->preparePdfReport();
+                     return ['success'=>yii::t('base.errors','Se creó el reporte PDF')];                                 
+                  } else{
+                    return ['error'=>yii::t('base.errors','No se encontró un registro')]; 
+                  }  
+                return ['success'=>yii::t('base.errors','Se creó una solicitud de compra')];
+            }  
+   }
 }

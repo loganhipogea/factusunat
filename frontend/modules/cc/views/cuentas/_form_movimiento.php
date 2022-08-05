@@ -41,7 +41,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                  <?= $form->field($model, 'monto')->textInput([
                      'value'=>$model->cuenta->nombre,
                      'disabled'=>true,
-                 ])->label(yii::t('base.labels','Cuenta')) ?>
+                 ])->label(yii::t('base.names','Cuenta')) ?>
             </div>
           
           
@@ -126,7 +126,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                     'attach' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
-                            'title' => Yii::t('sta.labels', 'Colocar en el maletín'),
+                            'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',
@@ -219,11 +219,11 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     <?php Pjax::end(); ?>
    <?php
     $url= Url::to(['mod-crea-comprobante','id'=>$model->id,'gridName'=>'grilla-compras','idModal'=>'buscarvalor']);
-    echo  Html::button(yii::t('base.verbs','Agregar comprobante'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+    echo  Html::button(yii::t('base.verbs','Agregar comprobante'), ['href' => $url, 'title' => yii::t('base.names','Agregar Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      ?>
     <?php
     $url= Url::to(['mod-crea-fondo','id'=>$model->id,'gridName'=>'grilla-compras','idModal'=>'buscarvalor']);
-    echo  Html::button(yii::t('base.verbs','Agregar Fondo'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+    echo  Html::button(yii::t('base.verbs','Agregar Fondo'), ['href' => $url, 'title' => yii::t('base.names','Agregar Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      ?>
   </div> 
   <?php  } ?>        

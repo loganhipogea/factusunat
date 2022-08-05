@@ -48,6 +48,19 @@ class TareoController extends baseController
         ]);
     }
 
+    
+    
+     public function actionIndexTareoSemana()
+    {
+        $searchModel = new \frontend\modules\op\models\OpVwTareosemanaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_tareo_semana', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single OpTareo model.
      * @param integer $id
@@ -290,6 +303,55 @@ class TareoController extends baseController
        
           
       }
-      
+  
+  public function actionAjaxCloneWorker($id){
+    if(h::request()->isAjax){
+        $model= \frontend\modules\op\models\OpTareo::findOne($id);
+       h::response()->format = \yii\web\Response::FORMAT_JSON;
+        if($model->nWorkers()==0){
+             $model->clonePeople($id);
+          return ['success'=>yii::t('base.names','Se clonó el personal del dia {fecha}',['fecha'=>$model->fecha])];
+        }else{
+           return ['error'=>yii::t('base.names','Ya existen trabajadores aquí')];
+        }        
+    }
+  }    
+ 
+  
+    public function actionModalViewTax($id){
+          $this->layout = "install";
+           $model= \frontend\modules\op\models\OpTareodet::findOne($id);
+            $modelTarifa=$model->tarifa;
+            $modelPlan=$modelTarifa->plan;
+            //var_dump($modelTarifa,$modelPlan);die();
+           return $this->render('_modal_tarifas', [
+                        'modelTarifa'=>$modelTarifa,
+                       'modelPlan' =>$modelPlan
+            ]);    
+           
+      }
+   
+   public function actionViewSummaryWeekPerson(){
+       $datos['proc_id']=h::request()->get('proc_id');
+        $datos['codtra']=h::request()->get('codtra');
+         $datos['semana']=h::request()->get('semana');
+          $datos['anio']=h::request()->get('anio');
+      $model= \frontend\modules\op\models\OpVwTareosemana::find()->andWhere($datos)->one();
+       if(is_null($model)){
+          throw new NotFoundHttpException(Yii::t('app', 'No se pudo filtrar este modelo')); 
+       }
+       return $this->render('view_persona_semana',['model'=>$model]);
+   }
+  public function actionPdfWorkerWeek(){
+      $datos['proc_id']=h::request()->get('proc_id');
+        $datos['codtra']=h::request()->get('codtra');
+         $datos['semana']=h::request()->get('semana');
+          $datos['anio']=h::request()->get('anio');
+        $model= \frontend\modules\op\models\OpVwTareosemana::find()->andWhere($datos)->one();
+       if(is_null($model)){
+          throw new NotFoundHttpException(Yii::t('app', 'No se pudo filtrar este modelo')); 
+       }
+       return $model->preparePdfReport();
+  }
 }
 

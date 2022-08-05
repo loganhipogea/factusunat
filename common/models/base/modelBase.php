@@ -509,6 +509,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
       yii::error('----fieldlinkx  con true----',__FUNCTION__);
       yii::error($this->fieldsLink(true),__FUNCTION__);
     yii::error('----nomrecampo ----'.$nombrecampo,__FUNCTION__);*/
+     // VAR_DUMP($this->fieldsLink());DIE();
      $nombrecalseforanea= $this->fieldsLink(false)[$nombrecampo];
      /* yii::error('----nomnreclase foranea ----'.$nombrecampo,__FUNCTION__);
      var_dump($this->fieldsLink(true),get_class($this),$this->fieldsLink(true),$nombrecalseforanea);
@@ -1459,7 +1460,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
      return self::RawTableName().'.'.$attribute;
   }
   
-  public function dataComboValores($attribute){
+  public static  function dataComboValores($attribute){
      $dependency=New \yii\caching\DbDependency(['sql'=>'SELECT COUNT(*) FROM {{%combovalores}}']);
         $result = self::getDb()->cache(
                                              function ($db) use($attribute) {   
@@ -1484,6 +1485,12 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
        if(!empty($this->{$attribute}))
        return $this->dataComboValores($attribute)[$this->{$attribute}];
        return '';
+  }
+  
+  public static function comboValueTextStatic($attribute,$value){
+     
+       return self::dataComboValores($attribute)[$value];
+       
   }
  
   

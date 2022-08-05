@@ -16,43 +16,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box box-success">
      <div class="box-body">
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search_tareo', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Op Tareo'), ['create'], ['class' => 'btn btn-success']) ?>
+       
     </p>
     <div style='overflow:auto;'>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-         'summary' => '',
+        // 'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             
          
          [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}{view}',
+                'template' => '{update}',
                 'buttons' => [
                     'update' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class="btn btn-primary btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
                          },
-                          'view' => function($url, $model) {                        
-                        $options = [
-                            'title' => Yii::t('base.verbs', 'View'),                            
-                        ];
-                        return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-search"></span>', $url, $options/*$options*/);
-                         },
-                         'delete' => function($url, $model) {                        
-                        $options = [
-                            'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
-                            'title' => Yii::t('base.verbs', 'Delete'),                            
-                        ];
-                        return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-remove"></span>', $url, $options/*$options*/);
-                         }
+                          
                     ]
                 ],
          
@@ -61,9 +49,15 @@ $this->params['breadcrumbs'][] = $this->title;
          
          
 
-            'id',
+           
             'fecha',
             'hinicio',
+            [ 'attribute'=>'semana',
+               'value'=>function($model){
+                      return$model->semana;  
+               } 
+                
+                ],
             'hfin',
             'descripcion',
             //'direcc_id',

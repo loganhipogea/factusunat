@@ -39,16 +39,16 @@ trait CcTrait
   }
     
   public static function NombreCostoIndirecto(){
-      return yii::t('base.labels','COSTO INDIRECTO');
+      return yii::t('base.names','COSTO INDIRECTO');
         }
    public static function NombreCostoDirecto(){
-      return yii::t('base.labels','COSTO DIRECTO');
+      return yii::t('base.names','COSTO DIRECTO');
         }     
     public static function NombreCostoOrden(){
-      return yii::t('base.labels','ACUMULADO');
+      return yii::t('base.names','ACUMULADO');
         } 
    public static function NombreCostoSinCalificar(){
-      return yii::t('base.labels','SIN CALIFICAR');
+      return yii::t('base.names','SIN CALIFICAR');
         } 
   public static function ColorCostoIndirecto(){
       return '#faa732';

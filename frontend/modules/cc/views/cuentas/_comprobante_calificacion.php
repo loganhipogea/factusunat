@@ -22,11 +22,11 @@ use frontend\modules\cc\models\CcGastos;
             <div class="btn-group">   
     <?php
      $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_directo(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Costo directo'), ['href' => $url, 'title' => yii::t('sta.labels','Costo directo'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+     echo  Html::button(yii::t('base.names','Costo directo'), ['href' => $url, 'title' => yii::t('base.names','Costo directo'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_indirecto(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Costo indirecto'), ['href' => $url, 'title' => yii::t('sta.labels','Costo indirecto'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-danger']); 
+     echo  Html::button(yii::t('base.names','Costo indirecto'), ['href' => $url, 'title' => yii::t('base.names','Costo indirecto'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-danger']); 
    $url= Url::to(['ceco/mod-crea-calificacion','id'=>$model->id,'tipo'=>$model->codigo_costo_orden(),'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-     echo  Html::button(yii::t('sta.labels','Colector'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar a Colector'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-warning']); 
+     echo  Html::button(yii::t('base.names','Colector'), ['href' => $url, 'title' => yii::t('base.names','Agregar a Colector'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-warning']); 
    
    
    ?>
@@ -66,7 +66,7 @@ use frontend\modules\cc\models\CcGastos;
                     'attach' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
-                            'title' => Yii::t('sta.labels', 'Colocar en el maletín'),
+                            'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',

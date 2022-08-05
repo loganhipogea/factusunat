@@ -24,7 +24,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
         <div class="col-md-12">
             <div class="form-group no-margin">
             <?php
-          $operacion=($model->isNewRecord)?'mod-crea-comprobante':'mod-edita-comprobante';
+          $operacion=($model->isNewRecord)?'mod-crea-rendicion':'mod-edita-comprobante';
              IF($model->isNewRecord){
                $url=\yii\helpers\Url::to(['/cc/cuentas/'.$operacion,'id'=>$id]);  
                  

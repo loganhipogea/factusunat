@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use common\helpers\h;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
-use frontend\modules\sigi\helpers\comboHelper;
+use common\helpers\comboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
@@ -38,7 +38,7 @@ use dosamigos\chartjs\ChartJs;
                 'extension'=> \yii\helpers\Json::encode(array_merge(['pdf','jpg','png','svg','jpeg'])),
                'nombreclase'=> str_replace('\\','_',get_class($model))
                ]); ?>
-            <?=(!$model->isNewRecord)?Html::button('<span class="fa fa-clip"></span>   '.Yii::t('sta.labels', 'Adjuntar imagen'), ['class' => 'botonAbre btn btn-success','href' => $url,'id'=>'btn-add-usuarios']):''?> 
+            <?=(!$model->isNewRecord)?Html::button('<span class="fa fa-clip"></span>   '.Yii::t('base.names', 'Adjuntar imagen'), ['class' => 'botonAbre btn btn-success','href' => $url,'id'=>'btn-add-usuarios']):''?> 
  
 
                   

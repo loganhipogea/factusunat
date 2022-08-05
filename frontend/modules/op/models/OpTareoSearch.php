@@ -5,7 +5,7 @@ namespace frontend\modules\op\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\op\models\OpTareo;
-
+USE common\models\masters\Direcciones;
 /**
  * OpTareoSearch represents the model behind the search form of `frontend\modules\op\models\OpTareo`.
  */
@@ -18,7 +18,7 @@ class OpTareoSearch extends OpTareo
     {
         return [
             [['id', 'direcc_id', 'proc_id', 'os_id', 'detos_id'], 'integer'],
-            [['fecha', 'hinicio', 'hfin', 'descripcion', 'detalle'], 'safe'],
+            [['fecha','fecha1','direcc_id', 'hinicio', 'hfin', 'descripcion', 'detalle','semana','semana1'], 'safe'],
         ];
     }
 
@@ -29,6 +29,10 @@ class OpTareoSearch extends OpTareo
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+public function getDirecc()
+    {
+        return $this->hasOne(Direcciones::className(), ['id' => 'direcc_id']);
     }
 
     /**
@@ -65,12 +69,26 @@ class OpTareoSearch extends OpTareo
             'detos_id' => $this->detos_id,
         ]);
 
-        $query->andFilterWhere(['like', 'fecha', $this->fecha])
-            ->andFilterWhere(['like', 'hinicio', $this->hinicio])
+        $query->andFilterWhere(['like', 'hinicio', $this->hinicio])
             ->andFilterWhere(['like', 'hfin', $this->hfin])
             ->andFilterWhere(['like', 'descripcion', $this->descripcion])
             ->andFilterWhere(['like', 'detalle', $this->detalle]);
-
+      if(!empty($this->fecha) && !empty($this->fecha1)){
+                            $query->andFilterWhere([
+                                    'between',
+                                    'fecha',
+                                $this->openBorder('fecha',false),
+                                $this->openBorder('fecha1',true)
+                                ]);   
+                        }
+       if(!empty($this->semana) && !empty($this->semana1)){
+                            $query->andFilterWhere([
+                                    'between',
+                                    'semana',
+                                ($this->semana==1)?$this->semana:$this->semana-1,
+                                $this->semana1+1
+                                ]);   
+                        }
         return $dataProvider;
     }
 }

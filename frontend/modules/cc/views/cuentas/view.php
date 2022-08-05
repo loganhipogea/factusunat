@@ -1,50 +1,50 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use kartik\tabs\TabsX;
 
+
+/* @var $this yii\web\View */
+/* @var $model frontend\modules\sta\models\Talleres */
+ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\cc\models\CcCuentas */
 
-$this->title = $model->id;
+$this->title = Yii::t('app', 'Visualizar Cuenta: {name}', [
+    'name' => $model->id,
+]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Cc Cuentas'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="cc-cuentas-view">
-
-    <h4><?= Html::encode($this->title) ?></h4>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'tipo',
-            'codmon',
-            'codpro',
-            'nombre',
-            'numero',
-            'banco_id',
-            'socio',
-            'detalles:ntext',
-            'indicaciones:ntext',
-            'indicaciones2:ntext',
-            'activa',
-            'saldo',
-            'cci',
-            'fecult',
+<div class="cc-cuentas-update">
+<h4><i class="fa fa-search"></i><?= Html::encode($this->title) ?></h4>
+   
+    <div class="box box-success">
+    
+    <?php echo TabsX::widget([
+    'position' => TabsX::POS_ABOVE,
+     'bordered'=>true,
+    'align' => TabsX::ALIGN_LEFT,
+      'encodeLabels'=>false,
+    'items' => [
+        [
+          'label'=>'<i class="fa fa-home"></i> '.yii::t('base.names','Principal'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_form_view',['model' => $model]),
+            'active' => true,
+             'options' => ['id' => 'myveryownID3'],
         ],
-    ]) ?>
-
+        [
+          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Movimientos'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_tab_cuentas_movimientos',[ 'model' => $model]),
+            'active' => false,
+             'options' => ['id' => 'myveryownID4'],
+        ],
+       
+        
+       
+    ],
+]);  
+?>
+</div>
 </div>

@@ -6,7 +6,8 @@ use console\migrations\baseMigration;
  * Handles the creation of table `{{%matviewreq}}`.
  */
 class m220722_132334_create_matviewreq_table extends baseMigration
-{ const NAME_VIEW='{{%mat_vw_req}}';
+{ 
+    const NAME_VIEW='{{%mat_vw_req}}';
     /**
      * {@inheritdoc}
      */

@@ -59,6 +59,12 @@ class CcCc extends \common\models\base\modelBase
         ];
     }
 
+    
+    public function getPadre()
+    {
+        return $this->hasOne(CcCc::className(), ['id' => 'parent_id']);
+    }
+
     /**
      * {@inheritdoc}
      * @return CcCcQuery the active query used by this AR class.

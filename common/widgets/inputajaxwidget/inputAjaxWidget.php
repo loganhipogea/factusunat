@@ -47,8 +47,7 @@ class inputAjaxWidget extends \yii\base\Widget
      $operador=($this->isDivReceptor)?'html':'val';
    $this->getView()->registerJs("$(document).ready(function() {
     $('#".$this->id_input."').on('".$this->evento."',function(){
-    var_input=$('#".$this->id_input."').val();
-        alert('hilka');
+    var_input=$('#".$this->id_input."').val();      
   $.ajax({ 
    url:'".$this->ruta."',
    type:'".$this->tipo."',
@@ -81,8 +80,7 @@ success: function (data) {// success callback function
          }
     $cadena="$(document).ready(function() {
     $('#".$this->id_input."').on('".$this->evento."',function(){
-       alert('hilkadsds ');
-    
+      
   $.ajax({ 
    url:'".$this->ruta."',
    type:'".$this->tipo."',

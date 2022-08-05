@@ -35,7 +35,7 @@ class CcCuentas extends \common\models\base\modelBase
      */
     public static function tableName()
     {
-        return '{{%cc_cuentas}}';
+        return '{{%cuentas}}';
     }
 
     public $dateorTimeFields = [
@@ -85,17 +85,17 @@ class CcCuentas extends \common\models\base\modelBase
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('sigi.labels', 'ID'),
-            'tipo' => Yii::t('sigi.labels', 'Tipo'),
-            'codmon' => Yii::t('sigi.labels', 'Moneda'),
-            'codpro' => Yii::t('sigi.labels', 'Codpro'),
-            'nombre' => Yii::t('sigi.labels', 'Nombre'),
-            'numero' => Yii::t('sigi.labels', 'Numero'),
-            'banco_id' => Yii::t('sigi.labels', 'Banco'),
-            //'edificio_id' => Yii::t('sigi.labels', 'Edificio ID'),
-            'detalles' => Yii::t('sigi.labels', 'Detalles'),
-            'indicaciones' => Yii::t('sigi.labels', 'Indicaciones'),
-            'indicaciones2' => Yii::t('sigi.labels', 'Indicaciones2'),
+            'id' => Yii::t('base.names', 'ID'),
+            'tipo' => Yii::t('base.names', 'Tipo'),
+            'codmon' => Yii::t('base.names', 'Moneda'),
+            'codpro' => Yii::t('base.names', 'Codpro'),
+            'nombre' => Yii::t('base.names', 'Nombre'),
+            'numero' => Yii::t('base.names', 'Numero'),
+            'banco_id' => Yii::t('base.names', 'Banco'),
+            //'edificio_id' => Yii::t('base.names', 'Edificio ID'),
+            'detalles' => Yii::t('base.names', 'Detalles'),
+            'indicaciones' => Yii::t('base.names', 'Indicaciones'),
+            'indicaciones2' => Yii::t('base.names', 'Indicaciones2'),
         ];
     }
 

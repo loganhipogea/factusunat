@@ -26,7 +26,15 @@ class CcMovimientos extends \common\models\base\modelBase implements Movimientos
     {
         return '{{%cc_movimientos}}';
     }
-
+     public function behaviors()
+         {
+                return [
+		
+		'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' 
+                               ],
+                ];
+        }
     /**
      * {@inheritdoc}
      */

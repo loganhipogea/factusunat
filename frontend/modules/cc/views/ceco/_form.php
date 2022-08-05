@@ -27,13 +27,16 @@ use frontend\modules\cc\helpers\comboHelper;
     </div>
       <div class="box-body">
     
- <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-  </div>
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+ 
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
      <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
 
  </div>
-   <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">    
+ <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+
+ </div>
+   <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">    
  <?= $form->field($model, 'parent_id',['enableAjaxValidation'=>true])->
             dropDownList(comboHelper::getCboParentCecos($model),
                   ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
@@ -42,10 +45,7 @@ use frontend\modules\cc\helpers\comboHelper;
                         ]
                     ) ?>
  </div>
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
-
- </div>
+  
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'activo')->checkbox([]) ?>
 

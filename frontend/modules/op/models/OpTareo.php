@@ -2,31 +2,26 @@
 
 namespace frontend\modules\op\models;
 use common\models\masters\Direcciones;
+use common\helpers\h;
 use Yii;
 
 /**
- * This is the model class for table "{{%op_tareo}}".
- *
- * @property int $id
- * @property string $fecha
- * @property string $hinicio
- * @property string $hfin
- * @property string $descripcion
- * @property int $direcc_id
- * @property int $proc_id
- * @property int $os_id
- * @property int $detos_id
- * @property string $detalle
- *
- * @property OpLibro[] $opLibros
- * @property OpOsdet $detos
- * @property Direcciones $direcc
- * @property OpProcesos $proc
- * @property OpOs $os
+ * This is the model class for table "{{%op_tareo}}". 
  * @property OpTareodet[] $opTareodets
  */
 class OpTareo extends \common\models\base\modelBase
 {
+  use \common\traits\timeTrait; 
+    
+  
+   public $fecha1=null;
+   public $semana1;
+    public $booleanFields=['esferiado'];
+     public $dateorTimeFields=[
+        'fecha'=>self::_FDATE,
+        'fecha1'=>self::_FDATE,
+       // 'hfin'=>self::_FHOUR
+       ];
     /**
      * {@inheritdoc}
      */
@@ -35,6 +30,19 @@ class OpTareo extends \common\models\base\modelBase
         return '{{%op_tareo}}';
     }
 
+     public function behaviors()
+         {
+                return [
+		
+		'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' 
+                               ],
+                    'auditoriaBehavior' => [
+			'class' => '\common\behaviors\AuditBehavior' ,
+                               ],
+		
+                    ];
+        }
     /**
      * {@inheritdoc}
      */
@@ -44,6 +52,7 @@ class OpTareo extends \common\models\base\modelBase
             [['direcc_id', /*'proc_id', 'os_id', 'detos_id'*/], 'required'],
             [['direcc_id', 'proc_id', 'os_id', 'detos_id'], 'integer'],
             [['detalle'], 'string'],
+            [['esferiado','semana'], 'safe'],
             [['fecha'], 'string', 'max' => 10],
             [['hinicio', 'hfin'], 'string', 'max' => 5],
             [['descripcion'], 'string', 'max' => 40],
@@ -116,11 +125,11 @@ class OpTareo extends \common\models\base\modelBase
     /**
      * @return \yii\db\ActiveQuery
      */
-    /*public function getOpTareodets()
+    public function getDetalles()
     {
         return $this->hasMany(OpTareodet::className(), ['tareo_id' => 'id']);
     }
-*/
+
     /**
      * {@inheritdoc}
      * @return OpTareoQuery the active query used by this AR class.
@@ -147,6 +156,34 @@ class OpTareo extends \common\models\base\modelBase
             return $model->save();
     }
     
+    public function createWorker($modeloTrabajador){
+        $model= new OpTareodet(); 
+        $model->setAttributes([
+            'tareo_id'=>$this->id,
+            'hinicio'=>$this->hinicio,
+            'hfin'=>$this->hfin,
+            'proc_id'=>$this->proc_id,
+            'codtra'=>$modeloTrabajador->codtra,
+            'semana'=>$modeloTrabajador->semana,
+            'os_id'=>$modeloTrabajador->os_id,
+            'detos_id'=>$modeloTrabajador->detos_id,
+           
+        ]);
+        //print_r($model->attributes); die();
+            yii::error($model->save(),__FUNCTION__);
+             yii::error($model->getErrors(),__FUNCTION__);
+           
+    }
+    
+    public function beforeSave($insert) {
+        if($insert){
+            $this->semana=date('W');
+            $this->esferiado= $this->isHolyDay($this->toCarbon('fecha'));
+        }
+        return parent::beforeSave($insert);
+    }
+    
+    
     public function afterSave($insert, $changedAttributes) {
         $this->refresh();
        // print_r($this->attributes); die();
@@ -154,4 +191,145 @@ class OpTareo extends \common\models\base\modelBase
         //$this->creaHijo();
         return parent::afterSave($insert, $changedAttributes);
     }
+    
+    
+     public function preparePdfReport(){   
+       $socio=\common\models\masters\VwSociedades::currentCompanyModel();
+       $formato=h::formato();
+       $numero= uniqid();
+      // h::money()->setCurrentMoneyInCache($this->codmon);
+       $targetPath=yii::getAlias('@temp').'/'. $numero.'.pdf';
+       $fileQr=yii::getAlias('@temp').'/'. $numero.'QR.png';       
+       $pdf=New \FPDF('P','mm',array(201,297)); 
+        $qrCode = (new \Da\QrCode\QrCode($this->generateNameForQr()))
+            ->setSize(100)
+            ->setMargin(1);   
+                $qrCode->writeFile($fileQr);      
+        $pdf->AddPage();
+                //define('EURO',$this->codmon);
+       // CABECERA
+            $pdf->SetFont('Courier','B',10);
+            /*
+             *    NOMBRE DE LA EMPRESA
+             */
+            $pdf->Cell(210,6,$socio->despro,0,1,'L');
+            
+          //TITULO DEL DOCUMENTO 
+            $pdf->SetFont('Courier','B',14);
+            $pdf->Cell(200,5,'PARTE TAREO DIARIO',0,1,'C');
+             $pdf->Ln(4);
+            
+           //CLIENTE
+            $pdf->SetFont('Courier','',10);
+            $pdf->Cell(40,5,'Cliente :',0,1,'L');  
+            $pdf->Cell(150,5,'',0,1,'L');  
+             $pdf->Ln(1);
+             
+            //NOMBRE PROYECTO
+            $pdf->Cell(30,5,'Proyecto :',0,0,'L'); 
+            $pdf->SetFont('Courier','B',10);
+            $pdf->Cell(170,5,$this->proc->descripcion,0,0,'L');
+            $pdf->SetFont('Courier','',10);
+            $pdf->Ln(5);
+            
+           //fecha
+            $pdf->Cell(30,5,'Fecha :',0,0,'L'); 
+             $pdf->SetFont('Courier','B',10);
+            $pdf->Cell(170,5,$this->fecha,0,'L');
+            $pdf->SetFont('Courier','',10);
+             $pdf->Ln(5);
+             
+             //LOCACION
+            $pdf->Cell(30,5,'LOCACION :',0,0,'L');
+            $pdf->SetFont('Courier','B',10);
+            $pdf->Cell(170,5,$this->direcc->direc,0,0,'L');  
+            $pdf->SetFont('Courier','',10);
+            $pdf->Ln(5);
+            
+            //NUMERO SEMANA
+            $pdf->Cell(30,5,'SEMANA :',0,0,'L');
+            $pdf->SetFont('Courier','B',10);
+            $pdf->Cell(170,5,$this->semana,0,0,'L');  
+            $pdf->SetFont('Courier','',10);
+            $pdf->Ln(5);
+            
+            
+            //DETALLES
+            $pdf->Cell(40,8,'Info :','B',0,'L');  
+            $pdf->Cell(140,8,$this->detalle,'B',0,'L');  
+            $pdf->Ln(10); 
+            
+             // CABECERA
+             $pdf->SetFont('Courier','B',10);
+               $pdf->Cell(15,5,'Cod','B',0,'L');
+                $pdf->Cell(90, 5,'Nombres y apellidos','B',0,'L');
+                $pdf->Cell(15, 5,'Hi','B',0,'L');
+                $pdf->Cell(15, 5,'Hs','B',0,'L');
+                 $pdf->Cell(15, 5,'H.Trab','B',0,'L'); 
+                 $pdf->Cell(15, 5,'H.Ex','B',0,'L'); 
+                  $pdf->Cell(15, 5,'','B',0,'L'); 
+                  $pdf->Ln(10); 
+              $pdf->SetFont('Courier','',10);
+        // TRABAJADORES
+           
+            foreach($this->detalles as $detail){           
+                //$pdf->MultiCell(30,5,$detail->descripcion,0,'L'); 
+                $pdf->Cell(15,5, $detail->codtra,0,0,'L');
+                $pdf->Cell(90, 5, $detail->trabajador->fullName(),0,0,'L');
+                $pdf->Cell(15, 5, $detail->hinicio,0,0,'L');
+                $pdf->Cell(15, 5, $detail->hfin,0,0,'L');
+                 $pdf->Cell(15, 5, $detail->htotales,0,0,'L'); 
+                 $pdf->Cell(15, 5, $detail->hextras,0,0,'L'); 
+                $pdf->Ln(5); 
+            }
+    
+        $pdf->Image($fileQr);    
+        $pdf->Output($targetPath,'f');
+        $this->attachFromPath($targetPath);
+        //@unlink($targetPath);
+   }
+   
+   private function generateNameForQr(){
+       return $this->fecha.'||'.$this->proc->cliente->despro.'||'.
+       $this->proc->numero.'||'.  $this->proc->descripcion;   
+   }
+   
+   public function next(){
+       $id=$this->find()->select(['min(id)'])->
+       andWhere(['>','id',$this->id])->
+               scalar();
+      if($id>0)return self::findOne ($id);
+      return null;
+       
+   }
+   
+   public function previous(){
+      $id=$this->find()->select(['max(id)'])->
+       andWhere(['<','id',$this->id])->
+               scalar();
+      if($id>0)return self::findOne ($id);
+      return null; 
+   }
+   
+   public function clonePeople(){
+    
+       if(!is_null($model=$this->previous())){
+           
+       }else{
+          return false; 
+       }
+         
+   
+       
+     
+       foreach($model->detalles as $trabajador){
+           $this->createWorker($trabajador);
+       }
+       return true;
+   }
+   
+   public function nWorkers(){
+       return $this->getDetalles()->count();
+   }
+   
 }
