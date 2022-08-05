@@ -430,7 +430,7 @@ class TrabajadoresController extends baseController
 
         //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
         $this->layout = "install";
-        $model= \common\models\masters\DocuTrabajadores::findOne($id);
+        $model= \common\models\masters\Docutrabajadores::findOne($id);
        // $model=New \common\models\masters\Docutrabajadores();
         //$model->codpro=$modelCentros->codpro;
         //$model->codtra=$modelTrabajador->codigotra;
