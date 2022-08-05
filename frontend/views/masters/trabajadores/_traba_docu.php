@@ -106,8 +106,9 @@ $this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Assign');
            [
                'attribute'=>'codocu',
                'format'=>'raw',
-               'value'=>function($model){                                   
-                return Html::a("<span class='glyphicon glyphicon-download-alt'></span>".$model->documento->desdocu,$model->files[0]->url,['data-pjax'=>'0']);
+               'value'=>function($model){ 
+                  if($model->hasAttachments())
+                   return Html::a("<span class='glyphicon glyphicon-download-alt'></span>".$model->documento->desdocu,$model->files[0]->url,['data-pjax'=>'0']);
                }
            ],
             'numero',
