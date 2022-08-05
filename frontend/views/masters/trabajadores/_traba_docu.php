@@ -119,7 +119,9 @@ $this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Assign');
                 'template'=>'{edit}{attach}{delete}',
                 'buttons'=>[
                    'attach' => function($url, $model) {  
-                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','idModal'=>'imagemodal',
+                             'ext'=> \yii\helpers\Json::encode(common\helpers\FileHelper::extImages()+common\helpers\FileHelper::extDocs()) ,
+                             'modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
                             'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
