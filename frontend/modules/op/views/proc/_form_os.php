@@ -126,7 +126,14 @@ use kartik\grid\GridView;
                              } 
                 
                 ],
-                'emplazamiento',
+               ['attribute' => 'emplazamiento',
+                'format'=>'raw',
+                'header'=>'Empl.',
+                'value'=>function($model){
+                    return $model->emplazamiento;
+                            } 
+                
+                ],
             'finicio',
             'termino',
           

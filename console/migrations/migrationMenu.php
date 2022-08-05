@@ -28,13 +28,13 @@ class migrationMenu extends baseMigration
     }
     
    public static function deleteOption($option,$route,$optionParent=null){ 
-               
+                $resul=self::existsOptionParent($optionParent);
              (new \yii\db\Query())->createCommand()
                 ->delete(self::TABLE_MENU, [
                     'name'=>$option,
-                    'parent'=>$optionParent,
-                    'route'=>$route,
-                     'icon'=>'list',
+                      'parent'=>($resul)?$resul:null,
+                    //'route'=>$route,
+                    // 'icon'=>'list',
                     ])->execute();
     } 
     
@@ -60,12 +60,13 @@ class migrationMenu extends baseMigration
    }  
     
    private static  function existsMenu($option,$route,$optionParent=null){
+        $resul=self::existsOptionParent($optionParent);
       RETURN  (new \yii\db\Query())->from(self::TABLE_MENU)->
       andWhere([
                     'name'=>$option,
-                    'parent'=>$optionParent,
-                    'route'=>$route,
-                     'icon'=>'list',
+                     'parent'=>($resul)?$resul:null,
+                    //'route'=>$route,
+                    // 'icon'=>'list',
                     ])->exists();
    }  
             

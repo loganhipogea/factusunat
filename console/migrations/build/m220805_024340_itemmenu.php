@@ -32,7 +32,7 @@ class m220805_024340_itemmenu extends baseMigration
     migrationMenu::deleteOption('Documentos', '/documentos/index','Maestros');
     migrationMenu::deleteOption('Sociedades', '/site/index-companies','Maestros');
     migrationMenu::deleteOption('Bancos', '/masters/basico/bancos','Maestros');
-    migrationMenu::deleteOption('Trabajadores', '/masters/trabajadores/index','Maestros');
+    migrationMenu::deleteOption('Personas', '/masters/trabajadores/index','Maestros');
           
          
    
