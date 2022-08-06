@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
-
+USE common\helpers\FileHelper as Fl;
 use common\helpers\h;
  use yii\helpers\Url;
 use kartik\grid\GridView;
@@ -43,7 +43,12 @@ use kartik\grid\GridView;
             'template' => '{edit}{delete}{attach}{change}',
                'buttons' => [
                     'attach' => function($url, $model) {  
-                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                          $ext= json_encode(Fl::extEngineers()+Fl::extDocs());
+                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
+                             'idModal'=>'imagemodal',
+                             'extension'=>$ext,
+                             'modelid'=>$model->id,
+                             'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
                             'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
@@ -89,16 +94,16 @@ use kartik\grid\GridView;
                             return GridView::ROW_COLLAPSED;
                                 },
                                         
-                     'detail'=>function ($model, $key, $index, $column){
+                    /* 'detail'=>function ($model, $key, $index, $column){
                                     
                          
                         return  $this->render('_expand_operacion',[
                             'id'=>$model->id,
                             'model'=>$model,
                             ]);            
-                     },
+                     },*/
                                        
-                     //'detailUrl' =>Url::toRoute(['/op/proc/ajax-expand-opera']),
+                     'detailUrl' =>Url::toRoute(['/op/proc/ajax-expand-opera']),
                     //'headerOptions' => ['class' => 'kartik-sheet-style'], 
                     'expandOneOnly' => true
                 ], 

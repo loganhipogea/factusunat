@@ -66,7 +66,7 @@ class CcRendicion extends \common\models\base\modelBase
             [['fecha'], 'string', 'max' => 10],
             [['anio'], 'string', 'max' => 4],
             [['glosa'], 'string', 'max' => 50],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
             [['rucpro'], 'string', 'max' => 14],
         ];
     }

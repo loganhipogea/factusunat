@@ -60,7 +60,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
             [[ 'codpro', 'codmov'], 'required'],
             [['texto'], 'string'],
             [['numero', 'fecha'], 'string', 'max' => 10],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
             [['codmov', 'codest'], 'string', 'max' => 3],
             [['descripcion'], 'string', 'max' => 40],
             [['codpro'], 'exist', 'skipOnError' => true, 'targetClass' => Clipro::className(), 'targetAttribute' => ['codpro' => 'codpro']],

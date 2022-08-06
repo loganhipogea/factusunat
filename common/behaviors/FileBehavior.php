@@ -22,6 +22,37 @@ class FileBehavior extends Fileb {
      * que  usted desea
      */
 CONST FIRE_METHOD='triggerUpload';
+
+
+ /*
+     * Devuelve el objecto activeQuery
+     * listo para ser usado 
+     */
+
+    public function getQueryBase() {
+        return File::find()
+                        ->where([
+                            'itemId' => $this->owner->id,
+                             'model' => $this->getModule()->getShortClass($this->owner)
+        ]);
+    }
+    
+     public function getQueryImages() {
+        return $this->queryBase->andWhere(['in','type',FileHelper::extImages()]);
+    }
+    
+     public function getQueryPdfs() {
+        return $this->queryBase->andWhere(['type'=>'pdf']);
+    }
+    
+    public function getQueryDocs() {
+        return $this->queryBase->andWhere(['in','type',FileHelper::extDocs()]);
+    }
+
+    /*
+     * Devuelve un array de modelos con la extension 
+     * solicitada
+     */
     public function getFilesByExtension($ext = null) {
         if (is_null($ext))
             throw new \yii\base\Exception(Yii::t('base.errors', 'The extension parameter is null'));
@@ -33,6 +64,8 @@ CONST FIRE_METHOD='triggerUpload';
 
         return $fileQuery->all();
     }
+    
+    
 
      public function getFiles()
     {
@@ -72,18 +105,7 @@ CONST FIRE_METHOD='triggerUpload';
         return $fileQuery->all();
     }
 
-    /*
-     * Devuelve el objecto activeQuery
-     * listo para ser usado 
-     */
-
-    public function getQueryBase() {
-        return File::find()
-                        ->where([
-                            'itemId' => $this->owner->id,
-                            'model' => $this->owner->getShortNameClass()
-        ]);
-    }
+   
 
     /*
      * Devuelve la ruta de la imagen 
@@ -120,7 +142,7 @@ CONST FIRE_METHOD='triggerUpload';
 
     /*
      * Esta funcion devuelve los UrLS de las 
-     * imagenes de los archivos adjuntos 
+     *  de los archivos adjuntos 
      */
 
     public function getUrlFiles() {
@@ -160,23 +182,7 @@ CONST FIRE_METHOD='triggerUpload';
         $this->getModule()->detachFile($id);
     }
 
-    public function sendFileMail() {
-        return Yii::$app
-                        ->mailer
-                        ->compose(
-                                ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'], ['user' => $user]
-                        )
-                        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-                        ->setTo($this->email)
-                        ->setSubject(yii::t('base.verbs', 'Request password reset') . '  ' . Yii::$app->name)
-                        ->send();
-    }
-
-    /*
-     * Adjunta un archivo de sde otroa ruta 
-     * no necesariamente del cuador de dialogo
-     * 
-     */
+   
 
     public function attachFromPath($path,$delete=false) {
         $cad = $path . "<br>";
@@ -214,7 +220,9 @@ CONST FIRE_METHOD='triggerUpload';
     }
     
     
- /*Sobre escribe al metodo del la clase original */
+ /*Sobre escribe al metodo del la clase original 
+   Pero se asegura de que disara un metodo 
+  *   */
     public function saveUploads($event)
     {
         $files = UploadedFile::getInstancesByName('UploadForm[file]');
@@ -243,6 +251,33 @@ CONST FIRE_METHOD='triggerUpload';
         }
     }
  
+   
+    
+  /*funcion que devuelve dataProvider
+   * de modelos attachments
+   */
+  public function attachmentsDataProvider(){
+      return New \yii\data\ActiveDataProvider([
+          'query'=>$this->queryBase                 
+        ]);
+  }
   
+  public function attachmentsDataProviderImages(){
+      return New \yii\data\ActiveDataProvider([
+          'query'=>$this->queryImages                 
+        ]);
+  }
+  
+  public function attachmentsDataProviderPdfs(){
+      return New \yii\data\ActiveDataProvider([
+          'query'=>$this->queryPdfs                 
+        ]);
+  }
+  
+  public function attachmentsDataProviderDocs(){
+      return New \yii\data\ActiveDataProvider([
+          'query'=>$this->queryDocs                 
+        ]);
+  }
     
 }

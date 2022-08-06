@@ -69,7 +69,7 @@ class CcCuentas extends \common\models\base\modelBase
             [['cci'], 'string', 'max' => 100],
             [['tipo'], 'string', 'max' => 3],
             [['codmon'], 'string', 'max' => 5],
-            [['codpro'], 'string', 'max' => 6],
+            [['codpro'], 'string', 'max' => 10],
             [['activa'], 'safe'],
             [['nombre'], 'string', 'max' => 60],
             [['numero'], 'string', 'max' => 100],

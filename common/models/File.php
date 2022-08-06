@@ -2,13 +2,21 @@
 namespace common\models;
 use nemmo\attachments\models\File as Fileb;
 //use nemmo\attachments\ModuleTrait;
-
+use common\helpers\FileHelper;
 use Yii;
 
 use yii\helpers\Url;
 
 class File extends Fileb
 {
+    
+    /*public function getDocumento()
+    {
+        if(!empty($this->codocu))
+        return $this->hasOne(masters\Documentos::className(), ['codocu' => 'codocu']);
+        return null;
+    }*/
+    
 
    /*
     * Funcion que hace u archivo de upolodas
@@ -32,6 +40,13 @@ class File extends Fileb
           return false;
       }
    }
+   
+  public function isImage(){
+      return in_array($this->type, FileHelper::extImages());
+  }
+   public function isPdf(){
+      return in_array($this->type, ['pdf']);
+  }
    
 }
 

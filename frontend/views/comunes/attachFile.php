@@ -9,13 +9,13 @@ use yii\helpers\Html;
         'enableAjaxValidation'=>true
         ]); ?>
  
-
+  
  <?= \nemmo\attachments\components\AttachmentsInput::widget([
 	'id' => 'file-input', // Optional
 	'model' => $model,         
 	'options' => [ // Options of the Kartik's FileInput widget
                 //'language'=>'es-PE', 
-		'multiple' => false, // If you want to allow multiple upload, default to false
+		'multiple' => true, // If you want to allow multiple upload, default to false
 	//'overwriteInitial'=>false,
             ],
 	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
@@ -24,13 +24,13 @@ use yii\helpers\Html;
     'maxImageWidth'=>10000,
     'maxImageHeight'=>10600,
     'resizePreference'=>'height',
-    'maxFileCount'=>1,
+    'maxFileCount'=>4,
     'resizeImage'=>true,
     'resizeIfSizeMoreThan'=>100,
             'previewFileType' => 'any',
-		'maxFileCount' => 1 ,// Client max files
+		'maxFileCount' => 4 ,// Client max files
            'overwriteInitial'=>false,
-             //'maxFileSize'=>800,
+             'maxFileSize'=>1024*1024*30,
             'resizeImages'=>true,
 	]
 ]) ?> 

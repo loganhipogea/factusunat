@@ -143,7 +143,7 @@ return [
 			//'mimeTypes' => 'image/png', // Only png images
 			'maxSize' => 1024 * 1024 *30 // 1 MB
 		],
-		'tableName' => '{{%attachments}}' // Optional, default to 'attach_file'
+		'tableName' => '{{%newattachments}}' // Optional, default to 'attach_file'
 	],
         
     'admin' => [

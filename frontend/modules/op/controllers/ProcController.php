@@ -459,16 +459,15 @@ class ProcController extends baseController
       public function actionAjaxExpandOpera(){
       if(h::request()->isAjax){
         $id=h::request()->post('expandRowKey');
-        $dataprovider= New \yii\data\ActiveDataProvider([
-            'query'=>\frontend\modules\op\models\OpDocumentos::find()->andWhere(['detos_id'=>$id]),
-        ]);
+        
         $model= \frontend\modules\op\models\OpOsdet::findOne($id);
+        $dataProvider=$model->attachmentsDataProvider();
        // var_dump($id);die();
          //h::response()->format = \yii\web\Response::FORMAT_JSON;
         return $this->renderAjax("_expand_operacion",
                 [
                     'id'=>$id,
-                    'dataprovider'=>$dataprovider,
+                    'dataProvider'=>$dataProvider,
                     'model'=>$model
                 ]);
        
