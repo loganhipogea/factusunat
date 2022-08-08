@@ -45,7 +45,7 @@ use yii\grid\GridView;
         DatePicker::classname(), [
          'name' => 'fechasol',
             'language' => h::app()->language,
-            'options' => ['placeholder' =>yii::t('sta.labels', '--Seleccione un valor--')],
+            'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
                 'format' => h::getFormatShowDate(),
@@ -62,7 +62,7 @@ use yii\grid\GridView;
         DatePicker::classname(), [
          'name' => 'fechaprog',
             'language' => h::app()->language,
-            'options' => ['placeholder' =>yii::t('sta.labels', '--Seleccione un valor--')],
+            'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
                 'format' => h::getFormatShowDate(),
@@ -123,7 +123,7 @@ use yii\grid\GridView;
                     'attach' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
-                            'title' => Yii::t('sta.labels', 'Colocar en el maletín'),
+                            'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',
@@ -226,8 +226,12 @@ use yii\grid\GridView;
    <?php
   
       $url= Url::to(['mod-agrega-mat','id'=>$model->id,'gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
-   echo  Html::button(yii::t('base.verbs','Agregar material'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+   echo  Html::button(yii::t('base.verbs','Agregar material libre'), ['href' => $url, 'title' => yii::t('base.names','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+     $url= Url::to(['mod-agrega-mat','id'=>$model->id,'imputado'=>'y','gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
+   echo  Html::button(yii::t('base.verbs','Agregar material imputado'), ['href' => $url, 'title' => yii::t('base.names','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
   
+   
+   
    }
 ?>     
           

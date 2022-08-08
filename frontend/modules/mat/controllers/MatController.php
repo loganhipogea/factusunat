@@ -150,15 +150,15 @@ class MatController extends baseController
     
     public function actionModAgregaMat($id){
     $this->layout = "install";
+      $imputado=h::request()->get('imputado');
       $model=$this->findModel($id);
       $modeldet=New \frontend\modules\mat\models\MatDetreq();
-      $modeldet->setScenario($modeldet::SCE_IMPUTADO);
-       
-       $modeldet->req_id=$id;
-           $modeldet->activo=true;
+      if($imputado=='y')
+            $modeldet->setScenario($modeldet::SCE_IMPUTADO);       
+            $modeldet->req_id=$id;
+            $modeldet->activo=true;
        $datos=[];
-        if(h::request()->isPost){
-            
+        if(h::request()->isPost){            
             $modeldet->load(h::request()->post());
              h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($modeldet);
@@ -173,6 +173,7 @@ class MatController extends baseController
            return $this->renderAjax('_modal_crea_item_req', [
                         'model' => $modeldet,
                         'id' => $id,
+                        'imputado'=>$imputado,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
                         //'cantidadLibres'=>$cantidadLibres,
@@ -184,6 +185,9 @@ class MatController extends baseController
      public function actionModEditMat($id){
     $this->layout = "install";
       $modeldet= \frontend\modules\mat\models\MatDetreq::findOne($id);
+      $imputado=h::request()->get('imputado');
+      if($imputado=='y')
+            $modeldet->setScenario($modeldet::SCE_IMPUTADO); 
         $modeldet->setScenario($modeldet::SCE_IMPUTADO);         
        $datos=[];
         if(h::request()->isPost){
@@ -202,6 +206,7 @@ class MatController extends baseController
            return $this->renderAjax('_modal_crea_item_req', [
                         'model' => $modeldet,
                         'id' => $modeldet->id,
+                        'imputado'=>$imputado,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
                         //'cantidadLibres'=>$cantidadLibres,

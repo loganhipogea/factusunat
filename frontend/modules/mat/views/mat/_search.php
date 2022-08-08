@@ -37,7 +37,7 @@ use yii\widgets\ActiveForm;
         DatePicker::classname(), [
          'name' => 'fechaprog',
             'language' => h::app()->language,
-            'options' => ['placeholder' =>yii::t('sta.labels', '--Seleccione un valor--')],
+            'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
                 'format' => h::getFormatShowDate(),
@@ -55,7 +55,7 @@ use yii\widgets\ActiveForm;
         DatePicker::classname(), [
          'name' => 'fechaprog1',
             'language' => h::app()->language,
-            'options' => ['placeholder' =>yii::t('sta.labels', '--Seleccione un valor--')],
+            'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
                 'format' => h::getFormatShowDate(),
@@ -74,7 +74,7 @@ use yii\widgets\ActiveForm;
         DatePicker::classname(), [
          'name' => 'fechaprog',
             'language' => h::app()->language,
-            'options' => ['placeholder' =>yii::t('sta.labels', '--Seleccione un valor--')],
+            'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
                 'format' => h::getFormatShowDate(),
@@ -92,7 +92,7 @@ use yii\widgets\ActiveForm;
         DatePicker::classname(), [
          'name' => 'fechaprog1',
             'language' => h::app()->language,
-            'options' => ['placeholder' =>yii::t('sta.labels', '--Seleccione un valor--')],
+            'options' => ['placeholder' =>yii::t('base.names', '--Seleccione un valor--')],
     //'convertFormat' => true,
                 'pluginOptions' => [
                 'format' => h::getFormatShowDate(),

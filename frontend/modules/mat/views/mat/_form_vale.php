@@ -31,7 +31,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
            <?php 
             if($model->isCreado())
            echo Html::button(
-                                    '<span class="fa fa-chek"></span>   '.Yii::t('sta.labels', 'Aprobar'),
+                                    '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
                                      ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
                  );
           ?> 
@@ -187,7 +187,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
       <?php
  $url= Url::to(['mod-agrega-mat-vale','id'=>$model->id,'gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
   if(!$bloqueado)
-   echo  Html::button(yii::t('base.verbs','Agregar material'), ['href' => $url, 'title' => yii::t('sta.labels','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+   echo  Html::button(yii::t('base.verbs','Agregar material'), ['href' => $url, 'title' => yii::t('base.names','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
        ?>   
   </div>
     <?php Pjax::end(); ?>

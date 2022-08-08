@@ -5,21 +5,6 @@ use frontend\modules\mat\interfaces\ReqInterface;
 use common\helpers\h;
 use Yii;
 
-/**
- * This is the model class for table "{{%mat_detreq}}".
- *
- * @property int $id
- * @property int $req_id
- * @property string $codart
- * @property string $descripcion
- * @property string $cant
- * @property string $um
- * @property string $imptacion
- * @property string $tipim
- * @property string $texto
- *
- * @property MatReq $req
- */
 class MatDetreq extends \common\models\base\modelBase 
 implements ReqInterface
 {

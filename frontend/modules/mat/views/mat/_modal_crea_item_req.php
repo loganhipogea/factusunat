@@ -25,10 +25,20 @@ use common\widgets\selectwidget\selectWidget;
            <?PHP 
            $operacion=($model->isNewRecord)?'mod-agrega-mat':'mod-edit-mat';
              IF($model->isNewRecord){
-               $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id]);  
-                 
+               if($imputado=='y'){
+                   $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id,'imputado'=>$imputado]);
+               }else{
+                 $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id,]);  
+               }
+                
+               
              }else{
-                $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id]);  
+                 if($imputado=='y'){
+                   $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id,'imputado'=>$imputado]);
+               }else{
+                 $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id]);    
+               }
+               
              }
            ?>
            <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
