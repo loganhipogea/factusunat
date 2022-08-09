@@ -162,7 +162,17 @@ return [
         ],
     ],
     
-    
+     'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [           
+            'site/login/',
+            'site/clear-cache/',
+             'site/request-password-reset',
+            'site/reset-password', 
+           'site/logout',
+           'site/mantenimiento',           
+        ]
+    ],
    
 ];
 
