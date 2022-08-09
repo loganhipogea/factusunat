@@ -13,7 +13,7 @@ class m220809_161910_create_useraudit_table extends baseMigration
     public function safeUp()
     {
        
-if ($this->existsTable($this->table)) {
+if (!$this->existsTable($this->table)) {
         $this->createTable($this->table, [
              'id'=>$this->primaryKey(),
             'user_id'=>$this->integer(11),
