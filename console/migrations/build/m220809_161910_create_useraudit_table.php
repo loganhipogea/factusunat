@@ -39,7 +39,7 @@ if (!$this->existsTable($this->table)) {
     public function safeDown()
     {
        if ($this->existsTable($this->table)) {
-            $this->dropTable(static::NAME_TABLE);
+            $this->dropTable($this->table);
         }
 
     }

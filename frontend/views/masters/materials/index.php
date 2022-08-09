@@ -12,10 +12,13 @@ use common\helpers\h;
 $this->title = Yii::t('base.names', 'Materials');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="maestrocompo-index">
+
+
+
+
 
    <h4><?=h::awe('dropbox')?><?= Html::encode($this->title) ?></h4>
-
+  
     <div class="box box-success">
        <?php   
   $gridColumns= [
