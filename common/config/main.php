@@ -115,11 +115,23 @@ return [
         'authManager' => [
         'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\PhpManager'
     ],
-    'user' => [
+    /*'user' => [
         'class' => 'yii\web\User',
         'identityClass' => 'mdm\admin\models\User',
         'loginUrl' => ['admin/user/login'],
+    ],*/
+        'user' => [
+         'class' => 'common\components\User',
+        //'identityClass' => 'mdm\admin\models\User',
+            'identityClass' => 'common\models\User',
+        //'loginUrl' => ['admin/user/login'],
+         'loginUrl' => ['site/login'],  
+           'enableAutoLogin'=>false,
+           // authTimeout
+            'enableSession' => true,
+            'authTimeout'=>60*60*2,
     ],
+        
         'settings' => [
         'class' => 'yii2mod\settings\components\Settings',
     ],
@@ -162,17 +174,7 @@ return [
         ],
     ],
     
-     'as access' => [
-        'class' => 'mdm\admin\components\AccessControl',
-        'allowActions' => [           
-            'site/login/',
-            'site/clear-cache/',
-             'site/request-password-reset',
-            'site/reset-password', 
-           'site/logout',
-           'site/mantenimiento',           
-        ]
-    ],
+     
    
 ];
 
