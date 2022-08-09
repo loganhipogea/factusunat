@@ -40,7 +40,7 @@ use kartik\grid\GridView;
                     
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-            'template' => '{edit}{delete}{attach}{change}',
+            'template' => '{edit}{delete}{attach}{change}{image}',
                'buttons' => [
                     'attach' => function($url, $model) {  
                           $ext= json_encode(Fl::extEngineers()+Fl::extDocs());
@@ -51,6 +51,24 @@ use kartik\grid\GridView;
                              'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
                             'title' => Yii::t('base.names', 'Colocar en el maletín'),
+                            //'aria-label' => Yii::t('rbac-admin', 'Activate'),
+                            //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
+                            'data-method' => 'get',
+                            //'data-pjax' => '0',
+                        ];
+                        return Html::button('<span class="glyphicon glyphicon-user"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+                        //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
+                     
+                        
+                        },
+                                
+                       'image' => function($url, $model) {  
+                         $url=\yii\helpers\Url::toRoute(['/finder/galleryimage',
+                             'idModal'=>'imagemodal',                             
+                             'modelid'=>$model->id,
+                             'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                        $options = [
+                            'title' => Yii::t('base.names', 'Ver Galería'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
                             //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',

@@ -47,7 +47,12 @@ class File extends Fileb
    public function isPdf(){
       return in_array($this->type, ['pdf']);
   }
-   
+  public function beforeSave($insert) {
+      if($insert && empty($this->titulo)) {
+         $this->titulo='Sin título';
+      }
+      return parent::beforeSave($insert);
+  } 
 }
 
 

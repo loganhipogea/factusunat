@@ -45,7 +45,9 @@
       "kartik-v/yii2-icons": "@dev",
       "kartik-v/yii2-detail-view": "dev-master",
       "kartik-v/yii2-widget-datetimepicker": "dev-master",
-      "kartik-v/yii2-widget-timepicker": "*"
+      "kartik-v/yii2-widget-timepicker": "*",
+      "2amigos/yii2-gallery-widget": "~1.0",
+      "kv4nt/yii2-owl-carousel2": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

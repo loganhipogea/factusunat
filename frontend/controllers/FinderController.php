@@ -72,7 +72,11 @@ class FinderController extends  \common\controllers\base\baseController
                         //'property1' => 'value1',
                         //'property2' => 'value2',
                             ],
-           
+            'galleryimage'=> [
+                        'class' => 'common\actions\ActionGalleryImage',
+                        //'property1' => 'value1',
+                        //'property2' => 'value2',
+                            ],
       ];
       
   }

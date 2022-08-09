@@ -22,7 +22,9 @@ class FileBehavior extends Fileb {
      * que  usted desea
      */
 CONST FIRE_METHOD='triggerUpload';
-
+    public function getMOdule(){
+        return new \common\components\ModuleAttach('attachments');
+    }
 
  /*
      * Devuelve el objecto activeQuery
@@ -104,6 +106,8 @@ CONST FIRE_METHOD='triggerUpload';
 
         return $fileQuery->all();
     }
+    
+    
 
    
 

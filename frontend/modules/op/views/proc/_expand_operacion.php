@@ -109,6 +109,7 @@ use common\helpers\FileHelper as Fl;
                              } 
                 
                 ],  
+                'detalle',
                ['attribute' => 'preview',
                 'format'=>'raw',
                 'value'=>function($model){

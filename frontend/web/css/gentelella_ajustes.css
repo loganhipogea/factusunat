@@ -1,9 +1,9 @@
 /*
 AJUSTES DEL MODAL
 */
-.modal-backdrop {
+/*.modal-backdrop {
     z-index: 0 !important;
-}
+}*/
 
 /*
 AJUSTES PARA EL MENU LATERAL EL BODY DEBE DE COIDIR CO EL COLOR
@@ -239,4 +239,13 @@ table td .btn {
   padding: 2px 6px 2px 6px !important;  
   margin-right: 0px !important; 
   margin-left: 0px !important; 
+}
+
+/*
+ORDEN DE FRONTAL EN MODALES
+*/
+.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index:10000 !important;
 }
