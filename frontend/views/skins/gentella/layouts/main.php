@@ -232,31 +232,36 @@ echo ModalAjax::widget([
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="javascript:;">  Profile</a>
-                                </li>
                                 <li>
-                                    <a href="javascript:;">
-                                        <span class="badge bg-red pull-right">50%</span>
-                                        <span>Settings</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">Help</a>
-                                </li>
-                                <li>
-                                   <?= Html::a(
-                                    yii::t('base.verbs','Logout').'<i class="fa fa-sign-out pull-right"></i>',
-                                    ['/site/logout'],
-                                    ['data-method' => 'post',]
-                                           )
-                                 ?>
                                     
-                                </li>
+                                        <?= Html::a(
+                                             yii::t('base.names','<i style="color:#96c15e;"><span class="fa fa-user"></span></i>'.' Profile'),
+                                            ['/site/profile'],
+                                                ['class' => '']
+                                                ) ?>                                
+                                  </li>    
+                                <li>
+                                   <span class="badge bg-red pull-right"></span>                            
+                                   
+                                    <?= Html::a(
+                                    yii::t('base.verbs','<i style="color:#96c15e;"><span class="glyphicon glyphicon-share"></span></i>'.'Salir'),
+                                    ['/site/logout'],
+                                    ['data-method' => 'post', 'class' => '']
+                                ) ?>
+                                
+                              </li>
+                                
                             </ul>
+                            
+                            
+                           
+                            
+                            
+                            
+                            
+                            
                         </li>
                         <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
                                     <?php 
                                 if(\yii::$app->session->has(VwSociedades::keysesion())){
                                     yii::error('en el layourt main, emcomntro la sesion SOCIEDADES');
@@ -273,7 +278,7 @@ echo ModalAjax::widget([
                                 }
                                       
                                 ?>
-                                <span class=" fa fa-angle-down"></span>
+                                
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
                                 <?PHP $socis=common\helpers\ComboHelper::getCboSociedadesWithCodpro(true);   ?>

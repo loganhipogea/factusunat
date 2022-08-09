@@ -247,5 +247,10 @@ ORDEN DE FRONTAL EN MODALES
 .modal-open .modal {
     overflow-x: hidden;
     overflow-y: auto;
-    z-index:10000 !important;
+    z-index:1041 !important;
 }
+
+.modal-backdrop {   
+    z-index: 1040 !important;
+}
+    
