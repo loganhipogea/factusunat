@@ -119,10 +119,8 @@ class OpProcesos extends \common\models\base\modelBase
     
      public function beforeSave($insert) {
        // yii::error('funcion beforeSave  '.date('Y-m-d H:i:s'));
-        if ($insert) {
-            
-            $this->numero = $this->correlativo('numero');
-           
+        if ($insert) {            
+            $this->numero = $this->correlativo('numero');           
         }else{
           
         }
@@ -130,4 +128,18 @@ class OpProcesos extends \common\models\base\modelBase
         //$this->resolveDuration();
         return parent::beforeSave($insert);
     }
+    
+    public function idsOs(){
+       return $this->getOrdenes()->select(['id'])->column();
+    }
+    
+    public function idsDetos(){
+       return OpOsdet::find()->select(['id'])->
+                andWhere(['in','os_id',$this->idsOs()])->column();        
+    }
+    public function idsOptareosdet(){
+       return OpTareodet::find()->select(['id'])->
+                andWhere(['in','detos_id',$this->idsDetos()])->column();        
+    }
+    
 }

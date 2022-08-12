@@ -56,8 +56,8 @@ class cboDepWidget extends \yii\base\Widget
        
         parent::init();
          
-        if(!($this->model instanceof modelBase))
-        throw new InvalidConfigException('The "model" property is not subclass from "modelBase".');
+        //if(!($this->model instanceof modelBase))
+        //throw new InvalidConfigException('The "model" property is not subclass from "modelBase".');
         if(!($this->form instanceof \yii\widgets\ActiveForm))
         throw new InvalidConfigException('The "form" property is not subclass from "ActiveForm".'.get_class($this->form));
   /*if(empty($this->idcombodep ))

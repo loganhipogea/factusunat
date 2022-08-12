@@ -6,8 +6,8 @@ use yii\helpers\Url;
 <?PHP 
 
 $ext=FileHelper::extensionFile($urlFile);
-//VAR_DUMP($ext,FileHelper::isImage($urlFile), FileHelper::extImages());
-//die();
+/*VAR_DUMP($ext,FileHelper::isImage($urlFile), FileHelper::extImages());
+die();*/
 ?>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 <?php 

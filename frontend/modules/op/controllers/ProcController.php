@@ -515,4 +515,15 @@ class ProcController extends baseController
                 return ['success'=>yii::t('base.errors','Se creó una solicitud de compra')];
             }  
    }
+   
+  public function actionRenderFiles(){
+     // $model=New \frontend\modules\op\models\OpOsdet();
+        $searchModel = new \frontend\modules\op\models\FileSearch();
+        $dataProvider = $searchModel->searchByProc(Yii::$app->request->queryParams);
+       
+      return $this->render('renderFiles',[
+          'model' => $searchModel,
+          'dataProvider'=>$dataProvider
+              ]);
+  }
 }
