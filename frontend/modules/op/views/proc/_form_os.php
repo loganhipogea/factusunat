@@ -101,7 +101,7 @@ use kartik\grid\GridView;
                        'change' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/op/proc/ajax-compra-det-os','id'=>$model->id]);
                         
-                                   return \yii\helpers\Html::a('<span class="btn btn-primary fa fa-money"></span>', '#', ['title'=>$url,'id'=>$model->id,'family'=>'pigmalion',]);
+                                   return \yii\helpers\Html::a('<span class="btn btn-primary fa fa-money"></span>', '#', ['rel'=>$url,'id'=>$model->id,'family'=>'pigmalion',]);
                         
                         },
                     ]

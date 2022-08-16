@@ -122,7 +122,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         'class' => 'yii\grid\CheckboxColumn',
                  'checkboxOptions' => function ($model, $key, $index, $column) {
                          $url = \yii\helpers\Url::to([$this->context->id.'/ajax-guarda-id-req-sesion','id'=> $model->id]);                              
-                        return ['value' => $model->id,'family'=>'pigmalion', 'title'=>$url,'id'=>$model->id];
+                        return ['value' => $model->id,'family'=>'pigmalion', 'rel'=>$url,'id'=>$model->id];
                             }
         // you may configure additional properties here
                     ],
