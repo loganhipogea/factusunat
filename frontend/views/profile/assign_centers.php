@@ -43,7 +43,7 @@ $this->title = Yii::t('base.verbs', 'Assign centers for: ').h::getNameUserById($
                     'attribute' => 'activo',
                         'format' => 'raw',
                         'value' => function ($model) {
-                            return \yii\helpers\Html::checkbox('activo[]', $model->activo, ['id'=>$model->id, 'family' =>'holas','title'=>Url::to(['profile/ajax-assign','id'=>$model->id])]);
+                            return \yii\helpers\Html::checkbox('activo[]', $model->activo, ['id'=>$model->id, 'family' =>'holas','rel'=>Url::to(['profile/ajax-assign','id'=>$model->id])]);
                                 },
                 ],
                   [

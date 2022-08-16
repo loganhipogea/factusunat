@@ -63,7 +63,7 @@ $this->title = Yii::t('base.names', 'Customers/Vendors');
                              
                             'delete' => function ($url,$model) {                             
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->codpro]);
-                              return \yii\helpers\Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->codpro,'modelito'=> str_replace('@','\\',get_class($model))])]);
+                              return \yii\helpers\Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->codpro,'modelito'=> str_replace('@','\\',get_class($model))])]);
                              }
                    ]
                 ],

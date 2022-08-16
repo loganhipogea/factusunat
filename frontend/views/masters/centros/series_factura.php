@@ -40,7 +40,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                             },
                         'delete' => function  ($url,$model)use($zonaAjax) {                             
                                 $url = Url::to([$this->context->id.'/ajax-delete-model','id'=>$model->id]);
-                              return Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', 'javascript:void()', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->codcen,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                              return Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', 'javascript:void()', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->codcen,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              }
                         
                     ]
