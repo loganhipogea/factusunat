@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Assign');
 
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
-            'query'=> common\models\masters\Docutrabajadores::find()->andWhere(['codtra'=>$model->codtra])
+            'query'=> common\models\masters\Docutrabajadores::find()->andWhere(['codtra'=>$model->codigotra])
         ]),
        // 'filterModel' => $searchModel,
          'summary' => '',
