@@ -34,6 +34,8 @@ class ActionSelectImage extends \yii\base\Action
         if (h::request()->isPost && $model->save()) {
            
              $this->controller->closeModal('buscarvalor');
+             
+              $cadAux.="$.pjax.reload({container:'#".$grilla."',async:false,timeout:6000});";
         
         } else {
              

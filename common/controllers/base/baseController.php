@@ -108,10 +108,9 @@ private static function findKeyArrayInPost(){
          \yii::error('1 cerrando el modal',__METHOD__);
          echo Html::script(" $('#".$nombremodal."').modal('hide');"); 
          foreach($grillas as $v=>$grilla){
-           echo Html::script("window.parent.$.pjax({container: '#".$grilla."'});");   
+           echo Html::script("window.parent.$.pjax.reload({container: '#".$grilla."'});");   
          }
-     
-     }elseif(is_null($grillas)){
+       }elseif(is_null($grillas)){
          \yii::error('2 cerrando el modal',__METHOD__);
         echo Html::script(" $('#".$nombremodal."').modal('hide');");   
      }else{
