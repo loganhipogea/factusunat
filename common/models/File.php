@@ -67,7 +67,7 @@ class File extends Fileb
   }
   public function beforeSave($insert) {
       if($insert && empty($this->titulo)) {
-         $this->titulo='Sin título';
+         $this->titulo=substr($this->name,0,39);
          $this->cuando=date('Y-m-d H:i:s');
          $this->user_id=h::userId();
       }

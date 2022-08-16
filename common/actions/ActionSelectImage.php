@@ -56,6 +56,7 @@ class ActionSelectImage extends \yii\base\Action
            yii::error('Renderizando la vista  ');
             return $this->controller->render('/comunes/attachFile', [
                         'model' => $model,
+                        'grillas'=>$grillas,
                  'allowedExtensions' => $allowedExtensions,
                         //'vendorsForCombo' => $vendorsForCombo,
             ]);

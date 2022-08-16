@@ -37,6 +37,7 @@ use common\helpers\ComboHelper;
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <?= $form->field($model, 'detalle')->textArea(['maxlength' => true,]) ?>
             </div>
+       <?php echo Html::hiddenInput('grillas',is_array($grillas)?Json::encode($grillas):$grillas); ?>
     <?php ActiveForm::end(); ?>
 
     </div>

@@ -47,7 +47,7 @@ use common\helpers\FileHelper as Fl;
                     
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-            'template' => '{edit}',
+                                 'template' => '{edit}',
                'buttons' => [
                     'attach' => function($url, $model) {  
                         $ext= json_encode(Fl::extEngineers()+Fl::extDocs());
@@ -66,8 +66,8 @@ use common\helpers\FileHelper as Fl;
                         
                         },
                                 
-                                'edit' => function ($url,$model) {
-			    $url=\yii\helpers\Url::toRoute(['/finder/editattach','idModal'=>'imagemodal','id'=>$model->id,]);
+                                'edit' => function ($url,$model)use($zonaAjax) {
+			    $url=\yii\helpers\Url::toRoute(['/finder/editattach','idModal'=>'imagemodal','id'=>$model->id,'grillas'=>$zonaAjax]);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {

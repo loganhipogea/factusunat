@@ -1,6 +1,7 @@
 <?php use yii\widgets\ActiveForm;
 
 use yii\helpers\Html;
+use yii\helpers\Json;
 ?>
 
 
@@ -9,7 +10,7 @@ use yii\helpers\Html;
         'enableAjaxValidation'=>true
         ]); ?>
  
-  
+  <?php echo Html::hiddenInput('grillas',is_array($grillas)?Json::encode($grillas):$grillas); ?>
  <?= \nemmo\attachments\components\AttachmentsInput::widget([
 	'id' => 'file-input', // Optional
 	'model' => $model,         
