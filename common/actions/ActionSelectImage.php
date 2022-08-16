@@ -16,6 +16,7 @@ class ActionSelectImage extends \yii\base\Action
          
         $clase=str_replace('_','\\',h::request()->get('nombreclase'));
         $isImage=h::request()->get('isImage');
+        $grillas=h::request()->get('grillas');
         $id=h::request()->get('modelid');
         $ext=h::request()->get('extension');
         //var_dump( $ext);die();
@@ -33,10 +34,8 @@ class ActionSelectImage extends \yii\base\Action
         
         if (h::request()->isPost && $model->save()) {
            
-             $this->controller->closeModal('buscarvalor');
-             
-              $cadAux.="$.pjax.reload({container:'#".$grilla."',async:false,timeout:6000});";
-        
+             $this->controller->closeModal('buscarvalor',$grillas);
+         
         } else {
              
             if($model->hasErrors()){

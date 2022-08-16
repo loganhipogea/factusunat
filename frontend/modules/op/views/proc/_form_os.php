@@ -47,6 +47,7 @@ use kartik\grid\GridView;
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
                              'idModal'=>'imagemodal',
                              'extension'=>$ext,
+                             'grillas'=>'pjax-detserv',
                              'modelid'=>$model->id,
                              'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
