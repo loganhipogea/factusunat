@@ -7,7 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-
+use common\models\Profile;
 /**
  * User model
  *
@@ -210,4 +210,35 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    
+    
+     public function getProfile($id=null,$tipo=null){
+      // var_dump($this->id);
+       Profile::firstOrCreateStatic(['user_id'=>(!is_null($id))?$id:$this->id,'tipo'=>$tipo], Profile::SCENARIO_PROPIETARIOS);
+       return Profile::find()->where(['user_id'=>(!is_null($id))?$id:$this->id])->one();
+       
+   }
+   
+   public function lastLoginForHumans(){
+         return \Carbon\Carbon::createFromTimeStamp(
+                 strtotime($this->lastLogin()))->diffForHumans();
+     }  
+  public function lastLogin(){
+         return Useraudit::lastLogin($this->id);
+     } 
+     
+     public function getSince(){
+      return date('d/m/Y H:i:s',$this->created_at);
+      //return \Carbon\Carbon::createFromTimeStamp(
+                // strtotime($this->lastLogin()))->diffForHumans(); 
+       //Profile::firstOrCreateStatic(['user_id'=>$this->id]);
+      // return Profile::find()->where(['user_id'=>$this->id])->one();
+       
+   }
+   
+   public static function dataComboStatus(){
+    return [static::STATUS_DELETED => yii::t('base.names','Disabled'),
+            static::STATUS_ACTIVE => yii::t('base.names','Active')];
+    
+   }
 }

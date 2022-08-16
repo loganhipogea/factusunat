@@ -17,7 +17,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      <div class="box-body">
       <?php $form = ActiveForm::begin([
        'id'=>'myformulario',
-    'fieldClass'=>'\common\components\MyActiveField'
+   // 'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
       <div class="box-header">
           
@@ -74,11 +74,9 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
         <?= $form->field($model, 'glosa')->textInput() ?>
  </div>        
-     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?= $form->field($model, 'monto')->textInput(['disabled'=>true]) ?>
-   </div> 
+     
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?= $form->field($model, 'monto_a_rendir')->textInput() ?>
+        <?= $form->field($model, 'monto')->textInput() ?>
    </div> 
     
    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    

@@ -17,6 +17,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 USE common\helpers\h;
 use yii\base\UnknownPropertyException;
+use mdm\admin\models\searchs\User as UserSearch;
 
 /**
  * Site controller
@@ -296,5 +297,9 @@ class SiteController extends Controller
    public function actionIndexCompanies(){
       return $this->render('index-companies');
    }
+   
+   
+  
+   
     
 }

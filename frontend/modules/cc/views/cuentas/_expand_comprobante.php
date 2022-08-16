@@ -1,7 +1,11 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?php 
-    
-     echo $this->render('_comprobante_calificacion',['model'=>$model]);
+    if($model->activo){
+        echo $this->render('_comprobante_calificacion',['model'=>$model]);
+    }else{
+        echo "Registro inactivo";
+    }
+     
     ?>
     
 </div>

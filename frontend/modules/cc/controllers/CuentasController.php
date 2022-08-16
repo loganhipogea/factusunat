@@ -262,8 +262,7 @@ class CuentasController extends baseController
               // var_dump($datos);die();
                return ['success'=>2,'msg'=>$datos];  
             }else{
-                /*print_r(h::request()->post());
-               print_r($model->attributes);die();*/
+                
                if(!$model->save()) print_r($model->getErrors()); 
                 
                 //$model->assignStudentsByRandom();
@@ -334,13 +333,13 @@ class CuentasController extends baseController
        $model->movimiento_id=$id;
        $model->codtra=$modelMov->codtra;
        $model->codocu=$model->codocu_fondo_fijo;
-       $model->monto_a_rendir=$modelMov->monto;
-       
+       //$model->monto_a_rendir=$modelMov->monto;
+       $model->parent_id=$modelMov->id;
        
        $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
-            print_r($model->attributes);die();
+           // print_r($model->attributes);die();
              h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){
@@ -380,9 +379,7 @@ class CuentasController extends baseController
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){
                return ['success'=>2,'msg'=>$datos];  
-            }else{
-                //print_r(h::request()->post());
-               // print_r($model->attributes);die();
+            }else{              
                $model->save();
                 
                 //$model->assignStudentsByRandom();
@@ -437,7 +434,7 @@ class CuentasController extends baseController
              h::response()->format = Response::FORMAT_JSON;
             
                  $model->activo=false;$model->save();
-                return ['warning' => yii::t('sta.messages', 'Se ha revertido la compensación')];
+                return ['warning' => yii::t('base.messages', 'Se ha revertido la compensación')];
            
             
 

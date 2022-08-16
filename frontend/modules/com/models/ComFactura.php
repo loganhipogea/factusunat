@@ -521,25 +521,7 @@ class ComFactura extends \common\models\base\BaseDocument
              setTotalTotales()->save();
   }
   
-  public function isCreated(){
-      return(self::ST_CREATED==$this->codestado);
-  }
-  
-  public function isRemoved(){
-      return(self::ST_CANCELED==$this->codestado);
-  }
-   public function setRemoved(){
-      $this->codestado=self::ST_CANCELED;
-      return $this;
-  }
-  
-  public function isPassed(){
-      return(self::ST_PASSED==$this->codestado);
-  }
-  public function setPassed(){
-      $this->codestado=self::ST_PASSED;
-      return $this;
-  }
+
   
   public function isPassedSunat(){
       return(self::ST_PASSED_SUNAT==$this->codestado);

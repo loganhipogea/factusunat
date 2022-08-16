@@ -9,10 +9,10 @@ use Yii;
 /**
  
  */
-class CcCompras extends \common\models\base\modelBase
+class CcCompras extends \common\models\base\BaseDocument
 {
     use \frontend\modules\cc\traits\CcTrait;
-    
+    public $nameFieldEstado='estado'; 
       public $dateorTimeFields = [
         'fecha' => self::_FDATE,
         /*'finicio' => self::_FDATETIME,
@@ -55,8 +55,9 @@ class CcCompras extends \common\models\base\modelBase
             [['id', 'mes', 'movimiento_id'], 'integer'],
             [['monto', 'igv', 'monto_usd', 'igv_usd'], 'number'],
             [['codocu', 'prefijo', 'codmon'], 'string', 'max' => 3],
+              [['prefijo'], 'required'],
             [['monto'], 'validate_monto'],
-            [['activo','detalle','parent_id','acumulado','monto_calificado'], 'safe'],
+            [['activo','detalle','parent_id','acumulado','monto_calificado','estado','prefijo'], 'safe'],
             [['numero'], 'string', 'max' => 12],
             [['fecha'], 'string', 'max' => 10],
             [['anio'], 'string', 'max' => 4],
@@ -207,7 +208,10 @@ class CcCompras extends \common\models\base\modelBase
     }
     
     public function beforeSave($insert) {
-        if($insert) $this->activo=true;
+        if($insert){
+            $this->activo=true;
+            $this->setCreated();
+        }
         return parent::beforeSave($insert);
     }
     

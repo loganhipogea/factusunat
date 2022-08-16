@@ -107,6 +107,7 @@ class UserSociedades extends \common\models\base\modelBase
               ->where(['id'=>$user_id,'status'=>User::STATUS_ACTIVE])->exists();
          if($existe){
              $rows=VwSucursales::find()->select(['codcen','codsoc'])->asArray()->all();
+             //echo count($rows);die();
             foreach($rows as $row){
                $row['user_id']=$user_id;
                self::firstOrCreateStatic($row, null, $row); 
@@ -147,7 +148,7 @@ class UserSociedades extends \common\models\base\modelBase
         $existe=(new \yii\db\Query())->select(['id'])->from('{{%user}}')
               ->where(['id'=>$user_id,'status'=>User::STATUS_ACTIVE])->exists();
          if($existe){
-             $codsoc=VwSucursales::findOne([
+             $codsoc=VwSucursales::find([
                            'codcen'=>$sucursal
                                ])->one()->codsoc;
             self::firstOrCreateStatic([

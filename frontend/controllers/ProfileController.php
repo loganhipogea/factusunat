@@ -13,6 +13,7 @@ use common\models\UserSociedades;
 USE common\models\masters\VwSociedades;
 use yii\base\UnknownPropertyException;
 use yii\web\NotFoundHttpException;
+use mdm\admin\models\searchs\User as UserSearch;
 
 /**
  * Site controller
@@ -149,16 +150,11 @@ class ProfileController extends \common\controllers\base\baseController
      if(!is_null($codcen)){
          $sesion=\yii::$app->session;
          $model= \common\models\masters\Centros::find()->andWhere(['codcen'=>$codcen])->one();
-         //print_r( $model->attributes);die();
          $model->storeCenter();
-         //$socio=$model->socio->codsoc;
-         //yii::error($model->socio->attributes,__FUNCTION__);
-         //yii::error($model->attributes,__FUNCTION__);
-          //yii::error($model->attributes,__FUNCTION__);
          (new VwSociedades())->storeCompany($model->socio->attributes);
-         
          $url=$sesion->get('mi-ex-url');
          $sesion->remove('mi-ex-url');
+         UserSociedades::assignCenterToUser(h::userId(), $codcen);
          $sesion->setFlash('success',yii::t('base.names','Center {center} was selected',['center'=>$model->nomcen]));
         return  $this->redirect($url)->send();
          
@@ -167,10 +163,86 @@ class ProfileController extends \common\controllers\base\baseController
             
      }
     }
+    
+    
+    
+    
+    
+    
    
      public function actionSelectCompany(){
          yii::error('ingresando al controlador',__FILE__);
       return $this->render('index-sociedades');
     }
-  
+    
+    
+    /*
+     * ESTA FUNCION ASIGNA EL CENTRO A UN USUARIO ESPEFICO
+     * A DIFERENCIA DE SET-CENTER; TRABAJA CON UN ID DE USUARIO
+     * ESPECIFICO Y NO TIENE NADA QUE VER CON EL ALMACENAMIENTO
+     * DE SESION, ES MAS POR UN TEMA DE PERMISOS A NIVEL DE TABLA
+     */
+    
+    public function actionAjaxAssignCenterUser($id){
+       
+         if(h::request()->isAjax){
+          $model=UserSociedades::findOne($id);          
+           h::response()->format = Response::FORMAT_JSON; 
+           if(is_null($model))
+            throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el registro para este id '.$id));    
+           
+            $model->activo=!$model->activo;$model->save();
+           if($model->activo)
+             return ['success'=>Yii::t('base.names', 'Assign successfully')];
+           if(!$model->activo)
+             return ['warning'=>Yii::t('base.names', 'Revoke successfully')];
+        
+           
+         }
+    }
+     
+    public function actionManageUsers(){
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('users', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+        ]);
+   }
+   
+   public function actionEditProfile($id){
+       
+     
+         $newIdentity=h::user()->identity->findOne($id);
+          if(!h::request()->isPost)
+         \common\models\UserSociedades::createCentersForUser($id);
+        // echo get_class_methods($newIdentity);die();
+      if(is_null($newIdentity))
+          throw new BadRequestHttpException(yii::t('base.errors','User not found with id '.$iduser));  
+        $profile =$newIdentity->getProfile($id);
+        $profile->setScenario($profile::SCENARIO_INTERLOCUTOR);
+        if(h::request()->isPost){
+            $arrpost=h::request()->post();
+            $profile->tipo=$arrpost[$profile->getShortNameClass()]['tipo'];
+            $profile->codtra=$arrpost[$profile->getShortNameClass()]['codtra'];
+            $newIdentity->status=$arrpost['User']['status'];
+          if (h::request()->isAjax) {
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                return \yii\widgets\ActiveForm::validate($profile);
+             }
+           if ($profile->save() && $newIdentity->save()) {               
+            return $this->redirect(['manage-users']);
+           }
+            //var_dump(h::request()->post());die();
+          }
+        //echo $model->id;die();
+       // var_dump(UserFacultades::providerFacus($iduser)->getModels());die();
+        return $this->render('_formtabs', [
+            'profile' => $profile,
+            'model'=>$newIdentity,
+            //'userfacultades'=> UserFacultades::providerFacusAll($iduser)->getModels(),
+        ]);
+   } 
+    
 }

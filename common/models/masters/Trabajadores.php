@@ -214,5 +214,12 @@ class Trabajadores extends modelBase implements \common\interfaces\PersonInterfa
          
         return $this->getTarifas()->select(['id'])->andWhere(['activo'=>'1'])->scalar();
     }
+    
+    /*
+     * Cantidad de rendiciones abiertas 
+     */
+    public function nRendicionesAbiertas(){
+        
+    }
      
 }

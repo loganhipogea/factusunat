@@ -48,7 +48,7 @@ class Profile extends \common\models\base\modelBase implements \common\interface
           
       ];      
             
-  public $booleanFields=['recexternos'];          
+  //public $booleanFields=['recexternos'];          
             
     public static function tableName()
     {
@@ -245,9 +245,10 @@ class Profile extends \common\models\base\modelBase implements \common\interface
         }  
         
      public function IsBirthDay(){
-         $hoy=Carbon::now();
- return $hoy->isBirthday($this->toCarbon('cumple')); 
+            $hoy=Carbon::now();
+            return $hoy->isBirthday($this->toCarbon('cumple')); 
         }  
+        
      public function fullName($asc=TRUE,$ucase=true,$delimiter=''){       
          $strname=($asc)?$this->nombres.' '.$this->ap.' '.$this->am:$strname= $this->ap.' '.$this->am.' '.$this->nombres;
          $strname= ($ucase)?\yii\helpers\StringHelper::mb_ucwords($strname):$strname;
@@ -266,6 +267,10 @@ class Profile extends \common\models\base\modelBase implements \common\interface
         return $this->hasOne(Trabajadores::className(), ['codigotra' => 'codtra']);
     }
 
+    
+   public function isAssociateWithWorker(){
+       return(!empty($this->codtra));
+   }
   
     public static function UserIdByTrabajador($codtra){
        return static::find()->andWhere(['codtra'=>$codtra])->one();

@@ -13,6 +13,8 @@ class m220809_152005_create_profile_table extends baseMigration
    if(!$this->existsTable($table)) {
        $this->createTable($table, [
             'id'=>$this->primaryKey(),
+            'tipo'=>$this->char(2),
+           'codtra'=>$this->char(6),
             'user_id'=>$this->integer(11),
             'duration'=>$this->integer(11),
              'durationabsolute'=>$this->integer(11),
@@ -23,7 +25,7 @@ class m220809_152005_create_profile_table extends baseMigration
             ],
            $this->collateTable());
        
-       
+           $this->putCombo($table,'tipo',['10'=>'TRABAJADOR','20'=>'ADMINISTRADOR','30'=>'CLIENTE']);
      
         }
         

@@ -79,6 +79,11 @@ return [
                      
                      ], 
                 
+                        'base.messages'=>[
+                            'class' => 'yii\i18n\PhpMessageSource',
+                           'basePath' => '@messages',                                         
+                              ],
+                
                         'base.names'=>[
                             'class' => 'yii\i18n\PhpMessageSource',
                            'basePath' => '@messages',                                         

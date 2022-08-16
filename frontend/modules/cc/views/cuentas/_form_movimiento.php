@@ -82,9 +82,14 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
  <?= $form->field($model, 'glosa')->textInput() ?>
 
 </div>  
-   <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">    
- <?= $form->field($model, 'monto')->textInput() ?>
- </div>
+   <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
+  <?php
+     $zonaMonto='pjax_monto';
+     
+    Pjax::begin(['id'=>$zonaMonto]) ?>
+   <?= $form->field($model, 'monto')->textInput(['disabled'=>$model->hasChilds()]) ?>
+  <?php Pjax::end() ?>
+   </div>
 
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
  <?= $form->field($model, 'detalle')->
@@ -98,7 +103,11 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
           
        <?php if(!$model->isNewRecord){ ?>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-    <?php Pjax::begin(['id'=>'grilla-materiales']); ?>
+    <?php
+    $zonaAjax='grilla-materiales';
+    Pjax::begin(['id'=>$zonaAjax]);
+    
+    ?>
     
    <?php //var_dump((new SigiApoderadosSearch())->searchByEdificio($model->id)); die(); ?>
     <?= GridView::widget([
@@ -146,14 +155,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                                             }
                                                 return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0']);
                                           },
-                        'delete' => function ($url,$model) {
-                              IF($model->activo){
-                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-desactiva-item','id'=>$model->id]);
-                              
-                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
-                             
-                              }
-			    }
+                       'delete' => function ($url,$model)use($zonaAjax) {                             
+                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id,'gridName'=>$zonaAjax]);
+                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                             }
                         
                     ]
                 ],
@@ -173,7 +178,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                              } 
                 
                 ], 
-                    
+              ['attribute' => 'monto_a_rendir',
+                'format'=>'raw',
+                'value'=>function($model){                        
+                             return $model->monto_a_rendir;                                                   
+                             } 
+                
+                ],       
             ['attribute' => 'glosa',
                 'format'=>'raw',
                 'value'=>function($model){
@@ -192,7 +203,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
          <?php 
    echo linkAjaxGridWidget::widget([
            'id'=>'widgetgruidBancos',
-            'idGrilla'=>'grilla-materiales',
+            'idGrilla'=>$zonaAjax,
             'family'=>'holas',
           'type'=>'POST',
            'evento'=>'click',
@@ -205,7 +216,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
           <?php 
    echo linkAjaxGridWidget::widget([
            'id'=>'widgetgruidBancosss',
-            'idGrilla'=>'grilla-materiales',
+            'idGrilla'=>$zonaAjax,
             'family'=>'pigmalion',
           'type'=>'POST',
            'evento'=>'change',
@@ -218,12 +229,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
          
     <?php Pjax::end(); ?>
    <?php
-    $url= Url::to(['mod-crea-comprobante','id'=>$model->id,'gridName'=>'grilla-compras','idModal'=>'buscarvalor']);
+    $url= Url::to(['mod-crea-comprobante','id'=>$model->id,'gridName'=> \yii\helpers\Json::encode([$zonaAjax,$zonaMonto]),'idModal'=>'buscarvalor']);
     echo  Html::button(yii::t('base.verbs','Agregar comprobante'), ['href' => $url, 'title' => yii::t('base.names','Agregar Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      ?>
     <?php
-    $url= Url::to(['mod-crea-fondo','id'=>$model->id,'gridName'=>'grilla-compras','idModal'=>'buscarvalor']);
-    echo  Html::button(yii::t('base.verbs','Agregar Fondo'), ['href' => $url, 'title' => yii::t('base.names','Agregar Comprobante'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
+    $url= Url::to(['mod-crea-fondo','id'=>$model->id,'gridName'=>\yii\helpers\Json::encode([$zonaAjax,$zonaMonto]),'idModal'=>'buscarvalor']);
+    echo  Html::button(yii::t('base.verbs','Agregar Fondo'), ['href' => $url, 'title' => yii::t('base.names','Agregar fondo'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      ?>
   </div> 
   <?php  } ?>        

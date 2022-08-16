@@ -43,7 +43,7 @@ use kartik\grid\GridView;
             'template' => '{edit}{delete}{attach}{change}{image}',
                'buttons' => [
                     'attach' => function($url, $model) {  
-                          $ext= json_encode(Fl::extEngineers()+Fl::extDocs());
+                          $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs()));
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
                              'idModal'=>'imagemodal',
                              'extension'=>$ext,
@@ -56,7 +56,7 @@ use kartik\grid\GridView;
                             'data-method' => 'get',
                             //'data-pjax' => '0',
                         ];
-                        return Html::button('<span class="glyphicon glyphicon-user"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+                        return Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
                         //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
                      
                         
@@ -74,7 +74,7 @@ use kartik\grid\GridView;
                             'data-method' => 'get',
                             //'data-pjax' => '0',
                         ];
-                        return Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
                         //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
                      
                         

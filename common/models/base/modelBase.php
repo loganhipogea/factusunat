@@ -839,7 +839,8 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                 $returnModel=FALSE
                 ){  
             $myAttributesVerify=(is_null($verifyAttributes))?$attributes:$verifyAttributes;
-           if(!self::find()->where($myAttributesVerify)->exists()){
+      yii::error(self::find()->where($myAttributesVerify)->createCommand()->rawSql);
+            if(!self::find()->where($myAttributesVerify)->exists()){
                      try{
                     $clase= static::class;
                     $model=new $clase;

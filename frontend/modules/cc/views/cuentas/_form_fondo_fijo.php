@@ -105,7 +105,7 @@ use frontend\modules\cc\models\CcGastos;
                     
                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
                              <?php Pjax::begin(['id'=>'pjax-monto']); ?> 
-                            <?= $form->field($model, 'monto_a_rendir')->textInput(['disabled'=>true,]) ?>
+                            <?= $form->field($model, 'monto')->textInput(['disabled'=>true,]) ?>
                             <?php Pjax::end(); ?> 
                    </div> 
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -202,7 +202,7 @@ use frontend\modules\cc\models\CcGastos;
                               IF($model->activo && !$bloqueado){
                                 $url = \yii\helpers\Url::to([$this->context->id.'/ajax-anula-comprobante','id'=>$model->id]);
                               
-                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                               }else{
                                   return '';
                               }

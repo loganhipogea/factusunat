@@ -9,7 +9,7 @@ use Yii;
 /**
  
  */
-class CcRendicion extends \common\models\base\modelBase
+class CcRendicion extends \common\models\base\BaseDocument
 {
     use \frontend\modules\cc\traits\CcTrait;
     public $prefijo='78';
@@ -55,9 +55,9 @@ class CcRendicion extends \common\models\base\modelBase
     public function rules()
     {
         return [
-             [['codocu','codtra','fecha','glosa','monto_a_rendir'], 'required'],
-             [['frecuencia','parent_id','codtra','monto_rendido'], 'safe'],
-            
+             [['codocu','codtra','fecha','glosa','monto'], 'required'],
+             [['frecuencia','parent_id','codtra','monto_rendido','estado'], 'safe'],
+            [['monto_a_rendir'], 'validate_monto_rendir'],
             [['id', 'mes', 'movimiento_id'], 'integer'],
             [['monto', 'igv', 'monto_usd', 'igv_usd'], 'number'],
             [['codocu', 'prefijo', 'codmon'], 'string', 'max' => 3],
@@ -111,9 +111,12 @@ class CcRendicion extends \common\models\base\modelBase
     
     public function getTrabajador()
     {
-        return $this->hasMany(\common\models\masters\Trabajadores::className(), ['codigotra' => 'codtra']);
+        return $this->hasOne(\common\models\masters\Trabajadores::className(), ['codigotra' => 'codtra']);
     }
-    
+    public function getMovimiento()
+    {
+        return $this->hasOne(CcMovimientos::className(), ['id' => 'parent_id']);
+    }
    
     
     /*
@@ -250,9 +253,11 @@ class CcRendicion extends \common\models\base\modelBase
     
    public function porcentajeAvance(){
        $acumulado=$this->acumulado();
-       
-       if($this->monto>0 ){
-           //var_dump($acumulado,$this->monto);
+     /* var_dump(
+               $this->getRendiciones()->andWhere(['activo'=>'1'])->createCommand()->rawSql,
+               $acumulado,$this->monto,100*round($acumulado/$this->monto,4));DIE();
+       */if($this->monto>0 ){
+          
            return 100*round($acumulado/$this->monto,4);
        }else{
            return 0;
@@ -299,5 +304,30 @@ class CcRendicion extends \common\models\base\modelBase
        }
            
    }
+   
+   public function validate_monto_rendir($attribute,$params){
+      $mov=$this->movimiento;
+      if($this->isNewRecord){
+         $acumulado= $mov->acumuladoParaRendir()+$this->monto_a_rendir;
+      }else{
+         $acumulado=$mov->acumuladoParaRendir($this->id)+$this->monto_a_rendir;
+      }
+      if($acumulado > $mov->monto){
+          $this->addError('monto_a_rendir',yii::t('base.errors','La suma acumulada {acumulado} excede al monto original {monto}',['acumulado'=>$acumulado,'monto'=>$mov->monto]));
+      } 
+   }
+  
+   public function areChildsAprobed(){
+       RETURN  $this->getRendiciones()->count()==
+           $this->getRendiciones()->andWhere(['estado'=>self::ST_PASSED])->count();
+  }
+ 
+  public function aprobe(){
+      if($this->areChildsAprobed()){
+         return $this->setPassed()->save();          
+      }
+      RETURN FALSE;
+  } 
+   
    
 }

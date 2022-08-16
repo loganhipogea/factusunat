@@ -69,7 +69,7 @@ class CentrosController extends baseController
     public function actionCreate()
     {
         $model = new Centros();
-        
+        $model->codpro= \common\models\masters\VwSociedades::codpro();
         
         if (h::request()->isAjax && $model->load(h::request()->post())) {
                 h::response()->format = Response::FORMAT_JSON;

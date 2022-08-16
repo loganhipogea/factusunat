@@ -4,9 +4,11 @@ namespace frontend\modules\cc\models;
 use frontend\modules\cc\interfaces\MovimientosInterface;
 use Yii;
 
-class CcMovimientos extends \common\models\base\modelBase implements MovimientosInterface
+class CcMovimientos extends \common\models\base\BaseDocument implements MovimientosInterface
 {
-     public $dateorTimeFields = [
+    public $nameFieldEstado='estado';
+    
+    public $dateorTimeFields = [
         'fechaop' => self::_FDATE,
         'fechacre' => self::_FDATE,
          /* 'fval' => self::_FDATE,
@@ -19,6 +21,12 @@ class CcMovimientos extends \common\models\base\modelBase implements Movimientos
     CONST SCE_PAGO_CONTADO='pago_contado';
     CONST SCE_PAGO_RENDIR_PERSONA='pago_rendir_persona';
     CONST SCE_PAGO_CAJA_CHICA='pago_caja chica';
+    
+    private $_acumulado_a_rendir=null;
+    private $_acumulado=null;
+    
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -130,6 +138,10 @@ class CcMovimientos extends \common\models\base\modelBase implements Movimientos
         return $this->hasOne(\common\models\masters\Trabajadores::className(), ['codigotra' => 'codtra']);
     }
 
+    public function getComprobantes()
+    {
+        return $this->hasMany(CcCompras::className(), ['parent_id' => 'id']);
+    }
     /**
      * {@inheritdoc}
      * @return CcMovimientosQuery the active query used by this AR class.
@@ -141,6 +153,7 @@ class CcMovimientos extends \common\models\base\modelBase implements Movimientos
     
     public function beforeSave($insert) {
         if($insert){
+            $this->setCreated();
             $this->activo=false;
         }
         return parent::beforeSave($insert);
@@ -176,7 +189,32 @@ class CcMovimientos extends \common\models\base\modelBase implements Movimientos
         return $this->monto*-1;
     }
     
+    public function acumulado($exceptId =null){
+        if(is_null($this->_acumulado)){
+           if(!is_null($exceptId)) 
+         $this->_acumulado=$this->getComprobantes()->andWhere(['<>','id',$exceptId])->sum('monto');       
+          return  $this->_acumulado=$this->getComprobantes()->sum('monto'); 
+        }
+        return $this->_acumulado;
+    }
+    public function acumuladoParaRendir($exceptId =null){
+        if(is_null($this->_acumulado_a_rendir)){
+             if(!is_null($exceptId))
+             $this->getComprobantes()->andWhere(['<>','id',$exceptId])->sum('monto_a_rendir'); 
+          return  $this->_acumulado_a_rendir=$this->getComprobantes()->sum('monto_a_rendir'); 
+        }
+        return $this->_acumulado_a_rendir;
+    }
     
-    
-    
+  public function areChildsAprobed(){
+   RETURN  $this->getComprobantes()->count()==
+           $this->getComprobantes()->andWhere(['estado'=>self::ST_PASSED])->count();
+  }
+ 
+  public function aprobe(){
+      if($this->areChildsAprobed()){
+         return $this->setPassed()->save();          
+      }
+      RETURN FALSE;
+  } 
 }
