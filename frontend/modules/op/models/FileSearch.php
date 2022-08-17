@@ -64,13 +64,13 @@ class FileSearch extends FSearch
                    'or',
                    ['model'=>'OpOs','itemId'=>$modelProc->idsOs()],
                    ['model'=>'OpOsdet','itemId'=>$modelProc->idsDetos()],
-                   ['model'=>'OpTareodet','itemId'=>$modelProc->idsOptareosdet()],
+                   ['model'=>'OpLibro','itemId'=>$modelProc->idsOpLibros()],
                   ]) ;
                 }else{
                 $query->andFilterWhere([
                    'or',                  
                    ['model'=>'OpOsdet','itemId'=>$this->osdet_id],
-                   ['model'=>'OpTareodet','itemId'=>$modelProc->idsOptareosdet()],
+                   ['model'=>'OpLibro','itemId'=>$modelProc->idsOpLibros()],
                  ]) ;
                 }
                      

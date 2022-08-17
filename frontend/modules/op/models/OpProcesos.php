@@ -137,8 +137,8 @@ class OpProcesos extends \common\models\base\modelBase
        return OpOsdet::find()->select(['id'])->
                 andWhere(['in','os_id',$this->idsOs()])->column();        
     }
-    public function idsOptareosdet(){
-       return OpTareodet::find()->select(['id'])->
+    public function idsOpLibros(){
+       return OpLibro::find()->select(['id'])->
                 andWhere(['in','detos_id',$this->idsDetos()])->column();        
     }
     

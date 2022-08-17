@@ -255,4 +255,8 @@ ORDEN DE FRONTAL EN MODALES
 .modal-backdrop {   
     z-index: 0 !important;
 }
+
+.input-group .form-control {    
+    z-index: 0 !important;   
+}
     
