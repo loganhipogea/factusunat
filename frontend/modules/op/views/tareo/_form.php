@@ -184,7 +184,7 @@ use frontend\modules\op\helpers\ComboHelper;
     <?= GridView::widget([
         'id'=>'grilla-os',
                 'dataProvider' =>new \yii\data\ActiveDataProvider([
-                                    'query'=> frontend\modules\op\models\OpLibro::find()->select(['id',
+                                    'query'=> frontend\modules\op\models\Op::find()->select(['id',
                                         'hinicio','descripcion','tipo',
                                     ])->andWhere(['tareo_id'=>$model->id])
                                 ]),

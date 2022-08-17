@@ -28,6 +28,9 @@ class OpLibro extends \common\models\ModelCali
             /*'fileBehavior' => [
                 'class' => FileBehavior::className()
             ],*/
+            'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' 
+                               ],
             'auditoriaBehavior' => [
                 'class' => '\common\behaviors\AuditBehavior',
             ],
