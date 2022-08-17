@@ -131,6 +131,6 @@ class OpDocumentos extends \common\models\base\modelBase
    
     public function triggerUpload(){
         $this->cuando=$this->currentDateInFormat();
-        $this->save();
+        //$this->save();
     }
 }

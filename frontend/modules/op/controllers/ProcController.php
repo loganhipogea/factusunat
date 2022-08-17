@@ -419,6 +419,12 @@ class ProcController extends baseController
         } 
           
       }
+      
+      /*
+       *  No usar 
+       *  se adjunta archivo directamente al registro
+       * 
+       */
        public function actionModalAgregaDoc($id){
           $this->layout = "install";
           $modelPadre= \frontend\modules\op\models\OpOsdet::findOne($id);

@@ -224,20 +224,16 @@ use frontend\modules\op\helpers\ComboHelper;
                              
                               
 			    },
-                        'attach' => function($url, $model) {  
+                       /* 'attach' => function($url, $model) {  
                           $url=\yii\helpers\Url::toRoute(['/op/proc/modal-agrega-doc','id'=>$model->id,'gridName'=>'pjax-det','idModal'=>'buscarvalor']);
                         $options = [
                             'title' => Yii::t('base.names', 'Subir Archivo'),
-                            //'aria-label' => Yii::t('rbac-admin', 'Activate'),
-                            //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                             'data-method' => 'get',
-                            //'data-pjax' => '0',
+                           
                         ];
                         return Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
-                        //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
-                     
-                        
-                        },
+                       
+                        },*/
                     ]
                 ],
         [
