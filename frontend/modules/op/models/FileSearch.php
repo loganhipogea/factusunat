@@ -105,7 +105,7 @@ class FileSearch extends FSearch
                                 ]);
                 
             }
-            //echo $query->createCommand()->rawSql; die();
+            echo $query->createCommand()->rawSql; die();
          return $dataProvider;
   }
 }
