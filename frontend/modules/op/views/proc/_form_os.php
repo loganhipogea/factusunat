@@ -77,7 +77,7 @@ use kartik\grid\GridView;
                             'data-method' => 'get',
                             //'data-pjax' => '0',
                         ];
-                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['href' => $url, 'title' => 'Visualizar imágenes', 'class' => 'botonAbre btn btn-success']);
                         //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
                      
                         

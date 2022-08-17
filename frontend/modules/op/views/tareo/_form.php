@@ -199,7 +199,7 @@ use frontend\modules\op\helpers\ComboHelper;
           [                    
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-            'template' => '{edit}{delete}{attach}',
+            'template' => '{edit}{delete}{attach}{image}',
                'buttons' => [
                     'attach' => function($url, $model) use($ext) {  
                          
@@ -220,6 +220,24 @@ use frontend\modules\op\helpers\ComboHelper;
                      
                         
                         },
+                        'image' => function($url, $model) {  
+                         $url=\yii\helpers\Url::toRoute(['/finder/galleryimage',
+                             'idModal'=>'imagemodal',                             
+                             'modelid'=>$model->id,
+                             'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                        $options = [
+                            'title' => Yii::t('base.names', 'Ver Galería'),
+                            //'aria-label' => Yii::t('rbac-admin', 'Activate'),
+                            //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
+                            'data-method' => 'get',
+                            //'data-pjax' => '0',
+                        ];
+                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['href' => $url, 'title' => 'Visualizar imágenes', 'class' => 'botonAbre btn btn-success']);
+                        //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
+                     
+                        
+                        },        
+                                
                                 
                                 'edit' => function ($url,$model) {
 			    $url= Url::to(['/op/tareo/modal-edita-libro','id'=>$model->id,'gridName'=>'pjax-det','idModal'=>'buscarvalor']);
