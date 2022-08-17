@@ -20,7 +20,10 @@ use kartik\grid\GridView;
  
         
     <?php Pjax::begin(['id'=>'pjax-detserv','timeout'=>false]); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+      $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs()));
+                       
+// echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
     <div style='overflow:auto;'>
@@ -42,9 +45,8 @@ use kartik\grid\GridView;
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}{attach}{change}{image}',
                'buttons' => [
-                    'attach' => function($url, $model) {  
-                          $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs()));
-                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
+                    'attach' => function($url, $model) use($ext) {  
+                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
                              'idModal'=>'imagemodal',
                              'extension'=>$ext,
                              'grillas'=>'pjax-detserv',

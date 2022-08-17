@@ -7,7 +7,7 @@ use common\helpers\h;
 use kartik\grid\GridView;
  use yii\widgets\Pjax;
 use yii\helpers\Html;
-
+USE common\helpers\FileHelper as Fl;
  use kartik\date\DatePicker;
   use kartik\time\TimePicker;
  use yii\widgets\ActiveForm;
@@ -177,7 +177,10 @@ use frontend\modules\op\helpers\ComboHelper;
       ])  ?>  
            
     <?php Pjax::begin(['id'=>'pjax-det','timeout'=>false]); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+    $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs()));
+
+// echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
     <div style='overflow:auto;'>
@@ -198,8 +201,13 @@ use frontend\modules\op\helpers\ComboHelper;
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}{attach}',
                'buttons' => [
-                    'attach' => function($url, $model) {  
-                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                    'attach' => function($url, $model) use($ext) {  
+                         
+                         $url=\yii\helpers\Url::toRoute(['/finder/selectimage',
+                            'extension'=>$ext,
+                             'idModal'=>'imagemodal',
+                             'modelid'=>$model->id,
+                             'nombreclase'=> str_replace('\\','_',get_class($model))]);
                         $options = [
                             'title' => Yii::t('base.names', 'Colocar en el maletín'),
                             //'aria-label' => Yii::t('rbac-admin', 'Activate'),
