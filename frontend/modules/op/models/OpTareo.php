@@ -52,7 +52,7 @@ class OpTareo extends \common\models\base\modelBase
             [['direcc_id', /*'proc_id', 'os_id', 'detos_id'*/], 'required'],
             [['direcc_id', 'proc_id', 'os_id', 'detos_id'], 'integer'],
             [['detalle'], 'string'],
-            [['esferiado','semana'], 'safe'],
+            [['esferiado','semana','os_id','detos_id'], 'safe'],
             [['fecha'], 'string', 'max' => 10],
             [['hinicio', 'hfin'], 'string', 'max' => 5],
             [['descripcion'], 'string', 'max' => 40],

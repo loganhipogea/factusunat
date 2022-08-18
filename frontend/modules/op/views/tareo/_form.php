@@ -1,21 +1,17 @@
 <?php
-
-
 use common\widgets\inputajaxwidget\inputAjaxWidget;
 use common\helpers\h;
- use yii\helpers\Url;
+use yii\helpers\Url;
 use kartik\grid\GridView;
- use yii\widgets\Pjax;
+use yii\widgets\Pjax;
 use yii\helpers\Html;
 USE common\helpers\FileHelper as Fl;
- use kartik\date\DatePicker;
-  use kartik\time\TimePicker;
- use yii\widgets\ActiveForm;
-
+use kartik\date\DatePicker;
+use kartik\time\TimePicker;
+use yii\widgets\ActiveForm;
 use frontend\modules\op\helpers\ComboHelper;
-
- use common\widgets\selectwidget\selectWidget;
-  use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
+use common\widgets\selectwidget\selectWidget;
+use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
   
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\op\models\OpTareo */
@@ -44,9 +40,8 @@ use frontend\modules\op\helpers\ComboHelper;
     </div>
       <div class="box-body">
     
- <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-  </div>
- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
     <?php  //h::settings()->invalidateCache();  ?>
                        <?= $form->field($model, 'fecha')->widget(DatePicker::class, [
                              'language' => h::app()->language,
@@ -63,6 +58,11 @@ use frontend\modules\op\helpers\ComboHelper;
                             'options'=>['class'=>'form-control','disabled'=>$model->hasChilds()]
                             ]) ?>
 </div>
+<div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+
+</div>
+          
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'hinicio')->widget(TimePicker::className(), ['pluginOptions' => ['showMeridian' => false]]);?>
      
@@ -73,10 +73,7 @@ use frontend\modules\op\helpers\ComboHelper;
      
 
  </div>
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
- </div>
    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12"> 
      <?php 
   // $necesi=new Parametros;

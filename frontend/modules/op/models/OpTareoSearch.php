@@ -18,7 +18,7 @@ class OpTareoSearch extends OpTareo
     {
         return [
             [['id', 'direcc_id', 'proc_id', 'os_id', 'detos_id'], 'integer'],
-            [['fecha','fecha1','direcc_id', 'hinicio', 'hfin', 'descripcion', 'detalle','semana','semana1'], 'safe'],
+            [['os_id', 'detos_id','fecha','fecha1','direcc_id', 'hinicio', 'hfin', 'descripcion', 'detalle','semana','semana1'], 'safe'],
         ];
     }
 
