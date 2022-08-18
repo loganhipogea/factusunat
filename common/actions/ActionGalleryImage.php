@@ -22,7 +22,7 @@ class ActionGalleryImage extends \yii\base\Action
                    foreach($model->images as $image){
                        $items[]=['url'=>$image->url,
                                 'src'=>$image->url,
-                                'options'=>['title'=>$image->titulo]
+                                'options'=>['title'=>(!empty($image->detalle))?$iamge->detalle:$image->titulo]
                                ];
                    }
        
