@@ -108,12 +108,19 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Editar');
 
  </div>
   
-  
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'textointerno')->textArea([]) ?>
+
+ </div>
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'textotecnico')->textArea([]) ?>
+
+ </div>
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
       <?PHP
-     /*echo $form->field($model, 'textointerno')
+    /* echo $form->field($model, 'textointerno')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
-        'options' => ['rows' => 2],
+        'options' => ['rows' => 1],
          'clientOptions'=>['language'=>'es',
              ],
         ]);*/
@@ -122,13 +129,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Editar');
  </div>
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
      <?PHP
-    /* echo $form->field($model, 'textotecnico')
+     /*echo $form->field($model, 'textotecnico')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
-        'options' => ['rows' => 2],
+        'options' => ['rows' => 1],
          'clientOptions'=>['language'=>'es',
              ],
-        ]);
-    */  ?>
+        ]);*/
+      ?>
 
  </div>
 <?php

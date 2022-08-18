@@ -63,18 +63,25 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 
 </div>
           
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'hinicio')->widget(TimePicker::className(), ['pluginOptions' => ['showMeridian' => false]]);?>
      
 
  </div>
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'hfin')->widget(TimePicker::className(), ['pluginOptions' => ['showMeridian' => false]]);?>
      
 
  </div>
-
-   <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12"> 
+  
+   <?php if(!$model->isNewRecord)  { ?>         
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+        <?php echo  $form->field($model, 'semana')->
+                textInput(['disabled'=>true]);?>
+ </div>  
+   <?php } ?>         
+          
+   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
      <?php 
   // $necesi=new Parametros;
     echo selectWidget::widget([
@@ -87,7 +94,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
         ]);  ?>
 
  </div> 
-  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">    
         <?php echo  $form->field($model, 'proc_id')->
             dropDownList(ComboHelper::procesos(),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
@@ -96,16 +103,14 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                         ]
                     )  ?>
  </div> 
-   <?php if(!$model->isNewRecord)  { ?>
+
+    <?php if(!$model->isNewRecord)  { ?>
   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
         <?php echo  $form->field($model, 'esferiado')->
          checkbox(['disabled'=>true]);?>
- </div>  
- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?php echo  $form->field($model, 'semana')->
-                textInput(['disabled'=>true]);?>
- </div>  
-   <?php } ?>        
+ </div> 
+ <?php } ?>       
+       
   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"> 
     <?php /*echo ComboDep::widget([
                'model'=>$model,               
@@ -156,7 +161,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                         ]
                     ) */ ?>
  </div> 
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
      <?= $form->field($model, 'detalle')->textarea(['rows' => 6]) ?>
 
  </div>
