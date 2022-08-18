@@ -144,17 +144,6 @@ return [
     
     'modules' => [
         
-         'telegram' => [
-        'class' => 'frontend\modules\telegram\Module',
-        'API_KEY' => '5462135208:AAHH_8_h9eYDtdTfyso9mABVEO4fOL0YDOA',
-        'BOT_NAME' => 'hornompf',
-        'hook_url' => 'https://www.neotegnia.com/frontend/web/telegram/default/hook', // must be https! (if not prettyUrl https://yourhost.com/index.php?r=telegram/default/hook)
-        'PASSPHRASE' => 'frase_para_login',
-        // 'db' => 'db2', //db file name from config dir
-        // 'userCommandsPath' => '@app/modules/telegram/UserCommands',
-        // 'timeBeforeResetChatHandler' => 60
-            ],
-        
         
         
         
