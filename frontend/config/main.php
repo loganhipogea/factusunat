@@ -101,6 +101,7 @@ return [
         'allowActions' => [           
             'site/login/',
             'site/clear-cache/',
+            'tlbot/nxguyu',
             'telegram/default/hook',
              'site/request-password-reset',
             'site/reset-password', 
