@@ -101,11 +101,12 @@ return [
         'allowActions' => [           
             'site/login/',
             'site/clear-cache/',
-             '/telegram/default/hook',
+            '/telegram/default/hook',
              'site/request-password-reset',
             'site/reset-password', 
            'site/logout',
-           'site/mantenimiento',           
+           'site/mantenimiento',  
+            
         ]
     ],
     'params' => $params,
