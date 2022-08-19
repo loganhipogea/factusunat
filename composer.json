@@ -49,7 +49,9 @@
       "2amigos/yii2-gallery-widget": "~1.0",
       "kv4nt/yii2-owl-carousel2": "*",
       "kartik-v/yii2-widget-switchinput": "dev-master",
-      "guzzlehttp/guzzle": "^7.4"
+      "guzzlehttp/guzzle": "^7.4",
+      "longman/telegram-bot": "^0.78.0",
+      "aki/yii2-bot-telegram": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

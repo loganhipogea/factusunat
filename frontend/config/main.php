@@ -46,9 +46,10 @@ return [
             'class' => 'frontend\modules\mat\Module',
         ],
     ],
-    'components' => [
-         'telegram' => [
-		'class' => 'common\tlbot\TelegramMinerva',
+    'components' => [       
+        
+    'telegram' => [
+		'class' => 'aki\telegram\Telegram',
 		'botToken' => '5462135208:AAHH_8_h9eYDtdTfyso9mABVEO4fOL0YDOA',
 	],
          'comboValores'=>[

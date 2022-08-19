@@ -34,7 +34,7 @@ class DefaultController extends Controller
                 'actions' => [
                     'destroy-chat' => ['post'],
                     'init-chat' => ['post'],
-                    'hook' => ['post'],
+                    //'hook' => ['post'],
                 ],
             ],
         ];
@@ -109,6 +109,7 @@ class DefaultController extends Controller
 
     public function actionHook(){
         \Yii::error('entrando al hook',__FUNCTION__);
+        
         $this->enableCsrfValidation = false;
         try {
             // Create Telegram API object

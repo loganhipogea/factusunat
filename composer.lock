@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b42d16cc185b4482aee3943896cf04b7",
+    "content-hash": "e2bfde1211b64c4b2c812800c5fb7492",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -264,6 +264,52 @@
                 "source": "https://github.com/2amigos/yii2-gallery-widget/tree/master"
             },
             "time": "2017-09-09T16:01:44+00:00"
+        },
+        {
+            "name": "aki/yii2-bot-telegram",
+            "version": "3.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/akbarjoudi/yii2-bot-telegram.git",
+                "reference": "308c7386bac56db3fe29806398f6f9a6fd74524e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/akbarjoudi/yii2-bot-telegram/zipball/308c7386bac56db3fe29806398f6f9a6fd74524e",
+                "reference": "308c7386bac56db3fe29806398f6f9a6fd74524e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "aki\\telegram\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "akbarjoudi",
+                    "email": "akbar.joody@gmail.ocm"
+                }
+            ],
+            "description": "bot telegram",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/akbarjoudi/yii2-bot-telegram/issues",
+                "source": "https://github.com/akbarjoudi/yii2-bot-telegram/tree/3.1.5"
+            },
+            "time": "2022-02-13T06:51:16+00:00"
         },
         {
             "name": "almasaeed2010/adminlte",
@@ -3038,6 +3084,107 @@
                 "source": "https://github.com/kv4nt/yii2-owl-carousel2/tree/v1.0.5"
             },
             "time": "2022-07-20T08:31:44+00:00"
+        },
+        {
+            "name": "longman/telegram-bot",
+            "version": "0.78.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-telegram-bot/core.git",
+                "reference": "f3fe5ed3b62995ac6ee282cbdd670634329961f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-telegram-bot/core/zipball/f3fe5ed3b62995ac6ee282cbdd670634329961f7",
+                "reference": "f3fe5ed3b62995ac6ee282cbdd670634329961f7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-pdo": "*",
+                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "php": "^7.3|^8.0",
+                "psr/log": "^1.1|^2.0|^3.0"
+            },
+            "require-dev": {
+                "dms/phpunit-arraysubset-asserts": "^0.2",
+                "monolog/monolog": "^2.1",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Longman\\TelegramBot\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Avtandil Kikabidze aka LONGMAN",
+                    "email": "akalongman@gmail.com",
+                    "homepage": "http://longman.me",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Armando Lüscher",
+                    "email": "armando@noplanman.ch",
+                    "homepage": "https://noplanman.ch",
+                    "role": "Developer"
+                },
+                {
+                    "name": "PHP Telegram Bot Team",
+                    "homepage": "https://github.com/php-telegram-bot/core/graphs/contributors",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Telegram bot",
+            "homepage": "https://github.com/php-telegram-bot/core",
+            "keywords": [
+                "api",
+                "bot",
+                "telegram"
+            ],
+            "support": {
+                "issues": "https://github.com/php-telegram-bot/core/issues",
+                "source": "https://github.com/php-telegram-bot/core"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/php-telegram-bot/core#donate",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/noplanman",
+                    "type": "github"
+                },
+                {
+                    "url": "https://ko-fi.com/phptelegrambot",
+                    "type": "ko_fi"
+                },
+                {
+                    "url": "https://liberapay.com/PHP-Telegram-Bot",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://opencollective.com/php-telegram-bot",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/phptelegrambot",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/longman/telegram-bot",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-07-03T12:23:17+00:00"
         },
         {
             "name": "loveorigami/yii2-modal-ajax",
