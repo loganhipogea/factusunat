@@ -34,7 +34,7 @@ class DefaultController extends Controller
                 'actions' => [
                     'destroy-chat' => ['post'],
                     'init-chat' => ['post'],
-                    //'hook' => ['post'],
+                    'hook' => ['post'],
                 ],
             ],
         ];
