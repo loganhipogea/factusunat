@@ -353,5 +353,24 @@ class TareoController extends baseController
        }
        return $model->preparePdfReport();
   }
+  
+  public function actionAjaxExpandTareo(){
+      if(h::request()->isAjax){
+        $id=h::request()->post('expandRowKey');
+        //var_dump($id);die();
+        $model= \frontend\modules\op\models\OpLibro::findOne($id);
+        
+        $dataProvider=$model->attachmentsDataProvider();
+       // var_dump($id);die();
+         //h::response()->format = \yii\web\Response::FORMAT_JSON;
+        return $this->renderAjax("/proc/_expand_operacion",
+                [
+                    'id'=>$id,
+                    'dataProvider'=>$dataProvider,
+                    'model'=>$model
+                ]);
+       
+            }
+      }
 }
 

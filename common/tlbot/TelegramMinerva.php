@@ -703,8 +703,8 @@ class TelegramMinerva extends Telegram
   }*/
   public function removeSesion(){
      TlbotHooks::deleteAll(['chat_id'=>$this->input->message->chat->id]);
-    TlbotMessages::deleteAll(['chat_id_sender'=>$this->input->message->chat->id]);
-    TlbotMessages::deleteAll(['chat_id_recept'=>$this->input->message->chat->id]);
+    //TlbotMessages::deleteAll(['chat_id_sender'=>$this->input->message->chat->id]);
+    //TlbotMessages::deleteAll(['chat_id_recept'=>$this->input->message->chat->id]);
      }
   
   /*public function getLastStep(){

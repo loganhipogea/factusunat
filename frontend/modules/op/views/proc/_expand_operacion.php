@@ -47,7 +47,7 @@ use common\helpers\FileHelper as Fl;
                     
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-                                 'template' => '{edit}',
+                                 'template' => '{edit}{delete}',
                'buttons' => [
                     'attach' => function($url, $model) {  
                         $ext= json_encode(Fl::extEngineers()+Fl::extDocs());
@@ -70,13 +70,10 @@ use common\helpers\FileHelper as Fl;
 			    $url=\yii\helpers\Url::toRoute(['/finder/editattach','idModal'=>'imagemodal','id'=>$model->id,'grillas'=>$zonaAjax]);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
-                        'delete' => function ($url,$model) {
-                              
-                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);                              
+                        'delete' => function ($url,$model) {                              
+                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-file','id'=>$model->id]);                              
                                     return \yii\helpers\Html::a('<span class="btn btn-primary glyphicon glyphicon-trash"></span>', 'javascript:void(0)', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'pigmalion','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
-                             
-                              
-			    }
+                                 }
                         
                     ]
                 ],

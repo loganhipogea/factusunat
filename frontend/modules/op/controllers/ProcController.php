@@ -466,7 +466,8 @@ class ProcController extends baseController
       if(h::request()->isAjax){
         $id=h::request()->post('expandRowKey');
         
-        $model= \frontend\modules\op\models\OpLibro::findOne($id);
+        $model= \frontend\modules\op\models\OpOsdet::findOne($id);
+        
         $dataProvider=$model->attachmentsDataProvider();
        // var_dump($id);die();
          //h::response()->format = \yii\web\Response::FORMAT_JSON;

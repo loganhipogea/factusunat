@@ -270,7 +270,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                 'value' => function ($model, $key, $index, $column) {
                             return GridView::ROW_COLLAPSED;
                                 },
-                     'detailUrl' =>Url::toRoute(['/op/proc/ajax-expand-opera']),
+                     'detailUrl' =>Url::toRoute(['/op/tareo/ajax-expand-tareo']),
                     //'headerOptions' => ['class' => 'kartik-sheet-style'], 
                     'expandOneOnly' => true
                 ], 

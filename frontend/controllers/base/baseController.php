@@ -210,7 +210,7 @@ private static function findKeyArrayInPost(){
        //var_dump($modelClass,$id);die();
         $model=$modelClass::findOne($id);
         //$model=$modelClass::find
-        //var_dump($model,$model instanceof modeloBase);die();
+        var_dump($model,$model instanceof modeloBase);die();
         //var_dump($modelClass,$model);die();
         if($model instanceof modeloBase){           
                 if($model->hasChilds()){
@@ -231,6 +231,7 @@ private static function findKeyArrayInPost(){
             if(is_null($model)){
                 $datos['error']=yii::t('base.errors','No se encontró ningún registro con este id: {identidad} ',['identidad'=>$id]);  
              }else{
+                 
              $datos['error']=yii::t('base.errors','La clase : "{clase}" no es una instancia de "baseModel" ',['clase'=>$modelClass]);  
             
             }    

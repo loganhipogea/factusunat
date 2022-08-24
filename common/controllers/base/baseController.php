@@ -207,12 +207,14 @@ private static function findKeyArrayInPost(){
                                  $datos['success']=yii::t('base.errors','The record was deleted successfully...!');  
                             }
                           } catch (Exception $ex) {
+                             
                              $datos['error']=yii::t('base.errors','There are some troubles by deleting this record : {mensaje} ',['mensaje'=>$ex->getMessage()]);  
                 
                             }
                 }
               
         }else{
+            
             if(is_null($model)){
                 $datos['error']=yii::t('base.errors','Record not found for delete  for this key: {identidad} ',['identidad'=>$id]);  
              
