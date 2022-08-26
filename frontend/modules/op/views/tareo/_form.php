@@ -178,7 +178,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
             'idGrilla'=>'pjax-det'
       ])  ?>  
            
-    <?php Pjax::begin(['id'=>'pjax-det','timeout'=>false]); ?>
+    <?php Pjax::begin(['id'=>'pjax-det','timeout'=>9000]); ?>
     <?php
     $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs()));
 

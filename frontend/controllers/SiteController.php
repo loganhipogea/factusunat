@@ -299,7 +299,9 @@ class SiteController extends Controller
    }
    
    
-  
+  public function actionMostrarAwe(){
+        return $this->render('awe');
+    }
    
     
 }

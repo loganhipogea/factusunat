@@ -58,7 +58,7 @@ use common\behaviors\FileBehavior;
                         ]
                     ) ?>
     </div>
-   
+  
     <div class="form-group">
         <?= Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
