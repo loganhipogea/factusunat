@@ -57,7 +57,7 @@ class Useraudit extends \common\models\base\modelBase
      */
     public static function find()
     {
-        return new userQuery(get_called_class());
+        return new UserQuery(get_called_class());
     }
     
     public static function  lastLogin($iduser){
