@@ -46,14 +46,8 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
   
       <div class="box-body">
       
-   <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">    
-        <?= $form->field($model, 'prefijo')->
-            dropDownList($model->FondosFijos(),
-                  ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )->label('Fondo') ?>
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+        <?= $form->field($model, 'numero')->textInput(['disabled'=>true]) ?>
  </div>    
  
   
@@ -71,8 +65,22 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                             'options'=>['class'=>'form-control']
                             ]) ?>
  </div>
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+      <?= $form->field($model, 'fvencimiento')->widget(DatePicker::class, [
+                            'language' => h::app()->language,
+                           'pluginOptions'=>[
+                                     'format' => h::gsetting('timeUser', 'date')  , 
+                                   'changeMonth'=>true,
+                                  'changeYear'=>true,
+                                 'yearRange'=>'2014:'.date('Y'),
+                               ],
+                          
+                            //'dateFormat' => h::getFormatShowDate(),
+                            'options'=>['class'=>'form-control']
+                            ]) ?>
+ </div>
    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?= $form->field($model, 'glosa')->textInput() ?>
+        <?= $form->field($model, 'descripcion')->textInput() ?>
  </div>        
      
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
@@ -91,7 +99,9 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
          'addCampos'=>[2,3],
         ]);  ?>
    </div>  
-            
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
+        <?= $form->field($model, 'detalle')->textArea([]) ?>
+  </div>          
      
     <?php ActiveForm::end(); ?>
      

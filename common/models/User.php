@@ -28,7 +28,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
-
+    const SCENARIO_MAIL='mail';
+    const SCENARIO_REGISTER='registro';
+    const USUARIO_PERMANENTE='guest';
 
     /**
      * {@inheritdoc}
@@ -51,14 +53,20 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+   
+    
+  
+    
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+             ['email', 'email', 'on' => self::SCENARIO_MAIL],
+             ['email', 'unique', 'on' => self::SCENARIO_MAIL],
+            [['id', 'username', 'email','auth_key','password_hash', 'password','status'] ,'safe','on' => self::SCENARIO_REGISTER],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
-
     /**
      * {@inheritdoc}
      */

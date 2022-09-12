@@ -236,7 +236,7 @@ echo ModalAjax::widget([
                                     
                                         <?= Html::a(
                                              yii::t('base.names','<i style="color:#96c15e;"><span class="fa fa-user"></span></i>'.' Profile'),
-                                            ['/site/profile'],
+                                            ['/profile/profile','id'=>h::userId()],
                                                 ['class' => '']
                                                 ) ?>                                
                                   </li>    
@@ -262,10 +262,12 @@ echo ModalAjax::widget([
                             
                         </li>
                         <li class="">
+                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                           
                                     <?php 
                                 if(\yii::$app->session->has(VwSociedades::keysesion())){
                                     yii::error('en el layourt main, emcomntro la sesion SOCIEDADES');
-                                     echo substr(VwSociedades::despro(),0,15); 
+                                     echo substr(VwSociedades::despro(),0,10); 
                                 }else{
                                     yii::error('en el layourt main, NO emcomntro la sesion SCIEDADE');
                                 }

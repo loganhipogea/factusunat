@@ -20,7 +20,7 @@ use yii\widgets\DetailView;
                             'height' => 400,
             ]); ?> 
          <?php } else{?>
-         <p class="text-aqua">Este documento no tiene reporte generado aun</p>
+         <p class="text-aqua">Este documento no tiene adjuntos</p>
          <?php }?>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">

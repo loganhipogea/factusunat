@@ -17,7 +17,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 use frontend\modules\cc\models\CcGastos;
      ?> 
 <div class="box-body">
-
+   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
      <div class="form-group no-margin">
             <div class="btn-group">   
     <?php
@@ -153,5 +153,19 @@ use frontend\modules\cc\models\CcGastos;
          
     <?php Pjax::end(); ?>
    
-  
+  </div>
+   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+   <div>
+        <?php if($model->hasAttachments()) { 
+       //echo $model::className();die();
+       //echo $model->files[0]->urlTempWeb ;
+       echo $this->render('@frontend/views/comunes/view_pdf', [
+                        'urlFile' => $model->files[0]->urlTempWeb,
+                         'width' => 700,
+                            'height' => 900,
+            ]); ?> 
+         <?php } ?>
+    </div>
+   </div>
+   
   </div>

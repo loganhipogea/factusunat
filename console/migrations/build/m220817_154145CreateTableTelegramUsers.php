@@ -1,5 +1,4 @@
 <?php
-namespace console\migrations\build;
 use console\migrations\baseMigration;
 class m220817_154145CreateTableTelegramUsers extends baseMigration
 {

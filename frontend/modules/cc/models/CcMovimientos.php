@@ -7,9 +7,11 @@ use Yii;
 class CcMovimientos extends \common\models\base\BaseDocument implements MovimientosInterface
 {
     public $nameFieldEstado='estado';
-    
+    public $fechaop1=null;
+    public $monto1=null;
     public $dateorTimeFields = [
         'fechaop' => self::_FDATE,
+         'fechaop1' => self::_FDATE,
         'fechacre' => self::_FDATE,
          /* 'fval' => self::_FDATE,
            'fval1' => self::_FDATE,*/
@@ -39,8 +41,12 @@ class CcMovimientos extends \common\models\base\BaseDocument implements Movimien
                 return [
 		
 		'fileBehavior' => [
-			'class' => '\common\behaviors\FileBehavior' 
+			'class' => '\common\behaviors\FileBehavior' ,
+                    
                                ],
+                     'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+                                ],
                 ];
         }
     /**
@@ -50,7 +56,7 @@ class CcMovimientos extends \common\models\base\BaseDocument implements Movimien
     {
         return [
             
-            [['cuenta_id', 'fechaop', 'glosa'], 'required'],            
+            [['cuenta_id', 'fechaop', 'glosa','monto'], 'required'],            
             [['cuenta_id', 'user_id', 'caja_id'], 'integer'],
             [['monto', 'igv', 'monto_eq'], 'number'],
             [['detalle'], 'string'],
@@ -138,9 +144,9 @@ class CcMovimientos extends \common\models\base\BaseDocument implements Movimien
         return $this->hasOne(\common\models\masters\Trabajadores::className(), ['codigotra' => 'codtra']);
     }
 
-    public function getComprobantes()
+    public function getRendiciones()
     {
-        return $this->hasMany(CcCompras::className(), ['parent_id' => 'id']);
+        return $this->hasMany(CcRendicion::className(), ['movimiento_id' => 'id']);
     }
     /**
      * {@inheritdoc}
@@ -186,29 +192,23 @@ class CcMovimientos extends \common\models\base\BaseDocument implements Movimien
     }
     
     public function monto(){
-        return $this->monto*-1;
+        $this->monto= $this->monto*-1;
+        return $this;
     }
     
     public function acumulado($exceptId =null){
         if(is_null($this->_acumulado)){
            if(!is_null($exceptId)) 
-         $this->_acumulado=$this->getComprobantes()->andWhere(['<>','id',$exceptId])->sum('monto');       
-          return  $this->_acumulado=$this->getComprobantes()->sum('monto'); 
+         $this->_acumulado=$this->getRendiciones()->andWhere(['<>','id',$exceptId])->sum('monto');       
+          return  $this->_acumulado=$this->getRendiciones()->sum('monto'); 
         }
         return $this->_acumulado;
     }
-    public function acumuladoParaRendir($exceptId =null){
-        if(is_null($this->_acumulado_a_rendir)){
-             if(!is_null($exceptId))
-             $this->getComprobantes()->andWhere(['<>','id',$exceptId])->sum('monto_a_rendir'); 
-          return  $this->_acumulado_a_rendir=$this->getComprobantes()->sum('monto_a_rendir'); 
-        }
-        return $this->_acumulado_a_rendir;
-    }
+    
     
   public function areChildsAprobed(){
-   RETURN  $this->getComprobantes()->count()==
-           $this->getComprobantes()->andWhere(['estado'=>self::ST_PASSED])->count();
+   RETURN  $this->getRendiciones()->count()==
+           $this->getRendiciones()->andWhere(['estado'=>self::ST_PASSED])->count();
   }
  
   public function aprobe(){

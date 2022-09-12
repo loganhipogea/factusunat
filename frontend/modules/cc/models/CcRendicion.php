@@ -4,6 +4,8 @@ namespace frontend\modules\cc\models;
 use common\helpers\FileHelper;
 use common\behaviors\FileBehavior;
 use common\models\masters\Clipro;
+use common\models\masters\Centros;
+use common\models\masters\Trabajadores;
 use Yii;
 
 /**
@@ -15,22 +17,13 @@ class CcRendicion extends \common\models\base\BaseDocument
     public $prefijo='78';
       public $dateorTimeFields = [
         'fecha' => self::_FDATE,
-        /*'finicio' => self::_FDATETIME,
-        'ftermino' => self::_FDATETIME*/
-    ];  
+          'fvencimiento' => self::_FDATE,       
+          ];  
       
-   // const CODIGO_DOC_COMPENSACION='101';
-    // const CODIGO_DOC_COMPENSACION_HEREDADO='102';
-    /*private $_costo_directo=-1;
-    private $_costo_indirecto=-1;
-     private $_costo_orden=-1;
-     private $_costo_faltante=-1;*/
-    /**
-     * {@inheritdoc}
-     */
+   
     public static function tableName()
     {
-        return '{{%cc_compras}}';
+        return '{{%cc_rendicion}}';
     }
     
      public function behaviors() {
@@ -47,28 +40,25 @@ class CcRendicion extends \common\models\base\BaseDocument
     }
     
     
-    public $booleanFields=['activo'];
-
-    /**
-     * {@inheritdoc}
-     */
+   
     public function rules()
     {
         return [
-             [['codocu','codtra','fecha','glosa','monto'], 'required'],
-             [['frecuencia','parent_id','codtra','monto_rendido','estado'], 'safe'],
-            [['monto_a_rendir'], 'validate_monto_rendir'],
-            [['id', 'mes', 'movimiento_id'], 'integer'],
-            [['monto', 'igv', 'monto_usd', 'igv_usd'], 'number'],
-            [['codocu', 'prefijo', 'codmon'], 'string', 'max' => 3],
-            [['activo','detalle',], 'safe'],
-            [['numero'], 'string', 'max' => 12],
-            [['fecha'], 'string', 'max' => 10],
-            [['anio'], 'string', 'max' => 4],
-            [['glosa'], 'string', 'max' => 50],
-            [['codpro'], 'string', 'max' => 10],
-            [['rucpro'], 'string', 'max' => 14],
-        ];
+             [['movimiento_id'], 'integer'],
+           [['monto', 'monto_rendido'], 'number'],
+             [['monto'], 'validate_monto'],
+           [['detalle'], 'string'],
+           [['codcen'], 'string', 'max' => 5],
+           [['codsoc'], 'string', 'max' => 1],
+           [['numero', 'fecha', 'fvencimiento'], 'string', 'max' => 10],
+           [['codmon'], 'string', 'max' => 4],
+           [['codtra'], 'string', 'max' => 6],
+           [['estado', 'tipopago'], 'string', 'max' => 2],
+           [['descripcion'], 'string', 'max' => 40],
+           [['codcen'], 'exist', 'skipOnError' => true, 'targetClass' => Centros::className(), 'targetAttribute' => ['codcen' => 'codcen']],
+           [['codtra'], 'exist', 'skipOnError' => true, 'targetClass' => Trabajadores::className(), 'targetAttribute' => ['codtra' => 'codigotra']],
+           [['movimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => CcMovimientos::className(), 'targetAttribute' => ['movimiento_id' => 'id']],
+       ];
     }
 
     /**
@@ -77,23 +67,22 @@ class CcRendicion extends \common\models\base\BaseDocument
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'codocu' => Yii::t('app', 'Codocu'),
-            'prefijo' => Yii::t('app', 'Prefijo'),
-            'numero' => Yii::t('app', 'Numero'),
-            'fecha' => Yii::t('app', 'Fecha'),
-            'mes' => Yii::t('app', 'Mes'),
-            'anio' => Yii::t('app', 'Anio'),
-            'glosa' => Yii::t('app', 'Glosa'),
-            'codmon' => Yii::t('app', 'Codmon'),
-            'monto' => Yii::t('app', 'Monto'),
-            'igv' => Yii::t('app', 'Igv'),
-            'movimiento_id' => Yii::t('app', 'Movimiento ID'),
-            'codpro' => Yii::t('app', 'Codpro'),
-            'rucpro' => Yii::t('app', 'Rucpro'),
-            'monto_usd' => Yii::t('app', 'Monto Usd'),
-            'igv_usd' => Yii::t('app', 'Igv Usd'),
-        ];
+          
+           'id' => Yii::t('app', 'ID'),
+           'movimiento_id' => Yii::t('app', 'Movimiento ID'),
+           'codcen' => Yii::t('app', 'Codcen'),
+           'codsoc' => Yii::t('app', 'Codsoc'),
+           'numero' => Yii::t('app', 'Numero'),
+           'fecha' => Yii::t('app', 'Fecha'),
+           'fvencimiento' => Yii::t('app', 'Fvencimiento'),
+           'codmon' => Yii::t('app', 'Codmon'),
+           'monto' => Yii::t('app', 'Monto'),
+          'monto_rendido' => Yii::t('app', 'Monto Rendido'),
+           'codtra' => Yii::t('app', 'Codtra'),
+           'estado' => Yii::t('app', 'Estado'),
+           'descripcion' => Yii::t('app', 'Descripcion'),
+           'detalle' => Yii::t('app', 'Detalle'),
+       ];
     }
 
     /**
@@ -104,7 +93,7 @@ class CcRendicion extends \common\models\base\BaseDocument
     {
         return new CcRendicionQuery(get_called_class());
     }
-    public function getRendiciones()
+   public function getRendiciones()
     {
         return $this->hasMany(CcCompras::className(), ['parent_id' => 'id']);
     }
@@ -115,7 +104,7 @@ class CcRendicion extends \common\models\base\BaseDocument
     }
     public function getMovimiento()
     {
-        return $this->hasOne(CcMovimientos::className(), ['id' => 'parent_id']);
+        return $this->hasOne(CcMovimientos::className(), ['id' => 'movimiento_id']);
     }
    
     
@@ -131,7 +120,7 @@ class CcRendicion extends \common\models\base\BaseDocument
     public function beforeSave($insert) {
         if($insert){
            $this->numero=$this->correlativo('numero');
-           $this->codocu=$this->codocu_fondo_fijo;
+           $this->codsoc= \common\models\masters\VwSociedades::codsoc();
         }
          
         return parent::beforeSave($insert);
@@ -143,7 +132,10 @@ class CcRendicion extends \common\models\base\BaseDocument
      */
     public function Previous(){
       RETURN  $this->find()->
-         andWhere(['prefijo'=>$this->prefijo,'codocu'=>$this->codocu])->
+         andWhere([
+                 'codcen'=>$this->codcen, 
+                 'codtra'=>$this->codtra, 
+                 ])->
          orderBy(['numero'=>SORT_DESC])->one();
     }
     
@@ -154,7 +146,10 @@ class CcRendicion extends \common\models\base\BaseDocument
      */
     public function Next(){
       RETURN  $this->find()->
-         andWhere(['prefijo'=>$this->prefijo,'codocu'=>$this->codocu])->
+         andWhere([
+                 'codcen'=>$this->codcen, 
+                 'codtra'=>$this->codtra, 
+                 ])->
          orderBy(['numero'=>SORT_ASC])->one();
     }
     
@@ -164,13 +159,13 @@ class CcRendicion extends \common\models\base\BaseDocument
             $model=New CcCompras();
             $model->setAttributes([
            'codocu'=>$this->codocu_compensacion,
-           'prefijo'=>$this->codocu_compensacion,
+           //'prefijo'=>$this->codocu_compensacion,
            //'numero'=>$this->codocu_compesacion_hereda,
             'fecha'=>self::currentDateInFormat(),
             'parent_id'=>$this->id,
             'monto'=>$this->faltante(),//negativo 
-                 'monto_calificado'=>$this->faltante(),//negativo 
-           'glosa'=>'COMPENSACION POR EXCESO',
+            // 'monto_rendido'=>$this->faltante(),//negativo 
+           'descripcion'=>'COMPENSACION POR EXCESO',
             ]); 
            return $model->save();
         }else{
@@ -305,15 +300,16 @@ class CcRendicion extends \common\models\base\BaseDocument
            
    }
    
-   public function validate_monto_rendir($attribute,$params){
+   public function validate_monto($attribute,$params){       
       $mov=$this->movimiento;
       if($this->isNewRecord){
-         $acumulado= $mov->acumuladoParaRendir()+$this->monto_a_rendir;
+         $acumulado= $mov->acumulado()+$this->monto;
+         //var_dump($mov->acumuladoParaRendir(),$this->monto_a_rendir,$acumulado,$mov->monto);die();
       }else{
-         $acumulado=$mov->acumuladoParaRendir($this->id)+$this->monto_a_rendir;
+         $acumulado=$mov->acumulado($this->id)+$this->monto;
       }
       if($acumulado > $mov->monto){
-          $this->addError('monto_a_rendir',yii::t('base.errors','La suma acumulada {acumulado} excede al monto original {monto}',['acumulado'=>$acumulado,'monto'=>$mov->monto]));
+          $this->addError('monto',yii::t('base.errors','La suma acumulada {acumulado} excede al monto original {monto}',['acumulado'=>$acumulado,'monto'=>$mov->monto]));
       } 
    }
   
@@ -327,7 +323,34 @@ class CcRendicion extends \common\models\base\BaseDocument
          return $this->setPassed()->save();          
       }
       RETURN FALSE;
-  } 
-   
-   
+  }
+  
+ /*
+  * Ubica el primer comprobante, ordenado por fecha
+  * de emision
+  */ 
+ public function firstComprobante(){
+     yii::error($this->getRendiciones()->
+             andWhere(['activo'=>'1'])
+             ->orderBy(['fecha'=>SORT_ASC,'id'=>SORT_ASC])->createCommand()->rawSql,__FUNCTION__);
+     RETURN $this->getRendiciones()->
+             andWhere(['activo'=>'1'])
+             ->orderBy(['fecha'=>SORT_ASC,'id'=>SORT_ASC])->one();
+ }
+ 
+ 
+  /*
+  * Ubica el último comprobante, ordenado por fecha
+  * de emision
+  */ 
+ public function lastComprobante(){
+    yii::error( $this->getRendiciones()->
+             andWhere(['activo'=>'1'])
+           ->orderBy(['fecha'=>SORT_DESC,'id'=>SORT_DESC])->createCommand()->rawSql,__FUNCTION__);
+   RETURN $this->getRendiciones()->
+             andWhere(['activo'=>'1'])
+           ->orderBy(['fecha'=>SORT_DESC,'id'=>SORT_DESC])->one();  
+ }
+ 
+ 
 }

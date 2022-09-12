@@ -97,7 +97,7 @@ class linkAjaxGridWidget extends Widget
      }else{
        var_url=this.rel;
      }
-    // alert(var_url);
+    
      var refrescar=".(($this->refrescar)?"true;":"false;")." 
     if(!yapaso){  
             $.ajax({
@@ -114,14 +114,14 @@ class linkAjaxGridWidget extends Widget
               
               success: function(json) {
              
-               //alert(typeof json['dfdfd']==='undefined');
+               
                         var n = Noty('id');
                            if(refrescar){
                            $.pjax.reload({container: '#".$this->idGrilla."', async: false});
                            ".$cadUx."  
                            }
-                             
-
+                            
+                      
                        if ( !(typeof json['error']==='undefined') ) {
                         $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['error']);
                               $.noty.setType(n.options.id, 'error');  
@@ -132,6 +132,7 @@ class linkAjaxGridWidget extends Widget
                               $.noty.setType(n.options.id, 'warning');  
                              } 
                           if ( !(typeof json['success']==='undefined' )) {
+                          
                         $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['success']);
                               $.noty.setType(n.options.id, 'success');  
                              } 

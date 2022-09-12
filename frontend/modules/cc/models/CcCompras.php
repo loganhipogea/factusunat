@@ -11,7 +11,10 @@ use Yii;
  */
 class CcCompras extends \common\models\base\BaseDocument
 {
+    
+    
     use \frontend\modules\cc\traits\CcTrait;
+    const ST_OBSERV='30';
     public $nameFieldEstado='estado'; 
       public $dateorTimeFields = [
         'fecha' => self::_FDATE,
@@ -22,6 +25,11 @@ class CcCompras extends \common\models\base\BaseDocument
     private $_costo_indirecto=-1;
      private $_costo_orden=-1;
      private $_costo_faltante=-1;
+     
+   public static function estados(){
+       return array_merge(parent::estados(),[ self::ST_OBSERV=>\yii::t('base.names','OBSERVADO'),]);
+   }  
+     
     /**
      * {@inheritdoc}
      */
@@ -54,10 +62,11 @@ class CcCompras extends \common\models\base\BaseDocument
         return [
             [['id', 'mes', 'movimiento_id'], 'integer'],
             [['monto', 'igv', 'monto_usd', 'igv_usd'], 'number'],
-            [['codocu', 'prefijo', 'codmon'], 'string', 'max' => 3],
-              [['prefijo'], 'required'],
+            [['codocu',  'codmon'], 'string', 'max' => 3],
+              [['serie'], 'required'],
+            [['obs'], 'safe'],
             [['monto'], 'validate_monto'],
-            [['activo','detalle','parent_id','acumulado','monto_calificado','estado','prefijo'], 'safe'],
+            [['activo','detalle','parent_id','acumulado','monto_calificado','estado','serie'], 'safe'],
             [['numero'], 'string', 'max' => 12],
             [['fecha'], 'string', 'max' => 10],
             [['anio'], 'string', 'max' => 4],
@@ -75,7 +84,7 @@ class CcCompras extends \common\models\base\BaseDocument
         return [
             'id' => Yii::t('app', 'ID'),
             'codocu' => Yii::t('app', 'Codocu'),
-            'prefijo' => Yii::t('app', 'Prefijo'),
+            'serie' => Yii::t('app', 'Prefijo'),
             'numero' => Yii::t('app', 'Numero'),
             'fecha' => Yii::t('app', 'Fecha'),
             'mes' => Yii::t('app', 'Mes'),
@@ -234,4 +243,96 @@ class CcCompras extends \common\models\base\BaseDocument
    public function isChild(){
        return $this->parent_id>0;
    }
+   
+   
+   public function isObserved(){
+      return(self::ST_OBSERV==$this->{$this->nameFieldEstado});
+  }
+  
+   public function setObserved(){
+      $this->{$this->nameFieldEstado}=self::ST_OBSERV;
+      return $this;
+  }
+  
+  private function isLast(){
+      
+    return $this->padre->lastComprobante()->id==$this->id;
+  }
+   public function isFirst(){
+     return $this->padre->firstComprobante()->id==$this->id; 
+  }
+  private function isUnique(){
+    return $this->isFirst() && $this->isLast();
+  }
+  
+  public function nextId(){
+     yii::error('El id',__FUNCTION__);
+       yii::error($this->id);
+      if($this->isUnique())return $this->id;
+       yii::error('eL SQL ',__FUNCTION__);
+       yii::error($this->padre->getRendiciones()->andWhere(['>','fecha',$this->swichtDate('fecha', false)])->
+             andWhere(['activo'=>'1'])
+              ->orderBy(['fecha'=>SORT_ASC,'id'=>SORT_ASC])->createCommand()->rawSql);
+      $model= $this->padre->getRendiciones()->andWhere(['>','fecha',$this->swichtDate('fecha', false)])->
+             andWhere(['activo'=>'1'])
+              ->orderBy(['fecha'=>SORT_ASC,'id'=>SORT_ASC])->one();
+      if(!is_null($model)){ 
+          yii::error('Encontro el model next y retorna el id '.$model->id);  
+          return $model->id;
+      }else{
+         //RETURN 51;
+          /*
+           * En otro caso mirar hacia atras, debe de haber otro que le 
+           * precede puesto que no es el único, nop hay lugar a error
+           */
+         yii::error('NO encontro el next, devuelve el id del primero   '.$this->padre->firstComprobante()->id);
+        return $this->padre->firstComprobante()->id;
+         /*$this->padre->getRendiciones()->andWhere(['<','id',$this->id])->
+             andWhere(['activo'=>'1'])
+              ->orderBy(['fecha'=>SORT_ASC,'id'=>SORT_ASC])->one()->id; */
+      }
+  }
+  
+  
+   public function previousId(){
+       yii::error('El id',__FUNCTION__);
+       yii::error($this->id);
+       
+        yii::error('ES UNICO?');
+        yii::error($this->isUnique());
+      if($this->isUnique())return $this->id;
+      
+      yii::error('eL SQL ');
+      yii::error($this->padre->getRendiciones()->andWhere(['<','fecha',$this->swichtDate('fecha', false)])->
+             andWhere(['activo'=>'1'])
+              ->orderBy(['fecha'=>SORT_DESC,'id'=>SORT_DESC])->createCommand()->rawSql);
+      $model= $this->padre->getRendiciones()->andWhere(['<','fecha',$this->swichtDate('fecha', false)])->
+             andWhere(['activo'=>'1'])
+              ->orderBy(['fecha'=>SORT_DESC,'id'=>SORT_DESC])->one();
+      if(!is_null($model)){
+           yii::error('Encontro el model y retorna el id '.$model->id);            
+          return $model->id;
+      }else{
+          /*
+           * En otro caso mirar hacia atras, debe de haber otro que le 
+           * precede puesto que no es el único, nop hay lugar a error
+           */
+           yii::error('NO encontro el previuous, devuelve el id del last   '.$this->padre->lastComprobante()->id);
+          RETURN $this->padre->lastComprobante()->id;
+         /*$this->padre->getRendiciones()->andWhere(['>','id',$this->id])->
+             andWhere(['activo'=>'1'])
+              ->orderBy(['fecha'=>SORT_ASC,'id'=>SORT_ASC])->one()->id; */
+      }
+  }
+  public function lastId(){
+     if($this->isUnique())return $this->id;
+    return  $this->padre->lastComprobante()->id;
+  }
+  
+  public function firstId(){
+      if($this->isUnique())return $this->id; 
+      return  $this->padre->firstComprobante()->id;
+  }
+ 
+ 
 }

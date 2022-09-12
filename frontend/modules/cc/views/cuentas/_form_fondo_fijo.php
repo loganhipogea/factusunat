@@ -54,22 +54,12 @@ use frontend\modules\cc\models\CcGastos;
          
          
              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
-                        <?= $form->field($model, 'codocu')->
-                            dropDownList(ComboHelper::getCboDocuments(),
-                            ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                                    ]
-                                ) ?>
-                    </div>    
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">    
-                        <?= $form->field($model, 'prefijo')->textInput() ?>
-                    </div> 
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">    
-                        <?= $form->field($model, 'numero')->textInput() ?>
+                     
+                   
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">    
+                        <?= $form->field($model, 'numero')->textInput(['disabled'=>true]) ?>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">   
+                    <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12">   
                             <?= $form->field($model, 'fecha')->widget(DatePicker::class, [
                             'language' => h::app()->language,
                            'pluginOptions'=>[
@@ -83,31 +73,41 @@ use frontend\modules\cc\models\CcGastos;
                             'options'=>['class'=>'form-control']
                             ]) ?>
                      </div>
-                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
-                        
-                         <?php Pjax::begin(['id'=>'pjax-moneda']); ?>  
-                        <?= $form->field($model, 'codmon')->
-                             dropDownList(ComboHelper::getCboMonedas(),
-                            ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      'disabled'=>$bloqueado,
-                                 ]
-                                ) ?>
-                      <?php Pjax::end(); ?> 
-                    </div>   
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
-                        <?= $form->field($model, 'glosa')->textInput() ?>
-                    </div>        
-                   
-                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
-                        <?= $form->field($model, 'rucpro')->textInput() ?>
-                    </div> 
-                    
-                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
-                             <?php Pjax::begin(['id'=>'pjax-monto']); ?> 
+                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">   
+                            <?= $form->field($model, 'fvencimiento')->widget(DatePicker::class, [
+                            'language' => h::app()->language,
+                           'pluginOptions'=>[
+                                     'format' => h::gsetting('timeUser', 'date')  , 
+                                   'changeMonth'=>true,
+                                  'changeYear'=>true,
+                                 'yearRange'=>'2014:'.date('Y'),
+                               ],
+                          
+                            //'dateFormat' => h::getFormatShowDate(),
+                            'options'=>['class'=>'form-control']
+                            ]) ?>
+                     </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                             
                             <?= $form->field($model, 'monto')->textInput(['disabled'=>true,]) ?>
+                           
+                   </div> 
+                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                             <?php Pjax::begin(['id'=>'pjax-monto']); ?> 
+                            <?= $form->field($model, 'monto_rendido')->textInput(['disabled'=>true,]) ?>
                             <?php Pjax::end(); ?> 
                    </div> 
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                             
+                            <?= $form->field($model, 'codmon')->textInput(['disabled'=>true,]) ?>
+                           
+                   </div> 
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
+                        <?= $form->field($model, 'descripcion')->textInput() ?>
+                    </div>        
+                   
+                  
+                  
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <?= $form->field($model, 'detalle')->textArea() ?>
                         </div>
@@ -133,14 +133,19 @@ use frontend\modules\cc\models\CcGastos;
     </DIV>
         
     </DIV>
-                  <br>
-             <div class="progress">
+             <br>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+                RENDICION
+                <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: <?=$avance?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><?=$avance?>%</div>
-            </div>  
+                </div> 
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+               CALIFICACION
             <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: <?=$avanceCali?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><?=$avanceCali?>%</div>
             </div> 
-     
+            </div>.
      <?php 
      
 //var_dump($avance,$model->faltante(),$model->acumulado());
@@ -177,6 +182,7 @@ use frontend\modules\cc\models\CcGastos;
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}{attach}',
+               'contentOptions'=>['style'=>'width:55px;'],
                'buttons' => [
                     'attach' => function($url, $model) {  
                          $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model)),'extension'=> \yii\helpers\Json::encode(array_merge(['pdf'], FileHelper::extImages())),
@@ -188,7 +194,7 @@ use frontend\modules\cc\models\CcGastos;
                              'data-method' => 'get',
                             //'data-pjax' => '0',
                         ];
-                        return Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+                        return Html::a('<span class="glyphicon glyphicon-paperclip"></span>', $url,['title' => 'Editar Adjunto', 'class' => 'botonAbre']);
                         //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
                      
                         
@@ -196,13 +202,13 @@ use frontend\modules\cc\models\CcGastos;
                                 
                                 'edit' => function ($url,$model) {
 			    $url= Url::to(['/cc/cuentas/edit-comprobante','id'=>$model->id,'modo'=>3,'gridName'=>'grilla-gastos','idModal'=>'buscarvalor']);
-                              return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0']);
+                              return \yii\helpers\Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0']);
                             },
                         'delete' => function ($url,$model) use($bloqueado) {
                               IF($model->activo && !$bloqueado){
                                 $url = \yii\helpers\Url::to([$this->context->id.'/ajax-anula-comprobante','id'=>$model->id]);
                               
-                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                    return \yii\helpers\Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                               }else{
                                   return '';
                               }
@@ -228,6 +234,7 @@ use frontend\modules\cc\models\CcGastos;
                             } 
                 
                 ], 
+               'fecha',
                'glosa',
              ['attribute' => 'Av.',
                 'format'=>'raw',
@@ -237,11 +244,11 @@ use frontend\modules\cc\models\CcGastos;
                             } 
                 
                 ], 
-             ['attribute' => 'prefijo',
+             ['attribute' => 'serie',
                 'format'=>'raw',
                 'value'=>function($model){ 
                              //RETURN $model->ceco_id;
-                             return $model->prefijo;                                                   
+                             return $model->serie;                                                   
                             } 
                 
                 ], 
@@ -296,7 +303,7 @@ use frontend\modules\cc\models\CcGastos;
          <?php 
    echo linkAjaxGridWidget::widget([
            'id'=>'widgetgruidBancos',
-        'otherContainers'=>['pjax-monto','pjax-moneda'],
+        'otherContainers'=>['pjax-monto'],
             'idGrilla'=>'grilla-gastos',
             'family'=>'holas',
           'type'=>'POST',

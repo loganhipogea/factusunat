@@ -213,7 +213,7 @@ class ProfileController extends \common\controllers\base\baseController
    
    public function actionEditProfile($id){
        
-     
+     if($id==h::userId()){
          $newIdentity=h::user()->identity->findOne($id);
           if(!h::request()->isPost)
          \common\models\UserSociedades::createCentersForUser($id);
@@ -243,6 +243,46 @@ class ProfileController extends \common\controllers\base\baseController
             'model'=>$newIdentity,
             //'userfacultades'=> UserFacultades::providerFacusAll($iduser)->getModels(),
         ]);
+     }else{
+      throw new BadRequestHttpException(yii::t('base.errors','No puede editar un perfil que no es el suyo'));   
+     }
    } 
     
+    public function actionProfile(){
+        
+       // echo \common\helpers\FileHelper::getUrlImageUserGuest();die();
+     /* if(h::app()->hasModule('sta')){
+          $this->redirect(\yii\helpers\Url::toRoute('/sta/default/profile'));
+      }*/
+        $model =Yii::$app->user->getProfile() ;
+        
+        $identidad=Yii::$app->user->identity;
+        $identidad->setScenario($identidad::SCENARIO_MAIL);
+       // var_dump($model);die();
+        if ($identidad->load(Yii::$app->request->post()) && $identidad->save() &&                
+                $model->load(Yii::$app->request->post()) && $model->save()) {
+           // var_dump($model->getErrors()   );die();
+            yii::$app->session->setFlash('success','grabo');
+            return $this->redirect(['profile', 'id' => $model->user_id]);
+        }else{
+           // var_dump($model->getErrors()   );die();
+        }
+
+        return $this->render('profile', [
+            'identidad'=>$identidad,
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionHashUser(){
+      
+       if(h::request()->isAjax){
+           h::response()->format = \yii\web\Response::FORMAT_JSON;
+           $prof=h::user()->identity->profile;
+           $prof->hash=$prof->generateHash();
+           $prof->save();
+           return ['success'=>yii::t('base.names','Se generó el hash')];
+        }
+  }
+ 
 }

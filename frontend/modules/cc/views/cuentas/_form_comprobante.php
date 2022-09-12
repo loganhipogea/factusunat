@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -59,7 +58,7 @@ use dosamigos\chartjs\ChartJs;
                                 ) ?>
                     </div>    
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">    
-                        <?= $form->field($model, 'prefijo')->textInput() ?>
+                        <?= $form->field($model, 'serie')->textInput() ?>
                     </div> 
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">    
                         <?= $form->field($model, 'numero')->textInput() ?>
@@ -151,17 +150,7 @@ use dosamigos\chartjs\ChartJs;
             'id_input'=>'cccompras-rucpro',
             'idGrilla'=>'234_descri_proveedor'
       ])  ?>
-     <div>
-        <?php if($model->hasAttachments()) { 
-       //echo $model::className();die();
-       //echo $model->files[0]->urlTempWeb ;
-       echo $this->render('@frontend/views/comunes/view_pdf', [
-                        'urlFile' => $model->files[0]->urlTempWeb,
-                         'width' => 700,
-                            'height' => 900,
-            ]); ?> 
-         <?php } ?>
-    </div>
+     
   
      
   

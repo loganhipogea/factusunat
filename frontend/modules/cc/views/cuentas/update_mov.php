@@ -13,7 +13,7 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 $this->title = Yii::t('app', 'Editar movimiento: {name}', [
     'name' => $model->glosa,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Movimientos'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Movimientos'), 'url' => ['index-mov']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view-mov', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Editar');
 ?>
@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Editar');
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Tutores'), //$this->context->countDetail() obtiene el contador del detalle
-            'content'=> $this->render('_segunda',[ 'model' => $model]),
+          'label'=>'<i class="fa fa-doc"></i> '.yii::t('base.names','Comprobante'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_mov_voucher',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],
         ],

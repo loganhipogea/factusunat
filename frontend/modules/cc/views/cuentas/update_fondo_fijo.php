@@ -11,7 +11,7 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 /* @var $model frontend\modules\cc\models\CcCuentas */
 
 $this->title = Yii::t('app', 'Editar Fondo fijo: {name}', [
-    'name' => $model->glosa,
+    'name' => $model->descripcion,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Movimientos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view-mov', 'id' => $model->id]];

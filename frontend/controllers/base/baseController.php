@@ -32,7 +32,7 @@ class baseController extends Controller
   * en las clases  hijas que reciban los valores POST 
   * de los Ajax de los widgets edit-xxxx
   */
- public function editField(){
+ public function editField($idModel=NULL){
      // var_dump(h::request()->post());die();
        // var_dump($this->getNamespace($this->findKeyArrayInPost()));die();
         $className=$this->getNamespace($this->findKeyArrayInPost());
@@ -50,7 +50,14 @@ class baseController extends Controller
           die();*/
       
        }ELSE{
-         $model=$className::findOne( h::request()->post(static::EDIT_EDITABLE_KEY));  
+           //var_dump(h::request()->post(static::EDIT_EDITABLE_KEY));die();
+           
+         if(is_null($idModel)){
+            $model=$className::findOne( h::request()->post(static::EDIT_EDITABLE_KEY)); 
+         }else{
+           $model=$className::findOne($idModel);   
+         }
+           
        }
       
       //$model=$className::findOne( h::request()->post(static::EDIT_EDITABLE_KEY));
@@ -66,19 +73,34 @@ class baseController extends Controller
                 h::request()-> post($this->findKeyArrayInPost())[h::request()->
                 post( static::EDIT_EDITABLE_INDEX  )][h::request()->post(static::EDIT_EDITABLE_ATTRIBUTE)]);
         die();*/
+        
+        
         //var_dump(h::request()->post(static::EDIT_EDITABLE_KEY),$model);die();
-        $model->{h::request()->post(static::EDIT_EDITABLE_ATTRIBUTE)}=h::request()->
-                post($this->findKeyArrayInPost())[h::request()->
-                post( static::EDIT_EDITABLE_INDEX  )][h::request()->post(static::EDIT_EDITABLE_ATTRIBUTE)];
-     //print_r($_POST);die();
+       
+        $arrayPost=h::request()->
+                post($this->findKeyArrayInPost());
+        
+        $arrayIndex=h::request()->
+                post(static::EDIT_EDITABLE_INDEX  );
+        $nombrecampo=h::request()->post(static::EDIT_EDITABLE_ATTRIBUTE);
+        //var_dump($this->findKeyArrayInPost(),$arrayPost,$arrayIndex,$nombrecampo);die();
+        
+        
+        if(!is_null($arrayIndex) && is_null($nombrecampo)){
+          $model->{$nombrecampo}=$arrayPost[$arrayIndex][$index];  
+        }else{
+            $model->load($_POST);
+        }
+
+
+//print_r($_POST);die();
         // if ($model->load($_POST)) { 
              //print_r($model->attributes);
-        if ($model->save()) {
-            
+        if ($model->save()) {            
              return  \yii\helpers\Json::encode(['output'=>'OK', 'message'=>'SE EDITO SIN PROBLEMAS']);
              }
        else {
-          // var_dump($model->getFisrtError());
+           var_dump($model->getFisrtError());DIE();
            RETURN  \yii\helpers\Json::encode(['output'=>'Error', 'message'=>$model->getFirstError()]);
        // }}else {
             // return ['output'=>'', 'message'=>''];
@@ -210,7 +232,7 @@ private static function findKeyArrayInPost(){
        //var_dump($modelClass,$id);die();
         $model=$modelClass::findOne($id);
         //$model=$modelClass::find
-        var_dump($model,$model instanceof modeloBase);die();
+       // var_dump($model,$model instanceof modeloBase);die();
         //var_dump($modelClass,$model);die();
         if($model instanceof modeloBase){           
                 if($model->hasChilds()){

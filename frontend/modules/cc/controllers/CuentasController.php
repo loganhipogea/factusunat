@@ -4,6 +4,7 @@ namespace frontend\modules\cc\controllers;
 
 use Yii;
 use frontend\modules\cc\models\CcCuentas;
+use frontend\modules\cc\models\CcCompras;
 use frontend\modules\cc\models\CcCuentasSearch;
 use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
@@ -18,6 +19,8 @@ use yii\widgets\ActiveForm;
  */
 class CuentasController extends baseController
 {
+    
+    public $nameSpaces = ['frontend\modules\cc\models'];
     /**
      * {@inheritdoc}
      */
@@ -150,11 +153,14 @@ class CuentasController extends baseController
      public function actionCreaMov()
     {
         $model = new \frontend\modules\cc\models\CcMovimientos();
-        $identidad=h::request()->get('id');
-        $tipo=h::request()->get('tipo');
         
-        $model->cuenta_id=$identidad;
-        $model->tipo=$tipo;
+        if(h::request()->isGet){
+            $identidad=h::request()->get('id');
+            $tipo=h::request()->get('tipo'); 
+            $model->cuenta_id=$identidad;
+            $model->tipo=$tipo; 
+        }
+       
         
         
         
@@ -180,6 +186,8 @@ class CuentasController extends baseController
         ]);
     }
     
+    
+   
      public function actionSelectMov()
     {
         $model = new \frontend\modules\cc\models\MovimientoForm();
@@ -291,7 +299,8 @@ class CuentasController extends baseController
         }
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-comprobante', 'id' => $model->id]);
+           
+            return $this->redirect(['edit-comprobante', 'id' => $model->id]);
         }
          if(is_null($modo)){
             return $this->render('update_comprobante', [
@@ -305,6 +314,7 @@ class CuentasController extends baseController
 
      public function actionEditFondo($id)
     {
+         \common\models\masters\Centros::currentCenter();
         $model = \frontend\modules\cc\models\CcRendicion::findOne($id);
         $searchModel = new \frontend\modules\cc\models\CcComprasSearch();
         $dataprovider = $searchModel->searchByFondo($id,Yii::$app->request->queryParams);
@@ -331,10 +341,12 @@ class CuentasController extends baseController
       $modelMov= \frontend\modules\cc\models\CcMovimientos::findOne($id);
        $model=New \frontend\modules\cc\models\CcRendicion();
        $model->movimiento_id=$id;
-       $model->codtra=$modelMov->codtra;
-       $model->codocu=$model->codocu_fondo_fijo;
+       $model->codcen= \common\models\masters\Centros::codcen();
+       $model->codmon= $modelMov->cuenta->codmon;
+       //$model->codtra=$modelMov->codtra;
+      // $model->codocu=$model->codocu_fondo_fijo;
        //$model->monto_a_rendir=$modelMov->monto;
-       $model->parent_id=$modelMov->id;
+      // $model->parent_id=$modelMov->id;
        
        $datos=[];
         if(h::request()->isPost){            
@@ -432,14 +444,9 @@ class CuentasController extends baseController
         if (h::request()->isAjax) {
             $model = \frontend\modules\cc\models\CcCompras::findOne($id);
              h::response()->format = Response::FORMAT_JSON;
-            
                  $model->activo=false;$model->save();
-                return ['warning' => yii::t('base.messages', 'Se ha revertido la compensación')];
-           
-            
-
-            
-        }
+                return ['success' => yii::t('base.names', 'Se ha revertido la compensación')];
+         }
     }
     
     
@@ -449,5 +456,110 @@ class CuentasController extends baseController
         $model=\frontend\modules\cc\models\CcCompras::findOne($id);
          return $this->renderAjax("_expand_comprobante",['model'=>$model]);       
             }
-          } 
+          }
+          
+   public function actionIndexMov(){
+       $searchModel = new \frontend\modules\cc\models\CcMovimientosSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_mov', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+   }
+   
+   
+   public function actionRevisarFondo($id){ 
+      // $idComprobante=h::request()->get('idcompro',null);
+       //$modelComprobante=\frontend\modules\cc\models\CcCompras::findOne($idComprobante);
+       $model = \frontend\modules\cc\models\CcRendicion::findOne($id); 
+       //if(is_null($modelComprobante) || is_null($model))  
+        //throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+      
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        return $this->render('revisar_fondo', [
+            'model' => $model,
+            //'modelComprobante'=>$modelComprobante           
+        ]);
+   }
+   
+  public function actionAjaxRenderCompro($id){
+      $model = \frontend\modules\cc\models\CcCompras::findOne($id);         
+        return $this->renderAjax('revisar_fondo_detalle', [
+            'comprobante' => $model,
+            //'modelComprobante'=>$modelComprobante           
+        ]);
+   } 
+   
+ public function actionAjaxEditObs($id){
+     if ($this->is_editable()){
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            return $this->editField($id);
+           } 
+ }
+ 
+ 
+  public function actionModalCreaObs($id){
+    $this->layout = "install";
+    $model= \frontend\modules\cc\models\CcCompras::findOne($id);    
+       $datos=[];
+        if(h::request()->isPost){ 
+            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{    
+               $model->setObserved()->save();               
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_crea_obs', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+   }
+   
+   public function actionAjaxAprobe($id) {
+        if (h::request()->isAjax) {
+            $model = \frontend\modules\cc\models\CcCompras::findOne($id);
+             h::response()->format = Response::FORMAT_JSON;
+            if(!is_null(h::request()->get('revert'))){
+                 if($model->isPassed()){
+                     $model->setCreated()->save();
+                 }
+            }else{
+                $model->setPassed()->save(); 
+            }
+                
+                return ['success' => yii::t('base.names', 'Se ha procesado el documento')];
+         }
+    }
+    
+    public function actionAjaxUnobserved($id) {
+        if (h::request()->isAjax) {
+            $model = \frontend\modules\cc\models\CcCompras::findOne($id);
+             h::response()->format = Response::FORMAT_JSON;
+            if(!is_null(h::request()->get('revert'))){
+                 if($model->isObserved()){
+                     $model->obs=null;
+                     $model->setCreated()->save();
+                 }
+            }
+                
+                return ['success' => yii::t('base.names', 'Se eliminó la observación')];
+         }
+    }
+    
 }

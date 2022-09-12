@@ -6,11 +6,12 @@ use yii\widgets\ActiveForm;
 use common\helpers\h;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
-use frontend\modules\sigi\helpers\comboHelper;
+use frontend\modules\cc\helpers\comboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
  use kartik\date\DatePicker;
+ use common\helpers\FileHelper;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\cc\models\CcCuentas */
 /* @var $form yii\widgets\ActiveForm */
@@ -24,29 +25,39 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
       <div class="box-header">
           
         <div class="col-md-12">
-            <div class="form-group no-margin">
-         
+            <div class="form-group">
+             <div class="btn-group">
           <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Guardar'), ['class' => 'btn btn-success']) ?>
-            
-
+            <?php 
+            $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',get_class($model)),'extension'=> \yii\helpers\Json::encode(array_merge(['pdf'], FileHelper::extImages())),
+                       ]);
+            echo Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+            ?>
+           <?= common\widgets\auditwidget\auditWidget::widget(['model'=>$model])?>
                   
-
+            </div>
             </div>
         </div>
     </div>
      
   
       <div class="box-body">
-          <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">    
-                 <?= $form->field($model, 'monto')->textInput([
-                     'value'=>$model->cuenta->nombre,
-                     'disabled'=>true,
-                 ])->label(yii::t('base.names','Cuenta')) ?>
+          
+       <?php if(empty($model->cuenta_id)){   ?>
+         <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">    
+                 <?= $form->field($model, 'cuenta_id')->
+            dropDownList(comboHelper::getCboCuentas(),
+                  ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    ) ?>
             </div>
           
-          
+        <?php }  ?>  
+     
  <?php //if($model->isScenario($model::SCE_PAGO_RENDIR_PERSONA)){  ?> 
-  <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">    
+  <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12">    
   <?php 
   // $necesi=new Parametros;
     echo selectWidget::widget([
@@ -59,7 +70,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         ]);  ?>
  </div>
   <?php  //} ?>  
-  <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
       <?= $form->field($model, 'fechaop')->widget(DatePicker::class, [
                             'language' => h::app()->language,
                            'pluginOptions'=>[
@@ -77,12 +88,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
   
 
   
-  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+  <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
     
  <?= $form->field($model, 'glosa')->textInput() ?>
 
 </div>  
-   <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
+   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> 
   <?php
      $zonaMonto='pjax_monto';
      
@@ -91,10 +102,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
   <?php Pjax::end() ?>
    </div>
 
- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
- <?= $form->field($model, 'detalle')->
- textarea([]) ?>
- </div> 
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'glosa')->textarea() ?>
+  </div>
           
      
 
@@ -112,7 +122,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
    <?php //var_dump((new SigiApoderadosSearch())->searchByEdificio($model->id)); die(); ?>
     <?= GridView::widget([
         'dataProvider' =>(new \yii\data\ActiveDataProvider([
-                        'query'=> \frontend\modules\cc\models\CcCompras::find()
+                        'query'=> \frontend\modules\cc\models\CcRendicion::find()
                         ->andWhere(['movimiento_id'=>$model->id])
                         ])),
          //'summary' => '',
@@ -148,11 +158,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                         },
                                 
                                 'edit' => function ($url,$model) {
-                                        if($model->codocu_fondo_fijo==$model->codocu){
+                                        
                                             $url= Url::to(['/cc/cuentas/edit-fondo','id'=>$model->id,]);
-                                          }else{
-                                                $url= Url::to(['/cc/cuentas/edit-comprobante','id'=>$model->id]);
-                                            }
+                                         
                                                 return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0']);
                                           },
                        'delete' => function ($url,$model)use($zonaAjax) {                             
@@ -162,14 +170,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                         
                     ]
                 ],
-            ['attribute' => 'documento',
-                'format'=>'raw',
-                'value'=>function($model){                        
-                             return $model->documento->desdocu;                                                   
-                             } 
-                
-                ],  
-            'prefijo',
+           
+           // 'prefijo',
              'numero',
              ['attribute' => 'monto',
                 'format'=>'raw',
@@ -178,19 +180,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                              } 
                 
                 ], 
-              ['attribute' => 'monto_a_rendir',
-                'format'=>'raw',
-                'value'=>function($model){                        
-                             return $model->monto_a_rendir;                                                   
-                             } 
-                
-                ],       
-            ['attribute' => 'glosa',
+                    
+            ['attribute' => 'descripcion',
                 'format'=>'raw',
                 'value'=>function($model){
                         
                         
-                             return $model->glosa; 
+                             return $model->descripcion; 
                                                 
                              } 
                 

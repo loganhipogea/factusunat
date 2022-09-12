@@ -57,20 +57,20 @@ class Activerecordlog extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('models.labels', 'ID'),
-            'model' => Yii::t('models.labels', 'Model'),
-            'field' => Yii::t('models.labels', 'Campo'),
-            'ip' => Yii::t('models.labels', 'IP'),
-            'creationdate' => Yii::t('models.labels', 'Cuándo'),
-            'controlador' => Yii::t('models.labels', 'Controlador'),
-            'description' => Yii::t('models.labels', 'Description'),
-            'nombrecampo' => Yii::t('models.labels', 'Campo'),
-            'oldvalue' => Yii::t('models.labels', 'Val.Previo'),
-            'newvalue' => Yii::t('models.labels', 'Val. Actual'),
-            'username' => Yii::t('models.labels', 'Usuario'),
-            'metodo' => Yii::t('models.labels', 'Metodo'),
-            'action' => Yii::t('models.labels', 'Action'),
-            'clave' => Yii::t('models.labels', 'Clave'),
+            'id' => Yii::t('base.names', 'ID'),
+            'model' => Yii::t('base.names', 'Model'),
+            'field' => Yii::t('base.names', 'Campo'),
+            'ip' => Yii::t('base.names', 'IP'),
+            'creationdate' => Yii::t('base.names', 'Cuándo'),
+            'controlador' => Yii::t('base.names', 'Controlador'),
+            'description' => Yii::t('base.names', 'Description'),
+            'nombrecampo' => Yii::t('base.names', 'Campo'),
+            'oldvalue' => Yii::t('base.names', 'Val.Previo'),
+            'newvalue' => Yii::t('base.names', 'Val. Actual'),
+            'username' => Yii::t('base.names', 'Usuario'),
+            'metodo' => Yii::t('base.names', 'Metodo'),
+            'action' => Yii::t('base.names', 'Action'),
+            'clave' => Yii::t('base.names', 'Clave'),
         ];
     }
 }

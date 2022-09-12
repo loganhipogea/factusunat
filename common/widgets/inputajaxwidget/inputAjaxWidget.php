@@ -58,8 +58,7 @@ class inputAjaxWidget extends \yii\base\Widget
                              $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-remove-sign\'></span>      '+ xhr.responseText);
                               $.noty.setType(n.options.id, 'error');         
                                 }, 
-success: function (data) {// success callback function
-           ".($this->isDivReceptor)." 
+success: function (data) {
            $('#".$this->idGrilla."').".$operador."(data);
     }
        }); //ajax 

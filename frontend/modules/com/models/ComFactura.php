@@ -42,7 +42,7 @@ class ComFactura extends \common\models\base\BaseDocument
         
     ];
     private $_serie=null;
-    public function estados(){
+    public static function estados(){
         
         return 
                 parent::estados() +

@@ -276,6 +276,13 @@ class Profile extends \common\models\base\modelBase implements \common\interface
        return static::find()->andWhere(['codtra'=>$codtra])->one();
     }
     
-    
+   public static function generateHash($longitud=4){
+        $cad='AB4CDE1FG1HIJK2LM8NO3PQR5STUV6WX97Y0Z';
+        $carac='';
+        for ($i = 0; $i <= $longitud; $i++) {
+             $carac.=substr($cad,random_int(0,strlen($cad)-2),1);
+            }
+        return $carac;
+    } 
   
              }
