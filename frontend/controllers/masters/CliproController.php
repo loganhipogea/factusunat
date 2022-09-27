@@ -547,12 +547,23 @@ class CliproController extends baseController {
               yii::error( $respuesta,__FUNCTION__);
                 if($respuesta ){
                         //if($respuesta['success']){
+                             yii::error( 'HUBO RESPUESTA DE LA API',__FUNCTION__); 
                             $nuevoClipro=New Clipro();
+                            yii::error( 'Creando un nuevo modelo',__FUNCTION__);
                             $nuevoClipro->setAttributes([
                                 'rucpro'=>$ruc,
                                 'despro'=>$respuesta['nombre'],
                              ]);
-                            $nuevoClipro->save();
+                            yii::error( 'Grabando con save',__FUNCTION__);
+                            $val=$nuevoClipro->save();
+                            if($val){
+                              yii::error( 'Grabo con exito',__FUNCTION__);  
+                            }else{
+                               yii::error( 'Hubi erroes en el save del clipro',__FUNCTION__);   
+                              yii::error($nuevoClipro->getErrors() ,__FUNCTION__);   
+                            
+                               
+                            }
                             $nuevoClipro->refresh();
                             $ubigeo=$respuesta['ubigeo'];
                                 
@@ -879,4 +890,16 @@ public function actionCreateMaterial($id) {
       var_dump($nn->apiCambio());*/
   } 
     
+   public function actionModalCreaRapido() {
+         $this->layout = "installx";
+         $model= New Clipro();
+         $datos=[];
+        
+           return $this->renderAjax('_form_modal_agrega_rapido', [
+                        'model' => $model,
+                        
+            ]);  
+        
+    }
+  
 }

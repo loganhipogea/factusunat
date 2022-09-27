@@ -133,6 +133,37 @@ class BasicoController extends baseController
     }
     
     
+    public function actionCreaSustancia(){
+         $model = new \common\models\Sustancia();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index-sustancia']);
+        }
+
+        return $this->render('crea_sustancia', [
+            'model' => $model,
+        ]);
+    }
+    public function actionEditaSustancia($id){
+         $model =  \common\models\Sustancia::findOne($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index-sustancia']);
+        }
+
+        return $this->render('edita_sustancia', [
+            'model' => $model,
+        ]);
+    }
     
-    
+    public function actionIndexSustancia(){
+        $searchModel = new \common\models\SustanciaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_sustancia', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
 }

@@ -1705,7 +1705,10 @@ public function firstMessage($category=null){
     return trim(strtolower($this->getScenario()))== trim(strtolower($scenario));
  }
  
- 
+ public function setCorrelativo($field,$longitud=null,$campocriterio=null){
+   $this->{$field}=$this->correlativo($field, $longitud, $campocriterio);
+   return $this;  
+ }
 
 }   
 

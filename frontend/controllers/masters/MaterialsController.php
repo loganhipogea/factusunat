@@ -93,7 +93,7 @@ class MaterialsController extends baseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+          
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -167,6 +167,57 @@ class MaterialsController extends baseController
            return $this->renderAjax('_conversion', [
                         'model' => $model,
                         'codigo'=>$modelMaterial->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+    }
+    
+    public function actionModalCreaMaterial(){
+          $this->layout = "install";
+         $model = new Maestrocompo();
+        if(h::request()->isPost){   
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+              $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if(!$model->save()) print_r($model->getErrors()); 
+                return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_form_modal', [
+                        'model' => $model,
+                        'codigo'=>$model->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+    }
+     public function actionModalEditaMaterial($id){
+          $this->layout = "install";
+         $model = Maestrocompo::findOne($id);
+        if(h::request()->isPost){   
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+              $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if(!$model->save()) print_r($model->getErrors()); 
+                return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_form_modal', [
+                        'model' => $model,
+                        'codigo'=>$model->codart,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),

@@ -1033,5 +1033,12 @@ class ComboHelper  {
 
         ];
     }
-    
+  public static function getCboSustancias(){
+         
+        
+        return ArrayHelper::map(
+                        \common\models\Sustancia::find()->
+                  all(),
+                'id','descripcion');
+    }  
 }

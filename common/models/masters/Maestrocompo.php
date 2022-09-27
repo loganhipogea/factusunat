@@ -13,6 +13,7 @@ class Maestrocompo extends \common\models\base\modelBase
    public $cant_stock=''; //PROPIEDAD PARA SIMULAR UN INGRESO RAPIDO DE STICK EN PUNTO DE VENTA  
     CONST SCE_BATCH='batch';
     CONST SCE_PTO_VENTA='pto_venta';
+    CONST SCE_SUSTANCIA='sustancia';
     /**
      * {@inheritdoc}
      */
@@ -37,7 +38,9 @@ class Maestrocompo extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['descripcion','codtipo','codum'], 'required'],
+            [['descripcion','codtipo','codum'], 'required'], 
+             ['sustancia_id', 'safe','except'=>[self::SCE_BATCH,self::SCE_PTO_VENTA]],
+          
             [['codart'], 'string', 'max' => 14],
             [['codean'], 'string', 'max' => 14],
             [['descripcion'], 'string', 'max' => 60],
@@ -55,7 +58,7 @@ class Maestrocompo extends \common\models\base\modelBase
     {
         return [
             'id' => Yii::t('base.names', 'ID'),
-            'codart' => Yii::t('base.names', 'Codart'),
+              'codart' => Yii::t('base.names', 'Codart'),
             'descripcion' => Yii::t('base.names', 'Descripcion'),
             'marca' => Yii::t('base.names', 'Marca'),
             'modelo' => Yii::t('base.names', 'Modelo'),
@@ -72,6 +75,10 @@ class Maestrocompo extends \common\models\base\modelBase
             'codart', 'descripcion','codum',
             'codtipo', 'codean', 'numeroparte',
             'marca', 'regsan'];
+        $scenarios[self::SCE_SUSTANCIA] = [
+            'codart', 'descripcion','codum',
+            'codtipo', 'codean', 'numeroparte',
+            'marca', 'regsan','sustancia_id'];
         $scenarios[self::SCE_PTO_VENTA] = [
             'codart', 'descripcion','codum',
             'codtipo', 'codean', 
@@ -84,6 +91,11 @@ class Maestrocompo extends \common\models\base\modelBase
     public function getUm()
     {
         return $this->hasOne(Ums::className(), ['codum' => 'codum']);
+    }
+    
+    public function getSustancia()
+    {
+        return $this->hasOne(Sustancia::className(), ['id' => 'sustancia_id']);
     }
 
     /**
@@ -151,7 +163,11 @@ class Maestrocompo extends \common\models\base\modelBase
       return $stock->save();      
   }  
   
-  
- 
+  public function densidad(){
+      return ($this->sustancia_id>0)?$this->sustancia->densidad:0;
+  }
+  public function peso(){
+      return ($this->sustancia_id>0)?$this->sustancia->densidad:0;
+  }
  }
 

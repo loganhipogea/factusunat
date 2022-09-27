@@ -12,11 +12,26 @@ use common\behaviors\FileBehavior;
 
 <div class="maestrocompo-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+       'id'=>'myformulario',
+    'fieldClass'=>'\common\components\MyActiveField'
+    ]); ?>
     
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('base.names', 'Save'), ['class' => 'btn btn-success']) ?>
-    </div>  
+     <div class="col-md-12">
+            <div class="form-group no-margin">
+            <?php
+          $operacion=($model->isNewRecord)?'modal-crea-material':'modal-edita-material';             
+          $url=\yii\helpers\Url::to(['/masters/materials/'.$operacion,'id'=>$id]); 
+           ?>
+           <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
+                  ['idModal'=>$idModal,
+                    'idForm'=>'myformulario',
+                      'url'=> $url,
+                     'idGrilla'=>$gridName, 
+                      ]
+                  )?>
+            </div>
+        </div> 
     
     
     
@@ -33,9 +48,7 @@ use common\behaviors\FileBehavior;
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
     <?= $form->field($model, 'marca')->textInput(['maxlength' => true]) ?>
 </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-    <?= \common\widgets\imagewidget\ImageWidget::widget(['name'=>'imagenrep','model'=>$model,'ancho'=>200,'alto'=>200]); ?>
-   </div>
+    
     
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
     <?= $form->field($model, 'modelo')->textInput(['maxlength' => true]) ?>
