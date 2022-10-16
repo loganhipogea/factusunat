@@ -8,7 +8,8 @@ trait modelBaseTrait {
      static $section_settings='tables';
      static $name_field_status_settings='NameFieldStatus';
      static $name_field_codocu_settings='NameFieldDocu';
-   abstract protected function getTableSchema();
+  // abstract protected function getTableSchema();
+     
    abstract protected function hasAttribute($attibute);
    //abstract protected function getPrimaryKey($arr);
 
