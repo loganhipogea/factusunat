@@ -95,6 +95,7 @@ class selectWidget extends \yii\base\Widget
             //$valores=[$model->{$campo}=>
             //$this->getModelForeign()->{$this->getSecondField()}];
              return  $this->render('controls',[
+                    'tabular'=>$this->tabular,
                 'model'=>$this->model,
                 'form'=>$this->form,
                 'campo'=>$this->campo,

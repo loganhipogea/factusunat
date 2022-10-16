@@ -92,7 +92,7 @@ class PetofertaController extends baseController
     
     
     
-  public function actionCreaOferta(){ 
+  public function actionCreaPetOferta(){ 
         
         $model = new MatPetoferta();
         $request = Yii::$app->getRequest();       
@@ -131,28 +131,29 @@ class PetofertaController extends baseController
                  $model->refresh();
                  $data = Yii::$app->request->post('MatDetpetoferta', []);
                     foreach (array_keys($data) as $index) {
-                     $models[$index] = new \frontend\modules\com\models\ComFactudet();
+                     $models[$index] = new MatDetpetoferta();
                         }
                 if(Model::loadMultiple($models, Yii::$app->request->post())){
                       $item=100;
                     foreach($models as $modeldetalle){
-                        $modeldetalle->setIdChild($model->id)
+                          $modeldetalle->petoferta_id=$model->id;
+                        /*$modeldetalle->setIdChild($model->id)
                                 ->setItem($item.'')->
                                 setTipoDocSunat($model->sunat_tipodoc)-> //Boleta o factura
                                 setTipoTributoIGV() //Tiene IGV
                                 ->setTipoAfectacionEsGravada(); //  Es gravada  (Puede ser exonerada, pero tiene que indicarlo el usuario)                   
-                        if(!$modeldetalle->save()){
+                       */ if(!$modeldetalle->save()){
                             yii::error($modeldetalle->getErrors(),__FUNCTION__);
                         }
                        $item++;
                     }
-                     $model->refreshValues(); 
+                     //$model->refreshValues(); 
                      yii::error('attributos del modelo');
                      yii::error($model->attributes);
-                       $model->preparePdfInvoice();  
+                      // $model->preparePdfInvoice();  
                      
                        
-                     return $this->redirect(['view-invoice', 'id' => $model->id]);
+                     return $this->redirect(['view', 'id' => $model->id]);
                 }else{
                     var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
                 }                
@@ -165,6 +166,9 @@ class PetofertaController extends baseController
         }       
         return $this->render('create', ['model' => $model,'items' => $models]);
     }
+    
+    
+    
     /**
      * Updates an existing MatPetoferta model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -172,22 +176,121 @@ class PetofertaController extends baseController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdatePetOferta($id)
     {
         $model = $this->findModel($id);
-
-        if (h::request()->isAjax && $model->load(h::request()->post())) {
-                h::response()->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
+        $models=$model->matDetpetoferta;
+        $request = Yii::$app->getRequest();   
+        if ($request->isPost && $request->post('ajax')!== null) {
+            $models=[];
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+                 $data = Yii::$app->request->post('MatDetpetoferta', []); 
+                 $idsModels= array_column($data,'id');
+                 $models=$model->getMatDetpetoferta()->andWhere(['in','id',$idsModels])->all();                   
+                   
+                 
+                 /*
+                  * Verificando los items que se agregaron
+                  */
+                    foreach($data as $index=>$dato){
+                        if(empty($dato['id'])){
+                            $modelTemp=New MatDetpetoferta();
+                            $modelTemp->setAttributes($dato);
+                            $modelTemp->petoferta_id=$id;
+                            $models[]=$modelTemp;                            
+                        }
+                            
+                    }
+                 
+                 /*
+                  * Fin de la verificacion de items agregados
+                  */
+                    
+                    
+                  /****************************************
+                  * De los items que se borraron hay que eliminarlos
+                  ******************************************/
+                    MatDetpetoferta::deleteAll(['not in','id',$idsModels]);
+                 
+                 /************************************ */
+                 
+                 
+                 Model::loadMultiple($models, Yii::$app->request->post());
+                      $model->load($this->request->post());
+                    $result = ActiveForm::validate($model);                      
+                     if(count($result)==0){ //Si el encabezado va bien en todo
+                        if(count($data)==0){///si borro todos los items no permitirlo
+                             $result[\yii\helpers\Html::getInputId($model,'nombre_cliente')] = [yii::t('base.errors','No child records have been registered')];
+                             return $result;
+                         }
+                        $result = ActiveForm::validateMultiple($models); 
+                        return $result;
+                     }else{
+                         return $result;  
+                     }           
         }
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        if ($this->request->isPost) {  
+            $models=[];
+             if ($model->load($this->request->post()) && $model->save()) {
+                 yii::error('PASANDO EL SAVE ',__FUNCTION__);
+                  yii::error('EL POST ',__FUNCTION__);
+                  yii::error(Yii::$app->request->post(),__FUNCTION__);
+                   $data = Yii::$app->request->post('MatDetpetoferta', []); 
+                 $idsModels= array_column($data,'id');
+                 $models=$model->getMatDetpetoferta()->andWhere(['in','id',$idsModels])->all();                   
+                   
+                 
+                 /*
+                  * Verificando los items que se agregaron
+                  */
+                    foreach($data as $index=>$dato){
+                        if(empty($dato['id'])){
+                            $modelTemp=New MatDetpetoferta();
+                            $modelTemp->setAttributes($dato);
+                            $modelTemp->petoferta_id=$id;
+                            $models[]=$modelTemp;                            
+                        }
+                            
+                    }
+                 
+                 /*
+                  * Fin de la verificacion de items agregados
+                  */
+                    
+                    
+                  /****************************************
+                  * De los items que se borraron hay que eliminarlos
+                  ******************************************/
+                    MatDetpetoferta::deleteAll(['not in','id',$idsModels]);
+                 
+                 /************************************ */
+                 
+                if(Model::loadMultiple($models, Yii::$app->request->post())){
+                     yii::error('Funciono el LoadMultilpe ',__FUNCTION__);
+                      $item=100;
+                    foreach($models as $modeldetalle){
+                          //$modeldetalle->petoferta_id=$model->id;
+                        yii::error($modeldetalle->attributes);
+                       if(!$modeldetalle->save()){
+                            yii::error($modeldetalle->getErrors(),__FUNCTION__);
+                        }
+                       $item++;
+                    }
+                      yii::error('attributos del modelo');
+                     yii::error($model->attributes);
+                      return $this->redirect(['view', 'id' => $model->id]);
+                }else{
+                    var_dump(Model::loadMultiple($models, Yii::$app->request->post()),Yii::$app->request->post(),$models);die();
+                }                
+            }else{
+                var_dump($model->attributes);
+                print_r($model->getErrors()); die();
+            }
+        } else { 
+            
+        }       
+        return $this->render('update', ['model' => $model,'items' => $models]);
     }
 
     /**

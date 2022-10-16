@@ -6,7 +6,7 @@ use unclead\multipleinput\examples\models\Item;
 use unclead\multipleinput\TabularColumn;
 use yii\widgets\Pjax;
 use frontend\assets\NumberFormatAsset;
-
+use common\widgets\selectwidget\selectWidget;
 /* @var $this \yii\web\View */
 /* @var $models Item[] */
 ?>
@@ -47,7 +47,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
         'validateOnSubmit'       => true,
         'validateOnBlur'         => false,
     ],
-    'form' => $form,
+    
     'columns' => [
         [
             'name' => 'id',
@@ -58,25 +58,20 @@ $form = \yii\bootstrap\ActiveForm::begin([
             'type' => TabularColumn::TYPE_HIDDEN_INPUT
         ],
         
-         [
-            'name' => 'codart',
-            'type'  => '\common\widgets\selectwidget\selectWidget',
-            'title' => 'Código',
-            //'defaultValue' => '1970/01/01',
-            'options' => [
-               'model'=>$models[1],
-                 'form'=>$form,
-                'campo'=>'codart',
-                'tabular'=>true,
-                'ordenCampo'=>2,
-                'addCampos'=>[1,9,4,],
-                ],
-            'headerOptions' => [
-                'style' => 'width: 30%',
-                'class' => 'day-css-class'
-            ]
-         
-        ],
+         ['name'  => 'codart',
+            'title' => 'CODIGO',
+            'type'  =>selectWidget::className(),
+        'options'=>[
+            'tabular'=>true,
+           // 'id'=>'mipapa',
+          // 'model'=>$data,
+            'form'=>$form,
+            'campo'=>'codart',
+            'ordenCampo'=>1,
+            //'foreignskeys'=>[1,2,3],
+                              ],
+        'enableError' => true,
+            ],
         /*[
             'name' => 'codart',
             'title' => 'Código',

@@ -2,6 +2,7 @@
 
 namespace common\models\masters;
 use common\behaviors\FileBehavior;
+use common\models\Sustancia;
 use Yii;
 use common\helpers\h;
 /**

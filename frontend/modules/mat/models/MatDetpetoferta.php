@@ -40,6 +40,7 @@ class MatDetpetoferta extends \common\models\base\modelBase
     {
         return [
             [['petoferta_id'], 'integer'],
+             [['codart'], 'required'],
             [['detalle'], 'string'],
              [['codum'], 'string', 'max' => 3],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa'], 'number'],
@@ -47,6 +48,7 @@ class MatDetpetoferta extends \common\models\base\modelBase
             [['codart'], 'string', 'max' => 14],
             [['descripcion'], 'string', 'max' => 60],
             [['codum'], 'string', 'max' => 4],
+            [['codart'], 'exist', 'skipOnError' => false, 'targetClass' => \common\models\masters\Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
             [['petoferta_id'], 'exist', 'skipOnError' => true, 'targetClass' => MatPetoferta::className(), 'targetAttribute' => ['petoferta_id' => 'id']],
         ];
     }

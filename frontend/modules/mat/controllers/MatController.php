@@ -418,4 +418,24 @@ public function actionAjaxDesactivaItem($id){
   public function actionAjaxAnularVale($id){
       
   }
+  
+  public function actionAjaxShowMaterial(){       
+        if (h::request()->isAjax) {
+            $val=h::request()->post('valorInput');
+            if(strlen($val)>2)
+            return $this->renderAjax('listado_material',['parametro'=>$val]);
+            
+         }     
+   }
+  public function actionAjaxAddArt($id){       
+        if (h::request()->isAjax) {
+            //$id=h::request()->get('valorInput');
+           // var_dump($val);die();
+            $model = \common\models\masters\Maestrocompo::find()->andWhere(['id'=>$id])->one();
+             h::response()->format = yii\web\Response::FORMAT_JSON;  
+             return [$model->attributes];
+            
+         }     
+   }
+     
 }

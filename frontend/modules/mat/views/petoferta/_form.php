@@ -5,15 +5,26 @@ use yii\widgets\ActiveForm;
 use common\helpers\h;
 use common\widgets\selectwidget\selectWidget;
 use kartik\date\DatePicker;
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 ?>
 
 <div class="mat-petoferta-form">
+    
+    
+    
     <br>
+   
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+    
+    
+    
+    
+    
     <?php $form = ActiveForm::begin([
     //'fieldClass'=>'\common\components\MyActiveField',
-      'id'=>'Form_general',
+      'id'=>'myform',
         'enableAjaxValidation'=>true,
-       'enableClientValidation'=>true
+       //'enableClientValidation'=>true
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">
@@ -101,12 +112,32 @@ use kartik\date\DatePicker;
      <?= $form->field($model, 'detalle')->textarea(['rows' => 6]) ?>
 
  </div>
-     
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <label class="control-label" for="buscador_id">Explorar</label>
+          <input  type="text" id="buscador_id" class="form-control">
+      </div>
+      <div id="zona_stock" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          
+      </div>
+       <?php 
+       
+      // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
+       echo inputAjaxWidget::widget([
+            'isHtml'=>true,//Devuelve datos Html
+            'isDivReceptor'=>true,//Es un diov que recibe Html
+            'tipo'=>'POST',            
+            'evento'=>'keypress',
+            'ruta'=>Url::to(['/mat/mat/ajax-show-material']),
+            'id_input'=>'buscador_id',
+            'idGrilla'=>'zona_stock'
+      ])  ?>
+  </div>     
     
     
     <?php  
     
-     echo $this->render('tabular',[
+     echo $this->render('_tabular_detalle',[
          'model'=>$model,
          'form'=>$form,
          'items'=>$items]);
@@ -116,3 +147,4 @@ use kartik\date\DatePicker;
      <?php ActiveForm::end(); ?>
 </div>
     </div>
+</div>

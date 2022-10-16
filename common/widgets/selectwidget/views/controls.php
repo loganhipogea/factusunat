@@ -19,10 +19,10 @@ if($multiple){
             dropDownList($valoresLista,
                    $options
                     ) ?>
-<?php if(isset($tabular)){
+<?php 
     if($tabular)
-  $widget->label(false);  
-} 
+     $widget->label(false);  
+
 ?>
 <?=$widget?>
 

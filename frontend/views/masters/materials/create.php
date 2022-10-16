@@ -10,8 +10,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Materials'), 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="maestrocompo-create">
+   <h4><?= Html::encode($this->title) ?></h4>
 <div class="box box-success">
-    <h4><?= Html::encode($this->title) ?></h4>
+    
 
     <?= $this->render('_form', [
         'model' => $model,
