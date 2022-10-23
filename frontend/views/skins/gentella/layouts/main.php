@@ -25,6 +25,8 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+   
+    <link href="<?=yii::getAlias('@web/img/ico_bov.ico')?>" rel="icon">
     <?php $this->head() ?>
     <?php
     $this->registerCssFile('@web/css/gentelella_ajustes.css', 
@@ -51,7 +53,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/" class="site_title"><?=Html::img('@web/img/logo_neozolver.svg', ['alt' => 'Logo','width'=>40,'height'=>40]); ?>  <span><?=h::app()->name?></span></a>
+                    <a href="/" class="site_title"><?=Html::img('@web/img/loguito.svg', ['alt' => 'Logo','width'=>40,'height'=>40]); ?>  <span><?=h::app()->name?></span></a>
                 </div>
                 <div class="clearfix"></div>
 

@@ -1,6 +1,6 @@
 <?php
 return [
-    'name'=>'NeoZolver ®',
+    'name'=>'Bov Ingenieros®',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
