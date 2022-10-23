@@ -62,6 +62,7 @@ use common\behaviors\FileBehavior;
     </div>
     
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+   
     <?= $form->field($model, 'codtipo')->
             dropDownList($model::dataComboValores('codtipo') ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",

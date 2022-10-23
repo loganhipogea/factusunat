@@ -234,7 +234,7 @@ CONST FIRE_METHOD='triggerUpload';
         if (!empty($files)) {
             foreach ($files as $file) {
                 //echo get_class($file); die();
-                //echo (is_dir($this->getModule()->getUserDirPath()))?"si":"no"; die();
+               // echo (is_dir($this->getModule()->getUserDirPath()))?"si":"no"; die();
                 if (!$file->saveAs($this->getModule()->getUserDirPath() . $file->name)) {
                     throw new \Exception(\Yii::t('yii', 'File upload failed.'));
                 }
