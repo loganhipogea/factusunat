@@ -13,7 +13,8 @@ use frontend\modules\logi\models\LogiVwStock;
     <?php Pjax::begin(['id'=>'stock-index']); ?>
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
-                'query'=> \common\models\masters\Maestrocompo::find()->andFilterWhere(['like', 'descripcion', explode ('%',$parametro)])->limit(2),
+                'query'=> \common\models\masters\Maestrocompo::find()->andFilterWhere(['like', 'descripcion', explode ('%',$parametro)]),
+                'pagination'=>['pageSize'=>2],
                 ]),
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
@@ -42,22 +43,28 @@ use frontend\modules\logi\models\LogiVwStock;
                                  'family'=>'holas',
                                  
                                ];
-                                 return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-plus"></span>','#', $options);
+                                 return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-plus"></span>','javascript:void()', $options);
                          }
                     ]
                 ],
-            'codart',
+            ['attribute'=>'codart',
+                 //'contentOptions' => ['style' => 'width:80px;'],
+               'headerOptions' => ['style' => 'width:10%'],
+                  'value'=>function ($model){
+                    return $model->codart;
+                  }
+                ],
             ['attribute'=>'descripcion',
-                 'contentOptions' => ['style' => 'width:80px;'],
-               // 'headerOptions' => ['style' => 'width:30%'],
+                 //'contentOptions' => ['style' => 'width:80px;'],
+               'headerOptions' => ['style' => 'width:70%'],
                   'value'=>function ($model){
                     return $model->descripcion;
                   }
                 ],
              
             ['attribute'=>'codum',
-                 'contentOptions' => ['style' => 'width:80px;'],
-               // 'headerOptions' => ['style' => 'width:30%'],
+                 //'contentOptions' => ['style' => 'width:80px;'],
+                'headerOptions' => ['style' => 'width:10%'],
                   'value'=>function ($model){
                     return $model->codum;
                   }
@@ -99,13 +106,18 @@ use frontend\modules\logi\models\LogiVwStock;
                                         
                                              //hallando el mayor indice
                                              v_maximo=0;
+                                             console.log('Recorriendo el bucle:');
                                             $('#monet').find('input[name*=\"[ptotal]\"]').each(function(){
-                                                            var_index=$(this).parent().parent().attr('data-index'); 
+                                                            var_index=$(this).parent().parent().parent().attr('data-index'); 
+                                                             console.log($(this).attr('name'));
+                                                             console.log('el var_index :');
+                                                              console.log(var_index);
                                                                     if(v_maximo < var_index ){
                                                                     v_maximo=var_index
                                                                     } //fin de if
                                                      
-                                                                });//fin del each                  
+                                                                });//fin del each  
+                                              console.log('Fin del bucle:');
                                               console.log('el maximo id es :');
                                               console.log(v_maximo);
                                               console.log('#matdetpetoferta-'+v_maximo+'-'+'codart');

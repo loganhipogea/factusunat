@@ -4,6 +4,16 @@ use common\widgets\selectwidget\selectWidget;
 ?>
 <?= TabularInput::widget([
     'models' => $items,
+     'cloneButton' => false,
+    'sortable' => true,
+    'enableError'=>true,
+    'min' => 0,
+    'addButtonPosition' => [
+        //TabularInput::POS_HEADER,
+        TabularInput::POS_FOOTER,
+        //TabularInput::POS_ROW
+    ],
+    
     'attributeOptions' => [
        'enableAjaxValidation'      => true,
         'enableClientValidation'    => false,

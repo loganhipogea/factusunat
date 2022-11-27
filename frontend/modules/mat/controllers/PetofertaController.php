@@ -96,8 +96,8 @@ class PetofertaController extends baseController
         
         $model = new MatPetoferta();
         $request = Yii::$app->getRequest();       
-         $models =[new MatDetpetoferta(),new MatDetpetoferta(),new MatDetpetoferta(),new MatDetpetoferta(),];// $this->getItemsOvdet();//Obenter los items detalles
-              
+         $models =[new MatDetpetoferta()];// $this->getItemsOvdet();//Obenter los items detalles
+           
         /*
          * Validacion ajax 
          */
@@ -288,6 +288,7 @@ class PetofertaController extends baseController
                 print_r($model->getErrors()); die();
             }
         } else { 
+            $models=$model->matDetpetoferta;
             
         }       
         return $this->render('update', ['model' => $model,'items' => $models]);
