@@ -8,23 +8,11 @@ use Yii;
 
 /**
  * This is the model class for table "mat_petoferta".
- *
- * @property int $id
- * @property string|null $numero
- * @property string|null $codcen
- * @property string|null $codsoc
- * @property string|null $fecha
- * @property string|null $codtra
- * @property int|null $user_id
- * @property string|null $estado
- * @property string|null $descripcion
- * @property string|null $detalle
- *
- * @property Centro $codcen0
- * @property MatDetpetofertum[] $matDetpetoferta
  */
 class MatPetoferta extends \common\models\base\modelBase
 {
+    
+    public $booleanFields=['igv'];
     /**
      * {@inheritdoc}
      */
@@ -44,7 +32,7 @@ class MatPetoferta extends \common\models\base\modelBase
             [['user_id'], 'integer'],
              [['codpro'], 'string', 'max' => 10],
            
-             [['codpro','codmon'], 'safe'],
+             [['codpro','codmon','igv'], 'safe'],
             [['detalle'], 'string'],
             [['numero', 'fecha'], 'string', 'max' => 10],
             [['codcen'], 'string', 'max' => 5],

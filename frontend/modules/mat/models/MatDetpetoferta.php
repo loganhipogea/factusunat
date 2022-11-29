@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\modules\mat\models;
-
+use common\helpers\h;
 use Yii;
 
 /**
@@ -97,5 +97,24 @@ class MatDetpetoferta extends \common\models\base\modelBase
     public static function find()
     {
         return new MatDetpetofertaQuery(get_called_class());
+    }
+    
+    
+    public function beforeSave($insert) {
+        $this->resolveMontos();
+        return parent::beforeSave($insert);
+    }
+    
+    private function resolveMontos(){
+        if($this->petoferta->igv){
+         if(!empty($this->pventa)){
+             $this->ptotal=$this->pventa/(1+h::gsetting('general', 'igv'));
+             }
+        }else{
+            if(!empty($this->pventa)){
+             $this->ptotal=$this->pventa;
+            } 
+        }
+        $this->punit=empty($this->pventa)?:$this->pventa/$this->cant;
     }
 }

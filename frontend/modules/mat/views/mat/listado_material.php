@@ -43,7 +43,7 @@ use frontend\modules\logi\models\LogiVwStock;
                                  'family'=>'holas',
                                  
                                ];
-                                 return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-plus"></span>','javascript:void()', $options);
+                                 return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-plus"></span>','javascript:void();', $options);
                          }
                     ]
                 ],
@@ -107,7 +107,7 @@ use frontend\modules\logi\models\LogiVwStock;
                                              //hallando el mayor indice
                                              v_maximo=0;
                                              console.log('Recorriendo el bucle:');
-                                            $('#monet').find('input[name*=\"[ptotal]\"]').each(function(){
+                                            $('#monet').find('input[name*=\"[pventa]\"]').each(function(){
                                                             var_index=$(this).parent().parent().parent().attr('data-index'); 
                                                              console.log($(this).attr('name'));
                                                              console.log('el var_index :');
@@ -123,7 +123,7 @@ use frontend\modules\logi\models\LogiVwStock;
                                               console.log('#matdetpetoferta-'+v_maximo+'-'+'codart');
                                               $('#matdetpetoferta-'+v_maximo+'-'+'descripcion').val(v_fila['descripcion']);
                                               $('#matdetpetoferta-'+v_maximo+'-'+'cant').val(1);
-                                               $('#matdetpetoferta-'+v_maximo+'-'+'ptotal').val(v_fila['ptotal']);
+                                               $('#matdetpetoferta-'+v_maximo+'-'+'pventa').val(v_fila['pvental']);
                                                $('#matdetpetoferta-'+v_maximo+'-'+'codart').val(v_fila['codart']);
                                               
                                      }//fin del success

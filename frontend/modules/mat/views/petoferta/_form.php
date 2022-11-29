@@ -93,7 +93,11 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
   <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
- </div>        
+ </div>
+ <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+     <?= $form->field($model, 'igv')->checkbox([]) ?>
+
+ </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
        <?php 
   // $necesi=new Parametros;
@@ -112,6 +116,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
      <?= $form->field($model, 'detalle')->textarea(['rows' => 6]) ?>
 
  </div>
+<?php if($model->isNewRecord) { ?>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <label class="control-label" for="buscador_id">Explorar</label>
@@ -133,17 +138,23 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'idGrilla'=>'zona_stock'
       ])  ?>
   </div>     
-    
-    
+ <?php } ?>   
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
     <?php  
-    
-     echo $this->render('_tabular_detalle',[
+     if($model->isNewRecord){
+       echo $this->render('_tabular_detalle',[
          'model'=>$model,
          'form'=>$form,
-         'items'=>$items]);
-    
-    
+         'items'=>$items]);  
+     }else{
+        echo $this->render('_grid_detalle',[
+         'model'=>$model,
+         //'form'=>$form,
+         //'items'=>$items
+         ]);  
+     }
     ?>
+   </div>   
      <?php ActiveForm::end(); ?>
 </div>
     </div>
