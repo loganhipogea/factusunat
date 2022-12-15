@@ -28,13 +28,29 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">
-            <div class="form-group no-margin">
+            <div class="btn-group"> 
+                    <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
+                    <?php if($model->previous()>0){?>
+                    <?php $url=Url::to(['/mat/petoferta/update-pet-oferta','id'=>$model->previous()]);?>
+                    <?=Html::a('<span class="fa fa-angle-left" ></span>',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"])?>
+                    <?php }?>
                 
-        <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
-            
-
+                     <?php if($model->next()>0){?>
+                    
+                    <?php $url=Url::to(['/mat/petoferta/update-pet-oferta','id'=>$model->next()]);?>
+                    <?=Html::a('<span class="fa fa-angle-right" ></span>',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"])?>
+                    <?php }?>
+                
+                    <?php if($model->isClonable()){?>
+                    
+                    <?php $url=Url::to(['/mat/petoferta/clone-pet-oferta','id'=>$model->id]);?>
+                    <?=Html::a('<span class="fa fa-copy" ></span>'.Yii::t('app', 'Clonar'),$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"])?>
+                    <?php }?>
+                   <?php if(!$model->isNewRecord) {?>
+                   <?= common\widgets\auditwidget\auditWidget::widget(['model'=>$model])?>
+                   <?php }?>
             </div>
-        </div>
+            </div>
     </div>
       <div class="box-body">
     
@@ -113,10 +129,25 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
  </div>         
    
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'detalle')->textarea(['rows' => 6]) ?>
+     <?= $form->field($model, 'detalle')->textarea(['rows' => 2]) ?>
 
  </div>
-<?php if($model->isNewRecord) { ?>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <?php if(!$model->isNewRecord){  ?>
+    <?= \common\widgets\imagewidget\ImageWidget::widget([
+        'name'=>'imagenrep',
+        'isImage'=>false,  
+        'model'=>$model,
+        'extensions'=>['pdf','doc','docx','png','jpg'],
+            ]); ?>
+   
+    <?= \nemmo\attachments\components\AttachmentsTable::widget([
+	'model' => $model,
+	//'showDeleteButton' => false, // Optional. Default value is true
+        ])?>
+    <?php } ?> 
+  </div> 
+<?php /*if($model->isNewRecord) { */?>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <label class="control-label" for="buscador_id">Explorar</label>
@@ -131,14 +162,15 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
        echo inputAjaxWidget::widget([
             'isHtml'=>true,//Devuelve datos Html
             'isDivReceptor'=>true,//Es un diov que recibe Html
-            'tipo'=>'POST',            
+            'tipo'=>'POST', 
+            'data'=>['idpet'=>$model->id],
             'evento'=>'keypress',
             'ruta'=>Url::to(['/mat/mat/ajax-show-material']),
             'id_input'=>'buscador_id',
             'idGrilla'=>'zona_stock'
       ])  ?>
   </div>     
- <?php } ?>   
+ <?php /*}*/ ?>   
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
     <?php  
      if($model->isNewRecord){

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 USE yii\widgets\Pjax;
 use frontend\modules\logi\models\LogiVwStock;
-
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 ?>
 
 
@@ -17,6 +17,7 @@ use frontend\modules\logi\models\LogiVwStock;
                 'pagination'=>['pageSize'=>2],
                 ]),
          'summary' => '',
+        
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
        'columns' => [
          [
@@ -35,15 +36,25 @@ use frontend\modules\logi\models\LogiVwStock;
                         ];
                         return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-search"></span>', $url, $options);
                          },*/
-                         'add' => function($url, $model) { 
-                              $url= \yii\helpers\Url::toRoute(['/mat/mat/ajax-add-art','id'=>$model->id]);
+                         'add' => function($url, $model)use($idpet) {
+                             if($idpet>0){
+                                 $url= \yii\helpers\Url::toRoute(['/mat/petoferta/ajax-add-item','id'=>$model->id]);
+                                $options = [
+                                'rel' => $url,
+                                 'family'=>'holas',
+                                  'id'=>$model->id,                                 
+                               ]; 
+                             }else{
+                                $url= \yii\helpers\Url::toRoute(['/mat/mat/ajax-add-art','id'=>$model->id]);
                               $options = [
                                //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
                                  'title' => $url,
                                  'family'=>'holas',
                                  
                                ];
-                                 return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-plus"></span>','javascript:void();', $options);
+                             }
+                              
+                                 return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-plus"></span>','#', $options);
                          }
                     ]
                 ],
@@ -82,9 +93,24 @@ use frontend\modules\logi\models\LogiVwStock;
            
         ],
     ]); ?>
-
+ 
+        <?php 
+     if($idpet > 0){
+    echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgruidBancos',
+        'otherContainers'=>['pjax-detpet'],
+            'idGrilla'=>'stock-index',
+            'family'=>'holas',
+            'data'=>['idpet'=>$idpet],
+          'type'=>'POST',
+           'evento'=>'click',
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]);
         
-       <?php 
+     }else{
+       
         $cadenaJs="$('div[id=\"stock-index\"] [family=\"holas\"]').on( 'click', function() { 
                    console.log('probando');
                     console.log('El id:');
@@ -92,7 +118,7 @@ use frontend\modules\logi\models\LogiVwStock;
                     $.ajax({
                             url: this.title,              
                             type: 'POST',                           
-                            //data:{valorInput:this.id},
+                            data:{valorInput:this.id},
                             dataType: 'html',                                              
                                 success: function(data) { 
                                         var_fila=JSON.parse(data);
@@ -129,10 +155,12 @@ use frontend\modules\logi\models\LogiVwStock;
                                      }//fin del success
                         });
                         })";
-  // echo  \yii\helpers\Html::script($stringJs);
-   $this->registerJs($cadenaJs, \yii\web\View::POS_END);        
+  
+   $this->registerJs($cadenaJs, \yii\web\View::POS_END); 
+     }    
+               
   ?>
-        
+      
         
      <?php Pjax::end(); ?>
    

@@ -302,6 +302,16 @@ class SiteController extends Controller
   public function actionMostrarAwe(){
         return $this->render('awe');
     }
-   
+  
+    
+  public function actionRutas()
+    {
+        $model=New \frontend\modules\mat\models\MatDetpetoferta();
+        echo $model->find()->andWhere([ 'and',
+            ['petoferta_id'=>23],
+            ['not in','id',[12,34,45]]
+                ])->createCommand()->rawSql;
+        DIE();
+    }  
     
 }

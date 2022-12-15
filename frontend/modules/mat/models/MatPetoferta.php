@@ -4,6 +4,7 @@ namespace frontend\modules\mat\models;
 use common\models\masters\Centros;
 use common\models\masters\Clipro;
 use common\models\masters\Trabajadores;
+use common\behaviors\FileBehavior;
 use Yii;
 
 /**
@@ -13,6 +14,7 @@ class MatPetoferta extends \common\models\base\modelBase
 {
     
     public $booleanFields=['igv'];
+    const SCE_CLONE='clonar';//Punto de venta ventas rapidas
     /**
      * {@inheritdoc}
      */
@@ -27,12 +29,12 @@ class MatPetoferta extends \common\models\base\modelBase
     public function rules()
     {
         return [
-             [['codtra','codpro','descripcion',
-                 'fecha','codmon'], 'required'],
+             [['codtra','descripcion','codmon'], 'required','except'=>self::SCE_CLONE],
+            [['codpro','fecha'], 'required'],
             [['user_id'], 'integer'],
              [['codpro'], 'string', 'max' => 10],
-           
-             [['codpro','codmon','igv'], 'safe'],
+            [['codpro'], 'validate_child','except'=>self::SCE_CLONE],
+             [['codpro','codmon','igv','id_relacionado'], 'safe'],
             [['detalle'], 'string'],
             [['numero', 'fecha'], 'string', 'max' => 10],
             [['codcen'], 'string', 'max' => 5],
@@ -44,7 +46,13 @@ class MatPetoferta extends \common\models\base\modelBase
             [['codcen'], 'exist', 'skipOnError' => true, 'targetClass' => Centros::className(), 'targetAttribute' => ['codcen' => 'codcen']],
         ];
     }
-
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCE_CLONE] = [
+                'fecha', 'codpro', 
+            ];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */
@@ -64,6 +72,21 @@ class MatPetoferta extends \common\models\base\modelBase
         ];
     }
 
+    
+    
+    public function behaviors() {
+        return [
+           
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
+    
     /**
      * Gets query for [[Codcen0]].
      *
@@ -106,5 +129,62 @@ class MatPetoferta extends \common\models\base\modelBase
             $this->setCorrelativo('numero');
         }
         return parent::beforeSave($insert);
+    }
+    
+    public function ClonePetoferta($otherModel){
+        $oldScenario=$this->getScenario();
+        $this->setScenario('default');
+         
+        $fallo=false;
+        $this->setAttributes($otherModel->attributes); 
+        $this->save();$this->refresh();
+        foreach($otherModel->matDetpetoferta as $detalle){
+           $modelDetalle=New MatDetpetoferta();
+           $modelDetalle->setAttributes($detalle->attributes);
+           $modelDetalle->petoferta_id=$this->id;
+           if(!$modelDetalle->save()){
+              $fallo=true;break;
+           }
+           unset($modelDetalle);            
+        }
+        $this->setScenario($oldScenario);
+        return  !$fallo;
+    }
+    
+    public function next(){
+         return self::find()->select('min(id)')->
+                andWhere(['>','id_relacionado',0])->
+                andWhere(['id_relacionado'=>$this->id_relacionado])->
+                andWhere(['>','id',$this->id])->
+                scalar();
+        
+    }
+    public function previous(){
+        return self::find()->select('max(id)')->
+                andWhere(['>','id_relacionado',0])->
+                andWhere(['id_relacionado'=>$this->id_relacionado])->
+                andWhere(['<','id',$this->id])->
+                scalar();
+    }
+    
+    public function isFirst(){
+        return ($this->id_relacionado >0) && is_null($this->previous());
+    }
+    
+    public function isClonable(){
+        return $this->isFirst() or is_null($this->id_relacionado);
+    }
+    
+    public function validate_child($attribute,$params){
+        if(count($this->matDetpetoferta)==0 && !$this->isNewRecord){
+            $this->addError($attribute, yii::t('base.errors','Este registro no tiene hijos'));
+        }
+    }
+    
+    public function total(){
+        return $this->getMatDetpetoferta()->select('sum(pventa)')->scalar();
+    }
+    public function igv(){
+        return $this->getMatDetpetoferta()->select('sum(igv)')->scalar();
     }
 }

@@ -127,7 +127,7 @@ use kartik\date\DatePicker;
  </div>
  
     <?PHP  
-    echo $this->render();
+    
     
     ?>
   

@@ -102,6 +102,9 @@ class MatDetpetoferta extends \common\models\base\modelBase
     
     public function beforeSave($insert) {
         $this->resolveMontos();
+        if($this->hasChanged('codart') && !$this->isNewRecord){
+         $this->descripcion=$this->material->descripcion;            
+        }
         return parent::beforeSave($insert);
     }
     
@@ -109,6 +112,7 @@ class MatDetpetoferta extends \common\models\base\modelBase
         if($this->petoferta->igv){
          if(!empty($this->pventa)){
              $this->ptotal=$this->pventa/(1+h::gsetting('general', 'igv'));
+             $this->igv=$this->pventa-$this->ptotal;
              }
         }else{
             if(!empty($this->pventa)){
@@ -117,4 +121,6 @@ class MatDetpetoferta extends \common\models\base\modelBase
         }
         $this->punit=empty($this->pventa)?:$this->pventa/$this->cant;
     }
+    
+    
 }

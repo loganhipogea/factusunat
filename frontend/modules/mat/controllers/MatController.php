@@ -421,13 +421,16 @@ public function actionAjaxDesactivaItem($id){
   
   public function actionAjaxShowMaterial(){       
         if (h::request()->isAjax) {
-            $val=h::request()->post('valorInput');
+            $val=h::request()->post('valorInput');///'Valor_input' sale del Widget
+            $idpet=h::request()->post('idpet');///'Valor_input' sale del Widget
+            yii::error(h::request()->post(),__FUNCTION__);
+             yii::error(h::request()->post('valorInput'),__FUNCTION__);
             if(strlen($val)>2)
-            return $this->renderAjax('listado_material',['parametro'=>$val]);
+            return $this->renderAjax('listado_material',['parametro'=>$val,'idpet'=>$idpet]);
             
          }     
    }
-  public function actionAjaxAddArt($id){       
+ public function actionAjaxAddArt($id){       
         if (h::request()->isAjax) {
             //$id=h::request()->get('valorInput');
            // var_dump($val);die();

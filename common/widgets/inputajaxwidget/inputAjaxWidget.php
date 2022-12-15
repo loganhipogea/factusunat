@@ -18,7 +18,7 @@ class inputAjaxWidget extends \yii\base\Widget
     public $posicion=\yii\web\View::POS_END;
     public $isDivReceptor=false; //Si el campo a llenar es un div(true) o un imput
     //public $model=null;
-    public $data=[];
+    public $data=['uno'=>1];
      public $otherContainers=[];
     PUBLIC $isHtml=false;
     public $evento='change';
@@ -44,15 +44,18 @@ class inputAjaxWidget extends \yii\base\Widget
     
     
  private function makeJsHtml(){
-     $operador=($this->isDivReceptor)?'html':'val';
+     $operador=($this->isDivReceptor)?'html':'val'; 
    $this->getView()->registerJs("$(document).ready(function() {
     $('#".$this->id_input."').on('".$this->evento."',function(){
-    var_input=$('#".$this->id_input."').val();      
+    var_input=$('#".$this->id_input."').val(); 
+    var_datos=".Json::encode($this->data).";
+    var_datos['valorInput']=var_input;
+    console.log(var_datos);    
   $.ajax({ 
    url:'".$this->ruta."',
    type:'".$this->tipo."',
-   dataType:'html',
-   data:{valorInput:var_input},
+   dataType:'html',  
+   data:var_datos,
    error:function(xhr, status, error){ 
                             var n = Noty('id');                      
                              $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-remove-sign\'></span>      '+ xhr.responseText);

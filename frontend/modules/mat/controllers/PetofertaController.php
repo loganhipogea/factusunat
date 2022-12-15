@@ -5,7 +5,7 @@ namespace frontend\modules\mat\controllers;
 use Yii;
 use frontend\modules\mat\models\MatPetoferta;
 use frontend\modules\mat\models\MatPetofertaSearch;
-use common\controllers\base\baseController;
+use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\h;
@@ -90,7 +90,19 @@ class PetofertaController extends baseController
     }
     
     
-    
+  public function actionCreatePetOferta()
+    {
+       
+        $model = new MatPetoferta();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->codocu]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }  
     
   public function actionCreaPetOferta(){ 
         
@@ -210,8 +222,8 @@ class PetofertaController extends baseController
                   /****************************************
                   * De los items que se borraron hay que eliminarlos
                   ******************************************/
-                    MatDetpetoferta::deleteAll(['not in','id',$idsModels]);
-                 
+                    MatDetpetoferta::deleteAll([ 'and',['petoferta_id'=>$model->id],['not in','id',$idsModels]]);
+                    
                  /************************************ */
                  
                  
@@ -262,11 +274,11 @@ class PetofertaController extends baseController
                   /****************************************
                   * De los items que se borraron hay que eliminarlos
                   ******************************************/
-                    MatDetpetoferta::deleteAll(['not in','id',$idsModels]);
+                     MatDetpetoferta::deleteAll([ 'and',['petoferta_id'=>$model->id],['not in','id',$idsModels]]);
                  
                  /************************************ */
                  
-                if(Model::loadMultiple($models, Yii::$app->request->post())){
+                if(Model::loadMultiple($models, Yii::$app->request->post()) && $model->isNewRecord){
                      yii::error('Funciono el LoadMultilpe ',__FUNCTION__);
                       $item=100;
                     foreach($models as $modeldetalle){
@@ -280,9 +292,9 @@ class PetofertaController extends baseController
                       yii::error('attributos del modelo');
                      yii::error($model->attributes);
                       return $this->redirect(['view', 'id' => $model->id]);
-                }else{
+                }/*else{
                     var_dump(Model::loadMultiple($models, Yii::$app->request->post()),Yii::$app->request->post(),$models);die();
-                }                
+                } */               
             }else{
                 var_dump($model->attributes);
                 print_r($model->getErrors()); die();
@@ -292,6 +304,25 @@ class PetofertaController extends baseController
             
         }       
         return $this->render('update', ['model' => $model,'items' => $models]);
+    }
+    
+    
+    public function actionEditPetOferta($id){
+        $model = $this->findModel($id);
+
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,'items'=>[],
+        ]);
+        
     }
 
     /**
@@ -322,5 +353,113 @@ class PetofertaController extends baseController
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+    
+    
+   public function actionModalEditDet($id){
+    $this->layout = "install"; 
+      $modeldet=\frontend\modules\mat\models\MatDetpetoferta::findOne($id);      
+       $datos=[];
+        if(h::request()->isPost){            
+            $modeldet->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($modeldet);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                $modeldet->save(); 
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$modeldet->id];
+            }
+        }else{
+           return $this->renderAjax('modal_edit_pet', [
+                        'model' => $modeldet,
+                        'id' => $id,                       
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+   } 
+   
+    public function actionClonePetOferta($id)
+    {
+        $modelModel = $this->findModel($id);
+        if(is_null($modelModel))
+            throw new NotFoundHttpException(Yii::t('base.errors', 'No se encontró el registro.'));
+        if(!$modelModel->isClonable())
+            throw new NotFoundHttpException(Yii::t('base.errors', 'El registro no es clonable'));
+       
+        
+        $model=New MatPetoferta();
+            $model->setScenario($model::SCE_CLONE);
+            $model->setAttributes(['fecha'=>$model::SwichtFormatDate($model::CarbonNow()->format('Y-m-d'), 'date', true),]);
+           
+        if(h::request()->isPost){ 
+            yii::error(h::request()->post(),__FUNCTION__);
+            $post=h::request()->post();
+            if (h::request()->isAjax && $model->load($post)) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+            $transaccion=$model->getDb()->beginTransaction();
+            if($model->clonePetoferta($modelModel)){
+                $model->fecha=$post['MatPetoferta']['fecha'];
+                $model->codpro=$post['MatPetoferta']['codpro'];
+                /*****
+                 * Amarrando
+                 */
+                $model->id_relacionado=$modelModel->id;
+                $modelModel->id_relacionado= $modelModel->id;
+                /*
+                 * Terminando de amarrar
+                 */
+                
+                $model->save();
+                $modelModel->save();
+                $transaccion->commit();
+                return $this->redirect(['update-petoferta', 'id' => $model->id]);
+            }else{
+               $transaccion->rollBack();
+               throw new NotFoundHttpException(Yii::t('base.errors', 'No se pudo clonar, hay algunos errores.'));
+            }
+        }else{
+             return $this->render('update_clone', ['model' => $model,'padre'=>$modelModel]);
+        }
+        
+        
+    }
+    
+    public function actionAjaxAddItem($id){
+        if (h::request()->isAjax) {
+           
+            $idPetoferta=h::request()->post('idpet');
+            yii::error($idPetoferta,__FUNCTION__);
+            h::response()->format = yii\web\Response::FORMAT_JSON;  
+            $model = \common\models\masters\Maestrocompo::findOne($id);
+           yii::error($model,__FUNCTION__);
+            
+            if(is_null($model))
+           return ['error'=>yii::t('base.errors','El registro no existe')];
+            
+            $modeloDetalle=New MatDetpetoferta();
+            $modeloDetalle->setAttributes([
+                        'codart'=>$model->codart,
+                        'codum'=>$model->codum,                        
+                        'descripcion'=>$model->descripcion,
+                        'cant'=>1, 
+                         'petoferta_id'=>$idPetoferta,
+                    ]);
+            yii::error($modeloDetalle->attributes,__FUNCTION__);
+            if(!$modeloDetalle->save()){
+                yii::error($modeloDetalle->getErrors(),__FUNCTION__);
+                return ['error'=>yii::t('base.errors',$model->getFirstError())];   
+            }else{
+                return ['success'=>yii::t('base.errors','Se agregó el item')];
+            }
+             
+            
+         }    
     }
 }

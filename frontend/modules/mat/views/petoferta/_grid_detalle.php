@@ -1,11 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\data\ActiveDataProvider;
 use common\helpers\h;
-
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 ?>
 <div class="mat-petoferta-detalle">
  
@@ -13,7 +15,7 @@ use common\helpers\h;
   $formato=h::formato();
   $formato->thousandSeparator=',';
   ?>
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(['id'=>'pjax-detpet']); ?>
    
 
     
@@ -30,22 +32,16 @@ use common\helpers\h;
          
          [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}',
+                'template' => '{edit}{delete}',
                 'buttons' => [
-                    'update' => function($url, $model) {                        
-                        $options = [
-                            'title' => Yii::t('base.verbs', 'Update'),                            
-                        ];
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
-                         },
-                        
-                         'delete' => function($url, $model) {                        
-                        $options = [
-                            'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
-                            'title' => Yii::t('base.verbs', 'Delete'),                            
-                        ];
-                        return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-remove"></span>', $url, $options/*$options*/);
-                         }
+                    'edit' => function ($url,$model) {
+			    $url= Url::to(['/mat/petoferta/modal-edit-det','id'=>$model->id,'gridName'=>Json::encode(['pjax-detpet']),'idModal'=>'buscarvalor']);
+                              return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
+                            },
+                        'delete' => function ($url,$model) {                             
+                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);
+                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                             }
                     ]
                 ],
          
@@ -67,8 +63,8 @@ use common\helpers\h;
                  'contentOptions'=>['style'=>'text-align:right; width: 10%; font-weight:900;'],
                  'value'=>function($model)use($formato){
                      return $formato->asDecimal($model->cant, 2);   
-                 }
-                     
+                 },
+                 'footer'=>'HOLA',     
                 ], 
             [  
                 'attribute' => 'punit', 
@@ -87,13 +83,15 @@ use common\helpers\h;
                 'attribute' => 'pventa', 
                      'headerOptions' => [
                         'class' => 'text-right',
+                         
                         
                             ],
+                
                  'contentOptions'=>['style'=>'text-align:right; width: 10%; font-weight:900;'],
                  'value'=>function($model)use($formato){
                      return $formato->asDecimal($model->pventa, 2);   
                  },
-                'footer'=>'sds',
+                
                     
              ],
                        
@@ -106,7 +104,39 @@ use common\helpers\h;
           
         ],
     ]); ?>
+     <?php 
+    echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgruidBancos',
+        'otherContainers'=>['pjax-resumen'],
+            'idGrilla'=>'pjax-detpet',
+            'family'=>'holas',
+          'type'=>'POST',
+           'evento'=>'click',
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]);
+    ?>   
+      <div class="col-lg-12 col-md-6 col-sm-6 col-xs-6">   
+        
+    </div> 
+    <div class="col-lg-12 col-md-6 col-sm-6 col-xs-6">  
+        
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">   
+            <label class="control-label" for="buscador_id">Igv</label>
+            <input  type="text" value="<?=$model->igv()?>" id="igv_id" class="form-control" disabled="disabled" class="text-right">
+      
+        </div> 
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">  
+            
+            <label class="control-label" for="buscador_id">Total</label>
+            <input  type="text" value="<?=$model->total()?>" id="total_id" class="form-control" disabled="disabled" class="text-right">
+      
+        </div> 
+      
+    </div>   
     <?php Pjax::end(); ?>
+    
 </div>
     </div>
 

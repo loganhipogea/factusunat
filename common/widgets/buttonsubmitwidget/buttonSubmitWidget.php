@@ -55,7 +55,7 @@ class buttonSubmitWidget extends Widget
        $cadAux2='';
     if(is_array($idGrilla)){
        if(count($idGrilla)==1){
-           $cadAux.="$.pjax.reload('#".$grilla."');";
+           $cadAux.="$.pjax.reload('#".$idGrilla[0]."');";
        }else{
            foreach($idGrilla as $index=>$grilla){
           //$cadAux.="$.pjax.reload('#".$grilla."');";
