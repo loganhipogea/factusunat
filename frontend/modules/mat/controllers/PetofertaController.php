@@ -505,8 +505,8 @@ class PetofertaController extends baseController
             $fontDirs = $defaultConfig['fontDir'];
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-
-            $mpdf = new \Mpdf\Mpdf([
+  $mpdf= new \Mpdf\Mpdf();
+           /* $mpdf = new \Mpdf\Mpdf([
                 /*'fontDir' => array_merge($fontDirs,[
                 Yii::getAlias('@fonts')
                     ]),
@@ -526,7 +526,7 @@ class PetofertaController extends baseController
         
     //],
     //'default_font' => 'cour'
-]);
+//]);
 //print_r($mpdf->fontdata);die();
           
           //$mpdf=new \Mpdf\Mpdf();
