@@ -507,14 +507,14 @@ class PetofertaController extends baseController
             $fontData = $defaultFontConfig['fontdata'];
 
             $mpdf = new \Mpdf\Mpdf([
-                'fontDir' => array_merge($fontDirs,[
+                /*'fontDir' => array_merge($fontDirs,[
                 Yii::getAlias('@fonts')
                     ]),
     'fontdata' => $fontData + [
         'cour' => [
             'R' => 'Courier.ttf',
             
-        ],
+        ],*/
         /*'helvetica' => [
             'R' => 'Helvetica.ttf',
             'I' => 'VerdanaBOLD.ttf',
@@ -524,7 +524,7 @@ class PetofertaController extends baseController
             'B' => 'VerdanaBOLD.ttf',
         ],*/
         
-    ],
+    //],
     //'default_font' => 'cour'
 ]);
 //print_r($mpdf->fontdata);die();
