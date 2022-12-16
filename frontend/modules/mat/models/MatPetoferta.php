@@ -2,6 +2,7 @@
 
 namespace frontend\modules\mat\models;
 use common\models\masters\Centros;
+use common\models\masters\VwSociedades;
 use common\models\masters\Clipro;
 use common\models\masters\Trabajadores;
 use common\behaviors\FileBehavior;
@@ -12,7 +13,11 @@ use Yii;
  */
 class MatPetoferta extends \common\models\base\modelBase
 {
-    
+    public $prefijo='58';
+    public $dateorTimeFields=[
+     'fecha'=>self::_FDATE,
+        
+         ];
     public $booleanFields=['igv'];
     const SCE_CLONE='clonar';//Punto de venta ventas rapidas
     /**
@@ -96,6 +101,11 @@ class MatPetoferta extends \common\models\base\modelBase
     {
         return $this->hasOne(Centros::className(), ['codcen' => 'codcen']);
     }
+    
+    public function getSociedad()
+    {
+        return $this->hasOne(VwSociedades::className(), ['codsoc' => 'codsoc']);
+    }
      public function getTrabajador()
     {
         return $this->hasOne(Trabajadores::className(), ['codigotra' => 'codtra']);
@@ -127,6 +137,8 @@ class MatPetoferta extends \common\models\base\modelBase
     public function beforeSave($insert) {
         if($insert){
             $this->setCorrelativo('numero');
+            $this->codsoc= VwSociedades::codsoc();
+            $this->codcen= Centros::codcen();
         }
         return parent::beforeSave($insert);
     }

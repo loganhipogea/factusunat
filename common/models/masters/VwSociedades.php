@@ -163,4 +163,11 @@ class VwSociedades extends \common\models\base\modelBase
      // var_dump(['codsoc'=>self::codsoc()]);die();
      return VwSociedades::find()->andWhere(['codsoc'=>self::codsoc()])->one();
   }  
+  
+  public function renderLogo(){
+      return h::currentController()->renderFile(
+              yii::getAlias('@common/view/sociedades/logo.php'),
+              ['model'=>$this]
+              );
+  }
 }

@@ -124,11 +124,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
    ?> 
  <div class="btn-group">
 <?php
-      $url= Url::to(['/com/com/new-detail-invoice','id'=>$model->id,'gridName'=>Json::encode(['grilla-contactos','zona-totales']),'idModal'=>'buscarvalor']);
+      $url= Url::to(['/com/coti/new-grupo-coti','id'=>$model->id,'gridName'=>Json::encode(['grilla-contactos','zona-totales']),'idModal'=>'buscarvalor']);
       echo  Html::button('<span class="fa fa-plus"></span>'.yii::t('base.verbs','Add Detail'), ['href' => $url, 'title' => 'Nuevo item de '.$model->numero,'id'=>'btn_contacts','idGrilla'=>Json::encode(['grilla-contactos','zona-totales']),  'class' => 'botonAbre btn btn-success']); 
  ?>
 <?php
-      $url= Url::to(['/com/com/new-detail-invoice','id'=>$model->id,'gridName'=>Json::encode(['grilla-contactos','zona-totales']),'idModal'=>'buscarvalor']);
-      echo  Html::button('<span class="fa fa-plus"></span>'.yii::t('base.verbs','Add Detail'), ['href' => $url, 'title' => 'Nuevo item de '.$model->numero,'id'=>'btn_contacts','idGrilla'=>Json::encode(['grilla-contactos','zona-totales']),  'class' => 'botonAbre btn btn-success']); 
+      //$url= Url::to(['/com/com/new-detail-invoice','id'=>$model->id,'gridName'=>Json::encode(['grilla-contactos','zona-totales']),'idModal'=>'buscarvalor']);
+      //echo  Html::button('<span class="fa fa-plus"></span>'.yii::t('base.verbs','Add Detail'), ['href' => $url, 'title' => 'Nuevo item de '.$model->numero,'id'=>'btn_contacts','idGrilla'=>Json::encode(['grilla-contactos','zona-totales']),  'class' => 'botonAbre btn btn-success']); 
  ?>
  </div>

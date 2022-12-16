@@ -580,13 +580,10 @@ class CotiController extends baseController
   }
   
   
-  public function actionModalCreateSerie() {
-         $id=h::request()->get('codcen');
-         //var_dump($id);die();
+  public function actionModalNewGrupoCoti($id) {
+         $modelPadre=$this->findModel($id);         
          $this->layout = "install";
-         $model=New \frontend\modules\com\modelBase\ComSeriesFactura();
-         //$model->setScenario($model::SCE_PTO_VENTA);
-         $model->codcen=$id;
+         $model=New \frontend\modules\com\models\ComCotigrupos();         
          $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
@@ -606,7 +603,7 @@ class CotiController extends baseController
                 }                
             }
         }else{
-           return $this->renderAjax('modal_series_factura', [
+           return $this->renderAjax('modal_coti_grupo', [
                         'model' => $model,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
@@ -616,10 +613,10 @@ class CotiController extends baseController
             ]);  
         }
     }
-   public function actionModalEditSerie($id) {
+   public function ModalEditGrupoCoti($id) {
 
          $this->layout = "install";
-         $model=\frontend\modules\com\modelBase\ComSeriesFactura::findOne($id);
+         $model= \frontend\modules\com\models\ComCotigrupos::findOne($id);
          //$model->setScenario($model::SCE_PTO_VENTA);
          $datos=[];
         if(h::request()->isPost){            
@@ -640,7 +637,7 @@ class CotiController extends baseController
                 }                
             }
         }else{
-           return $this->renderAjax('modal_series_factura', [
+           return $this->renderAjax('modal_coti_grupo', [
                         'model' => $model,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),

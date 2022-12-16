@@ -21,7 +21,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     
     
     <?php $form = ActiveForm::begin([
-    //'fieldClass'=>'\common\components\MyActiveField',
+       'fieldClass'=>'\common\components\MyActiveField',
       'id'=>'myform',
         'enableAjaxValidation'=>true,
        //'enableClientValidation'=>true
@@ -31,13 +31,13 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             <div class="btn-group"> 
                     <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
                     <?php if($model->previous()>0){?>
-                    <?php $url=Url::to(['/mat/petoferta/update-pet-oferta','id'=>$model->previous()]);?>
+                    <?php $url=Url::to(['/mat/petoferta/edit-pet-oferta','id'=>$model->previous()]);?>
                     <?=Html::a('<span class="fa fa-angle-left" ></span>',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"])?>
                     <?php }?>
                 
                      <?php if($model->next()>0){?>
                     
-                    <?php $url=Url::to(['/mat/petoferta/update-pet-oferta','id'=>$model->next()]);?>
+                    <?php $url=Url::to(['/mat/petoferta/edit-pet-oferta','id'=>$model->next()]);?>
                     <?=Html::a('<span class="fa fa-angle-right" ></span>',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"])?>
                     <?php }?>
                 
@@ -49,6 +49,13 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                    <?php if(!$model->isNewRecord) {?>
                    <?= common\widgets\auditwidget\auditWidget::widget(['model'=>$model])?>
                    <?php }?>
+                
+                    <?php if(!$model->isNewRecord){?>                    
+                    <?php $url=Url::to(['/mat/petoferta/make-pdf','id'=>$model->id]);?>
+                    <?=Html::a('<span class="fa fa-file-pdf-o" ></span>'.Yii::t('app', 'Pdf'),$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-warning"])?>
+                    <?php }?>
+                
+                
             </div>
             </div>
     </div>

@@ -38,9 +38,9 @@ class Clipro extends \common\models\base\modelBase
          {
                 return [
 		
-		/*'fileBehavior' => [
-			'class' => '\frontend\modules\attachments\behaviors\FileBehaviorAdvanced' 
-                               ],*/
+		'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' ,
+                               ],
                     'auditoriaBehavior' => [
 			'class' => '\common\behaviors\AuditBehavior' ,
                                ],

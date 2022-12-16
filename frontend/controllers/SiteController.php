@@ -306,6 +306,39 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      $mpdf = new \Mpdf\Mpdf();
+      $contenido=' <html lang="es">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-param" content="_csrf-frontend">
+        <meta name="csrf-token" content="2jsjgLZ_oXU1eIDXXDcbxaMnHzkU-LhMayOVdgC7REKgYU3x3QzsP3NMsYI7aCnx_GIqaCSB0j4dca04TMEiKQ==">
+           </head>             
+<title></title>
+          <body>
+         <div>Solicitud de cotización 5800000002</div>
+         <table>
+        <TR>
+        <TD width="100%" >
+            <div >
+                <table >
+                 <TR style="border-top:solid;border-bottom:solid;border-color:#CCC; border-width: 1px;">
+                    <TD style="padding: 7px;">Sres : </TD>
+                    <TD style="padding: 7px;">ESPINOZA RIVERA YESENIA ALEJANDRINA</TD>
+                 </TR>
+                </TABLE>
+            </DIV>
+        </TD>
+       
+    </TR>
+    
+    </table>
+        </body></html>';
+      $mpdf->WriteHTML($contenido);
+      $nombre= uniqid().'pdf';
+      $mpdf->Output(yii::getAlias('@temp') .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
+      die();
+      
         $model=New \frontend\modules\mat\models\MatDetpetoferta();
         echo $model->find()->andWhere([ 'and',
             ['petoferta_id'=>23],
