@@ -306,6 +306,26 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      
+      
+$html = <<<HTML
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p>Simple Content</p>
+</body>
+</html>
+HTML;
+
+// create PDF file from HTML content :
+Yii::$app->html2pdf
+    ->convert($html)
+    ->outPut();
+
+
+die();
       $mpdf = new \Mpdf\Mpdf();
       $contenido=' <html lang="es">
     <head>
