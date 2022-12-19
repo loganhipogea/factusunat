@@ -33,4 +33,18 @@ class ComboHelper extends \common\helpers\ComboHelper{
            ComFactura::ST_MISSING_SUNAT=>yii::t('base.names','No enviada-SUNAT'),
            ];
     }*/
+    
+    public static function tiposCecos(){
+        return [
+            'M'=>'Estadística compras',
+            'P'=>'Predefinida',
+            'D'=>'Determinística',
+        ];
+    }
+    
+    public static function partidasCoti(){
+       return ArrayHelper::map(
+                       \frontend\modules\com\models\ComCotigrupos::find()->all(),
+                'id','descripartida');   
+    }
 }

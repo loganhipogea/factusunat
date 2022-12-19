@@ -320,9 +320,9 @@ $html = <<<HTML
 HTML;
 
 // create PDF file from HTML content :
-Yii::$app->html2pdf
-    ->convert($html)
-    ->outPut();
+return Yii::$app->html2pdf
+    ->convert("<b>Hola</b>")    
+    ->send();
 
 
 die();

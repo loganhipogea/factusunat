@@ -111,7 +111,7 @@ class ComCotizacion extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|CliproQuery
      */
-    public function getCodcli0()
+    public function getCliente1()
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codcli']);
     }
@@ -121,7 +121,7 @@ class ComCotizacion extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|CliproQuery
      */
-    public function getCodcli10()
+    public function getCliente2()
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codcli1']);
     }

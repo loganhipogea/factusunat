@@ -61,8 +61,19 @@ class ComCotigrupos extends \common\models\base\modelBase
     {
         return new ComCotigruposQuery(get_called_class());
     }
-    
+    public function getDetail()
+    {
+        return $this->hasMany(ComDetcoti::className(), ['cotigrupo_id' => 'id']);
+    }
      public function getCoti() {
         return $this->hasMany(ComCotizacion::className(), ['id' => 'coti_id']);
+    }
+    
+    public function refreshSubto($update_database=true){
+        $this->total=$this->getDetail()->
+         select('sum(ptotal)')->scalar();
+        if($update_database)
+        return $this->save();
+        return true;
     }
 }

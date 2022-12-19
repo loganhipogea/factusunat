@@ -10,7 +10,7 @@ return [
         'html2pdf' => [
             'class' => 'yii2tech\html2pdf\Manager',
             'viewPath' => '@app/views/pdf',
-            'converter' => 'wkhtmltopdf',
+           // 'converter' => 'wkhtmltopdf',
         ],
         
         'sunat'=>[

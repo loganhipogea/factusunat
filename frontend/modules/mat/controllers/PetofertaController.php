@@ -470,9 +470,12 @@ class PetofertaController extends baseController
         $nombre= uniqid().'.pdf';
         $model=$this->findModel($id);
         $contenido=$this->render('reporte_peti',['model'=>$model]); 
-        $pdf=$this->preparePdf($contenido);
+        return Yii::$app->html2pdf
+    ->convert($contenido)    
+    ->send();
+        //$pdf=$this->preparePdf($contenido);
        // $pdf->WriteHTML($contenido);
-        $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
+        //$pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
         
     }
     
@@ -542,5 +545,12 @@ class PetofertaController extends baseController
            //$mpdf->showImageErrors = true;
            //$mpdf->curlAllowUnsafeSslRequests = true; //Permite imagenes de url externas
          return $mpdf;
+    }
+    
+    public function actionModalShowPetoferta($id){
+     $model=$this->findModel($id);
+      $this->layout="reportes";
+     return $this->render('modal_show_petoferta',['model'=>$model]);
+     
     }
 }

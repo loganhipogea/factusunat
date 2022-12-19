@@ -1,5 +1,5 @@
 <?php
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
+                        $url=Url::to(['update-coti','id'=>$model->id]);
                         return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
                          },
                           'view' => function($url, $model) {                        

@@ -583,7 +583,8 @@ class CotiController extends baseController
   public function actionModalNewGrupoCoti($id) {
          $modelPadre=$this->findModel($id);         
          $this->layout = "install";
-         $model=New \frontend\modules\com\models\ComCotigrupos();         
+         $model=New \frontend\modules\com\models\ComCotigrupos(); 
+         $model->coti_id=$id;
          $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
@@ -613,7 +614,7 @@ class CotiController extends baseController
             ]);  
         }
     }
-   public function ModalEditGrupoCoti($id) {
+   public function actionModalEditGrupoCoti($id) {
 
          $this->layout = "install";
          $model= \frontend\modules\com\models\ComCotigrupos::findOne($id);
@@ -648,5 +649,177 @@ class CotiController extends baseController
         }
     }
     
+   public function actionModalNewGrupoCeco($id) {
+         $modelPadre=$this->findModel($id);         
+         $this->layout = "install";
+         $model=New \frontend\modules\com\models\ComCoticeco(); 
+         $model->coti_id=$id;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_ceco_grupo', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+   public function actionModalEditGrupoCeco($id) {
+
+         $this->layout = "install";
+         $model= \frontend\modules\com\models\ComCoticeco::findOne($id);
+         //$model->setScenario($model::SCE_PTO_VENTA);
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_ceco_grupo', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    
+  public function actionDetailMatByCeco($id){
+     $model=$this->findModel($id);
+     $id_ceco=h::request()->get('cecoid');
+     //$id_partida=h::request()->get('partid');
+     if(is_null($modelCeco= \frontend\modules\com\models\ComCoticeco::findOne($id_ceco)))
+     throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
+     /*if(is_null($modelCeco= \frontend\modules\com\models\ComCotigrupos::findOne($id_partida)))
+     throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
+     */
+     return $this->render('detalle_by_ceco',['modelCoti'=>$model,'model'=>$modelCeco]);
+     
+     
+     
+      
+  }  
+  
+ 
+  public function actionModalNewDetailByCeco($id) {
+         $modelPadre=$this->findModel($id);         
+         $this->layout = "install";
+         $id_ceco=h::request()->get('cecoid');
+         if(h::request()->isGet && is_null($modelCeco= \frontend\modules\com\models\ComCoticeco::findOne($id_ceco)))
+        throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
+     
+         
+         $model=New \frontend\modules\com\models\ComDetcoti(); 
+         $model->coti_id=$id;
+        
+         $model->coticeco_id=$id_ceco;
+         
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_detail_by_ceco', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    public function actionModalEditDetailByCeco($id) {
+
+         $this->layout = "install";
+         $model= \frontend\modules\com\models\ComDetcoti::findOne($id);
+         //var_dump($model);die();
+         //$model->setScenario($model::SCE_PTO_VENTA);
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_detail_by_ceco', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    
+    public function actionAjaxExpandOferta(){
+        if (isset($_POST['expandRowKey'])) {
+        $model = ComDetcoti::findOne($_POST['expandRowKey']+0);
+         return $this->renderPartial('ajax_expand_oferta', ['model'=>$model]);
+        
+        
+    }  
+    }
    
 }
