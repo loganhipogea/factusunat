@@ -116,16 +116,26 @@ use kartik\date\DatePicker;
 
  </div>
   
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <?PHP
+     echo $form->field($model, 'detalle_interno')
+             ->widget(\dosamigos\ckeditor\CKEditor::className(), [
+        'options' => ['rows' => 2],
+         'clientOptions'=>['language'=>'es',
+             ],
+        ]);
+      ?>
+ </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'detalle_interno')->textarea(['rows' => 2]) ?>
-
+    <?PHP
+     echo $form->field($model, 'detalle_externo')
+             ->widget(\dosamigos\ckeditor\CKEditor::className(), [
+        'options' => ['rows' => 2],
+         'clientOptions'=>['language'=>'es',
+             ],
+        ]);
+      ?>
  </div>
-  
-   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'detalle_externo')->textarea(['rows' => 2]) ?>
-
- </div>
- 
     <?PHP  
     
     

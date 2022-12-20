@@ -741,16 +741,13 @@ class CotiController extends baseController
          $id_ceco=h::request()->get('cecoid');
          if(h::request()->isGet && is_null($modelCeco= \frontend\modules\com\models\ComCoticeco::findOne($id_ceco)))
         throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
-     
-         
-         $model=New \frontend\modules\com\models\ComDetcoti(); 
-         $model->coti_id=$id;
-        
+      $model=New \frontend\modules\com\models\ComDetcoti(); 
+         $model->coti_id=$id+0;
          $model->coticeco_id=$id_ceco;
-         
          $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
+            yii::error($model->attributes,__FUNCTION__);
             h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){
@@ -762,8 +759,7 @@ class CotiController extends baseController
                    //$model->createStock('1203');
                    
                   return ['success'=>1];  
-                }else{
-                    
+                }else{                    
                 }                
             }
         }else{
