@@ -61,7 +61,7 @@ class ActionSearchSelect extends \yii\base\Action
                   
               }
                   
-              yii::error($query->createCommand()->getRawSql());
+              yii::error($query->createCommand()->getRawSql(),__FUNCTION__);
              $resultados= $query->asArray()->all();
              $resultados[]=['id'=>'','text'=>'--'];
          }         

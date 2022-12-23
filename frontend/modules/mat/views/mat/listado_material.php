@@ -10,6 +10,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
     
     <div style='overflow:auto;'>
+    <?php yii::error(\common\models\masters\Maestrocompo::find()->
+            andFilterWhere(['like', 'descripcion', explode ('%',$parametro)])-> 
+        createCommand()->rawSql,__FUNCTION__)?>
     <?php Pjax::begin(['id'=>'stock-index']); ?>
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
