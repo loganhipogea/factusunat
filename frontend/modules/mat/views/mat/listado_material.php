@@ -14,7 +14,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
                 'query'=> \common\models\masters\Maestrocompo::find()->andFilterWhere(['like', 'descripcion', explode ('%',$parametro)]),
-                'pagination'=>['pageSize'=>2],
+                'pagination'=>['pageSize'=>10],
                 ]),
          'summary' => '',
         
