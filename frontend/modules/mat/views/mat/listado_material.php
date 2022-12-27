@@ -16,7 +16,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             
          $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$parametro.'%');
                     $likeCondition->setEscapingReplacements(false);
-                $query->andWhere($likeCondition);   
+               
             
             ?>
     <?php Pjax::begin(['id'=>'stock-index']); ?>
