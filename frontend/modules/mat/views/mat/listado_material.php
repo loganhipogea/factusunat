@@ -12,11 +12,17 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     <div style='overflow:auto;'>
     <?php yii::error(\common\models\masters\Maestrocompo::find()->
             andFilterWhere(['like', 'descripcion', $parametro])-> 
-        createCommand()->rawSql,__FUNCTION__)?>
+        createCommand()->rawSql,__FUNCTION__);
+            
+         $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$parametro.'%');
+                    $likeCondition->setEscapingReplacements(false);
+                $query->andWhere($likeCondition);   
+            
+            ?>
     <?php Pjax::begin(['id'=>'stock-index']); ?>
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
-                'query'=> \common\models\masters\Maestrocompo::find()->andFilterWhere(['like', 'descripcion', $parametro]),
+                'query'=> \common\models\masters\Maestrocompo::find()->andWhere($likeCondition),
                 'pagination'=>['pageSize'=>10],
                 ]),
          'summary' => '',

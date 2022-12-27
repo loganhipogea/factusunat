@@ -70,7 +70,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
             'form'=>$form,
             'campo'=>'codart',
               'ordenCampo'=>2,
-                'addCampos'=>[1,2,6],
+                'addCampos'=>[1],
         ]);  ?>
 
 
