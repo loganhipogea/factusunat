@@ -27,10 +27,16 @@ class ActionSearchSelect extends \yii\base\Action
          //var_dump($filterWhere);die();
          $modelo=str_replace('_','\\',$modelo);
          //yii::error($modelo);die();
+         
+          //USANDO EL BUSCADOR DE TEXTO PARA materialres//
+                   $likeCondition = new \yii\db\conditions\LikeCondition($secondField, 'LIKE','%'.$filter.'%');
+                    $likeCondition->setEscapingReplacements(false);
+                
+         
          if(is_null($filter) or empty($filter) or trim($filter)=="") 
               $resultados=[];
            else{
-               $query=$modelo::find()->andWhere(['like',$secondField,explode('%',$filter)]);
+               $query=$modelo::find()->andWhere($likeCondition);
                
                       
                //ECHO $query->createCommand()->rawSql;die();
@@ -50,7 +56,11 @@ class ActionSearchSelect extends \yii\base\Action
                   $expresion=new \yii\db\Expression('CONCAT('.$camposegundo.')');
                   $query=$query->select([$firstField." as id",$expresion.' as text']);
               }else{
-                  $query=$query->select([$firstField." as id",$secondField.' as text'])->where(['like',$secondField,explode('%',$filter)]);
+                  
+                 
+                     $query=$query->select([$firstField." as id",$secondField.' as text'])->where(
+                          $likeCondition
+                          );
               }
               
               IF(count($filterWhere)>0){

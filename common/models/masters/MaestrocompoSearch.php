@@ -56,11 +56,19 @@ class MaestrocompoSearch extends Maestrocompo
         }
 
         // grid filtering conditions
-        $query->andFilterWhere(['like', 'codart', $this->codart])
-            ->andFilterWhere(['like', 'descripcion', explode ('%',$this->descripcion)])
+                   
+                    
+         if(empty($this->descripcion)){
+          $query->andFilterWhere(['like', 'codart', $this->codart])
             ->andFilterWhere(['like', 'marca', $this->marca])
             ->andFilterWhere(['like', 'numeroparte', $this->numeroparte])     
-            ->andFilterWhere(['like', 'modelo',$this->modelo]);  
+            ->andFilterWhere(['like', 'modelo',$this->modelo]);     
+         }else{
+                    $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$this->descripcion.'%');
+                    $likeCondition->setEscapingReplacements(false);
+                $query->andWhere($likeCondition);
+         }
+        
         
            
 
