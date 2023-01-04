@@ -553,4 +553,63 @@ class PetofertaController extends baseController
      return $this->render('modal_show_petoferta',['model'=>$model]);
      
     }
+    
+    
+     public function actionModalCreaServ($id){
+    $this->layout = "install"; 
+      $model=$this->findModel($id);
+      $modeldet= new \frontend\modules\mat\models\MatDetpetServicio();      
+      $modeldet->petoferta_id=$model->id;
+      $datos=[];
+        if(h::request()->isPost){            
+            $modeldet->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($modeldet);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                $modeldet->save(); 
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$modeldet->id];
+            }
+        }else{
+           return $this->renderAjax('modal_servicio', [
+                        'model' => $modeldet,
+                        'id' => $id,                       
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+   } 
+   
+   public function actionModalEditServ($id){
+    $this->layout = "install"; 
+      
+      $modeldet=  \frontend\modules\mat\models\MatDetpetServicio::findOne($id);      
+      
+      $datos=[];
+        if(h::request()->isPost){            
+            $modeldet->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($modeldet);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                $modeldet->save(); 
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$modeldet->id];
+            }
+        }else{
+           return $this->renderAjax('modal_servicio', [
+                        'model' => $modeldet,
+                        'id' => $id,                       
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+   } 
 }

@@ -179,7 +179,9 @@ class MaterialsController extends baseController
     public function actionModalCreaMaterial(){
           $this->layout = "install";
          $model = new Maestrocompo();
-        if(h::request()->isPost){   
+        if(h::request()->isPost){  
+            
+            
             $model->load(h::request()->post());
              h::response()->format = \yii\web\Response::FORMAT_JSON;
               $datos=\yii\widgets\ActiveForm::validate($model);
@@ -193,7 +195,7 @@ class MaterialsController extends baseController
            return $this->renderAjax('_form_modal', [
                         'model' => $model,
                         'codigo'=>$model->codart,
-                        'id' => $id,
+                        //'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
                         //'cantidadLibres'=>$cantidadLibres,

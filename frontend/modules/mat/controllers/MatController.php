@@ -440,5 +440,74 @@ public function actionAjaxDesactivaItem($id){
             
          }     
    }
-     
+   
+   public function actionModalCreaActivoColector($id) {
+         $this->layout = "install";  
+         $modelPadre=\frontend\modules\mat\models\MatActivos::findOne($id);
+         if(is_null($modelPadre))
+         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+         $model=new \frontend\modules\mat\models\MatActivoscecos();        
+         $model->activo_id=$id;
+        
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 //RENDERIZANDO LA VISTA SEGUN EL ESCENARIO DEL MODELO
+                   'modal_activo_colector',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+    } 
+   
+   public function actionModalEditaActivoColector($id) {
+         $this->layout = "install";         
+         $model=\frontend\modules\mat\models\MatActivoscecos::findOne($id);        
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 //RENDERIZANDO LA VISTA SEGUN EL ESCENARIO DEL MODELO
+                   'modal_activo_colector',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+    } 
+    
+   
+   
 }

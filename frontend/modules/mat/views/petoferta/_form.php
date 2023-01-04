@@ -155,7 +155,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     <?php } ?> 
   </div> 
 <?php /*if($model->isNewRecord) { */?>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <label class="control-label" for="buscador_id">Explorar</label>
           <input  type="text" id="buscador_id" class="form-control">
@@ -163,6 +163,17 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
       <div id="zona_stock" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           
       </div>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <label class="control-label" for="btn_add_mat">
+        Agregar material
+    </label>
+     <?php
+         $url= Url::to(['/masters/materials/modal-crea-material','gridName'=>'pjax-detpet','idModal'=>'buscarvalor']);
+        echo  Html::button('<span class="fa fa-plus"></span>', ['href' => $url, 'title' => 'Crea nuevo material ','id'=>'btn_add_mat',  'class' => 'botonAbre btn btn-success']); 
+      ?> 
+    
+</div>
        <?php 
        
       // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
@@ -176,7 +187,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'id_input'=>'buscador_id',
             'idGrilla'=>'zona_stock'
       ])  ?>
-  </div>     
+      
  <?php /*}*/ ?>   
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
     <?php  
@@ -195,6 +206,16 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     ?>
    </div>   
      <?php ActiveForm::end(); ?>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">        
+     <?php
+        if(!$model->isNewRecord){
+              $url= Url::to(['/mat/petoferta/modal-crea-serv','id'=>$model->id,'gridName'=>'pjax-detpet','idModal'=>'buscarvalor']);
+            echo  '.'.Html::button('<span class="fa fa-plus"></span>'.yii::t('base.names','Agregar Servicio'), ['href' => $url, 'title' => 'Crea nuevo material ','id'=>'btn_add_mat',  'class' => 'botonAbre btn btn-success']); 
+       
+        }
+      ?>       
+    </div>      
+          
 </div>
     </div>
 </div>

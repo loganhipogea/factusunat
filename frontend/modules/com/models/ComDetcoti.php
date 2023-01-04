@@ -9,30 +9,15 @@ use frontend\modules\mat\models\MatDetpetoferta;
 use yii\helpers\ArrayHelper;
 use frontend\modules\mat\models\MatVwPetoferta;
 use Yii;
-/**
- * This is the model class for table "com_detcoti".
- *
- * @property int $id
- * @property int|null $coti_id
- * @property string|null $item
- * @property string|null $tipo tipo material o servicio
- * @property string|null $codart
- * @property string|null $descripcion
- * @property string|null $detalle
- * @property string|null $codum
- * @property float|null $cant
- * @property float|null $punit
- * @property float|null $ptotal
- * @property float|null $igv
- * @property float|null $pventa
- *
- * @property ComCotizacione $coti
+/**roperty ComCotizacione $coti
  */
 class ComDetcoti extends \common\models\base\modelBase
 {
-    /**
-     * {@inheritdoc}
-     */
+    const SCE_HERRAMIENTAS='SH';
+    const SCE_SERVICIO='SS';
+    const SCE_MANO_OBRA='SM';
+    
+    
     public static function tableName()
     {
         return 'com_detcoti';
@@ -47,6 +32,7 @@ class ComDetcoti extends \common\models\base\modelBase
             [['coti_id','cotigrupo_id','coticeco_id'], 'integer'],
             [['cotigrupo_id','coticeco_id','descripcion','punitcalculado'], 'safe'],
             [['detalle'], 'string'],
+            [['tipo'], 'safe'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
@@ -72,12 +58,38 @@ class ComDetcoti extends \common\models\base\modelBase
             'codum' => Yii::t('app', 'Codum'),
             'cant' => Yii::t('app', 'Cant'),
             'punit' => Yii::t('app', 'Punit'),
+           'punitcalculado' => Yii::t('app', 'P. Aut'),
             'ptotal' => Yii::t('app', 'Ptotal'),
             'igv' => Yii::t('app', 'Igv'),
             'pventa' => Yii::t('app', 'Pventa'),
         ];
     }
 
+    
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCE_HERRAMIENTAS] = [
+            'codactivo', 'descripcion','codum',
+            'cant', 'punit', 'ptotal','punitcalculado',
+            'cotigrupo_id', 'coticeco_id', 'detcoti_id',
+             'detcoti_id_id','servicio_id','tipo'
+            ];
+        $scenarios[self::SCE_SERVICIO] = [
+              'descripcion','codum',
+            'cant', 'punit', 'ptotal','punitcalculado',
+            'cotigrupo_id', 'coticeco_id', 'detcoti_id',
+             'detcoti_id_id','servicio_id','tipo'
+            ];
+        $scenarios[self::SCE_MANO_OBRA] = [
+             'codcargo', 'descripcion','codum',
+            'cant', 'punit', 'ptotal','punitcalculado',
+            'cotigrupo_id', 'coticeco_id', 'detcoti_id',
+             'detcoti_id_id','servicio_id','tipo'
+            ];        
+       return $scenarios;
+    }
+    
+    
     /**
      * Gets query for [[Coti]].
      *
@@ -117,6 +129,7 @@ class ComDetcoti extends \common\models\base\modelBase
         
     }
     public function beforeSave($insert) {
+        yii::error($this->attributes,__FUNCTION__);
         if($this->hasChanged('codart'))
         $this->descripcion=$this->material->descripcion;
         $this->ptotal=$this->punit*$this->cant;
@@ -125,6 +138,8 @@ class ComDetcoti extends \common\models\base\modelBase
     public function afterSave($insert, $changedAttributes) {
         if(in_array('punit',array_keys($changedAttributes))){
             yii::error('SI AGARRO',__FUNCTION__);
+          yii::error($this->attributes,__FUNCTION__);
+            
             $this->refreshMontos();
         }else{
            yii::error('no AGARRO',__FUNCTION__); 
@@ -161,5 +176,43 @@ class ComDetcoti extends \common\models\base\modelBase
   private function refreshMontos(){
       $this->coticeco->refreshSubto();
        $this->partida->refreshSubto();
+  }
+  
+  public function resolveScenario(){
+      $tipo=$this->tipo;
+        switch ($tipo) {
+    case 'M':
+        $this->setScenario('default');
+        break;
+    case 'H':
+         $this->setScenario(self::SCE_HERRAMIENTAS);
+        break;
+    case 'S':
+        $this->setScenario(self::SCE_SERVICIO);
+        break;
+    case 'T':
+        $this->setScenario(self::SCE_MANO_OBRA);
+        break;
+        }
+  }
+  
+  
+  public function valorUnitario(){
+    $tipo=$this->tipo;
+        switch ($tipo) {
+    case 'M':
+        $this->setScenario('default');
+        break;
+    case 'H':
+         $this->setScenario(self::SCE_HERRAMIENTAS);
+        break;
+    case 'S':
+        $this->setScenario(self::SCE_SERVICIO);
+        break;
+    case 'T':
+        $this->setScenario(self::SCE_MANO_OBRA);
+        break;
+        }  
+     
   }
 }

@@ -1,14 +1,9 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\Json;
-use yii\widgets\ActiveForm;
 use common\helpers\h;
-use common\widgets\selectwidget\selectWidget;
-use kartik\date\DatePicker;
 use frontend\modules\mat\models\MatVwPetoferta;
-
 use yii\grid\GridView as grid; 
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */

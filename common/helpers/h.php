@@ -326,13 +326,14 @@ private static function resolveCambio($codmon,$fecha,$eshoy){
                    if(!is_null($model=Tipocambio::getChange($codmon, $fecha))){  
                         return $model->attributes;
                     }else{
-                      h::currentController()->redirect(['/masters/basico/new-change','codmon'=>$codmon,'fecha'=>$fecha]);  
+                     return h::currentController()->redirect(['/masters/basico/new-change','codmon'=>$codmon,'fecha'=>$fecha]);  
                     }
                 }      
 }
 
 public static function tipoCambio($codmon=NULL,$fecha=null){
     //$codmon=(is_null($codmon))?self::gsetting('general','moneda'):$codmon;
+    if($codmon==Tipocambio::COD_MONEDA_BASE)return 1;
     $cache=self::cache();
     $carbonNow=Tipocambio::CarbonNow();
     $hoy=$carbonNow->format('Y-m-d');

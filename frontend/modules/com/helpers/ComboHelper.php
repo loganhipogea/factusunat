@@ -42,9 +42,31 @@ class ComboHelper extends \common\helpers\ComboHelper{
         ];
     }
     
-    public static function partidasCoti(){
+    public static function partidasCoti($id_coti){
        return ArrayHelper::map(
-                       \frontend\modules\com\models\ComCotigrupos::find()->all(),
+                       \frontend\modules\com\models\ComCotigrupos::find()->
+               andWhere(['coti_id'=>$id_coti])
+               ->all(),
                 'id','descripartida');   
+    }
+    
+    public static function cecosCoti($id_coti){
+        $idsCecosCoti= \frontend\modules\com\models\ComCoticeco::find()->
+                select(['ceco_id'])-> andWhere(['coti_id'=>$id_coti])->column();
+        //var_dump($id_coti,$idsCecosCoti);die();
+       return ArrayHelper::map(
+                       \frontend\modules\cc\models\CcCc::find()->
+              andWhere([
+                 'in','id', $idsCecosCoti,
+              ])
+               ->all(),
+                'id','descripcion');   
+    }
+    
+    
+    public static function cboActivos(){
+       return ArrayHelper::map(
+                       \frontend\modules\mat\models\MatActivos::find()->all(),
+                'codigo','descripcion');    
     }
 }

@@ -28,6 +28,9 @@ class MatDetpetoferta extends \common\models\base\modelBase
     /**
      * {@inheritdoc}
      */
+    
+    Const FLAG_SERVICIO='S';
+    Const FLAG_MATERIAL='M';
     public static function tableName()
     {
         return '{{%mat_detpetoferta}}';
@@ -41,6 +44,7 @@ class MatDetpetoferta extends \common\models\base\modelBase
         return [
             [['petoferta_id'], 'integer'],
              [['codart'], 'required'],
+           [['flag'], 'safe'],
             [['detalle'], 'string'],
              [['codum'], 'string', 'max' => 3],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa'], 'number'],
@@ -101,6 +105,7 @@ class MatDetpetoferta extends \common\models\base\modelBase
     
     
     public function beforeSave($insert) {
+        if($insert)$this->flag=self::FLAG_MATERIAL;
         $this->resolveMontos();
         if($this->hasChanged('codart') && !$this->isNewRecord){
          $this->descripcion=$this->material->descripcion;            
@@ -122,7 +127,9 @@ class MatDetpetoferta extends \common\models\base\modelBase
         $this->punit=empty($this->pventa)?:$this->pventa/$this->cant;
     }
     
-    
+   public function isMaterial(){
+       return ($this->flag===self::FLAG_MATERIAL);
+   }
     
   
 

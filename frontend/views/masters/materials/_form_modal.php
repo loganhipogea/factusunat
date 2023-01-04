@@ -20,8 +20,13 @@ use common\behaviors\FileBehavior;
      <div class="col-md-12">
             <div class="form-group no-margin">
             <?php
-          $operacion=($model->isNewRecord)?'modal-crea-material':'modal-edita-material';             
-          $url=\yii\helpers\Url::to(['/masters/materials/'.$operacion,'id'=>$id]); 
+          $operacion=($model->isNewRecord)?'modal-crea-material':'modal-edita-material'; 
+          if(!$model->isNewRecord){
+            $url=\yii\helpers\Url::to(['/masters/materials/modal-edita-material'.$operacion,'id'=>$id]);   
+          }else{
+             $url=\yii\helpers\Url::to(['/masters/materials/modal-crea-material']);  
+          }
+          
            ?>
            <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
                   ['idModal'=>$idModal,

@@ -817,5 +817,250 @@ class CotiController extends baseController
         
     }  
     }
+    
+    public function actionDetailMatByPartida($id){
+     $model=$this->findModel($id);
+     $id_partida=h::request()->get('partida_id');
+     //$id_partida=h::request()->get('partid');
+     if(is_null($modelPartida= \frontend\modules\com\models\ComCotigrupos::findOne($id_partida)))
+     throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
+     /*if(is_null($modelCeco= \frontend\modules\com\models\ComCotigrupos::findOne($id_partida)))
+     throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
+     */
+     return $this->render('detalle_by_partida',['modelCoti'=>$model,'model'=>$modelPartida]);
+     
+   }
    
+   public function actionModalNewDetailByPartida($id) {
+         $this->layout = "install";
+         $modelCoti= $this->findModel($id);
+         $model=new  \frontend\modules\com\models\ComDetcoti();
+         $model->cotigrupo_id=h::request()->get('partida_id');
+         $model->coti_id=$id;
+         //var_dump($model);die();
+         //$model->setScenario($model::SCE_PTO_VENTA);
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   //$model->createStock('1203');
+                   
+                  return ['success'=>1];  
+                }else{
+                    
+                }                
+            }
+        }else{
+           return $this->renderAjax($this->swichtRender(), [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    
+    
+   public function actionModalNewDetailTrabajoByPartida($id) {
+         $this->layout = "install";
+         $modelCoti= $this->findModel($id);
+         $model=new \frontend\modules\com\models\ComDetcotiManoObra();
+         $model->cotigrupo_id=h::request()->get('partida_id');
+         $model->coti_id=$id;
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax('modal_detail_trabajo_by_partida', [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+    }
+    
+    
+   private function swichtRender($modo='default'){     
+        switch ($modo) {
+    case 'default':
+        return 'modal_detail_material_by_partida';
+        break;
+    case ComDetcoti::SCE_HERRAMIENTAS:
+        return 'modal_detail_herram_by_partida';
+        break;
+    case ComDetcoti::SCE_MANO_OBRA:
+        return 'modal_detail_trabajo_by_partida';
+        break;
+    case ComDetcoti::SCE_SERVICIO:
+        return 'modal_detail_serv_by_partida';
+        break;
+        }
+       
+   }
+   
+   
+  public function actionModalNewDetcotiByPartida($id) {
+         $this->layout = "install";
+         $modelPadre= \frontend\modules\com\models\ComCotiDet::findOne($id);
+         $model=new \frontend\modules\com\models\ComDetcoti();
+         if(h::request()->isGet){
+             $model->cotigrupo_id=h::request()->get('partida_id');
+             $model->tipo=h::request()->get('tipo');
+             
+         }
+             $model->detcoti_id=$modelPadre->id;
+             $model->coti_id=$modelPadre->coti_id;
+          
+         $model->resolveScenario();
+         
+         
+        
+         //print_r($model->attributes);
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 //RENDERIZANDO LA VISTA SEGUN EL ESCENARIO DEL MODELO
+                   $this->swichtRender($model->getScenario()),
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+    }
+     
+  public function actionModalEditDetcotiByPartida($id) {
+         $this->layout = "install";        
+         $model=\frontend\modules\com\models\ComDetcoti::findOne($id);        
+         $model->resolveScenario();
+        
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 //RENDERIZANDO LA VISTA SEGUN EL ESCENARIO DEL MODELO
+                   $this->swichtRender($model->getScenario()),
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+    } 
+    
+   public function actionModalNewDetpadreByPartida($id){
+       $this->layout = "install";
+         $modelPartida= \frontend\modules\com\models\ComCotigrupos::findOne($id);
+         $model=new \frontend\modules\com\models\ComCotiDet();
+         $model->coti_id=$modelPartida->coti_id;
+         $model->cotigrupo_id=$modelPartida->id;
+         //print_r($model->attributes);
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_detpadre_by_partida',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   } 
+    
+    public function actionModalEditDetpadreByPartida($id){
+       $this->layout = "install";
+         $model= \frontend\modules\com\models\ComCotiDet::findOne($id);
+        
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_detpadre_by_partida',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   }  
 }

@@ -7,7 +7,7 @@ namespace frontend\modules\com\models;
  *
  * @see ComDetcoti
  */
-class ComDetcotiQuery extends \yii\db\ActiveQuery
+class ComDetcotiQuery extends \frontend\modules\com\components\ActiveQueryCotiHijo
 {
     /*public function active()
     {

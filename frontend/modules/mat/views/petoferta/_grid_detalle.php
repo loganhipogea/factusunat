@@ -35,8 +35,15 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                 'template' => '{edit}{delete}',
                 'buttons' => [
                     'edit' => function ($url,$model) {
-			    $url= Url::to(['/mat/petoferta/modal-edit-det','id'=>$model->id,'gridName'=>Json::encode(['pjax-detpet']),'idModal'=>'buscarvalor']);
-                              return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
+                                if($model->isMaterial()){
+                                   $url= Url::to(['/mat/petoferta/modal-edit-det','id'=>$model->id,'gridName'=>Json::encode(['pjax-detpet']),'idModal'=>'buscarvalor']);
+                                  
+                                }else{
+                                    $url= Url::to(['/mat/petoferta/modal-edit-serv','id'=>$model->id,'gridName'=>Json::encode(['pjax-detpet']),'idModal'=>'buscarvalor']);
+                                 
+                                }
+			       
+                                return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {                             
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);

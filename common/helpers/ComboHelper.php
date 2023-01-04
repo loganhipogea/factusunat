@@ -1041,4 +1041,21 @@ class ComboHelper  {
                   all(),
                 'id','descripcion');
     }  
+    
+ public static function getCboServicios(){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\ServiciosTarifados::find()->
+                  all(),
+                'id','descripcion');
+    }
+    
+  public static function getCboCargos(){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\Cargos::find()->
+                  all(),
+                'codcargo','descricargo');
+    }  
+    
 }
