@@ -20,7 +20,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     <?php Pjax::begin(['id'=>'stock-index']); ?>
     <?= GridView::widget([
         'dataProvider' =>new \yii\data\ActiveDataProvider([
-                'query'=> \common\models\masters\Maestrocompo::find()->andWhere($expression),
+                'query'=> \common\models\masters\Maestrocompo::find()->andWhere($likeCondition),
                 'pagination'=>['pageSize'=>10],
                 ]),
          'summary' => '',
