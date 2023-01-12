@@ -10,14 +10,16 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
     
     <div style='overflow:auto;'>
-    <?php yii::error(\common\models\masters\Maestrocompo::find()->
+    <?php 
+    $expression = new \yii\db\Expression('descripcion like '.$parametro);
+    yii::error(\common\models\masters\Maestrocompo::find()->
             andFilterWhere([$expression/*'like', 'descripcion', $parametro*/])-> 
         createCommand()->rawSql,__FUNCTION__);
             
                    /* $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$parametro.'%');
                     $likeCondition->setEscapingReplacements(['%']);*/
                     
-            $expression = new \yii\db\Expression('descripcion like '.$parametro);
+            
                
             
             ?>
