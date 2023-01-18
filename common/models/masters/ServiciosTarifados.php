@@ -94,10 +94,10 @@ class ServiciosTarifados extends \common\models\base\modelBase
      public function valorTarifa($codmon=null){
         if(is_null($codmon))$codmon= Tipocambio::COD_MONEDA_BASE;
           if($codmon===$this->codmon){
-                return $mod->precio;
+                return $this->precio;
             }else{//PUEDE SER QUE ESTE EN OTRA MONEDA
                 if($cambio=h::tipoCambio($codmon)['compra']>0)
-                return $cambio*$mod->precio;
+                return $cambio*$this->precio;
             }
             
         

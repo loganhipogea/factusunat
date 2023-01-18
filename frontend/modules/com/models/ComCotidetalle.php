@@ -33,7 +33,7 @@ class ComCotidetalle extends \common\models\base\modelBase
              [['punit','cant'], 'required'],
             [['codactivo'], 'required','on'=>self::SCE_HERRAMIENTAS],
             [['codcargo'],'required','on'=>self::SCE_MANO_OBRA],
-                
+            [['codcargo'], 'safe'],    
             [['cant', 'punit', 'ptotal', 'igv', 'pventa', 'punitcalculado'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
@@ -91,7 +91,7 @@ class ComCotidetalle extends \common\models\base\modelBase
              'detcoti_id_id','servicio_id'
             ];
         $scenarios[self::SCE_MANO_OBRA] = [
-             'codactivo', 'descripcion','codum',
+             'codcargo', 'descripcion','codum',
             'cant', 'punit', 'ptotal','punitcalculado',
             'cotigrupo_id', 'coticeco_id', 'detcoti_id',
              'detcoti_id_id','servicio_id'

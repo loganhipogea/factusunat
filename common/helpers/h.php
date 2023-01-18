@@ -333,7 +333,7 @@ private static function resolveCambio($codmon,$fecha,$eshoy){
 
 public static function tipoCambio($codmon=NULL,$fecha=null){
     //$codmon=(is_null($codmon))?self::gsetting('general','moneda'):$codmon;
-    if($codmon==Tipocambio::COD_MONEDA_BASE)return 1;
+    if($codmon==Tipocambio::COD_MONEDA_BASE)return ['compra'=>1,'venta'=>1];
     $cache=self::cache();
     $carbonNow=Tipocambio::CarbonNow();
     $hoy=$carbonNow->format('Y-m-d');

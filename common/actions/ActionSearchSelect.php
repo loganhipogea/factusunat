@@ -30,7 +30,7 @@ class ActionSearchSelect extends \yii\base\Action
          
           //USANDO EL BUSCADOR DE TEXTO PARA materialres//
                    $likeCondition = new \yii\db\conditions\LikeCondition($secondField, 'LIKE','%'.$filter.'%');
-                    $likeCondition->setEscapingReplacements(false);
+                    $likeCondition->setEscapingReplacements(['\%'=>'%']);
                 
          
          if(is_null($filter) or empty($filter) or trim($filter)=="") 

@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models\masters;
-
+use common\helpers\h;
 use Yii;
 
 /**
@@ -54,5 +54,12 @@ class Cargos extends \common\models\base\modelBase
     public static function find()
     {
         return new CargosQuery(get_called_class());
+    }
+    
+    /*
+     * Valor de la jhora hombre
+     */
+    public function valor($codmon= Tipocambio::COD_MONEDA_BASE){
+        return $this->hh*h::tipoCambio($codmon)['compra'];
     }
 }

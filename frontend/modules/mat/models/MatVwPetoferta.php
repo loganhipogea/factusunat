@@ -1,8 +1,14 @@
 <?php
 namespace frontend\modules\mat\models;
+use common\helpers\h;
+use common\models\masters\Tipocambio;
 use Yii;
 class MatVwPetoferta extends \common\models\base\modelBase
 {
+    const VALOR_PROMEDIO='P';
+    const VALOR_ULTIMO='U';
+    const VALOR_ANTIGUO='A';
+    
     public $fecha1=null;
     public $pventa1=null;
      public $dateorTimeFields=[
@@ -65,6 +71,20 @@ class MatVwPetoferta extends \common\models\base\modelBase
     public static function find()
     {
         return new MatVwPetofertaQuery(get_called_class());
+    }
+    
+    public static function valor($codart,$codmon= Tipocambio::COD_MONEDA_BASE,$orden=self::VALOR_ULTIMO){
+       $valor=  self::find()->select(['punit'])->andWhere(
+                [
+                    'codart'=>$codart,
+                    
+                ])->orderBy(['fecha'=>SORT_DESC])->scalar();
+      if($valor >0) {
+       $valor=h::tipoCambio($codmon)['compra']*$valor;  
+      }else{
+          $valor=0;
+      }
+      return $valor; 
     }
     
    

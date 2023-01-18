@@ -43,7 +43,8 @@ use frontend\modules\com\models\ComDetcoti;
                              },
                             
                         
-                    ]
+                    ],
+                 'contentOptions'=>['style'=>'width: 20%;'],  
                 ];
    
    $gridColumns=[       
@@ -74,7 +75,7 @@ use frontend\modules\com\models\ComDetcoti;
                             break;
                         break;
                         case 'S':
-                            return '';
+                            return $model->servicio->codserv;
                             break;
                        case 'H':
                            return $model->codactivo;

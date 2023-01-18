@@ -50,9 +50,9 @@ use yii\helpers\Url;
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
                         ]
                     )  */
-        echo $form->field($model, 'descripcion')->textInput([]) ; 
+       /// echo $form->field($model, 'descripcion')->textInput([]) ; 
       ?>
-
+          <?php echo $model->getScenario()  ?>
         </div>
        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <?= 
@@ -67,15 +67,17 @@ use yii\helpers\Url;
 
         </div>       
      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <?= 
+                <?php 
                    //$model->activo=false;
-            $form->field($model, 'codum')->
+           /*echo  $form->field($model, 'codum')->
             dropDownList(ComboHelper::getCboUms(),
                     ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )  ?>
+                    ]
+                    )*/ 
+                echo $form->field($model,'codum')->
+                     textInput(['value'=>'MTR','disabled'=>true]);
+                
+                ?>
 
         </div>  
      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -91,21 +93,22 @@ use yii\helpers\Url;
 
         </div> 
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <?= 
-                   //$model->activo=false;
-            $form->field($model, 'punitcalculado',
+                <?php  
+                   
+           /*echo $form->field($model, 'punitcalculado',
                     []
-                    )->textInput(['value'=>$model->valorUnitario()])  ?>
+                    )->textInput(['value'=>$model->valorUnitario()]) */ ?>
 
         </div> 
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'cant')->textInput([]) ?>
      </div>
       <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
-        <?= $form->field($model, 'punit')->textInput([]) ?>
+        <?php //echo $form->field($model, 'punit')->textInput([]) ?>
      </div>
-          <?= $form->field($model, 'cotigrupo_id')->hiddenInput([])->label('') ?>
-     <?= $form->field($model, 'tipo')->hiddenInput([])->label('') ?>
+          <?= $form->field($model, 'codum')->hiddenInput(['value'=>'MTR'])->label('') ?>
+            <?= $form->field($model, 'cotigrupo_id')->hiddenInput([])->label('') ?>
+            <?= $form->field($model, 'tipo')->hiddenInput([])->label('') ?>
               
               <?php ActiveForm::end(); ?>
      
