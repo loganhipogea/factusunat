@@ -4,5 +4,5 @@ use yii\helpers\Html;
 ?>
 
 <div style="width:300px; height:100px;">
-    <?=Html::img('@commonweb/logos/logo_bov.png',['width'=>"100%"])?>
+    <?=Html::img('@commonweb/logos/logo_bov.png',['width'=>"80%",'height'=>"20%"])?>
 </div>

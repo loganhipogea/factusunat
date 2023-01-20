@@ -45,7 +45,7 @@ use yii\widgets\Pjax;
             'title' => 'codum',
             'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_DROPDOWN,
        'enableError' => true,
-            'items'=> ComboHelper::getCboUms(),
+            'items'=> ComboHelper::getCboUms(true),
            'headerOptions' => [
                 'style' => 'width: 10%',
                 //'class' => 'day-css-class'

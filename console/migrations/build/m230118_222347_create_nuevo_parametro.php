@@ -13,6 +13,7 @@ class m230118_222347_create_nuevo_parametro extends Migration
     public function safeUp()
     {
          h::getIfNotPutSetting('op','um_hora','HH');
+           h::getIfNotPutSetting('com','tenorsup_coti','Por medio del presente presentamos la oferta economica que se detalla a continuación');
     }
 
     /**

@@ -188,10 +188,15 @@ class ComboHelper  {
     /*
     * Obtiene todos los nombres de los modelos de la aplicacion
     */
-    public static function getCboUms(){
-         return ArrayHelper::map(
+    public static function getCboUms($withBlank=false){
+         $valores= ArrayHelper::map(
                         \common\models\masters\Ums::find()->all(),
                 'codum','desum');
+         if($withBlank)
+             
+             $valores=[''=>yii::t('base.verbs','--Choose a Value--')]+$valores;
+    
+         return $valores;
     }
    
    public static function getCboSex(){
