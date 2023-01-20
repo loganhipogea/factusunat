@@ -470,12 +470,14 @@ class PetofertaController extends baseController
         $nombre= uniqid().'.pdf';
         $model=$this->findModel($id);
         $contenido=$this->render('reporte_peti',['model'=>$model]); 
-        return Yii::$app->html2pdf
+        /*return Yii::$app->html2pdf
     ->convert($contenido)    
-    ->send();
-        //$pdf=$this->preparePdf($contenido);
-       // $pdf->WriteHTML($contenido);
-        //$pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
+    ->send();*/
+        
+       // echo $contenido; die();
+        $pdf=$this->preparePdf($contenido);
+      //  $pdf->WriteHTML($contenido);
+        $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
         
     }
     
@@ -509,27 +511,27 @@ class PetofertaController extends baseController
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
   $mpdf= new \Mpdf\Mpdf();
-           /* $mpdf = new \Mpdf\Mpdf([
-                /*'fontDir' => array_merge($fontDirs,[
+            $mpdf = new \Mpdf\Mpdf([
+                'fontDir' => array_merge($fontDirs,[
                 Yii::getAlias('@fonts')
                     ]),
     'fontdata' => $fontData + [
         'cour' => [
             'R' => 'Courier.ttf',
             
-        ],*/
-        /*'helvetica' => [
+        ],
+       'helvetica' => [
             'R' => 'Helvetica.ttf',
             'I' => 'VerdanaBOLD.ttf',
-        ],*/
-        /*'verdana' => [
+        ],
+        'verdana' => [
             'R' => 'Verdana.ttf',
             'B' => 'VerdanaBOLD.ttf',
-        ],*/
+        ],
         
-    //],
-    //'default_font' => 'cour'
-//]);
+    ],
+    'default_font' => 'cour'
+]);
 //print_r($mpdf->fontdata);die();
           
           //$mpdf=new \Mpdf\Mpdf();

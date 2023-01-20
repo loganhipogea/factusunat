@@ -5,6 +5,7 @@ use common\models\masters\Centros;
 use common\models\masters\Clipro;
 use common\models\masters\Trabajadores;
 use common\models\masters\Direcciones;
+use common\helpers\h;
 use Yii;
 
 /**
@@ -54,6 +55,7 @@ class ComCotizacion extends \common\models\base\modelBase
                  'femision','codtra','validez',
                  'codcli','codcli1',
                  'descripcion'], 'required'],
+             [['monto','igv'], 'safe'],
             [['detalle_interno', 'detalle_externo'], 'string'],
             [['validez', 'n_direcc'], 'integer'],
             [['numero', 'codcli', 'codcli1', 'femision'], 'string', 'max' => 10],
@@ -146,6 +148,17 @@ class ComCotizacion extends \common\models\base\modelBase
         return $this->hasMany(ComDetcoti::className(), ['coti_id' => 'id']);
     }
 
+    
+    public function getPartidas()
+    {
+        return $this->hasMany(ComCotigrupos::className(), ['coti_id' => 'id']);
+    }
+    
+     public function getCargos()
+    {
+        return $this->hasMany(ComCargoscoti::className(), ['coti_id' => 'id']);
+    }
+    
     /**
      * Gets query for [[NDirecc]].
      *
@@ -164,4 +177,53 @@ class ComCotizacion extends \common\models\base\modelBase
     {
         return new ComCotizacionQuery(get_called_class());
     }
+    
+    
+    public function agregaCargos(){
+      $cargos= ComCargos::find()->all();
+      foreach($cargos as $cargo){
+          ComCargoscoti::firstOrCreateStatic(
+                  [
+                      'coti_id'=>$this->id,
+                      'cargo_id'=>$cargo->id,
+                      'porcentaje'=>$cargo->porcentaje
+                  ],null,
+                  ['coti_id'=>$this->id,'cargo_id'=>$cargo->id]
+                  );
+         }
+     
+    
+        
+    }
+    
+    
+    public function refreshMonto(){
+        /*
+         * Actualizar primero los montos de las partidas
+         */
+      $this->montoneto=$this->getPartidas()->select('sum(total)')->scalar();
+      $this->montoneto=($this->montoneto>0)?$this->montoneto:0;
+      
+      /*
+       * Ahora veamos que este monto debe de 
+       */
+      $this->montocargo=$this->getCargos()->select('sum(porcentaje)')->scalar();
+      $this->montocargo=($this->montocargo>0)?$this->montocargo:0;
+      $this->montocargo=$this->montoneto*$this->montocargo/100;
+      /***************************************/
+      
+      $this->monto=$this->montoneto+$this->montocargo;
+      $this->igv=h::gsetting ('general', 'igv')*$this->monto;
+      $this->monto+=$this->igv;
+      return $this->save();
+    }
+    
+   public function beforeSave($insert) {
+      
+       
+       return parent::beforeSave($insert);
+   } 
+   
+   
+    
 }

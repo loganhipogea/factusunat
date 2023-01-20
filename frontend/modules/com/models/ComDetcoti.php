@@ -133,6 +133,12 @@ class ComDetcoti extends \common\models\base\modelBase
          
         return $this->hasOne(\common\models\masters\ServiciosTarifados::className(), ['id'=>'servicio_id']);
     }
+    
+     public function getPadre()
+    {
+         
+        return $this->hasOne(ComCotiDet::className(), ['id'=>'detcoti_id']);
+    }
     /**
      * {@inheritdoc}
      * @return ComDetcotiQuery the active query used by this AR class.
@@ -188,10 +194,15 @@ class ComDetcoti extends \common\models\base\modelBase
               )->limit(3)->all(),'punit','punit'); 
     
   }
-  
+  private function isChildRecord(){
+      return $this->detcoti_id >0;
+  }
   private function refreshMontos(){
       $this->coticeco->refreshSubto();
        $this->partida->refreshSubto();
+       if($this->isChildRecord()){
+           $this->padre->refreshSubto();
+       }
   }
   
   public function resolveScenario(){

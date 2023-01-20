@@ -17,9 +17,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                        'edit' => function ($url,$model) {
 			    $url= Url::to(['/com/coti/modal-edit-grupo-coti','id'=>$model->id,'gridName'=>Json::encode(['grilla-partidas']),'idModal'=>'buscarvalor']);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
-                            },
+                            },                       
                         'delete' => function ($url,$model) {                             
-                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-invoice-item','id'=>$model->id]);
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-partida','id'=>$model->id]);
                               return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
                        'expand' => function ($url,$model) {                             
@@ -81,6 +81,23 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     //'responsive'=>true,
     //'hover'=>true
        ]);
+   
+  
+    echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgruidBancos',
+        //'otherContainers'=>['grilla-partidas'],
+            'idGrilla'=>'grilla-partidas',
+            'family'=>'holas',
+          'type'=>'POST',
+           'evento'=>'click',
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]);
+       
+   
+   
+   
     \yii\widgets\Pjax::end();
    ?> 
  <div class="btn-group">

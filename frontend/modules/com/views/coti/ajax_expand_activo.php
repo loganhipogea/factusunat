@@ -5,6 +5,7 @@ use yii\helpers\Json;
 use common\helpers\h;
 use frontend\modules\mat\models\MatVwPetoferta;
 use yii\grid\GridView as grid; 
+use frontend\modules\mat\models\MatVwActivoceco;
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */
 ?>
@@ -18,63 +19,48 @@ use yii\grid\GridView as grid;
    $gridColumns=[       
            
         [
-            'attribute' => 'numero',
+            'attribute' => 'codactivo',
             'format'=>'raw',
             'value'=>function($model){
-                
-              $url=Url::to(['/mat/petoferta/edit-pet-oferta','id'=>$model->id]);
-              $options=[
-                  'class'=>'btn bnt-success',
-                  'data-pjax'=>'0',
-                  'target'=>'_blank',
-              ];
-              return Html::a($model->numero,$url,$options);
+                return $model->codactivo;
             }
            
          ],
         [
-            'attribute' => 'despro',
+            'attribute' => 'descriceco',
             'format'=>'raw',
             'value'=>function($model){
-                
-              $url=Url::to(['/mat/petoferta/modal-show-petoferta','id'=>$model->id]);
-              $options=[
-                  'class'=>'botonAbre',                  
-                  'target'=>'_blank',
-              ];
-              return Html::a($model->despro,$url,$options);
+                return $model->descriceco;
             }
            
          ],
-        'fecha',
-        'cant',
-        'codart',
-        'codum',                
-       'codmon',
-       [
-            'attribute' => 'punit',
+      [
+            'attribute' => 'valor',
+            'format'=>'raw',
             'value'=>function($model){
-              return $model->punit;
+                return $model->valor;
             }
            
-         ],  
-       
-       
+         ],
+       [
+            'attribute' => 'codmon',
+            'format'=>'raw',
+            'value'=>function($model){
+                return $model->codmon;
+            }
+           
+         ],
+              
         
    ];
-   \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-by-cecos']);
+   \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-activos'.$model->id]);
    echo '.'.grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
-        'query'=> MatVwPetoferta::find()
-            ->select(['id','cant','numero','fecha','codart','despro','codmon','codum','punit'])->alias('t')->
+        'query'=> MatVwActivoceco::find()
+            ->select('t.*')->alias('t')->
             andWhere([
-                'codart'=>$model->codart,                
-                    ])->andWhere([
-          '<=',
-          'fecha',
-          date('Y-m-d')
-            ]
-              )
+                'codactivo'=>$model->codactivo,                
+                    ])
             ,
     ]),
    // 'filterModel' => $searchModel,

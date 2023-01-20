@@ -10,6 +10,7 @@ use kartik\date\DatePicker;
 use kartik\grid\GridView as grid;
 use yii\widgets\Pjax;
 use frontend\modules\com\models\ComDetcoti;
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */
@@ -38,7 +39,7 @@ use frontend\modules\com\models\ComDetcoti;
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {                             
-                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-ceco','id'=>$model->id]);
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-detalle-detalle','id'=>$model->id]);
                               return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
                             
@@ -95,24 +96,24 @@ use frontend\modules\com\models\ComDetcoti;
                                 },
                    'detail'=> function($model)  { 
                          $tipo=$model->tipo;
-                          $vista= 'ajax_expand_oferta';
-                            /*switch ($tipo) {
+                         // $vista= 'ajax_expand_oferta';
+                          switch ($tipo) {
                         case 'M':
                         $vista= 'ajax_expand_oferta';
                             break;
                         case 'T':
-                            $vista= 'ajax_expand_trabajo';
+                            $vista= 'ajax_expand_trabajador';
                             break;
                         break;
                         case 'S':
-                            $vista= 'ajax_expand_servicio';
+                            $vista= 'ajax_expand_oferta';
                             break;
                        case 'H':
                             $vista= 'ajax_expand_activo';
                             break;
                         default:
                             $vista= 'ajax_expand_oferta';
-                            }*/
+                            }
                           return  $this->render($vista,[
                                'model'=>$model,
                                //'key'=>$key,
@@ -129,20 +130,36 @@ use frontend\modules\com\models\ComDetcoti;
             },
            'contentOptions'=>['style'=>'text-align:right; color:orange; width: 5%; font-weight:900;'],
          ], 
-       [
+      /* [
             'attribute' => 'punit',
             'value'=>function($model)use($formato){
               return $formato->asDecimal($model->punit,2);
             },
            'contentOptions'=>['style'=>'text-align:right; width: 5%; '], 
            
-         ],  
+         ], */
+       [
+            'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'punit',
+          //  'pageSummary' => 'Total',
+            'vAlign' => 'middle',
+            'width' => '210px',
+            'readonly' => false,
+           'value'=>function($model)use($formato){
+              return $formato->asDecimal($model->punit,2);
+            },
+           //'data'=>['modelo'=>'mimodelo']
+            'contentOptions'=>['style'=>'text-align:right; width: 2%; '],  
+         ],             
+                    
+                    
         [
+            'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'cant',
             'value'=>function($model)use($formato){
               return $formato->asDecimal($model->cant,2);
             },
-           'contentOptions'=>['style'=>'text-align:right; width: 5%; '], 
+           'contentOptions'=>['style'=>'text-align:right; width: 2%; '], 
          ],  
        
       [
@@ -154,14 +171,7 @@ use frontend\modules\com\models\ComDetcoti;
         ],  
         
    ];
-    echo frontend\modules\com\models\ComDetcoti::find()
-            ->select('t.*')->alias('t')->
-            andWhere([
-                'coti_id'=>$model->coti_id,
-                'cotigrupo_id'=>$model->cotigrupo_id,
-                'detcoti_id'=>$model->id,
-                
-                    ])->createCommand()->rawSql;
+    
    \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-by-partidas-'.$model->id]);
    echo '.'.grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
@@ -181,6 +191,22 @@ use frontend\modules\com\models\ComDetcoti;
     //'responsive'=>true,
     //'hover'=>true
        ]);
+   
+    echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgruidBancos',
+        //'otherContainers'=>['grilla-partidas'],
+            'idGrilla'=>'grilla-detalle-by-partidas-'.$model->id,
+            'family'=>'holas',
+          'type'=>'POST',
+           'evento'=>'click',
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]);
+       
+   
+   
+   
     \yii\widgets\Pjax::end();
    ?> 
    <div class="btn-group">

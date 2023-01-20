@@ -62,7 +62,7 @@ use yii\grid\GridView as grid;
        
         
    ];
-   \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-by-cecos']);
+   \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-petofertas'.$model->id]);
    echo '.'.grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
         'query'=> MatVwPetoferta::find()

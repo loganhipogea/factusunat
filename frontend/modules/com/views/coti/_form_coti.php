@@ -1,5 +1,5 @@
 <?php
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\helpers\h;
@@ -20,8 +20,11 @@ use kartik\date\DatePicker;
             <div class="form-group no-margin">
                 
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
-            
-
+         <?php if(!$model->isNewRecord){?>                    
+                    <?php $url=Url::to(['/com/coti/make-pdf','id'=>$model->id]);?>
+                    <?=Html::a('<span class="fa fa-file-pdf-o" ></span>'.Yii::t('app', 'Pdf'),$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-warning"])?>
+                    <?php }?>    
+                
             </div>
         </div>
     </div>

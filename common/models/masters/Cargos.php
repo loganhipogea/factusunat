@@ -43,7 +43,7 @@ class Cargos extends \common\models\base\modelBase
             'id' => Yii::t('app', 'ID'),
             'descricargo' => Yii::t('app', 'Descricargo'),
             'codcargo' => Yii::t('app', 'Codcargo'),
-            'hh' => Yii::t('app', 'Hh'),
+            'hh' => Yii::t('app', 'Costo hora'),
         ];
     }
 

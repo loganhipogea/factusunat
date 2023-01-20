@@ -2,7 +2,10 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
-<div style="text-align: center; font-weight: 900; ">SOLICITUD DE COTIZACION <?= $model->numero ?></div>
+<div style="text-align:left;">
+    <?=$this->renderFile('@commonweb/logos/logo_bov.php')  ?>
+</div>
+<div style="text-align: center; font-weight: 900; ">SOLICITUD COTIZACION <?= $model->numero ?></div>
 <BR>
 <BR>
 
@@ -40,18 +43,19 @@ use yii\helpers\Url;
    <tbody>
        <?php  foreach ($model->matDetpetoferta as $fila){  ?>
                  <TR >
-                     <td style="border-top:solid;border-color:#CCC; border-width: 1px; padding:15px;font-family: courier;">
+                     <td style="border-top:solid;border-color:#CCC; border-width: 1px; padding:15px;">
                          <?=$fila->item?>
                      </td>
-                     <td style="border-top:solid;border-color:#CCC; border-width: 1px;font-family: courier;">
+                     <td style="border-top:solid;border-color:#CCC; border-width: 1px;">
                         <?=$fila->cant?> 
                      </td>
-                    <td style="border-top:solid;border-color:#CCC; border-width: 1px;font-family: courier;">
+                    <td style="border-top:solid;border-color:#CCC; border-width: 1px;">
                         <?=$fila->codum?>  
                      </td>
-                     <td style="border-top:solid;border-color:#CCC; border-width: 1px;font-family: courier;">
-                       <?=$fila->descripcion?>
-                         <div style="font-size:0.7em;">
+                     <td style="border-top:solid;border-color:#CCC; border-width: 1px;">
+                         <p style=""><?=$fila->descripcion?></p>
+                            
+                         <div style="font-size:0.7em; ">
                             <?=((is_null($fila->detalle))?'':'--->'.$fila->detalle)?>
                          </div>
                            

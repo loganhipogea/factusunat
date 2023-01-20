@@ -10,6 +10,7 @@ use kartik\date\DatePicker;
 use kartik\grid\GridView as grid;
 use yii\widgets\Pjax;
 use frontend\modules\com\models\ComDetcoti;
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */
@@ -19,7 +20,7 @@ use frontend\modules\com\models\ComDetcoti;
     <br>
     <?php 
     $formato=h::formato();
-   
+    $zona_refresh='grilla-detalle-by-partidas'.$model->id;
           
  
   $column=[
@@ -28,13 +29,13 @@ use frontend\modules\com\models\ComDetcoti;
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}',
                'buttons' => [  
-                       'edit' => function ($url,$model) {
-			    $url= Url::to(['/com/coti/modal-edit-detpadre-by-partida','id'=>$model->id,'gridName'=>Json::encode([]),'idModal'=>'buscarvalor']);
+                       'edit' => function ($url,$model) use($zona_refresh) {
+			    $url= Url::to(['/com/coti/modal-edit-detpadre-by-partida','id'=>$model->id,'gridName'=>Json::encode([$zona_refresh]),'idModal'=>'buscarvalor']);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {                             
-                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-ceco','id'=>$model->id]);
-                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-detalle','id'=>$model->id]);
+                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
                             
                         
@@ -85,7 +86,7 @@ use frontend\modules\com\models\ComDetcoti;
         ],  
         
    ];
-   \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-by-partidas']);
+   \yii\widgets\Pjax::begin(['id'=>$zona_refresh]);
    echo '.'.grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
         'query'=> frontend\modules\com\models\ComCotiDet::find()
@@ -102,6 +103,19 @@ use frontend\modules\com\models\ComDetcoti;
     //'responsive'=>true,
     //'hover'=>true
        ]);
+    echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgruidBancos'.$model->id,
+        //'otherContainers'=>['grilla-partidas'],
+            'idGrilla'=>$zona_refresh,
+            'family'=>'holas',
+          'type'=>'POST',
+           'evento'=>'click',
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]);
+       
+   
     \yii\widgets\Pjax::end();
    ?> 
  <div class="btn-group">

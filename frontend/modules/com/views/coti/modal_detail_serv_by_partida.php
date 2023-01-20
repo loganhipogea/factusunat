@@ -15,7 +15,9 @@ use yii\helpers\Url;
 
 <div class="cc-cuentas-form">
      <div class="box-body">
-      <?php $form = ActiveForm::begin([
+      <?php 
+      $unidad=h::gsetting('op', 'um_hora');
+      $form = ActiveForm::begin([
        'id'=>'myformulario',
     'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>

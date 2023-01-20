@@ -15,7 +15,9 @@ use yii\helpers\Url;
 
 <div class="cc-cuentas-form">
      <div class="box-body">
-      <?php $form = ActiveForm::begin([
+      <?php 
+       $unidad=h::gsetting('op', 'um_hora');
+      $form = ActiveForm::begin([
        'id'=>'myformulario',
     'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
@@ -50,20 +52,16 @@ use yii\helpers\Url;
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
                         ]
                     )  */
-        echo $form->field($model, 'descripcion')->textInput([]) ; 
+        //echo $form->field($model, 'descripcion')->textInput([]) ; 
       ?>
 
         </div>
        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <?= 
-                   //$model->activo=false;
-            $form->field($model, 'codum')->
-            dropDownList(ComboHelper::getCboUms(),
-                    ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )  ?>
+                <?php
+                                echo $form->field($model,'codum')->
+                     textInput(['value'=>$unidad,'disabled'=>true]);
+
+                   ?>
 
         </div>       
     
@@ -91,20 +89,15 @@ use yii\helpers\Url;
                     )  ?>
 
         </div> 
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <?= 
-                   //$model->activo=false;
-            $form->field($model, 'punitcalculado',
-                    []
-                    )->textInput(['disabled'=>true,'value'=>$model->valorUnitario()])  ?>
-
-        </div> 
+     
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'cant')->textInput([]) ?>
      </div>
       <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'punit')->textInput([]) ?>
      </div>
+           <?= $form->field($model, 'codum')->hiddenInput(['value'=> $unidad])->label('') ?>
+            
           <?= $form->field($model, 'cotigrupo_id')->hiddenInput([])->label('') ?>
             <?= $form->field($model, 'tipo')->hiddenInput([])->label('') ?>
     <?php ActiveForm::end(); ?>

@@ -22,6 +22,8 @@ use yii;
  */
 class CotiController extends baseController
 {
+    
+    public $nameSpaces = ['frontend\modules\com\models'];
     /**
      * @inheritDoc
      */
@@ -821,6 +823,11 @@ class CotiController extends baseController
     public function actionDetailMatByPartida($id){
      $model=$this->findModel($id);
      $id_partida=h::request()->get('partida_id');
+     
+      if ($this->is_editable()){
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            return $this->editField();
+           } 
      //$id_partida=h::request()->get('partid');
      if(is_null($modelPartida= \frontend\modules\com\models\ComCotigrupos::findOne($id_partida)))
      throw new NotFoundHttpException(Yii::t('base.errors', 'No existe el ceco id'));
@@ -1066,4 +1073,193 @@ class CotiController extends baseController
                         ]);  
         }
    }  
+   
+   public function actionAjaxDeletePartida($id){
+           $model= \frontend\modules\com\models\ComCotigrupos::findOne($id);
+            h::response()->format = yii\web\Response::FORMAT_JSON; 
+          return parent::deleteModel($id,$model::className());        
+   }
+   
+    public function actionAjaxDeleteColector($id){
+           $model= \frontend\modules\com\models\ComCoticeco::findOne($id);
+            h::response()->format = yii\web\Response::FORMAT_JSON; 
+          return parent::deleteModel($id,$model::className());        
+   }
+   
+   public function actionAjaxDeleteDetalleDetalle($id){
+           $model= \frontend\modules\com\models\ComDetcoti::findOne($id);
+            h::response()->format = yii\web\Response::FORMAT_JSON; 
+          return parent::deleteModel($id,$model::className());        
+   }
+   
+   public function actionAjaxDeleteDetalle($id){
+           $model= \frontend\modules\com\models\ComCotiDet::findOne($id);
+            h::response()->format = yii\web\Response::FORMAT_JSON; 
+          return parent::deleteModel($id,$model::className());        
+   }
+   
+    public function actionAjaxDeleteCargo($id){
+           $model= \frontend\modules\com\models\ComCargoscoti::findOne($id);
+            h::response()->format = yii\web\Response::FORMAT_JSON; 
+          return parent::deleteModel($id,$model::className());        
+   }
+   
+   public function actionAjaxAgregaCargos($id){
+       $model= ComCotizacion::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;   
+        $model->agregaCargos(); //En la funcion passInvoice validar el cambio de estado
+           return ['success' => yii::t('base.messages','Se actualizaron los cargos')];             
+         
+   }
+   
+   public function actionModalNewCargoCoti($id){
+       $this->layout = "install";
+         $modelCoti= \frontend\modules\com\models\ComCotizacion::findOne($id);
+         $model=new \frontend\modules\com\models\ComCargoscoti();
+         $model->coti_id=$modelCoti->id;
+         
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_cargo',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   } 
+   
+   public function actionModalEditCargoCoti($id){
+       $this->layout = "install";
+         $model= \frontend\modules\com\models\ComCargoscoti::findOne($id);
+        
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_cargo',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   }
+
+ public function actionMakePdf($id){
+        $this->layout="reportes";
+        $rutaTemporal = \yii::getAlias('@temp');
+        $nombre= uniqid().'.pdf';
+        $model=$this->findModel($id);
+        $contenido=$this->render('reporte_coti',['model'=>$model]); 
+        /*return Yii::$app->html2pdf
+    ->convert($contenido)    
+    ->send();*/
+        
+       // echo $contenido; die();
+        $pdf=$this->preparePdf($contenido);
+      //  $pdf->WriteHTML($contenido);
+        $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
+        
+    }
+    
+     private function preparePdf($contenidoHtml) {
+        //  $contenidoHtml = \Pelago\Emogrifier\CssInlinerCssInliner::fromHtml($contenidoHtml)->inlineCss()->render();
+        //->renderBodyContent(); 
+        $mpdf = self::getPdf();
+        // $mpdf->SetHeader(['{PAGENO}']);
+        $mpdf->margin_header = 1;
+        $mpdf->margin_footer = 1;
+        $mpdf->setAutoTopMargin = 'stretch';
+        $mpdf->setAutoBottomMargin = 'stretch';
+
+        /*$stylesheet = file_get_contents(\yii::getAlias("@frontend/web/css/bootstrap.min.css")); // external css
+        $stylesheet2 = file_get_contents(\yii::getAlias("@frontend/web/css/reporte.css")); // external css
+        $mpdf->WriteHTML($stylesheet, 1);
+        $mpdf->WriteHTML($stylesheet2,1);*/
+
+        /*$mpdf->DefHTMLHeaderByName(
+                'Chapter2Header', $this->render("/citas/reportes/cabecera")
+        );*/
+        //$mpdf->DefHTMLFooterByName('pie',$this->render("/citas/reportes/footer"));
+        //$mpdf->SetHTMLHeaderByName('Chapter2Header');
+        // $contenidoHtml = \Pelago\Emogrifier\CssInliner::fromHtml($contenidoHtml)->inlineCss($stylesheet)->render();
+        $mpdf->WriteHTML($contenidoHtml);
+        return $mpdf;
+    }
+ public static function  getPdf(){
+               $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+  $mpdf= new \Mpdf\Mpdf();
+            $mpdf = new \Mpdf\Mpdf([
+                'fontDir' => array_merge($fontDirs,[
+                Yii::getAlias('@fonts')
+                    ]),
+    'fontdata' => $fontData + [
+        'cour' => [
+            'R' => 'Courier.ttf',
+            
+        ],
+       'helvetica' => [
+            'R' => 'Helvetica.ttf',
+            'I' => 'VerdanaBOLD.ttf',
+        ],
+        'verdana' => [
+            'R' => 'Verdana.ttf',
+            'B' => 'VerdanaBOLD.ttf',
+        ],
+        
+    ],
+    'default_font' => 'cour'
+]);
+//print_r($mpdf->fontdata);die();
+          
+          //$mpdf=new \Mpdf\Mpdf();
+          //echo get_class($mpdf);die();
+          /* $pdf->methods=[ 
+           'SetHeader'=>[($model->tienecabecera)?$header:''], 
+            'SetFooter'=>[($model->tienepie)?'{PAGENO}':''],
+        ];*/
+           
+                  
+           $mpdf->simpleTables = false;
+            $mpdf->packTableData = true;
+           //$mpdf->showImageErrors = true;
+           //$mpdf->curlAllowUnsafeSslRequests = true; //Permite imagenes de url externas
+         return $mpdf;
+    }
+
+   
 }

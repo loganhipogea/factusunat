@@ -15,7 +15,9 @@ use yii\helpers\Url;
 
 <div class="cc-cuentas-form">
      <div class="box-body">
-      <?php $form = ActiveForm::begin([
+      <?php
+       $unidad=h::gsetting('op', 'um_hora');
+      $form = ActiveForm::begin([
        'id'=>'myformulario',
     'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
@@ -75,7 +77,7 @@ use yii\helpers\Url;
                     ]
                     )*/ 
                 echo $form->field($model,'codum')->
-                     textInput(['value'=>'MTR','disabled'=>true]);
+                     textInput(['value'=>$unidad,'disabled'=>true]);
                 
                 ?>
 
@@ -106,7 +108,7 @@ use yii\helpers\Url;
       <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?php //echo $form->field($model, 'punit')->textInput([]) ?>
      </div>
-          <?= $form->field($model, 'codum')->hiddenInput(['value'=>'MTR'])->label('') ?>
+          <?= $form->field($model, 'codum')->hiddenInput(['value'=> $unidad])->label('') ?>
             <?= $form->field($model, 'cotigrupo_id')->hiddenInput([])->label('') ?>
             <?= $form->field($model, 'tipo')->hiddenInput([])->label('') ?>
               

@@ -69,4 +69,10 @@ class ComboHelper extends \common\helpers\ComboHelper{
                        \frontend\modules\mat\models\MatActivos::find()->all(),
                 'codigo','descripcion');    
     }
+    
+     public static function cboCargosCoti(){
+       return ArrayHelper::map(
+                       \frontend\modules\com\models\ComCargos::find()->all(),
+                'id','descripcion');    
+    }
 }

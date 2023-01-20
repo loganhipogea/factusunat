@@ -112,4 +112,38 @@ class ComCotiDet extends \common\models\base\modelBase
     {
         return new ComCotiDetQuery(get_called_class());
     }
+    
+     public function getDetail()
+    {
+        return $this->hasMany(ComDetcoti::className(), ['detcoti_id' => 'id']);
+    }
+    
+     public function refreshSubto($update_database=true){
+        $this->ptotal=$this->getDetail()->
+         select('sum(ptotal)')->scalar();
+        $ums=$this->umsChildColumn();
+        if(count($ums)==1){
+           $this->codum=$ums[0];
+           $this->cant=$this->getDetail()->
+                select('sum(cant)')->scalar();
+           
+        }else{
+            
+        }
+        $this->punit=$this->getDetail()->
+                select('avg(punit)')->scalar();
+        if($update_database)
+        return $this->save();
+        return true;
+    }
+    
+    /*Verificar que los hijos tengan la misma unidad de medida
+     * 
+     * Return :   Array[]
+     *      
+     */
+    private function umsChildColumn(){
+       return $this->getDetail()->
+         select('codum')->distinct()->column(); 
+    }
 }

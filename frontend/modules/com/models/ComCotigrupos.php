@@ -66,7 +66,7 @@ class ComCotigrupos extends \common\models\base\modelBase
         return $this->hasMany(ComDetcoti::className(), ['cotigrupo_id' => 'id']);
     }
      public function getCoti() {
-        return $this->hasMany(ComCotizacion::className(), ['id' => 'coti_id']);
+        return $this->hasOne(ComCotizacion::className(), ['coti_id' => 'id']);
     }
     
      public function getDetailPadres()

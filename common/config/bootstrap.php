@@ -1,6 +1,7 @@
 <?php
 Yii::setAlias('@root', dirname(dirname(__DIR__)) . '/');
 Yii::setAlias('@common', dirname(__DIR__));
+Yii::setAlias('@commonweb', dirname(__DIR__). '/web');
 Yii::setAlias('@frontend', dirname(dirname(__DIR__)) . '/frontend');
 Yii::setAlias('@temp', dirname(dirname(__DIR__)) . '/frontend/web/temp');
 Yii::setAlias('@fonts', dirname(dirname(__DIR__)) . '/common/web/fonts');
