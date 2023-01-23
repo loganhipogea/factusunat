@@ -71,7 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
          'codmon',
          ['attribute'=>'codcli',
                  'value'=>function($model)use($formato){
-                   return $formato->asDecimal($model->monto,2);   
+                   return $formato->asDecimal($model->monto,2);  
+                   
                    
                  }
                  ], 
