@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ],
             'numero',
-            'fecha',
+            'femision',
             'codart',
             //'user_id',
             //'estado',

@@ -34,10 +34,10 @@ class ComController extends baseController
         return array_merge(
             parent::behaviors(),
             [
-                'filterCenter' => [
+                /*'filterCenter' => [
                     'class' =>FilterCurrentCenter::className(),
                     
-                ],
+                ],*/
             ]
         );
     }
@@ -147,7 +147,7 @@ class ComController extends baseController
   
    
      public function actionCreaOvPlus(){ 
-         \frontend\modules\sunat\models\SunatAccess::pwd();
+       //  \frontend\modules\sunat\models\SunatAccess::pwd();
         $model = new ComFactura();
         $request = Yii::$app->getRequest();
         /*
@@ -159,7 +159,7 @@ class ComController extends baseController
             'sunat_tipodoc'=> h::sunat()->graw('s.01.tdoc')->g('BOLETA'),
             'sunat_tipdoccli'=> h::sunat()->graw('s.06.tdociden')->g('DNI'),
             'codmon'=>h::gsetting('general','moneda'),
-            'caja_id'=> MyModule::idCajaDia(Centros::codcen()),
+            //'caja_id'=> MyModule::idCajaDia(Centros::codcen()),
         ]);
         //}
        

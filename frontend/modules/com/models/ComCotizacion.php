@@ -40,6 +40,14 @@ class ComCotizacion extends \common\models\base\modelBase
     /**
      * {@inheritdoc}
      */
+    
+    public $femision1=null;
+    public $monto1=null;
+    public $dateorTimeFields=[
+     'femision'=>self::_FDATE,
+      'femision1'=>self::_FDATE,   
+         ];
+    
     public static function tableName()
     {
         return 'com_cotizaciones';
@@ -224,6 +232,25 @@ class ComCotizacion extends \common\models\base\modelBase
        return parent::beforeSave($insert);
    } 
    
-   
+ private function generateNameForQr(){
+     $arrayPieces=[
+         $this->numero,
+         $this->cliente1->rucpro,
+         $this->monto,
+         $this->codmon,
+     ];
+     return join('-',
+            $arrayPieces);
+ }
+ 
+ public function fileQr(){
+     
+ }
+ 
+ 
+ 
+ 
+ 
+ 
     
 }

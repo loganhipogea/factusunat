@@ -16,8 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h4><?=h::awe('files-o')?><?= Html::encode($this->title) ?></h4>
     <div class="box box-success">
      <div class="box-body">
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php 
+    Pjax::begin();
+    $formato=h::formato();
+    ?>
+    <?php  echo $this->render('_search_coti', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Crear oferta'), ['create'], ['class' => 'btn btn-success']) ?>
@@ -27,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
-        'filterModel' => $searchModel,
+       
         'columns' => [
             
          
@@ -58,29 +61,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ],
          
-         
-         
-         
-         
-
-            'id',
-            'numero',
-            'serie',
-            'codsoc',
-            'codcen',
-            //'codcli',
-            //'codcli1',
-            //'estado',
-            //'descripcion',
-            //'detalle_interno:ntext',
-            //'detalle_externo:ntext',
-            //'femision',
-            //'validez',
-            //'codtra',
-            //'n_direcc',
-            //'codmon',
-
-          
+         'numero',
+         'descripcion',
+             ['attribute'=>'codcli',
+                 'value'=>function($model)use($formato){
+                   return $model->cliente1->despro;     
+                 }
+                 ],
+         'codmon',
+         ['attribute'=>'codcli',
+                 'value'=>function($model)use($formato){
+                   return $formato->asDecimal($model->monto,2);   
+                   
+                 }
+                 ], 
         ],
     ]); ?>
     <?php Pjax::end(); ?>

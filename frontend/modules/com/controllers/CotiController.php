@@ -1182,11 +1182,12 @@ class CotiController extends baseController
         $nombre= uniqid().'.pdf';
         $model=$this->findModel($id);
         $contenido=$this->render('reporte_coti',['model'=>$model]); 
-        /*return Yii::$app->html2pdf
+       /* return Yii::$app->html2pdf
     ->convert($contenido)    
-    ->send();*/
+    ->send();
+        die();*/
         
-       // echo $contenido; die();
+       //echo $contenido; die();
         $pdf=$this->preparePdf($contenido);
       //  $pdf->WriteHTML($contenido);
         $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
@@ -1261,5 +1262,7 @@ class CotiController extends baseController
          return $mpdf;
     }
 
+    
+    
    
 }

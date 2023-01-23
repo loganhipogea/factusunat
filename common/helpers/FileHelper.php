@@ -329,8 +329,28 @@ public static function UrlImage($path,$internal=true){
   
 }
 
-    
 
+/*
+ * Esta function crea una carpeta com marc 
+ * de tiempo en la carpeta tempòral
+ *
+ */
+  private function mkDirTimestamp(){
+      $tiempoActual=time();
+      $dir=yii::getAlias('@temp').'/';
+       if(!$dh = @opendir($dir)) return;
+    while (false !== ($current = readdir($dh))) {
+        if($current != '.' && $current != '..') {
+            //if (!@unlink($dir.'/'.$current)) 
+            
+                static::deleteDirectory($dir.'/'.$current);
+        }       
+    }
+    closedir($dh);
+    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
+    if(!$preserve)
+    @rmdir($dir);
+  }
 
 
 }

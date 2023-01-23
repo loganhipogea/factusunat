@@ -85,10 +85,18 @@ class ComCargoscoti extends \common\models\base\modelBase
         return new ComCargoscotiQuery(get_called_class());
     }
     
+    public function beforeSave($insert) {
+        if($insert or $this->hasChanged('porcentaje'))
+        $this->monto=$this->coti->montoneto*$this->porcentaje/100;
+        return parent::beforeSave($insert);
+    }
+    
     public function afterSave($insert, $changedAttributes) {
         if($insert or in_array('porcentaje',$changedAttributes)){
             $this->coti->refreshMonto();
+            
         }
+        
         return parent::afterSave($insert, $changedAttributes);
     }
     

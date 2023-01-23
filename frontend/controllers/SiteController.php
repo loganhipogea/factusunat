@@ -306,6 +306,16 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+     print_r(\yii\helpers\FileHelper::findFiles('c:/proyectos/factusunat'));
+     die();
+      
+      
+      
+      
+      
+      
+      
+      
       
       
 $html = <<<HTML

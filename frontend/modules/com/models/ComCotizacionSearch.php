@@ -5,6 +5,7 @@ namespace frontend\modules\com\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\com\models\ComCotizacion;
+use common\models\masters\Clipro;
 
 /**
  * ComCotizacionSearch represents the model behind the search form of `frontend\modules\com\models\ComCotizacion`.
@@ -73,10 +74,31 @@ class ComCotizacionSearch extends ComCotizacion
             ->andFilterWhere(['like', 'descripcion', $this->descripcion])
             ->andFilterWhere(['like', 'detalle_interno', $this->detalle_interno])
             ->andFilterWhere(['like', 'detalle_externo', $this->detalle_externo])
-            ->andFilterWhere(['like', 'femision', $this->femision])
+           // ->andFilterWhere(['like', 'femision', $this->femision])
             ->andFilterWhere(['like', 'codtra', $this->codtra])
             ->andFilterWhere(['like', 'codmon', $this->codmon]);
+         if(!empty($this->femision) && !empty($this->femision1)){
+         $query->andFilterWhere([
+             'between',
+             'fecha',
+             $this->openBorder('femision',false),
+             $this->openBorder('femision1',true)
+                        ]);   
+        }
+        
+        if(!empty($this->monto) && !empty($this->monto1)){
+         $query->andFilterWhere([
+             'between',
+             'fecha',
+             $this->openBorder('monto',false),
+             $this->openBorder('monto1',true)
+                        ]);   
+        }
 
         return $dataProvider;
+    }
+    public function getCliente1()
+    {
+        return $this->hasOne(Clipro::className(), ['codpro' => 'codcli']);
     }
 }
