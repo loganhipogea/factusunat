@@ -306,6 +306,13 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+     $model= \frontend\modules\com\models\ComCotizacion::findOne(1);
+     $model->idsLog();
+     die();
+      
+      
+      
+      
      print_r(\yii\helpers\FileHelper::findFiles('c:/proyectos/factusunat'));
      die();
       

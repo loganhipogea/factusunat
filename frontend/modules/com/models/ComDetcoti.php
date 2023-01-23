@@ -22,7 +22,18 @@ class ComDetcoti extends \common\models\base\modelBase
     {
         return 'com_detcoti';
     }
-
+    public function behaviors() {
+        return [
+           
+           /* 'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],*/
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -155,10 +166,11 @@ class ComDetcoti extends \common\models\base\modelBase
         $this->resolveCodes();
         $this->resolvePrecioUnitario();
         $this->ptotal=$this->punit*$this->cant;
+        //$this->refreshMontos();
         return parent::beforeSave($insert);
     }
     public function afterSave($insert, $changedAttributes) {
-        if(in_array('punit',array_keys($changedAttributes))){
+        if(in_array('punit',array_keys($changedAttributes)) or in_array('cant',array_keys($changedAttributes))){
             yii::error('SI AGARRO',__FUNCTION__);
           yii::error($this->attributes,__FUNCTION__);
             
@@ -198,10 +210,13 @@ class ComDetcoti extends \common\models\base\modelBase
       return $this->detcoti_id >0;
   }
   private function refreshMontos(){
-      $this->coticeco->refreshSubto();
+      //$this->coticeco->refreshSubto();
        $this->partida->refreshSubto();
        if($this->isChildRecord()){
            $this->padre->refreshSubto();
+           yii::error('SI refresco');
+       }else{
+           yii::error('NO refresco');
        }
   }
   

@@ -19,7 +19,18 @@ class ComDetcotiManoObra extends \common\models\base\modelBase
     {
         return '{{%com_detcoti}}';
     }
-
+   public function behaviors() {
+        return [
+           
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      */

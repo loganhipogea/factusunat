@@ -81,7 +81,7 @@ class CotiController extends baseController
         if ($this->request->isPost) {
            
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view-coti', 'id' => $model->id]);
             }
         } else {
             
@@ -1104,6 +1104,12 @@ class CotiController extends baseController
           return parent::deleteModel($id,$model::className());        
    }
    
+   public function actionAjaxDeleteContacto($id){
+           $model= \frontend\modules\com\models\ComContactocoti::findOne($id);
+            h::response()->format = yii\web\Response::FORMAT_JSON; 
+          return parent::deleteModel($id,$model::className());        
+   }
+   
    public function actionAjaxAgregaCargos($id){
        $model= ComCotizacion::findOne($id);
        h::response()->format = yii\web\Response::FORMAT_JSON;   
@@ -1262,7 +1268,78 @@ class CotiController extends baseController
          return $mpdf;
     }
 
-    
+    public function actionAjaxLoadContactos($id){
+       $model= ComCotizacion::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;   
+        $model->loadContactos(); //En la funcion passInvoice validar el cambio de estado
+           return ['success' => yii::t('base.messages','Se actualizaron los contactos')];             
+         
+   }
+   
+   
+   public function actionModalNewContactoCoti($id){
+       $this->layout = "install";
+         $modelCoti= \frontend\modules\com\models\ComCotizacion::findOne($id);
+         $model=new \frontend\modules\com\models\ComContactocoti();
+         $model->coti_id=$modelCoti->id;
+         
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_contacto',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   } 
+   
+   public function actionModalEditContactoCoti($id){
+       $this->layout = "install";
+         $model= \frontend\modules\com\models\ComContactocoti::findOne($id);
+        
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_contacto',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   }
     
    
 }

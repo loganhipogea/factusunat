@@ -6,6 +6,9 @@ use common\models\masters\Clipro;
 use common\models\masters\Trabajadores;
 use common\models\masters\Direcciones;
 use common\helpers\h;
+use common\models\masters\Contactos;
+use common\models\audit\Activerecordlog as Log;
+use common\behaviors\FileBehavior;
 use Yii;
 
 /**
@@ -47,6 +50,8 @@ class ComCotizacion extends \common\models\base\modelBase
      'femision'=>self::_FDATE,
       'femision1'=>self::_FDATE,   
          ];
+    
+    public $prefijo='78';
     
     public static function tableName()
     {
@@ -167,6 +172,14 @@ class ComCotizacion extends \common\models\base\modelBase
         return $this->hasMany(ComCargoscoti::className(), ['coti_id' => 'id']);
     }
     
+   public function getContactos(){
+        return $this->hasMany(ComContactocoti::className(), ['coti_id' => 'id']);
+    }
+    
+    
+    public function getSubpartidas(){
+        return $this->hasMany(ComCotidet::className(), ['coti_id' => 'id']);
+    }
     /**
      * Gets query for [[NDirecc]].
      *
@@ -228,7 +241,7 @@ class ComCotizacion extends \common\models\base\modelBase
     
    public function beforeSave($insert) {
       
-       
+       $this->numero=$this->correlativo('numero');
        return parent::beforeSave($insert);
    } 
    
@@ -247,10 +260,93 @@ class ComCotizacion extends \common\models\base\modelBase
      
  }
  
+ public function loadContactos(){
+      $contactos= Contactos::find()->andWhere(['codpro'=>$this->codcli])->all();
+      $contador=1;
+      foreach($contactos as $contacto){
+          ComContactocoti::firstOrCreateStatic(
+                  [
+                      'coti_id'=>$this->id,
+                      'contacto_id'=>$contacto->id,
+                      'codpro'=>$contacto->codpro,
+                      'prioridad'=>$contador,
+                      'send'=>'0',
+                  ],null,
+                  [
+                      'coti_id'=>$this->id,
+                      'contacto_id'=>$contacto->id,
+                      'codpro'=>$contacto->codpro,                     
+                  ]
+                  );
+          $contador++;
+         }
+ }
  
+ /*Esta funcion devuelve los
+  * nombres de lso modelos
+  * involucrados en el log
+  */
+ private function modelsChild(){
+     $basePath='frontend/modules/com/models/';
+     return [
+         $basePath.'ComCotizacion',
+         $basePath.'ComCargoscoti',
+         $basePath.'ComContactoscoti',
+         $basePath.'ComCotidet',
+         //$basePath.'ComCotidetalle'=>yii::t('base.names','Detalles'),
+         $basePath.'ComCotigrupos',
+         $basePath.'ComDetcoti',
+     ];
+ }
  
+ /*Esta funcion  mapea los modelos y sus alias 
+  * para el control de auditoria cosnolidado
+  * 
+  */
+ private function mapModels(){
+    
+     $nombres= [
+         yii::t('base.names','Encabezado'),
+         yii::t('base.names','Cargos y comisiones'),
+         yii::t('base.names','Contactos'),
+         yii::t('base.names','Subpartidas'),
+         yii::t('base.names','Partidas'),
+         yii::t('base.names','Detalles'),
+     ];
+     return array_combine($this->modelsChild(),$nombres);
+ }
  
- 
- 
+ public function idsLog(){
+     $idspartidas=$this->getPartidas()->select('id')->column();//'ComCotigrupos',
+     $idscargos=$this->getCargos()->select('id')->column();//'ComCargoscoti',
+     $idsdetalles=$this->getComDetcotis()->select('id')->column(); //ComDetcoti    
+    $idscontactos=$this->getContactos()->select('id')->column();//ComContactoscoti
+    $idssubpartidas=$this->getSubpartidas()->select('id')->column();//ComContactoscoti
+    
+     Log::find()->where([
+        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Encabezado')],
+        'id'=>$idspartidas,
+    ])->orWhere([
+        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Cargos y comisiones')],
+        'id'=>$idscargos,
+        
+    ])->orWhere([
+        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Contactos')],
+       ])->orWhere([
+         'id'=>$idscontactos,
+        
+    ])->orWhere([
+        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Subpartidas')],
+       ])->orWhere([
+         'id'=>$idssubpartidas,
+        
+    ])->orWhere([
+        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Detalles')],
+       ])->orWhere([
+         'id'=>$idsdetalles,
+        
+    ]);
+    
+ }
     
 }

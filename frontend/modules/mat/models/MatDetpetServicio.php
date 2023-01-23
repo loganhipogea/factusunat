@@ -43,7 +43,7 @@ class MatDetpetServicio extends \common\models\base\modelBase
     {
         return [
              [['codum','descripcion','pventa'], 'required'],
-            [['servicio_id','flag'], 'safe'],
+            [['servicio_id','flag','codart'], 'safe'],
             [['petoferta_id'], 'integer'],
             [['detalle'], 'string'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa'], 'number'],
@@ -81,6 +81,11 @@ class MatDetpetServicio extends \common\models\base\modelBase
     {
         return $this->hasOne(MatPetoferta::className(), ['id' => 'petoferta_id']);
     }
+    
+   public function getServicio()
+    {
+        return $this->hasOne(\common\models\masters\ServiciosTarifados::className(), ['id' => 'servicio_id']);
+    }
     /**
      * {@inheritdoc}
      * @return MatDetpetServicioQuery the active query used by this AR class.
@@ -92,7 +97,7 @@ class MatDetpetServicio extends \common\models\base\modelBase
     
      public function beforeSave($insert) {
         if($insert)$this->flag=self::FLAG_SERVICIO;
-        
+        $this->codart=$this->servicio->codserv;
         $this->resolveMontos();
         
         return parent::beforeSave($insert);

@@ -23,7 +23,18 @@ class ComCotigrupos extends \common\models\base\modelBase
     {
         return 'com_cotigrupos';
     }
-
+    public function behaviors() {
+        return [
+           
+           /* 'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],*/
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      */

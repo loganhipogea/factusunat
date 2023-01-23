@@ -27,7 +27,18 @@ class ComCoticeco extends \common\models\base\modelBase
     {
         return 'com_coticeco';
     }
-
+     public function behaviors() {
+        return [
+           
+            /*'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],*/
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      */

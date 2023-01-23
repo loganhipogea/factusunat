@@ -1063,4 +1063,13 @@ class ComboHelper  {
                 'codcargo','descricargo');
     }  
     
+    
+    public static function getCboContactos($codpro){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\Contactos::find()->andWhere(['codpro'=>$codpro])->
+                  all(),
+                'id','nombres');
+    }  
+    
 }
