@@ -5,6 +5,7 @@ namespace common\models\masters;
 use Yii;
 use common\models\masters\Monedas;
 use common\models\masters\Ums;
+use common\helpers\h;
 /**
  * This is the model class for table "servicios_tarifados".
  *
