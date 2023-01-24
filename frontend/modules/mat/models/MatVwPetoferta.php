@@ -78,10 +78,20 @@ class MatVwPetoferta extends \common\models\base\modelBase
                 [
                     'codart'=>$codart,
                     
-                ])->orderBy(['fecha'=>SORT_DESC])->scalar();
+                ])
+               ->andWhere(
+                [
+                    '>','pventa',0
+                    
+                ])
+               ->orderBy(['fecha'=>SORT_DESC])->scalar();
       yii::error(self::find()->select(['punit'])->andWhere(
                 [
                     'codart'=>$codart,
+                    
+                ]) ->andWhere(
+                [
+                    '>','pventa',0
                     
                 ])->orderBy(['fecha'=>SORT_DESC])->createCommand()->rawSql,__FUNCTION__);
       if($valor >0) {
