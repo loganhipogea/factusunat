@@ -74,6 +74,11 @@ use yii\grid\GridView as grid;
           'fecha',
           date('Y-m-d')
             ]
+              )->andWhere([
+          '>',
+          'pventa',
+          0
+            ]
               )
             ,
     ]),
