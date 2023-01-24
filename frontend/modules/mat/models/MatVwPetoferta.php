@@ -79,6 +79,11 @@ class MatVwPetoferta extends \common\models\base\modelBase
                     'codart'=>$codart,
                     
                 ])->orderBy(['fecha'=>SORT_DESC])->scalar();
+      yii::error(self::find()->select(['punit'])->andWhere(
+                [
+                    'codart'=>$codart,
+                    
+                ])->orderBy(['fecha'=>SORT_DESC])->createCommand()->rawSql,__FUNCTION__);
       if($valor >0) {
        $valor=h::tipoCambio($codmon)['compra']*$valor;  
       }else{
