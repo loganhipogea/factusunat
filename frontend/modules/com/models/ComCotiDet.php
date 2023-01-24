@@ -6,30 +6,7 @@ use Yii;
 
 /**
  * This is the model class for table "{{%com_detcoti}}".
- *
- * @property int $id
- * @property int|null $coti_id
- * @property string|null $item
- * @property string|null $tipo tipo material o servicio
- * @property string|null $codart
- * @property string|null $descripcion
- * @property string|null $detalle
- * @property string|null $codum
- * @property float|null $cant
- * @property float|null $punit
- * @property float|null $ptotal
- * @property float|null $igv
- * @property float|null $pventa
- * @property float|null $punitcalculado
- * @property int|null $cotigrupo_id
- * @property int|null $coticeco_id
- * @property int|null $detcoti_id
- * @property int|null $detcoti_id_id
- * @property int|null $servicio_id
- * @property string|null $flag
- * @property string|null $codcargo
- * @property string|null $codactivo
- *
+ 
  * @property ComCotizaciones $coti
  */
 class ComCotiDet extends \common\models\base\modelBase
@@ -41,6 +18,8 @@ class ComCotiDet extends \common\models\base\modelBase
     {
         return '{{%com_detcoti}}';
     }
+    
+    public $booleanFields=['resumen'];
     public function behaviors() {
         return [
            
@@ -61,7 +40,7 @@ class ComCotiDet extends \common\models\base\modelBase
         return [
             [['coti_id', 'cotigrupo_id', 'coticeco_id', 'detcoti_id', 'detcoti_id_id', 'servicio_id'], 'integer'],
             [['detalle'], 'string'],
-            [['codcargo'], 'safe'],
+            [['codcargo','resumen'], 'safe'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa', 'punitcalculado'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
@@ -157,4 +136,9 @@ class ComCotiDet extends \common\models\base\modelBase
        return $this->getDetail()->
          select('codum')->distinct()->column(); 
     }
+    
+    
+    
+    
+    
 }

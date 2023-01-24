@@ -121,7 +121,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
  <div class="btn-group">
 
 <?php
-      $url= Url::to(['/com/coti/modal-new-detpadre-by-partida','id'=>$model->id,'partida_id'=>$model->id,'gridName'=>Json::encode(['grilla-detalle-by-partidas','pjax-monto-partida']),'idModal'=>'buscarvalor']);
+      $url= Url::to(['/com/coti/modal-new-detpadre-by-partida','id'=>$model->id,'partida_id'=>$model->id,'gridName'=>Json::encode([$zona_refresh,'pjax-monto-partida']),'idModal'=>'buscarvalor']);
       echo  Html::button('<span class="fa fa-cubes"></span>', ['href' => $url, 'title' => 'Nuevo item de ','id'=>'btn_detpadre','idGrilla'=>Json::encode(['grilla-cecos']),  'class' => 'botonAbre btn btn-success']); 
      
       

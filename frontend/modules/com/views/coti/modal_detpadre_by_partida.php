@@ -54,7 +54,10 @@ use yii\helpers\Url;
                         ]
                     )  ?>
 
-        </div>  
+        </div>
+     <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
+        <?= $form->field($model, 'cant')->textInput([]) ?>
+     </div>
       <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'descripcion')->textInput([]) ?>
      </div>
@@ -72,9 +75,7 @@ use yii\helpers\Url;
         </div>  
     
      
-     <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
-        <?= $form->field($model, 'cant')->textInput([]) ?>
-     </div>
+     
       <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'punit')->textInput(['disabled'=>true]) ?>
      </div>

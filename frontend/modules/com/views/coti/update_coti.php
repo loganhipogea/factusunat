@@ -16,7 +16,7 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 $this->title = Yii::t('app', 'Update Com Cotizacion: {name}', [
     'name' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Com Cotizacions'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Com Cotizacions'), 'url' => ['index-coti']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>

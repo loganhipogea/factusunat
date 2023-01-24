@@ -77,7 +77,7 @@ class ComCotigrupos extends \common\models\base\modelBase
         return $this->hasMany(ComDetcoti::className(), ['cotigrupo_id' => 'id']);
     }
      public function getCoti() {
-        return $this->hasOne(ComCotizacion::className(), ['coti_id' => 'id']);
+        return $this->hasOne(ComCotizacion::className(), ['id' => 'coti_id']);
     }
     
      public function getDetailPadres()
@@ -90,5 +90,19 @@ class ComCotigrupos extends \common\models\base\modelBase
         if($update_database)
         return $this->save();
         return true;
+    }
+    
+    public function beforeSave($insert) {
+        if($insert)
+        $this->item=$this->numeroItem();
+        return parent::beforeSave($insert);
+    }
+    
+    private function numeroItem(){       
+       $max= $this->coti->getPartidas()->count()+0;
+       
+       $max+=1;
+       $item= str_pad($max, 3,'0',STR_PAD_LEFT);
+       return $item;
     }
 }
