@@ -44,13 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ];
                         $url=Url::to(['update-coti','id'=>$model->id]);
                         return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
-                         },
-                          'view' => function($url, $model) {                        
-                        $options = [
-                            'title' => Yii::t('base.verbs', 'View'),                            
-                        ];
-                        return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-search"></span>', $url, $options/*$options*/);
-                         },
+                         },                          
                          'delete' => function($url, $model) {                        
                         $options = [
                             'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),

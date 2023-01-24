@@ -178,7 +178,7 @@ class ComCotizacion extends \common\models\base\modelBase
     
     
     public function getSubpartidas(){
-        return $this->hasMany(ComCotidet::className(), ['coti_id' => 'id']);
+        return $this->hasMany(ComCotiDet::className(), ['coti_id' => 'id']);
     }
     /**
      * Gets query for [[NDirecc]].
@@ -292,7 +292,7 @@ class ComCotizacion extends \common\models\base\modelBase
          $basePath.'ComCotizacion',
          $basePath.'ComCargoscoti',
          $basePath.'ComContactoscoti',
-         $basePath.'ComCotidet',
+         $basePath.'ComCotiDet',
          //$basePath.'ComCotidetalle'=>yii::t('base.names','Detalles'),
          $basePath.'ComCotigrupos',
          $basePath.'ComDetcoti',
