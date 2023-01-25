@@ -165,7 +165,7 @@ class ComDetcoti extends \common\models\base\modelBase
     public function beforeSave($insert) {
         $this->resolveCodes();
         $this->resolvePrecioUnitario();
-        $this->ptotal=$this->punit*$this->cant;
+        $this->resolvePtotal();
         //$this->refreshMontos();
         return parent::beforeSave($insert);
     }
@@ -210,7 +210,7 @@ class ComDetcoti extends \common\models\base\modelBase
       return $this->detcoti_id >0;
   }
   private function refreshMontos(){
-      //$this->coticeco->refreshSubto();
+     $this->coti->refreshMonto();
        $this->partida->refreshSubto();
        if($this->isChildRecord()){
            $this->padre->refreshSubto();
@@ -317,5 +317,14 @@ class ComDetcoti extends \common\models\base\modelBase
         break;
         }  
  } 
-  
+ 
+    private function resolvePtotal(){
+        $base=$this->punit*$this->cant;
+        $this->ptotal=$base;
+        foreach($this->coti->array_cargos() as $etiqueta=>$porcentaje){
+            $this->ptotal+=$base*$porcentaje/100;
+        }
+        return true;
+    }
+ 
 }

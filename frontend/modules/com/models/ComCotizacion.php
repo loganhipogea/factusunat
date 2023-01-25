@@ -43,7 +43,7 @@ class ComCotizacion extends \common\models\base\modelBase
     /**
      * {@inheritdoc}
      */
-    
+    const PREFIX_CACHE_CARGOS='xjsdkjdsk_cargos';
     public $femision1=null;
     public $monto1=null;
     public $dateorTimeFields=[
@@ -57,7 +57,18 @@ class ComCotizacion extends \common\models\base\modelBase
     {
         return 'com_cotizaciones';
     }
-
+    public function behaviors() {
+        return [
+           
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -287,7 +298,7 @@ class ComCotizacion extends \common\models\base\modelBase
   * involucrados en el log
   */
  private function modelsChild(){
-     $basePath='frontend/modules/com/models/';
+     $basePath='';
      return [
          $basePath.'ComCotizacion',
          $basePath.'ComCargoscoti',
@@ -303,7 +314,7 @@ class ComCotizacion extends \common\models\base\modelBase
   * para el control de auditoria cosnolidado
   * 
   */
- private function mapModels(){
+ public function mapModels(){
     
      $nombres= [
          yii::t('base.names','Encabezado'),
@@ -316,37 +327,69 @@ class ComCotizacion extends \common\models\base\modelBase
      return array_combine($this->modelsChild(),$nombres);
  }
  
- public function idsLog(){
+ private function nameModel($alias){
+     if(array_key_exists($alias, array_flip($this->mapModels())));
+     return array_flip($this->mapModels())[$alias];
+     return '';
+ }
+ 
+ public function providerLog(){
      $idspartidas=$this->getPartidas()->select('id')->column();//'ComCotigrupos',
      $idscargos=$this->getCargos()->select('id')->column();//'ComCargoscoti',
      $idsdetalles=$this->getComDetcotis()->select('id')->column(); //ComDetcoti    
     $idscontactos=$this->getContactos()->select('id')->column();//ComContactoscoti
     $idssubpartidas=$this->getSubpartidas()->select('id')->column();//ComContactoscoti
     
-     Log::find()->where([
-        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Encabezado')],
-        'id'=>$idspartidas,
-    ])->orWhere([
-        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Cargos y comisiones')],
-        'id'=>$idscargos,
-        
-    ])->orWhere([
-        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Contactos')],
-       ])->orWhere([
-         'id'=>$idscontactos,
-        
-    ])->orWhere([
-        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Subpartidas')],
-       ])->orWhere([
-         'id'=>$idssubpartidas,
-        
-    ])->orWhere([
-        'model'=> array_flip($this->mapModels())[ yii::t('base.names','Detalles')],
-       ])->orWhere([
-         'id'=>$idsdetalles,
-        
-    ]);
-    
+    $queryLog= Log::find()
+     ->where([
+       'and',
+         ['clave'=>$this->id],
+         ['like','model',$this->nameModel(yii::t('base.names','Encabezado'))],
+         ])->orWhere
+          (
+          [ 'and',
+                ['clave'=>$idscargos],
+               ['like','model',$this->nameModel(yii::t('base.names','Cargos y comisiones'))],
+          ]
+            )->orWhere
+          (
+          [ 'and',
+                ['clave'=>$idsdetalles],
+               ['like','model',$this->nameModel(yii::t('base.names','Detalles'))],
+          ]
+            )->orWhere
+          (
+          [ 'and',
+                ['clave'=>$idscontactos],
+               ['like','model',$this->nameModel(yii::t('base.names','Contactos'))],
+          ]
+            )->orWhere
+          (
+          [ 'and',
+                ['clave'=>$idssubpartidas],
+               ['like','model',$this->nameModel(yii::t('base.names','Subpartidas'))],
+          ]
+            )->orderBy(['model'=>SORT_ASC,'action'=>SORT_ASC,'creationdate'=>SORT_ASC]);
+          
+   return new \yii\data\ActiveDataProvider([
+       'query'=>$queryLog,
+   ]);    
  }
+ 
+   public function array_cargos(){
+       $cache=h::cache();
+       if(!$cache->get(self::PREFIX_CACHE_CARGOS)){
+            $arreglo=$this->getCargos()->alias('t')->
+             innerJoin('{{%com_cargos}} b', 't.cargo_id=b.id')->
+               select(['b.etiqueta','t.porcentaje'])->orderBy(['b.id'=>SORT_ASC])->asArray()->all();
+            $arreglo= array_combine(array_column($arreglo,'etiqueta'),array_column($arreglo,'porcentaje'));
+            $cache->set(self::PREFIX_CACHE_CARGOS,$arreglo);
+            
+       }else{
+          $arreglo=$cache->get(self::PREFIX_CACHE_CARGOS);
+       }
+     return $arreglo;
+   } 
+ 
     
 }

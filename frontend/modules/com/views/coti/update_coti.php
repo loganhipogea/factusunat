@@ -62,6 +62,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             'active' => false,
              'options' => ['id' => 'm45654er'],
         ],
+       [
+          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Auditoría'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_audit',[ 'model' => $model]),
+            'active' => false,
+             'options' => ['id' => 'm45A569n'],
+        ],
     ],
 ]);  ?>
 

@@ -306,8 +306,10 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
-     $model= \frontend\modules\com\models\ComCotizacion::findOne(1);
-     $model->idsLog();
+      
+      
+     $model= \frontend\modules\com\models\ComCotizacion::findOne(5);
+     print_r($model->array_cargos());
      die();
       
       

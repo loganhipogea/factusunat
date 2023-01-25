@@ -11,6 +11,7 @@ use kartik\grid\GridView as grid;
 use yii\widgets\Pjax;
 use frontend\modules\com\models\ComDetcoti;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
+
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */
@@ -26,6 +27,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
        </div>
         <div>
         <?php 
+           
             $identidad=$model->id;
             $column=[
                     
@@ -163,15 +165,32 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
          ],  
        
       [
-            'attribute' => 'ptotal',
+            
+            'attribute' => 'Neto',
             'value'=>function($model)use($formato){
-              return $formato->asDecimal($model->ptotal,2);
+              return $formato->asDecimal($model->cant*$model->punit,2);
             },
-            'contentOptions'=>['style'=>'text-align:right; width: 5%; font-weight:900;'],
-        ],  
-        
+           'contentOptions'=>['style'=>'text-align:right; width: 2%; '], 
+         ],  
+
+      
    ];
+        
+ 
+            
+ $modelCoti=$model->coti;
+ foreach($modelCoti->array_cargos() as $cargo=>$porcentaje){
+     array_push($gridColumns,['attribute'=>$cargo,'value'=>function($model)use($porcentaje,$formato){return $formato->asDecimal($model->punit*$model->cant*$porcentaje/100);}]);
+    }
+array_push($gridColumns,[
+    'attribute'=>'ptotal',
+    'value'=>function($model)use($formato){return $formato->asDecimal($model->ptotal,3);},
+    'contentOptions'=>['style'=>'text-align:right; width: 5%; font-weight:900;'],
+       'footer' =>$formato->asDecimal($model->subtotal(),3),
+    ]);
     
+ 
+
    \yii\widgets\Pjax::begin(['id'=>'grilla-detalle-by-partidas-'.$model->id]);
    echo '.'.grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
@@ -184,7 +203,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                 
                     ])
             ,
+         
+         
     ]),
+    'showFooter' => true,
    // 'filterModel' => $searchModel,
         'summary' => '',
         'columns' => $gridColumns,

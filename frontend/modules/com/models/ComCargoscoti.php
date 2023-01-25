@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\modules\com\models;
-
+use common\helpers\h;
 use Yii;
 
 /**
@@ -47,10 +47,10 @@ class ComCargoscoti extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['coti_id', 'cargo_id'], 'integer'],
+            [['coti_id', 'cargo_id','orden'], 'integer'],
             [['porcentaje','cargo_id'], 'required'],
             [['porcentaje', 'monto'], 'number'],
-            [['cargo_id', 'coti_id'], 'safe'],
+            [['cargo_id', 'coti_id','orden'], 'safe'],
             [['cargo_id', 'coti_id'], 'unique', 'targetAttribute' => ['cargo_id','coti_id']],
             [['cargo_id'], 'exist', 'skipOnError' => true, 'targetClass' => ComCargos::className(), 'targetAttribute' => ['cargo_id' => 'id']],
             [['coti_id'], 'exist', 'skipOnError' => true, 'targetClass' => ComCotizacion::className(), 'targetAttribute' => ['coti_id' => 'id']],
@@ -101,14 +101,20 @@ class ComCargoscoti extends \common\models\base\modelBase
     }
     
     public function beforeSave($insert) {
-        if($insert or $this->hasChanged('porcentaje'))
-        $this->monto=$this->coti->montoneto*$this->porcentaje/100;
+        if($insert or $this->hasChanged('porcentaje')){
+             $this->clearCacheCargos();
+             $this->updateBdMontos();
+            $this->monto=$this->coti->montoneto*$this->porcentaje/100;
+        }
+        
         return parent::beforeSave($insert);
     }
     
     public function afterSave($insert, $changedAttributes) {
         if($insert or in_array('porcentaje',$changedAttributes)){
-            $this->coti->refreshMonto();
+            //$this->coti->refreshMonto();
+            $this->updateBdMontos();
+            $this->clearCacheCargos();
             
         }
         
@@ -116,7 +122,26 @@ class ComCargoscoti extends \common\models\base\modelBase
     }
     
     public function afterDelete() {
-         $this->coti->refreshMonto();
+         //$this->coti->refreshMonto();
+         $this->clearCacheCargos();
+         $this->updateBdMontos();
         return parent::afterDelete();
+    }
+    
+    private function clearCacheCargos(){
+       h::cache()->delete(ComCotizacion::PREFIX_CACHE_CARGOS);
+    }
+    
+    private function updateBdMontos(){
+        $porcentajeAcumulado=0;
+        foreach($this->coti->array_cargos() as $etiqueta=>$porcentaje){
+           $porcentajeAcumulado+=$porcentaje; 
+        }
+        $chain='punit*cant*'.(1+$porcentajeAcumulado/100);
+        ComDetcoti::updateAll([
+            'ptotal'=>new \yii\db\Expression($chain),
+            'detcoti_id > 0'
+            ]
+                ,['coti_id'=>$this->coti_id]);
     }
 }

@@ -19,7 +19,7 @@ class ComCotiDet extends \common\models\base\modelBase
         return '{{%com_detcoti}}';
     }
     
-    public $booleanFields=['resumen'];
+    public $booleanFields=['resumen','mostrar'];
     public function behaviors() {
         return [
            
@@ -40,7 +40,7 @@ class ComCotiDet extends \common\models\base\modelBase
         return [
             [['coti_id', 'cotigrupo_id', 'coticeco_id', 'detcoti_id', 'detcoti_id_id', 'servicio_id'], 'integer'],
             [['detalle'], 'string'],
-            [['codcargo','resumen'], 'safe'],
+            [['codcargo','resumen','mostrar'], 'safe'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa', 'punitcalculado'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
@@ -109,8 +109,7 @@ class ComCotiDet extends \common\models\base\modelBase
     }
     
      public function refreshSubto($update_database=true){
-        $this->ptotal=$this->getDetail()->
-         select('sum(ptotal)')->scalar();
+       
         $ums=$this->umsChildColumn();
         if(count($ums)==1){
            $this->codum=$ums[0];
@@ -138,7 +137,10 @@ class ComCotiDet extends \common\models\base\modelBase
     }
     
     
-    
+    public function subtotal(){
+        return $this->ptotal=$this->getDetail()->
+         select('sum(ptotal)')->scalar();
+    }
     
     
 }

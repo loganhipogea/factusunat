@@ -44,7 +44,7 @@ use frontend\modules\com\models\ComDetcoti;
    </div>
    <?php Pjax::begin(['id'=>'pjax-monto-partida']);   ?>
    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-     <?= $form->field($model, 'total')->textInput(['style'=>'color:#89097d;font-weight:900;','maxlength' => true,'disabled'=>true]) ?>
+     <?= $form->field($model, 'total')->textInput(['value'=>$formato->asDecimal($model->total),    'style'=>'text-align:right;   color:#89097d;font-weight:900;','maxlength' => true,'disabled'=>true]) ?>
    </div>
     <?php Pjax::end();   ?>
     <?php ActiveForm::end(); ?>
@@ -54,7 +54,7 @@ use frontend\modules\com\models\ComDetcoti;
    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?php
       $items=[];
-      $formato=h::formato();  
+     
       foreach($model->detailPadres as $fila_padre){
           echo $this->render('collapse_detalle_coti',[
               'model'=>$fila_padre,

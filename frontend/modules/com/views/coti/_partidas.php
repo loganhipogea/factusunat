@@ -7,6 +7,8 @@ use kartik\grid\GridView as grid;
 use yii\widgets\Pjax;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
+
+ $formato=h::formato();
    if(!$model->isNewRecord){
   $column=[
                     
@@ -65,7 +67,14 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'width' => '210px',*/
             
          ],
-      'total',
+     [
+        'attribute'=>'total' ,
+        'value'=>function($model)use($formato){
+           return $formato->asDecimal($model->total,3);                     
+        },
+      'footer'=>$formato->asDecimal($model->montoneto),
+      'contentOptions'=>['style'=>'text-align:right; font-weight:900;'],
+     ]
         
    ];
    \yii\widgets\Pjax::begin(['id'=>'grilla-partidas']);
@@ -75,6 +84,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             ->select(['coti_id','id','item','descripartida','total'])->andWhere(['coti_id'=>$model->id])
             ,
     ]),
+    'showFooter'=>true,
    // 'filterModel' => $searchModel,
         'summary' => '',
         'columns' => $gridColumns,
