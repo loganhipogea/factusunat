@@ -12,30 +12,7 @@ use common\behaviors\FileBehavior;
 use Yii;
 
 /**
- * This is the model class for table "com_cotizaciones".
- *
- * @property int $id
- * @property string|null $numero
- * @property string|null $serie
- * @property string|null $codsoc
- * @property string|null $codcen
- * @property string|null $codcli
- * @property string|null $codcli1
- * @property string|null $estado
- * @property string|null $descripcion
- * @property string|null $detalle_interno
- * @property string|null $detalle_externo
- * @property string|null $femision
- * @property int|null $validez
- * @property string|null $codtra
- * @property int|null $n_direcc
- * @property string|null $codmon
- *
- * @property Centros $codcen0
- * @property Clipro $codcli0
- * @property Clipro $codcli10
- * @property Trabajadores $codtra0
- * @property ComDetcoti[] $comDetcotis
+ 
  * @property Direcciones $nDirecc
  */
 class ComCotizacion extends \common\models\base\modelBase
@@ -229,32 +206,32 @@ class ComCotizacion extends \common\models\base\modelBase
     }
     
     
-    public function refreshMonto(){
+    public function refreshMontos(){
         /*
          * Actualizar primero los montos de las partidas
          */
-      $this->montoneto=$this->getPartidas()->select('sum(total)')->scalar();
-      $this->montoneto=($this->montoneto>0)?$this->montoneto:0;
-      
-      /*
-       * Ahora veamos que este monto debe de 
-       */
-      $this->montocargo=$this->getCargos()->select('sum(porcentaje)')->scalar();
-      $this->montocargo=($this->montocargo>0)?$this->montocargo:0;
-      $this->montocargo=$this->montoneto*$this->montocargo/100;
-      /***************************************/
-      
+      $this->montoneto=$this->getPartidas()->select('sum(montoneto)')->scalar();
+      $this->montoneto=($this->montoneto>0)?$this->montoneto:0; 
+            $this->montocargo=$this->montoneto*(1+$this->cargoPorcentajeAcumulado()/100);
       $this->monto=$this->montoneto+$this->montocargo;
       $this->igv=h::gsetting ('general', 'igv')*$this->monto;
       $this->monto+=$this->igv;
-      return $this->save();
+      return $this;
     }
     
    public function beforeSave($insert) {
-      
+      if($insert)
        $this->numero=$this->correlativo('numero');
+      $this->refreshMontos();
+      
        return parent::beforeSave($insert);
    } 
+  public function afterSave($insert, $changedAttributes) {
+       if(in_array('codmon',array_keys($changedAttributes)) ){
+           $this->changeBdPorTipoCambio($changedAttributes['codmon']);
+        }
+      return parent::afterSave($insert, $changedAttributes);
+  } 
    
  private function generateNameForQr(){
      $arrayPieces=[
@@ -391,5 +368,43 @@ class ComCotizacion extends \common\models\base\modelBase
      return $arreglo;
    } 
  
-    
+   public function changeBdPorTipoCambio($codmon){
+       if($this->codmon===$codmon){
+           
+       }else{
+          $cambio=h::tipoCambio($codmon)['compra'];
+            self::updateAll([
+                            'monto'=>$this->monto*$cambio,'igv'=>$this->igv*$cambio,'montoneto'=>$this->montoneto*$cambio,
+                            ],
+                    ['id'=>$this->id]); 
+            $chain='punit*'.($cambio);
+            ComDetcoti::updateAll([
+                            'punit'=>new \yii\db\Expression('punit*'.$cambio),
+                             'ptotal'=>new \yii\db\Expression('ptotal*'.$cambio),
+                            'punitcalculado'=>new \yii\db\Expression('punitcalculado*'.$cambio),
+                            'pventa'=>new \yii\db\Expression('pventa*'.$cambio),
+                            'igv'=>new \yii\db\Expression('igv*'.$cambio),
+                            ],
+                    ['coti_id'=>$this->id]); 
+            ComCotigrupos::updateAll([
+                            'montoneto'=>new \yii\db\Expression('montoneto*'.$cambio),
+                             'total'=>new \yii\db\Expression('total*'.$cambio),                           
+                            ],
+                    ['coti_id'=>$this->id]); 
+            ComCargoscoti::updateAll([
+                            'monton'=>new \yii\db\Expression('monto*'.$cambio),
+                                                        
+                            ],
+                    ['coti_id'=>$this->id]); 
+       }
+       
+   } 
+   
+   public function cargoPorcentajeAcumulado(){
+      return $this->getCargos()->sum('porcentaje');
+   }
+   
+  public function deleteCache(){
+      h::cache()->delete(self::PREFIX_CACHE_CARGOS);
+  }
 }

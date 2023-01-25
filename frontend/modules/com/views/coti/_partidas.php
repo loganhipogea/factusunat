@@ -67,16 +67,24 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'width' => '210px',*/
             
          ],
-     [
+    
+        
+   ];
+        
+  $modelCoti=$model;
+ foreach($modelCoti->array_cargos() as $cargo=>$porcentaje){
+     array_push($gridColumns,['attribute'=>$cargo,'value'=>function($model)use($porcentaje,$formato){return $formato->asDecimal($model->subtotal()*$porcentaje/100);}]);
+    }
+array_push($gridColumns, [
         'attribute'=>'total' ,
         'value'=>function($model)use($formato){
            return $formato->asDecimal($model->total,3);                     
         },
-      'footer'=>$formato->asDecimal($model->montoneto),
+      'footer'=>$formato->asDecimal($model->monto),
       'contentOptions'=>['style'=>'text-align:right; font-weight:900;'],
-     ]
+     ]);
+          
         
-   ];
    \yii\widgets\Pjax::begin(['id'=>'grilla-partidas']);
    echo grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([

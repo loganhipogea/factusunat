@@ -137,11 +137,23 @@ class ComCargoscoti extends \common\models\base\modelBase
         foreach($this->coti->array_cargos() as $etiqueta=>$porcentaje){
            $porcentajeAcumulado+=$porcentaje; 
         }
-        $chain='punit*cant*'.(1+$porcentajeAcumulado/100);
-        ComDetcoti::updateAll([
-            'ptotal'=>new \yii\db\Expression($chain),
-            'detcoti_id > 0'
-            ]
-                ,['coti_id'=>$this->coti_id]);
+        //$chain='punit*cant*'.(1+$porcentajeAcumulado/100);
+        
+        
+           
+            ComDetcoti::updateAll([
+                           // 'punit'=>new \yii\db\Expression('punit*'.$cambio),
+                             'ptotal'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.')/100'),
+                           // 'punitcalculado'=>new \yii\db\Expression('punitcalculado*'.$cambio),
+                           // 'pventa'=>new \yii\db\Expression('pventa*'.$cambio),
+                           // 'igv'=>new \yii\db\Expression('igv*'.$cambio),
+                            ],
+                    ['coti_id'=>$this->id]); 
+            ComCotigrupos::updateAll([
+                           // 'montoneto'=>new \yii\db\Expression('montoneto*'.$cambio),
+                            'total'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.')/100'),                        
+                            ],
+                    ['coti_id'=>$this->id]); 
+       $this->coti->refreshMontos()->save();
     }
 }

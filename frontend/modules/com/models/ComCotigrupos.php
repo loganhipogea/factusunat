@@ -43,6 +43,7 @@ class ComCotigrupos extends \common\models\base\modelBase
         return [
             [['total'], 'number'],
             [['coti_id'], 'integer'],
+               [['montoneto'], 'safe'],
             [['descripartida'], 'string', 'max' => 40],
             [['calificacion'], 'string', 'max' => 1],
             [['item'], 'string', 'max' => 6],
@@ -95,14 +96,44 @@ class ComCotigrupos extends \common\models\base\modelBase
     public function beforeSave($insert) {
         if($insert)
         $this->item=$this->numeroItem();
+        $this->refreshMontos();
         return parent::beforeSave($insert);
     }
+     public function afterDelete() {
+        $this->sincronizeMontos();
+        return parent::afterDelete();
+    }
     
+   public function afterSave($insert, $changedAttributes) {
+        if(in_array('montoneto',array_keys($changedAttributes)) ){
+           $this->sincronizeMontos();
+        }else{
+           
+        } 
+        return parent::afterSave($insert, $changedAttributes);
+    } 
     private function numeroItem(){       
        $max= $this->coti->getPartidas()->count()+0;
        
        $max+=1;
        $item= str_pad($max, 3,'0',STR_PAD_LEFT);
        return $item;
+    }
+    
+    public function subtotal(){
+        return $this->getDetailPadres()->select('sum(montoneto)')->scalar();
+    }
+    public function subTotaltTotal(){
+        return $this->getDetailPadres()->select('sum(ptotal)')->scalar();
+    }
+    public function refreshMontos(){
+        $this->montoneto=$this->subtotal();
+       
+        $this->total=$this->subTotaltTotal();
+        return $this;
+    } 
+  
+    private function sincronizeMontos(){
+            $this->coti->refreshMontos()->save();
     }
 }

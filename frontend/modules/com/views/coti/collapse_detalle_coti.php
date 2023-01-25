@@ -166,9 +166,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
        
       [
             
-            'attribute' => 'Neto',
+            'attribute' => 'montoneto',
             'value'=>function($model)use($formato){
-              return $formato->asDecimal($model->cant*$model->punit,2);
+              return $formato->asDecimal($model->montoneto,2);
             },
            'contentOptions'=>['style'=>'text-align:right; width: 2%; '], 
          ],  
@@ -180,13 +180,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             
  $modelCoti=$model->coti;
  foreach($modelCoti->array_cargos() as $cargo=>$porcentaje){
-     array_push($gridColumns,['attribute'=>$cargo,'value'=>function($model)use($porcentaje,$formato){return $formato->asDecimal($model->punit*$model->cant*$porcentaje/100);}]);
+     array_push($gridColumns,['attribute'=>$cargo,'value'=>function($model)use($porcentaje,$formato){return $formato->asDecimal($model->montoneto*$porcentaje/100);}]);
     }
 array_push($gridColumns,[
     'attribute'=>'ptotal',
     'value'=>function($model)use($formato){return $formato->asDecimal($model->ptotal,3);},
     'contentOptions'=>['style'=>'text-align:right; width: 5%; font-weight:900;'],
-       'footer' =>$formato->asDecimal($model->subtotal(),3),
+       'footer' =>$formato->asDecimal($model->subTotalTotal(),3),
     ]);
     
  

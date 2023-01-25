@@ -308,7 +308,13 @@ class SiteController extends Controller
     {
       
       
-     $model= \frontend\modules\com\models\ComCotizacion::findOne(5);
+      
+      
+      
+     $model= \frontend\modules\com\models\ComCotizacion::findOne(2);
+     print_r($model->array_cargos());
+     $model->deleteCache();
+     echo '<br>';
      print_r($model->array_cargos());
      die();
       

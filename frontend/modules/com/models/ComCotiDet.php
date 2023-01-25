@@ -40,7 +40,7 @@ class ComCotiDet extends \common\models\base\modelBase
         return [
             [['coti_id', 'cotigrupo_id', 'coticeco_id', 'detcoti_id', 'detcoti_id_id', 'servicio_id'], 'integer'],
             [['detalle'], 'string'],
-            [['codcargo','resumen','mostrar'], 'safe'],
+            [['codcargo','resumen','mostrar','montoneto'], 'safe'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa', 'punitcalculado'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
@@ -93,7 +93,10 @@ class ComCotiDet extends \common\models\base\modelBase
     {
         return $this->hasOne(ComCotizacion::className(), ['id' => 'coti_id']);
     }
-
+   public function getPartida()
+    {
+        return $this->hasOne(ComCotigrupos::className(), ['id' => 'cotigrupo_id']);
+    }
     /**
      * {@inheritdoc}
      * @return ComCotiDetQuery the active query used by this AR class.
@@ -138,9 +141,39 @@ class ComCotiDet extends \common\models\base\modelBase
     
     
     public function subtotal(){
-        return $this->ptotal=$this->getDetail()->
-         select('sum(ptotal)')->scalar();
+       // yii::error();
+        return $this->getDetail()->select('sum(montoneto)')->scalar();
     }
     
+   public function refreshMontos(){
+        $this->montoneto=$this->subtotal();
+       
+        $this->ptotal=$this->montoneto;
+        $this->ptotal=$this->ptotal*(1+$this->coti->cargoPorcentajeAcumulado()/100);
+        return $this;
+    } 
     
+      public function beforeSave($insert) { 
+        $this->refreshMontos();        
+        return parent::beforeSave($insert);
+    }
+    public function afterSave($insert, $changedAttributes) {
+        if(in_array('montoneto',array_keys($changedAttributes)) ){
+           $this->sincronizeMontos();
+        }else{
+           
+        } 
+        return parent::afterSave($insert, $changedAttributes);
+    }
+   public function afterDelete() {
+        $this->sincronizeMontos();
+        return parent::afterDelete();
+    }
+    private function sincronizeMontos(){
+    $this->partida->refreshMontos()->save();
+    }
+    
+  public function subTotalTotal(){
+     return $this->getDetail()->select('sum(ptotal)')->scalar();  
+  }
 }

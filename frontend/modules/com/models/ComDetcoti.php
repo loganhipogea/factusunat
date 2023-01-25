@@ -43,7 +43,7 @@ class ComDetcoti extends \common\models\base\modelBase
             [['coti_id','cotigrupo_id','coticeco_id'], 'integer'],
             [['cotigrupo_id','coticeco_id','descripcion','punitcalculado'], 'safe'],
             [['detalle'], 'string'],
-            [['tipo','codcargo','codactivo','servicio_id'], 'safe'],
+            [['tipo','codcargo','codactivo','servicio_id','montoneto'  ], 'safe'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
@@ -165,23 +165,24 @@ class ComDetcoti extends \common\models\base\modelBase
     public function beforeSave($insert) {
         $this->resolveCodes();
         $this->resolvePrecioUnitario();
-        $this->resolvePtotal();
+        $this->refreshMontos();
         //$this->refreshMontos();
         return parent::beforeSave($insert);
     }
     public function afterSave($insert, $changedAttributes) {
         if(in_array('punit',array_keys($changedAttributes)) or in_array('cant',array_keys($changedAttributes))){
-            yii::error('SI AGARRO',__FUNCTION__);
-          yii::error($this->attributes,__FUNCTION__);
-            
-            $this->refreshMontos();
+           $this->sincronizeMontos();
         }else{
-           yii::error('no AGARRO',__FUNCTION__); 
-           yii::error($changedAttributes,__FUNCTION__);
+           
         } 
-        
         return parent::afterSave($insert, $changedAttributes);
     }
+    public function afterDelete() {
+        $this->sincronizeMontos();
+        return parent::afterDelete();
+    }
+    
+    
     
     public function valoresMaterial(){
       
@@ -209,15 +210,8 @@ class ComDetcoti extends \common\models\base\modelBase
   private function isChildRecord(){
       return $this->detcoti_id >0;
   }
-  private function refreshMontos(){
-     $this->coti->refreshMonto();
-       $this->partida->refreshSubto();
-       if($this->isChildRecord()){
-           $this->padre->refreshSubto();
-           yii::error('SI refresco');
-       }else{
-           yii::error('NO refresco');
-       }
+  private function sincronizeMontos(){
+    $this->padre->refreshMontos()->save();
   }
   
   public function resolveScenario(){
@@ -318,13 +312,12 @@ class ComDetcoti extends \common\models\base\modelBase
         }  
  } 
  
-    private function resolvePtotal(){
-        $base=$this->punit*$this->cant;
-        $this->ptotal=$base;
-        foreach($this->coti->array_cargos() as $etiqueta=>$porcentaje){
-            $this->ptotal+=$base*$porcentaje/100;
-        }
-        return true;
+    public function refreshMontos(){
+        $this->montoneto=$this->punit*$this->cant;
+        $this->ptotal=$this->montoneto;
+        $this->ptotal=$this->ptotal*(1+$this->coti->cargoPorcentajeAcumulado()/100);
+        
+        return $this;
     }
  
 }
