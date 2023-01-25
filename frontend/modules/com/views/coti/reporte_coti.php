@@ -23,7 +23,7 @@ $formato=h::formato();
 <div style="position:absolute;  left:40px; top:100px; margin:0px; padding:0px; width:90%; ">
 
 <!--Nombre del cliente y ruc contactos 50% de ancho ladoizquierdo-->
-    <div style="width:40%; margin:0px; padding:0px; float:left;  ">
+    <div style="width:40%; margin:0px; padding:0px; float:left; font-size:0.75em; ">
         
             <b>Cliente:</b> <?=$model->cliente1->despro?>
         
@@ -31,7 +31,7 @@ $formato=h::formato();
     </div>
 
 <!--FECHA DE EMISION Y MONEDA 50% LADO DERECHO-->
-    <div style="width:40%; margin:0px; padding:0px; float:right;  ">
+    <div style="width:40%; margin:0px; padding:0px; float:right;  font-size:0.75em; ">
         
         <b> Fecha:</b> <?=$model->femision?>  <b>Moneda:</b> <?=$model->codmon?> 
         
@@ -40,8 +40,27 @@ $formato=h::formato();
 <!--Fin del nombre cliente fecha y moneda-->
 
 
+<!--Nombre del contactos 50% de ancho ladoizquierdo-->
+    <div style="width:40%; margin:0px; padding:0px; float:left; font-size:0.75em; ">
+        <?php if(count($model->contactos)) {  ?>
+            <b>Atencion:</b> <?=$model->contactos[0]->contacto->nombres.'/'.$model->contactos[0]->contacto->cargo;?>
+        <?php } ?>    
+  
+    </div>
+
+<!--validez-->
+    <div style="width:40%; margin:0px; padding:0px; float:right;  font-size:0.75em; ">
+        
+        <b> Validez:</b> <?=$model->validez.' dias'?>  
+        
+ 
+    </div>
+<!--Fin del nombre cliente fecha y moneda-->
+
+
+
  <!--La descripcion -->  
-    <div style="width:100%; margin:0px; padding:0px;  ">
+    <div style="width:100%; margin:0px; padding:0px;  font-size:0.75em; ">
         
             <b>Descripción:</b>  <?=$model->descripcion?>
         
@@ -50,19 +69,19 @@ $formato=h::formato();
 <!--Fin de la descripcion-->
 
 <!--El tenor superior-->
-    <div style="width:100%; margin:0px; padding:0px;
+    <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
         position:relative;
-         background-color:pink;
-        font-size: 0.8em;
+        
+        font-size: 0.7em;
         ">
-        <?=h::gsetting('com','coti_tenorsup')?>
+        <?=h::gsetting('com','tenorsup_coti')?>
     </div>
 <!--Fin del tenor superior-->
 
  
 
 <!--Condiciones-->  
-<div style="width:90%; margin:0px; padding:0px; font-size:0.8em;">
+<div style="width:90%; margin:0px; padding:0px; font-size:0.7em;">
     
         <b>Condiciones:</b> <?=$model->detalle_externo?>
     
@@ -70,36 +89,51 @@ $formato=h::formato();
 <!--Fin de las condiciones-->
 
 
- <div style="margin:0px; padding:0px; position:relative; width:100%;">
-      <?php foreach($model->partidas as $partida){   ?>
+ <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid; font-size:0.75em;">
+     <table style="width:100%; background-color: #efefef;"> <tr>
+               <th  style="width:8%;">Item</th>
+               <th style="width:60%;">Descripcion</th>
+               <th style="width:7%;">Um</th>
+               <th style="width:8%;">Cant</th>
+               <th style="width:7%;">Punit</th>
+               <th style="width:10%;">Total</th>
+           </tr>
+     </table>
+     <?php foreach($model->partidas as $partida){   ?>
         <div style="position:relative;  width:60%; float:left; text-align: left; ">
             <b><p style="font-size:0.8em;"><?=$partida->descripartida?></p></b>
         </div>
         <div style="position:relative; float:right; width:40%;text-align:right;">
-            <b><p style="font-size:0.8em;"><?=$simbolo.' '.$formato->asDecimal($partida->total,2)?></p></b>
+            <p style="font-size:0.8em;"><b><?=$simbolo.' '.$formato->asDecimal($partida->total,2)?></b></p>
         </div>
      
-       <table style="width:100%; border-bottom-style:solid; border-width:1px; ">
-           <tr>
-               <th></th>
-               <th></th>
-               <th><b><p style="font-size:0.8em; text-align: right;">Um</p></b></th>
-               <th><b><p style="font-size:0.8em;text-align: right;font-weight:800">Cant</p></b></th>
-               <th><b><p style="font-size:0.8em; text-align: right;">Punit</p></b></th>
-               <th><b><p style="font-size:0.8em; text-align: right;">Total</p></b></th>
-           </tr>
+       <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
+          
          
         <?php foreach($partida->detailPadres as $detalle){   ?>
+            <?php  if(!$detalle->mostrar) { ?>
              <tr>
+                
                  <td style="width:8%"><p style="font-size:0.8em;"><?=$detalle->item?></p></td>
                  <td style="width:60%"><p style="font-size:0.8em;"><?=$detalle->descripcion?></p></td>
                   <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$detalle->codum?></p></td>
                  <td style="width:8%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->cant,2)?></p></td>
-                 <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->punit,2)?></p></td>
+                 <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal/$detalle->cant,2)?></p></td>
                  <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal,2)?></p></td>
              </tr>
+        <?php  }else{ ?>
+                  <?php  foreach($detalle->detail as $detallazo) { ?>
+                        <tr>                
+                        <td style="width:8%"><p style="font-size:0.8em;"><?=$detallazo->item?></p></td>
+                        <td style="width:60%"><p style="font-size:0.8em;"><?=$detallazo->descripcion?></p></td>
+                        <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$detallazo->codum?></p></td>
+                        <td style="width:8%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->cant,2)?></p></td>
+                        <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->ptotal/$detallazo->cant,2)?></p></td>
+                        <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->ptotal,2)?></p></td>
+                    </tr>
+                  <?php }  ?>
         <?php }  ?>
-
+        <?php }  ?>
        </table>
                  
 
@@ -108,20 +142,33 @@ $formato=h::formato();
 
     
  <div style="margin:0px; padding:0px;  float:right; width:100%;text-align:right;">
-            <b><p style="font-size:0.8em;">Total neto: <?=$simbolo.' '.$formato->asDecimal($model->montoneto,2)?></p></b>
+            <b><p style="font-size:0.8em;"><b>Total neto: <?=$simbolo.' '.$formato->asDecimal($model->montoneto,2)?></b></p></b>
  </div>
-  <?php foreach($model->cargos as $cargo){  ?>
-    <div style="margin:0px; padding:0px; float:right; width:100%;text-align:right;">
-            <b><p style="font-size:0.8em;"><?=$cargo->cargo->descripcion?> <?=$simbolo.' '.$formato->asDecimal($cargo->monto,2)?></p></b>
-    </div>
-  <?php  } ?>
+  
    <div style="margin:0px; padding:0px; float:right; width:100%;text-align:right;">
-            <b><p style="font-size:0.8em;">I.G.V.: <?=$simbolo.' '.$formato->asDecimal($model->igv,2)?></p></b>
+            <b><p style="font-size:0.8em;"><b>I.G.V.: <?=$simbolo.' '.$formato->asDecimal($model->igv,2)?></b></p></b>
     </div> 
-    
-    
-</div>
+  <div style="margin:0px; padding:0px; float:right; width:100%;text-align:right;">
+            <p style="font-size:0.8em;"><b>Total: <?=$simbolo.' '.$formato->asDecimal($model->monto,2)?></b></p>
+    </div>   
+  
 
+<!--El tenor inferior-->
+<br>
+    <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
+        position:relative;
+         
+        font-size: 0.7em;
+        ">
+        <?=h::gsetting('com','tenorinf_coti')?>
+    </div>
+<!--Fin del tenor inferior-->
+     <?php foreach($model->socio->cuentas as $cuenta){   ?>
+          <div style="margin:0px; padding:0px;  float:left; width:100%;text-align:left;">
+            <b><p style="font-size:0.8em;"><b>Numero: <?=$cuenta->nombre.' '.$cuenta->numero?></b></p></b>
+        </div> 
+      <?php  }  ?>
+</div>
 
 
 

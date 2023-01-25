@@ -15,7 +15,7 @@ class ActiveQueryCotiPadre extends \yii\db\ActiveQuery
        //$this->andWhere([ 'in', 'codfac',['FIM','FIP'] ]);
       if(!h::user()->isGuest){
          $this->alias('t')->andWhere([
-             'detcoti_id'=>null
+             'filtro'=>'1'
                ]);  
       }else{
           $this->alias('t');

@@ -56,7 +56,7 @@ class ComCotizacion extends \common\models\base\modelBase
                  'femision','codtra','validez',
                  'codcli','codcli1',
                  'descripcion'], 'required'],
-             [['monto','igv'], 'safe'],
+             [['monto','igv','version','filtro'], 'safe'],
             [['detalle_interno', 'detalle_externo'], 'string'],
             [['validez', 'n_direcc'], 'integer'],
             [['numero', 'codcli', 'codcli1', 'femision'], 'string', 'max' => 10],
@@ -109,6 +109,10 @@ class ComCotizacion extends \common\models\base\modelBase
         return $this->hasOne(Centros::className(), ['codcen' => 'codcen']);
     }
 
+     public function getSocio()
+    {
+        return $this->hasOne(Clipro::className(), ['codsoc' => 'codsoc']);
+    }
     /**
      * Gets query for [[Codcli0]].
      *
@@ -220,7 +224,10 @@ class ComCotizacion extends \common\models\base\modelBase
     }
     
    public function beforeSave($insert) {
-      if($insert)
+      if($insert){
+          $this->filtro='0';
+          $this->version=0;
+      }
        $this->numero=$this->correlativo('numero');
       $this->refreshMontos();
       
@@ -407,4 +414,7 @@ class ComCotizacion extends \common\models\base\modelBase
   public function deleteCache(){
       h::cache()->delete(self::PREFIX_CACHE_CARGOS);
   }
+  
+  
+  
 }

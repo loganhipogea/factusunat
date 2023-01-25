@@ -118,6 +118,9 @@ class Clipro extends \common\models\base\modelBase
     public function getCentros() {
         return $this->hasMany(Centros::className(), ['codpro' => 'codpro']);
     }
+    public function getCuentas() {
+        return $this->hasMany(Cuentas::className(), ['codpro' => 'codpro']);
+    }
     public function beforeSave($insert) {
         //var_dump($insert);die();
         if($insert){

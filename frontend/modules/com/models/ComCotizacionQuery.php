@@ -7,7 +7,7 @@ namespace frontend\modules\com\models;
  *
  * @see ComCotizacion
  */
-class ComCotizacionQuery extends \yii\db\ActiveQuery
+class ComCotizacionQuery extends \frontend\modules\com\components\ActiveQueryCotiPadre
 {
     /*public function active()
     {
