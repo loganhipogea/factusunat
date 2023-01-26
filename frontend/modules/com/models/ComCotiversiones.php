@@ -67,7 +67,7 @@ class ComCotiversiones extends \common\models\base\modelBase
         yii::error('before save',__FUNCTION__);
             yii::error(round(rand(1,3)/4,2),__FUNCTION__);
              yii::error($this->coti->version,__FUNCTION__);
-            $this->numero=empty($this->coti->version)?0:$this->coti->version+round(rand(1,3)/4,2);
+            $this->numero=empty($this->coti->version)?0:$this->coti->version+round(rand(1,5)/4,2);
             $this->cuando=date(\common\helpers\timeHelper::formatMysqlDateTime());
         
         return parent::beforeSave($insert);
