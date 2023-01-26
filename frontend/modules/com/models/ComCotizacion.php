@@ -219,7 +219,7 @@ class ComCotizacion extends \common\models\base\modelBase
          * Actualizar primero los montos de las partidas
          */
       $this->montoneto=$this->getPartidas()->select('sum(montoneto)')->scalar();
-       yi::error('Sincronizando la cotizacion',__FUNCTION__);
+       yii::error('Sincronizando la cotizacion',__FUNCTION__);
       yi::error('monto neto '.$this->montoneto,__FUNCTION__);
       $this->montoneto=($this->montoneto>0)?$this->montoneto:0; 
             $this->montocargo=$this->montoneto*(1+$this->cargoPorcentajeAcumulado()/100);
