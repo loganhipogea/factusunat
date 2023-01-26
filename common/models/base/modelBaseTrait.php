@@ -10,7 +10,7 @@ trait modelBaseTrait {
      static $name_field_codocu_settings='NameFieldDocu';
   // abstract protected function getTableSchema();
      
-   abstract protected function hasAttribute($attibute);
+   
    //abstract protected function getPrimaryKey($arr);
 
    

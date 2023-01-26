@@ -93,10 +93,13 @@ class ServiciosTarifados extends \common\models\base\modelBase
     
     
      public function valorTarifa($codmon=null){
+          yii::error($codmon,__FUNCTION__);
         if(is_null($codmon))$codmon= Tipocambio::COD_MONEDA_BASE;
           if($codmon===$this->codmon){
+               yii::error('no hay cambio',__FUNCTION__);
+                yii::error($codmon,__FUNCTION__);
                 return $this->precio;
-                yii::error('no hay cambio',__FUNCTION__);
+               
             }else{//PUEDE SER QUE ESTE EN OTRA MONEDA
                 if($cambio=h::tipoCambio($codmon)['compra']>0){
                     yii::error('okio',__FUNCTION__);
