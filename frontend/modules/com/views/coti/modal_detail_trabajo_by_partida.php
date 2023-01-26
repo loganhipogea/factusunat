@@ -94,8 +94,10 @@ use yii\helpers\Url;
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'cant')->textInput([]) ?>
      </div>
-      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
-        <?php //echo $form->field($model, 'punit')->textInput([]) ?>
+      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">  
+          <?php if(!$model->isNewRecord){ ?>
+        <?= $form->field($model, 'punit')->textInput([]) ?>
+          <?php } ?>
      </div>
           <?= $form->field($model, 'codum')->hiddenInput(['value'=> $unidad])->label('') ?>
             <?= $form->field($model, 'cotigrupo_id')->hiddenInput([])->label('') ?>
