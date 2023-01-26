@@ -1051,6 +1051,7 @@ class CotiController extends baseController
           $datos=[];
         if(h::request()->isPost){            
             $model->load(h::request()->post());
+            print_r(h::request()->post());die();
             h::response()->format = \yii\web\Response::FORMAT_JSON;
             $datos=\yii\widgets\ActiveForm::validate($model);
             if(count($datos)>0){

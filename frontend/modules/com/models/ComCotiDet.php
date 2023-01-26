@@ -155,7 +155,7 @@ class ComCotiDet extends \common\models\base\modelBase
     } 
     
     public function beforeValidate() {
-         print_r($this->attributes);die();
+         
         return parent::beforeValidate();
         
          
