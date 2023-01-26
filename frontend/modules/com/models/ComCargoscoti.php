@@ -111,13 +111,20 @@ class ComCargoscoti extends \common\models\base\modelBase
     }
     
     public function afterSave($insert, $changedAttributes) {
-        if($insert or in_array('porcentaje',$changedAttributes)){
+        if($insert){
             //$this->coti->refreshMonto();
+            yii::error('agarro el after save',__FUNCTION__);
             $this->updateBdMontos();
             $this->clearCacheCargos();
             
         }
-        
+        if( in_array('porcentaje',$changedAttributes)){
+            //$this->coti->refreshMonto();
+            yii::error('agarro el after save por cambio ',__FUNCTION__);
+            $this->updateBdMontos();
+            $this->clearCacheCargos();
+            
+        }
         return parent::afterSave($insert, $changedAttributes);
     }
     
