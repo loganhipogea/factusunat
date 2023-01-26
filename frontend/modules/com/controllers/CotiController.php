@@ -1348,7 +1348,7 @@ class CotiController extends baseController
    }
    
    
-   public function actionAjaxCreateVersion(){
+   public function actionAjaxCreateVersion($id){
        $model= ComCotizacion::findOne($id);
        h::response()->format = yii\web\Response::FORMAT_JSON;   
         $model->createVersion(); //En la funcion passInvoice validar el cambio de estado
