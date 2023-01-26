@@ -105,7 +105,7 @@ class ComCotigrupos extends \common\models\base\modelBase
     }
     
    public function afterSave($insert, $changedAttributes) {
-        if(in_array('montoneto',array_keys($changedAttributes)) ){
+        if(in_array('montoneto',array_keys($changedAttributes) or in_array('total',array_keys($changedAttributes)))){
            $this->sincronizeMontos();
            yii::error('sicornizandoi en grupos',__FUNCTION__);
         }else{
