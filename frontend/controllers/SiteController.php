@@ -306,6 +306,9 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      
+      phpinfo(); 
+      die();
       VAR_DUMP(h::tipoCambio('PEN'),h::tipoCambio('USD'));
       DIE();
       
