@@ -154,16 +154,10 @@ class ComCotiDet extends \common\models\base\modelBase
         return $this;
     } 
     
-    public function beforeValidate() {
-         
-        return parent::beforeValidate();
-        
-         
-       
-    }
+    
     
       public function beforeSave($insert) { 
-          print_r($this->attributes);die();
+          
         $this->refreshMontos();        
         return parent::beforeSave($insert);
     }
