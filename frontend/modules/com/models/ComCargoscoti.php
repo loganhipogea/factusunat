@@ -151,7 +151,7 @@ class ComCargoscoti extends \common\models\base\modelBase
              yii::error('montoneto*(1+'.$porcentajeAcumulado.')/100',__FUNCTION__);
             ComDetcoti::updateAll([
                            // 'punit'=>new \yii\db\Expression('punit*'.$cambio),
-                             'ptotal'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.')/100'),
+                             'ptotal'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.'/100)'),
                            // 'punitcalculado'=>new \yii\db\Expression('punitcalculado*'.$cambio),
                            // 'pventa'=>new \yii\db\Expression('pventa*'.$cambio),
                            // 'igv'=>new \yii\db\Expression('igv*'.$cambio),
@@ -159,7 +159,7 @@ class ComCargoscoti extends \common\models\base\modelBase
                     ['coti_id'=>$this->id]); 
             ComCotigrupos::updateAll([
                            // 'montoneto'=>new \yii\db\Expression('montoneto*'.$cambio),
-                            'total'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.')/100'),                        
+                            'total'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.'/100)'),                        
                             ],
                     ['coti_id'=>$this->id]); 
        $this->coti->refreshMontos()->save();
