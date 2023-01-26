@@ -155,6 +155,7 @@ class ComCotiDet extends \common\models\base\modelBase
     } 
     
       public function beforeSave($insert) { 
+          print_r($this->attributes);die();
         $this->refreshMontos();        
         return parent::beforeSave($insert);
     }
