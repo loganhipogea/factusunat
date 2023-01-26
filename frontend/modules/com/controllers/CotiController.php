@@ -1214,6 +1214,8 @@ class CotiController extends baseController
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
         $mpdf->setFooter('Página {PAGENO} de {nb}');
+        $mpdf->SetWatermarkText('HOLA AMIGUITOS');
+        $mpdf->showWatermarkText = true;
         /*$stylesheet = file_get_contents(\yii::getAlias("@frontend/web/css/bootstrap.min.css")); // external css
         $stylesheet2 = file_get_contents(\yii::getAlias("@frontend/web/css/reporte.css")); // external css
         $mpdf->WriteHTML($stylesheet, 1);
