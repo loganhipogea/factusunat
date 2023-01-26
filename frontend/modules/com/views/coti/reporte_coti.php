@@ -111,8 +111,15 @@ $formato=h::formato();
        <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
           
          
-        <?php foreach($partida->detailPadres as $detalle){   ?>
-            <?php  if(!$detalle->mostrar) { ?>
+        <?php 
+        $numeroItems=0;
+        foreach($partida->detailPadres as $detalle){   ?>
+             <?php  if($numeroItems>40) {?>
+                 <div style="page-break-after:always"></div>
+                 
+            <?php  $numeroItems=0;  } ?>
+           
+            <?php  if(!$detalle->mostrar) { $numeroItems++  ?>
              <tr>
                 
                  <td style="width:8%"><p style="font-size:0.8em;"><?=$detalle->item?></p></td>
@@ -123,7 +130,7 @@ $formato=h::formato();
                  <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal,2)?></p></td>
              </tr>
         <?php  }else{ ?>
-                  <?php  foreach($detalle->detail as $detallazo) { ?>
+                  <?php  foreach($detalle->detail as $detallazo) { $numeroItems++ ?>
                         <tr>                
                         <td style="width:8%"><p style="font-size:0.8em;"><?=$detallazo->item?></p></td>
                         <td style="width:60%"><p style="font-size:0.8em;"><?=$detallazo->descripcion?></p></td>
