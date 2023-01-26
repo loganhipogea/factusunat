@@ -135,6 +135,6 @@ class ComCotigrupos extends \common\models\base\modelBase
     } 
   
     private function sincronizeMontos(){
-            $this->coti->refreshMontos()->save();
+          return   $this->coti->refreshMontos()->save();
     }
 }

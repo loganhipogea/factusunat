@@ -177,7 +177,7 @@ class ComCotiDet extends \common\models\base\modelBase
         return parent::afterDelete();
     }
     private function sincronizeMontos(){
-    $this->partida->refreshMontos()->save();
+    return $this->partida->refreshMontos()->save();
     }
     
   public function subTotalTotal(){
