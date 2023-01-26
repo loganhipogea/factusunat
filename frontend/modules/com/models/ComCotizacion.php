@@ -172,6 +172,10 @@ class ComCotizacion extends \common\models\base\modelBase
     public function getSubpartidas(){
         return $this->hasMany(ComCotiDet::className(), ['coti_id' => 'id']);
     }
+    
+    public function getVersiones(){
+        return $this->hasMany(\frontend\modules\coti\models\ComCotiversiones::className(), ['coti_id' => 'id']);
+    }
     /**
      * Gets query for [[NDirecc]].
      *
@@ -416,5 +420,62 @@ class ComCotizacion extends \common\models\base\modelBase
   }
   
   
+  private function fixCoti_id($array_filas,$id){
+      $array_data=[];
+      foreach($array_filas as $fila){
+           $array_data[]=array_replace($fila,['coti_id'=>$id,'id'=>null]);
+      }
+     return $array_data;
+  }
+  
+  
+  public function cloneFake(){
+     $model=New \frontend\modules\com\models\ComCotiFake();
+     $model->setAttributes($this->attributes);
+     $model->save();
+     $model->refresh();
+     
+     if(count($this->partidas)>0){
+            $array_partidas=$this->getPartidas()->asArray()->all();
+            Yii::$app->db->createCommand()->batchInsert(
+            ComCotigrupos::tableName(),array_keys($this->partidas[0]->attributes),
+            $this->fixCoti_id( $array_partidas,$model->id))->execute();
+     }
+     if(count($this->contactos)>0){
+       $array_contactos=$this->getContactos()->asArray()->all();
+        Yii::$app->db->createCommand()->batchInsert(
+                ComContactocoti::tableName(),array_keys($this->contactos[0]->attributes),
+            $this->fixCoti_id( $array_contactos,$model->id))->execute();
+     } 
+      if(count($this->subpartidas)>0){
+          $array_padres=$this->getSubpartidas()->asArray()->all();
+          Yii::$app->db->createCommand()->batchInsert(
+                  ComCotiDet::tableName(),array_keys($this->subpartidas[0]->attributes),
+            $this->fixCoti_id($array_padres,$model->id))->execute();
+      } 
+      
+      if(count($this->comDetcotis)>0){
+          $array_detalles=$this->getComDetcotis()->asArray()->all();
+          Yii::$app->db->createCommand()->batchInsert(
+                  ComCotiDet::tableName(),array_keys($this->comDetcotis[0]->attributes),
+            $this->fixCoti_id($array_detalles,$model->id))->execute();
+      } 
+     
+    if(count($this->cargos)>0){
+          $array_cargos=$this->getCargos()->asArray()->all();
+          Yii::$app->db->createCommand()->batchInsert(
+                  ComCargoscoti::tableName(),array_keys($this->cargos[0]->attributes),
+            $this->fixCoti_id($array_cargos,$model->id))->execute();
+      } 
+     
+   return $model->id;
+  }
+  
+  public function createVersion(){
+      $model=New \frontend\modules\coti\models\ComCotiversiones();
+      $model->coti_id=$this->id;
+      $model->save();
+      $this->cloneFake();
+  }
   
 }

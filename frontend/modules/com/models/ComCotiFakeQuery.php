@@ -3,11 +3,11 @@
 namespace frontend\modules\com\models;
 
 /**
- * This is the ActiveQuery class for [[ComCotizacion]].
+ * This is the ActiveQuery class for [[ComCotiFake]].
  *
- * @see ComCotizacion
+ * @see ComCotiFake
  */
-class ComCotizacionQuery extends \frontend\modules\com\components\ActiveQueryCoti
+class ComCotiFakeQuery extends \frontend\modules\com\components\ActiveQueryCotiFake
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class ComCotizacionQuery extends \frontend\modules\com\components\ActiveQueryCot
 
     /**
      * {@inheritdoc}
-     * @return ComCotizacion[]|array
+     * @return ComCotiFake[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ComCotizacionQuery extends \frontend\modules\com\components\ActiveQueryCot
 
     /**
      * {@inheritdoc}
-     * @return ComCotizacion|array|null
+     * @return ComCotiFake|array|null
      */
     public function one($db = null)
     {
