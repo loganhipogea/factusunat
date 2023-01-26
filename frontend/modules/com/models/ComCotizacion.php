@@ -232,6 +232,7 @@ class ComCotizacion extends \common\models\base\modelBase
           $this->filtro='1';
           $this->version=0;
           $this->numero=$this->correlativo('numero');
+          $this->codsoc= \common\models\masters\VwSociedades::codsoc();
       }
        
       $this->refreshMontos();
