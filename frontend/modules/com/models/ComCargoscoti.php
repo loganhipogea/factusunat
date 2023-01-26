@@ -147,7 +147,8 @@ class ComCargoscoti extends \common\models\base\modelBase
         //$chain='punit*cant*'.(1+$porcentajeAcumulado/100);
         
         
-           
+           yii::error($porcentajeAcumulado,__FUNCTION__);
+             yii::error('montoneto*(1+'.$porcentajeAcumulado.')/100',__FUNCTION__);
             ComDetcoti::updateAll([
                            // 'punit'=>new \yii\db\Expression('punit*'.$cambio),
                              'ptotal'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.')/100'),
