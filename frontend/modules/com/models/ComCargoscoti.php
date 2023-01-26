@@ -102,8 +102,7 @@ class ComCargoscoti extends \common\models\base\modelBase
     
     public function beforeSave($insert) {
         if($insert or $this->hasChanged('porcentaje')){
-             $this->clearCacheCargos();
-             $this->updateBdMontos();
+             
             $this->monto=$this->coti->montoneto*$this->porcentaje/100;
         }
         
@@ -111,22 +110,13 @@ class ComCargoscoti extends \common\models\base\modelBase
     }
     
     public function afterSave($insert, $changedAttributes) {
-        if($insert){
-            //$this->coti->refreshMonto();
-            yii::error('agarro el after save',__FUNCTION__);
+        if($insert or in_array('porcentaje',array_keys($changedAttributes)) ){
+            
             $this->updateBdMontos();
             $this->clearCacheCargos();
             
         }
-        yii::error('atributos cambiado',__FUNCTION__);
-        yii::error($changedAttributes,__FUNCTION__);
-        if( in_array('porcentaje',$changedAttributes)){
-            //$this->coti->refreshMonto();
-            yii::error('agarro el after save por cambio ',__FUNCTION__);
-            $this->updateBdMontos();
-            $this->clearCacheCargos();
-            
-        }
+       
         return parent::afterSave($insert, $changedAttributes);
     }
     
@@ -149,8 +139,7 @@ class ComCargoscoti extends \common\models\base\modelBase
         //$chain='punit*cant*'.(1+$porcentajeAcumulado/100);
         
         
-           yii::error($porcentajeAcumulado,__FUNCTION__);
-             yii::error('montoneto*(1+'.$porcentajeAcumulado.'/100)',__FUNCTION__);
+          
             ComDetcoti::updateAll([
                            // 'punit'=>new \yii\db\Expression('punit*'.$cambio),
                              'ptotal'=>new \yii\db\Expression('montoneto*(1+'.$porcentajeAcumulado.'/100)'),

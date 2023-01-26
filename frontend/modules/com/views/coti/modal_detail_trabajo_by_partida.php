@@ -82,18 +82,7 @@ use yii\helpers\Url;
                 ?>
 
         </div>  
-     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <?= 
-                   //$model->activo=false;
-            $form->field($model, 'coticeco_id')->
-            dropDownList(ComboHelper::cecosCoti($model->coti_id),
-                    ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )  ?>
-
-        </div> 
+     
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <?php  
                    
