@@ -487,7 +487,8 @@ class ComCotizacion extends \common\models\base\modelBase
   public function createVersion(){
       $model=New \frontend\modules\coti\models\ComCotiversiones();
       $model->coti_id=$this->id;
-      $model->save();
+     yii::error($model->save(),__FUNCTION__);
+      yii::error($model->getErrors(),__FUNCTION__);
       $this->cloneFake();
       $model->refresh();
       return $model->numero;
