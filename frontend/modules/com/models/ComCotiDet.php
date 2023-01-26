@@ -163,9 +163,10 @@ class ComCotiDet extends \common\models\base\modelBase
     }
     public function afterSave($insert, $changedAttributes) {
         if(in_array('montoneto',array_keys($changedAttributes)) ){
+            yii::error('sincronizandio en padres',__FUNCTION__);
            $this->sincronizeMontos();
         }else{
-           
+           yii::error('se romkpio la cadena en cotidfet',__FUNCTION__);
         } 
         return parent::afterSave($insert, $changedAttributes);
     }

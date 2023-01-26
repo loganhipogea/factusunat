@@ -107,8 +107,9 @@ class ComCotigrupos extends \common\models\base\modelBase
    public function afterSave($insert, $changedAttributes) {
         if(in_array('montoneto',array_keys($changedAttributes)) ){
            $this->sincronizeMontos();
+           yii::error('sicornizandoi en grupos',__FUNCTION__);
         }else{
-           
+            yii::error('se romkpio la cadena en grupos',__FUNCTION__);
         } 
         return parent::afterSave($insert, $changedAttributes);
     } 

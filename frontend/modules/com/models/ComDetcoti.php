@@ -178,8 +178,11 @@ class ComDetcoti extends \common\models\base\modelBase
     public function afterSave($insert, $changedAttributes) {
         if(in_array('punit',array_keys($changedAttributes)) or in_array('cant',array_keys($changedAttributes))){
            $this->sincronizeMontos();
+           yii::error('sincronizando en detalles',__FUNCTION__);
         }else{
-           
+          
+           yii::error('se romkpio la cadena en detcoti',__FUNCTION__);
+        
         } 
         return parent::afterSave($insert, $changedAttributes);
     }
@@ -217,6 +220,7 @@ class ComDetcoti extends \common\models\base\modelBase
       return $this->detcoti_id >0;
   }
   private function sincronizeMontos(){
+      yii::error('calculadno',__FUNCTION__);
     $this->padre->refreshMontos()->save();
   }
   
