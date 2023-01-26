@@ -69,10 +69,11 @@ $formato=h::formato();
 <!--Fin de la descripcion-->
 
 <!--El tenor superior-->
-    <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
+    <div style="width:100%; margin-top:3px;margin-bottom:3px;margin-left:0px;margi-rigth:0px; padding:0px;
+          text-align: justify;
         position:relative;
         
-        font-size: 0.7em;
+        font-size: 0.6em;
         ">
         <?=h::gsetting('com','tenorsup_coti')?>
     </div>
