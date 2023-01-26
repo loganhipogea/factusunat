@@ -222,7 +222,7 @@ class ComDetcoti extends \common\models\base\modelBase
   }
   private function sincronizeMontos(){
       yii::error('sincornizando en detalles.. pasa a los padres refresh monto()',__FUNCTION__);
-     $this->padre->refreshMontos()->save();
+    yii::error($this->padre->refreshMontos()->save());
   }
   
   public function resolveScenario(){
