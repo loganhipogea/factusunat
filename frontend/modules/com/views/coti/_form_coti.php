@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use common\helpers\h;
 use common\widgets\selectwidget\selectWidget;
 use kartik\date\DatePicker;
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */
