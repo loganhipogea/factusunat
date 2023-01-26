@@ -88,7 +88,7 @@ $formato=h::formato();
     
 </div>
 <!--Fin de las condiciones-->
-
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
 
  <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid; font-size:0.75em;">
      <table style="width:100%; background-color: #efefef;"> <tr>
