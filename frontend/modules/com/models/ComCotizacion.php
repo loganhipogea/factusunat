@@ -226,8 +226,11 @@ class ComCotizacion extends \common\models\base\modelBase
      
       $this->igv=h::gsetting ('general', 'igv')*($this->montocargo+$this->montoneto);
       $this->monto=$this->getPartidas()->select('sum(total)')->scalar();
+       yii::error('monto total sin igv  '.$this->monto,__FUNCTION__);
        $this->igv=h::gsetting ('general', 'igv')*($this->monto);
+       yii::error(' igv  '.$this->igv,__FUNCTION__);
        $this->monto+=$this->igv;
+       yii::error(' total toal  '.$this->monto,__FUNCTION__);
       return $this;
     }
     
