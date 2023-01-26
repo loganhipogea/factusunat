@@ -96,9 +96,15 @@ class ServiciosTarifados extends \common\models\base\modelBase
         if(is_null($codmon))$codmon= Tipocambio::COD_MONEDA_BASE;
           if($codmon===$this->codmon){
                 return $this->precio;
+                yii::error('no hay cambio',__FUNCTION__);
             }else{//PUEDE SER QUE ESTE EN OTRA MONEDA
-                if($cambio=h::tipoCambio($codmon)['compra']>0)
-                return $this->precio/$cambio;
+                if($cambio=h::tipoCambio($codmon)['compra']>0){
+                    yii::error('okio',__FUNCTION__);
+                    return $this->precio/$cambio;
+                }else{
+                    yii::error('no agarro nada',__FUNCTION__);
+                }
+                
             }
             
         
