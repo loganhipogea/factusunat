@@ -82,7 +82,7 @@ $formato=h::formato();
  
 
 <!--Condiciones-->  
-<div style="width:90%; margin:0px; padding:0px; font-size:0.7em;">
+<div style="width:90%; margin:0px; padding:0px; font-size:1.1em;">
     
         <b>Condiciones:</b> <?=$model->detalle_externo?>
     
