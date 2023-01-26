@@ -229,7 +229,7 @@ class ComCotizacion extends \common\models\base\modelBase
     
    public function beforeSave($insert) {
       if($insert){
-          $this->filtro='0';
+          $this->filtro='1';
           $this->version=0;
       }
        $this->numero=$this->correlativo('numero');

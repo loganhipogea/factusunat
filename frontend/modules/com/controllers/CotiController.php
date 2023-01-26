@@ -143,7 +143,7 @@ class CotiController extends baseController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('base.labels', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('base.names', 'The requested page does not exist.'));
     }
     
   
