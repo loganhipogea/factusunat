@@ -231,8 +231,9 @@ class ComCotizacion extends \common\models\base\modelBase
       if($insert){
           $this->filtro='1';
           $this->version=0;
+          $this->numero=$this->correlativo('numero');
       }
-       $this->numero=$this->correlativo('numero');
+       
       $this->refreshMontos();
       
        return parent::beforeSave($insert);

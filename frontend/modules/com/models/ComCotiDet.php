@@ -41,7 +41,7 @@ class ComCotiDet extends \common\models\base\modelBase
             [['coti_id', 'cotigrupo_id', 'coticeco_id', 'detcoti_id', 'detcoti_id_id', 'servicio_id'], 'integer'],
             [['coticeco_id','cant'], 'required'],
             [['detalle'], 'string'],
-            [['codcargo','resumen','mostrar','montoneto'], 'safe'],
+            [['codcargo','resumen','mostrar','montoneto','coticeco_id'], 'safe'],
             [['cant', 'punit', 'ptotal', 'igv', 'pventa', 'punitcalculado'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
