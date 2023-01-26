@@ -85,7 +85,7 @@ use yii\helpers\Url;
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'mostrar')->checkbox([]) ?>
      </div>
-          <?= $form->field($model, 'coticeco_id')->hiddenInput([]) ?>
+         
     <?php ActiveForm::end(); ?>
      
 
