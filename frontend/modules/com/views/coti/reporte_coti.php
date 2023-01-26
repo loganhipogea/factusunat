@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use common\helpers\h;
 ?>
 <?php
-$simbolo='S/.';
+$simbolo= \common\models\masters\Monedas::Simbolo($model->codmon);
 $formato=h::formato();
 ?>
 
