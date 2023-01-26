@@ -271,7 +271,7 @@ class ComDetcoti extends \common\models\base\modelBase
         $this->descripcion=$this->activo->descripcion;
         break;
     case 'S':
-        if($this->hasChanged('codactivo')){
+        if($this->hasChanged('servicio_id')){
              $this->codart=$this->servicio->codserv;
              $this->descripcion=$this->servicio->descripcion;
         }
