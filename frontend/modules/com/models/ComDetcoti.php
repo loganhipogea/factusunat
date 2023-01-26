@@ -221,7 +221,7 @@ class ComDetcoti extends \common\models\base\modelBase
   }
   private function sincronizeMontos(){
       yii::error('calculadno',__FUNCTION__);
-    $this->padre->refreshMontos()->save();
+    return $this->padre->refreshMontos()->save();
   }
   
   public function resolveScenario(){

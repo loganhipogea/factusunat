@@ -162,6 +162,7 @@ class ComCotiDet extends \common\models\base\modelBase
         return parent::beforeSave($insert);
     }
     public function afterSave($insert, $changedAttributes) {
+         yii::error('y que talco por aqui e',__FUNCTION__);
         if(in_array('montoneto',array_keys($changedAttributes)) ){
             yii::error('sincronizandio en padres',__FUNCTION__);
            $this->sincronizeMontos();
