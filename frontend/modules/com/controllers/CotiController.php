@@ -1212,7 +1212,7 @@ class CotiController extends baseController
         $mpdf->margin_footer = 1;
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
-
+        $mpdf->setFooter('{PAGENO} / {nb}');
         /*$stylesheet = file_get_contents(\yii::getAlias("@frontend/web/css/bootstrap.min.css")); // external css
         $stylesheet2 = file_get_contents(\yii::getAlias("@frontend/web/css/reporte.css")); // external css
         $mpdf->WriteHTML($stylesheet, 1);
