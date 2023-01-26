@@ -77,7 +77,7 @@ use yii\helpers\Url;
                    //$model->activo=false;
             $form->field($model, 'punitcalculado',
                     []
-                    )->textInput(['value'=>$model->valorUnitario()])  ?>
+                    )->textInput(['value'=>$model->valorUnitario(),'disabled'=>true])  ?>
 
         </div> 
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
