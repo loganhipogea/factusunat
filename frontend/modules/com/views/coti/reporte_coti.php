@@ -142,7 +142,7 @@ $formato=h::formato();
 
     
  <div style="margin:0px; padding:0px;  float:right; width:100%;text-align:right;">
-            <b><p style="font-size:0.8em;"><b>Total neto: <?=$simbolo.' '.$formato->asDecimal($model->montoneto+$this->montocargo,2)?></b></p></b>
+            <b><p style="font-size:0.8em;"><b>Total neto: <?=$simbolo.' '.$formato->asDecimal($model->montoneto+$model->montocargo,2)?></b></p></b>
  </div>
   
    <div style="margin:0px; padding:0px; float:right; width:100%;text-align:right;">
