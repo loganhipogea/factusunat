@@ -939,9 +939,10 @@ class CotiController extends baseController
          }
              $model->detcoti_id=$modelPadre->id;
              $model->coti_id=$modelPadre->coti_id;
-          
+             $model->coticeco_id=$modelPadre->coticeco_id;
+    
          $model->resolveScenario();
-         
+         $model->punit=1;
          
         
          

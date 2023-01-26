@@ -81,9 +81,7 @@ use yii\helpers\Url;
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'cant')->textInput([]) ?>
      </div>
-      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
-        <?= $form->field($model, 'punit')->textInput([]) ?>
-     </div>
+      
           <?= $form->field($model, 'cotigrupo_id')->hiddenInput([]) ?>
      <?= $form->field($model, 'tipo')->hiddenInput([])->label('') ?>
               <?php ActiveForm::end(); ?>

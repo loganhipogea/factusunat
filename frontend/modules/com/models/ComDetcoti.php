@@ -41,6 +41,12 @@ class ComDetcoti extends \common\models\base\modelBase
     {
         return [
             [['coti_id','cotigrupo_id','coticeco_id'], 'integer'],
+            
+             [['codactivo','cant','codum'], 'required','on'=>self::SCE_HERRAMIENTAS],
+            [['servicio_id','cant','codum'], 'required','on'=>self::SCE_SERVICIO],
+             [['codcargo','cant','codum'], 'required','on'=>self::SCE_MANO_OBRA],
+            
+            
             [['cotigrupo_id','coticeco_id','descripcion','punitcalculado'], 'safe'],
             [['detalle'], 'string'],
             [['tipo','codcargo','codactivo','servicio_id','montoneto'  ], 'safe'],

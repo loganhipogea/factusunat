@@ -44,18 +44,7 @@ use yii\helpers\Url;
      
   
       <div class="box-body">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <?php /*$form->field($model, 'servicio_id')->
-            dropDownList(ComboHelper::getCboServicios(),
-                    ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    )  */
-        echo $form->field($model, 'descripcion')->textInput([]) ; 
-      ?>
-
-        </div>
+   
           
        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <?= 
@@ -94,9 +83,7 @@ use yii\helpers\Url;
      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
         <?= $form->field($model, 'cant')->textInput([]) ?>
      </div>
-      <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">     
-        <?= $form->field($model, 'punit')->textInput([]) ?>
-     </div>
+     
           <?= $form->field($model, 'cotigrupo_id')->hiddenInput([])->label('') ?>
      <?= $form->field($model, 'tipo')->hiddenInput([])->label('') ?>
               
