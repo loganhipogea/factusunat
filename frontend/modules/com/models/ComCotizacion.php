@@ -196,6 +196,10 @@ class ComCotizacion extends \common\models\base\modelBase
     }
     
     
+    public function nitems(){
+        return $this->getComDetcotis()->andWhere(['detcoti_id'=>$this->id])->count();
+    }
+    
     public function agregaCargos(){
       $cargos= ComCargos::find()->all();
       foreach($cargos as $cargo){

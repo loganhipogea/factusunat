@@ -1189,6 +1189,7 @@ class CotiController extends baseController
         $rutaTemporal = \yii::getAlias('@temp');
         $nombre= uniqid().'.pdf';
         $model=$this->findModel($id);
+        
         $contenido=$this->render('reporte_coti',['model'=>$model]); 
        
        /* return Yii::$app->html2pdf
