@@ -174,7 +174,7 @@ class ComCotizacion extends \common\models\base\modelBase
     }
     
     public function getVersiones(){
-        return $this->hasMany(\frontend\modules\coti\models\ComCotiversiones::className(), ['coti_id' => 'id']);
+        return $this->hasMany(\frontend\modules\com\models\ComCotiversiones::className(), ['coti_id' => 'id']);
     }
     /**
      * Gets query for [[NDirecc]].
