@@ -98,7 +98,7 @@ class ServiciosTarifados extends \common\models\base\modelBase
                 return $this->precio;
             }else{//PUEDE SER QUE ESTE EN OTRA MONEDA
                 if($cambio=h::tipoCambio($codmon)['compra']>0)
-                return $cambio*$this->precio;
+                return $this->precio/$cambio;
             }
             
         

@@ -94,8 +94,8 @@ class MatVwPetoferta extends \common\models\base\modelBase
                     '>','pventa',0
                     
                 ])->orderBy(['fecha'=>SORT_DESC])->createCommand()->rawSql,__FUNCTION__);
-      if($valor >0) {
-       $valor=h::tipoCambio($codmon)['compra']*$valor;  
+      if($valor >0 && h::tipoCambio($codmon)['compra']>0) {
+       $valor=$valor/h::tipoCambio($codmon)['compra'];  
       }else{
           $valor=0;
       }

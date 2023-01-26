@@ -60,6 +60,8 @@ class Cargos extends \common\models\base\modelBase
      * Valor de la jhora hombre
      */
     public function valor($codmon= Tipocambio::COD_MONEDA_BASE){
-        return $this->hh*h::tipoCambio($codmon)['compra'];
+        if(h::tipoCambio($codmon)['compra']>0)
+        return $this->hh/h::tipoCambio($codmon)['compra'];
+        return 0;
     }
 }

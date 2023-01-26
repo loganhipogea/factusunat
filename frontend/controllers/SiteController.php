@@ -306,8 +306,11 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      VAR_DUMP(h::tipoCambio('PEN'),h::tipoCambio('USD'));
+      DIE();
       
-      
+      ECHO 'h::tipoCambio(PEN)  :'.h::tipoCambio('PEN');
+      ECHO 'h::tipoCambio(USD)  :'.h::tipoCambio('PEN');
       
      $model= \frontend\modules\com\models\ComCotizacion::findOne(5);
      echo $model->createVersion();

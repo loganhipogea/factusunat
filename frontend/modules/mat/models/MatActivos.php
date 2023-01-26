@@ -86,8 +86,8 @@ class MatActivos extends \common\models\base\modelBase
     
     public function costoHora($codmon = \common\models\masters\Tipocambio::COD_MONEDA_BASE){
       $valor=  $this->getCostosHora()->select(['sum(valor)'])->scalar();
-      if($valor > 0){
-          return h::tipoCambio($codmon)['compra']*$valor;
+      if($valor > 0 and h::tipoCambio($codmon)['compra']>0){
+          return $valor/h::tipoCambio($codmon)['compra'];
       }else{
           return 0;
       }
