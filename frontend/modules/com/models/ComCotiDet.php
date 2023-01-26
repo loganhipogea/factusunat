@@ -147,6 +147,7 @@ class ComCotiDet extends \common\models\base\modelBase
     }
     
    public function refreshMontos(){
+       yii::error('refrescandfo los padres',__FUNCTION__);
         $this->montoneto=$this->subtotal();
        
         $this->ptotal=$this->montoneto;
@@ -157,7 +158,7 @@ class ComCotiDet extends \common\models\base\modelBase
     
     
       public function beforeSave($insert) { 
-          
+           yii::error('y pasando por el desencadennare',__FUNCTION__);
         $this->refreshMontos();        
         return parent::beforeSave($insert);
     }
