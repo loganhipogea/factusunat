@@ -238,7 +238,7 @@ class ComCotizacion extends \common\models\base\modelBase
        return parent::beforeSave($insert);
    } 
   public function afterSave($insert, $changedAttributes) {
-       if(in_array('codmon',array_keys($changedAttributes)) ){
+       if(in_array('codmon',array_keys($changedAttributes)) && !$insert ){
            $this->changeBdPorTipoCambio($changedAttributes['codmon']);
         }
       return parent::afterSave($insert, $changedAttributes);
@@ -403,7 +403,7 @@ class ComCotizacion extends \common\models\base\modelBase
                             ],
                     ['coti_id'=>$this->id]); 
             ComCargoscoti::updateAll([
-                            'monton'=>new \yii\db\Expression('monto*'.$cambio),
+                            'monto'=>new \yii\db\Expression('monto*'.$cambio),
                                                         
                             ],
                     ['coti_id'=>$this->id]); 
