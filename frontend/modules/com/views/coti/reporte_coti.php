@@ -90,7 +90,7 @@ $formato=h::formato();
 <!--Fin de las condiciones-->
 <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
 
- <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid; font-size:0.75em;">
+ <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid; font-size:1em;">
      <table style="width:100%; background-color: #efefef;"> <tr>
                <th  style="width:8%;">Item</th>
                <th style="width:60%;">Descripcion</th>
