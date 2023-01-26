@@ -73,7 +73,7 @@ $formato=h::formato();
           text-align: justify;
         position:relative;
         
-        font-size: 0.6em;
+        font-size: 0.9em;
         ">
         <?=h::gsetting('com','tenorsup_coti')?>
     </div>
@@ -159,7 +159,7 @@ $formato=h::formato();
     <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
         position:relative;
          
-        font-size: 0.7em;
+        font-size: 0.9em;
         ">
         <?=h::gsetting('com','tenorinf_coti')?>
     </div>

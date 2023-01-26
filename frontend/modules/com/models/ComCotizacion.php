@@ -32,7 +32,7 @@ class ComCotizacion extends \common\models\base\modelBase
     
     public static function tableName()
     {
-        return 'com_cotizaciones';
+        return '{{%com_cotizaciones}}';
     }
     public function behaviors() {
         return [
