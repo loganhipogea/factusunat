@@ -1214,7 +1214,7 @@ class CotiController extends baseController
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
         $mpdf->setFooter('Página {PAGENO} de {nb}');
-        $mpdf->SetWatermarkText('HOLA AMIGUITOS');
+        $mpdf->SetWatermarkText('SIN APROBACION');
         $mpdf->showWatermarkText = true;
         /*$stylesheet = file_get_contents(\yii::getAlias("@frontend/web/css/bootstrap.min.css")); // external css
         $stylesheet2 = file_get_contents(\yii::getAlias("@frontend/web/css/reporte.css")); // external css
@@ -1346,6 +1346,13 @@ class CotiController extends baseController
                         ]);  
         }
    }
-    
+   
+   
+   public function actionAjaxCreateVersion(){
+       $model= ComCotizacion::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;   
+        $model->createVersion(); //En la funcion passInvoice validar el cambio de estado
+           return ['success' => yii::t('base.messages','Se creo la version')];       
+   }
    
 }

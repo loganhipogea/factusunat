@@ -489,6 +489,8 @@ class ComCotizacion extends \common\models\base\modelBase
       $model->coti_id=$this->id;
       $model->save();
       $this->cloneFake();
+      $model->refresh();
+      return $model->numero;
   }
   
 }

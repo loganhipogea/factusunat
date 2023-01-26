@@ -24,7 +24,13 @@ use kartik\date\DatePicker;
                     <?php $url=Url::to(['/com/coti/make-pdf','id'=>$model->id]);?>
                     <?=Html::a('<span class="fa fa-file-pdf-o" ></span>'.Yii::t('app', 'Pdf'),$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-warning"])?>
                     <?php }?>    
-                
+                <?php
+          echo Html::button("<span class=\"fa fa-paper-plane\"></span>Version", 
+                          [
+                              'id'=>'btn_version',
+                              'class' => 'btn btn-warning']
+                          );
+         ?> 
             </div>
         </div>
     </div>
@@ -146,6 +152,16 @@ use kartik\date\DatePicker;
   
      
     <?php ActiveForm::end(); ?>
-
+<?php  echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_versisson',
+            //'otherContainers'=>[$send_zone],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/com/coti/ajax-create-version','id'=>$model->id]),
+            'id_input'=>'btn_version',
+            'idGrilla'=>'grilla-contactos',
+      ]); 
+?>
 </div>
     </div>
