@@ -4,6 +4,7 @@ use yii\helpers\Url;
 use common\helpers\h;
 ?>
 <?php
+
 $simbolo= \common\models\masters\Monedas::Simbolo($model->codmon);
 $formato=h::formato();
 ?>
@@ -112,14 +113,13 @@ $formato=h::formato();
           
          
         <?php 
-        $numeroItems=0;
+       
         foreach($partida->detailPadres as $detalle){   ?>
-             <?php  if($numeroItems>40) {?>
-                 <div style="page-break-after:always"></div>
+            
                  
-            <?php  $numeroItems=0;  } ?>
+            
            
-            <?php  if(!$detalle->mostrar) { $numeroItems++  ?>
+            <?php  if(!$detalle->mostrar) {   ?>
              <tr>
                 
                  <td style="width:8%"><p style="font-size:0.8em;"><?=$detalle->item?></p></td>
@@ -130,7 +130,7 @@ $formato=h::formato();
                  <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal,2)?></p></td>
              </tr>
         <?php  }else{ ?>
-                  <?php  foreach($detalle->detail as $detallazo) { $numeroItems++ ?>
+                  <?php  foreach($detalle->detail as $detallazo) {  ?>
                         <tr>                
                         <td style="width:8%"><p style="font-size:0.8em;"><?=$detallazo->item?></p></td>
                         <td style="width:60%"><p style="font-size:0.8em;"><?=$detallazo->descripcion?></p></td>

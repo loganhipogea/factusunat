@@ -494,4 +494,39 @@ class ComCotizacion extends \common\models\base\modelBase
       return $model->numero;
   }
   
+  public static function  getPdf($config=[]){
+             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+     
+            $configInicial=['format'=>'A4',
+                    'fontDir' => array_merge($fontDirs,[
+                    Yii::getAlias('@fonts')
+                    ]),
+                        'fontdata' => $fontData + [
+                            'cour' => [
+                            'R' => 'cour.ttf',
+                            'I' => 'CourierITALIC.ttf',
+                        ]
+                    ],];
+            foreach($config as $key=>$value){
+                    if(array_key_exists($key, $configInicial)){
+                         $configInicial[$key]=$value;
+                    }else{
+                        $configInicial[$key]=$config[$key];  
+                        }
+                    }
+ 
+            $mpdf = new \Mpdf\Mpdf($configInicial);
+           $mpdf->simpleTables = true;
+           $mpdf->packTableData = true;
+           $mpdf->showImageErrors = true;
+           $mpdf->curlAllowUnsafeSslRequests = true; //Permite imagenes de url externas
+         return $mpdf;
+    }
+  
+  
+  
+  
 }

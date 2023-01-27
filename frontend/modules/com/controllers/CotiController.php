@@ -1185,6 +1185,7 @@ class CotiController extends baseController
    }
 
  public function actionMakePdf($id){
+     
         $this->layout="reportes";
         $rutaTemporal = \yii::getAlias('@temp');
         $nombre= uniqid().'.pdf';

@@ -1,7 +1,8 @@
 <?php
 
 namespace frontend\modules\com\models;
-
+use common\behaviors\FileBehavior;
+use common\helpers\h;
 use Yii;
 
 /**
@@ -22,7 +23,18 @@ class ComCotiversiones extends \common\models\base\modelBase
     {
         return '{{%com_cotiversiones}}';
     }
-
+    public function behaviors() {
+        return [
+           
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -79,4 +91,35 @@ class ComCotiversiones extends \common\models\base\modelBase
         return parent::afterSave($insert, $changedAttributes);
     }
     
+    
+    
+     public function pathTempToStore($name=null){
+       $dir=\yii::getAlias('@frontend/web/com/temp/');
+            if(!is_dir($dir)){
+             mkdir($dir);
+            }
+        if(is_null($name))
+            return $dir.uniqid().'.pdf';
+            return $dir.$name.'.pdf';
+      }
+      
+      public function attachPdf(){
+        
+          $contenido=h::currentController()->render('reporte_coti',['model'=>$this->coti]);
+           $pdf= ComCotizacion::getPdf();
+          $pdf->WriteHTML($contenido);
+            
+                 yii::error('escribiendo en disco',__FUNCTION__);
+                $ruta=$this->pathTempToStore();
+                 yii::error('ruta '.$ruta,__FUNCTION__);
+                  yii::error('haciendo el  output al file  '.$ruta,__FUNCTION__);
+                $pdf->output($ruta, \Mpdf\Output\Destination::FILE);  
+                yii::error('YA BHIZO EK OUTPUR '.$ruta,__FUNCTION__);
+                
+                $this->deleteAllAttachments();
+                $this->attachFromPath($ruta);
+                @unlink($ruta);
+      
+      }
+
 } 
