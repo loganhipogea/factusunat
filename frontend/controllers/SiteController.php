@@ -306,7 +306,9 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
-      
+      $model=\frontend\modules\com\models\ComCotiversiones::findOne(16);
+      PRINT_R($model->mailCotizacion());
+      die();
       phpinfo(); 
       die();
       VAR_DUMP(h::tipoCambio('PEN'),h::tipoCambio('USD'));

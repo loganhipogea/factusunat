@@ -50,8 +50,14 @@ class linkAjaxGridWidget extends Widget
   private function makeJsHtml(){
        $cadenaJs="$('div[id=\"".$this->idGrilla."\"] [family=\"".$this->family."\"]').on( '".$this->evento."', function() { 
            $('#".$this->divReplace."').html('');
+               if(this.rel===undefined){
+       var_url=this.title;
+     }else{
+       var_url=this.rel;
+     }
+              
              $.ajax({
-              url: this.title,
+              url: var_url,              
               type: '".$this->type."',
               data:JSON.parse(this.id) ,
               dataType: 'html',

@@ -68,6 +68,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             'active' => false,
              'options' => ['id' => 'm45A569n'],
         ],
+        [
+          'label'=>'<i class="fa fa-paper-plane"></i> '.yii::t('base.names','Versoiones'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_versiones',[ 'model' => $model]),
+            'active' => false,
+             'options' => ['id' => 'm45A569ds324n'],
+        ],
     ],
 ]);  ?>
 

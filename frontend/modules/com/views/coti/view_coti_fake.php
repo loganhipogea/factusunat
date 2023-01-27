@@ -13,7 +13,7 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 
-$this->title = Yii::t('app', 'Ver cotización: {name}', [
+$this->title = Yii::t('app', 'Version: {name}', [
     'name' => $model->numero,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Cotizaciones'), 'url' => ['index-coti']];

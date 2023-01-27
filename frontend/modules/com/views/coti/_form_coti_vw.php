@@ -19,19 +19,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
       <div class="box-header">
         <div class="col-md-12">
             <div class="form-group no-margin">
-                
-        <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
-         <?php if(!$model->isNewRecord){?>                    
-                    <?php $url=Url::to(['/com/coti/make-pdf','id'=>$model->id]);?>
-                    <?=Html::a('<span class="fa fa-file-pdf-o" ></span>'.Yii::t('app', 'Pdf'),$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-warning"])?>
-                    <?php }?>    
-                <?php
-          echo Html::button("<span class=\"fa fa-paper-plane\"></span>Version", 
-                          [
-                              'id'=>'btn_version',
-                              'class' => 'btn btn-warning']
-                          );
-         ?> 
+           
             </div>
         </div>
     </div>
@@ -43,7 +31,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         
-              //'disabled'=>$deshabilitado
+              'disabled'=>true
                         ]
                     ) ?>
  </div>   
@@ -55,53 +43,28 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
     <?= $form->field($model, 'codmon')->
             dropDownList(\common\helpers\ComboHelper::getCboMonedas() ,
-                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",                    
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                       'disabled'=>true 
                         ]
                     ) ?>
 
  </div>
   
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-       <?php 
-  // $necesi=new Parametros;
-    echo selectWidget::widget([
-           // 'id'=>'mipapa',
-            'model'=>$model,
-            'form'=>$form,
-            'campo'=>'codcli',
-         'ordenCampo'=>1,
-         'addCampos'=>[2,3],
-        ]);  ?>
+        <?= $form->field($model, 'codcli')->textInput(['value'=>$model->cliente1->despro,'maxlength' => true,'disabled'=>true]) ?>
+
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <?= $form->field($model, 'codcli1')->textInput(['value'=>$model->cliente2->despro,'maxlength' => true,'disabled'=>true]) ?>
+
 
  </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-       <?php 
-  // $necesi=new Parametros;
-    echo selectWidget::widget([
-           // 'id'=>'mipapa',
-            'model'=>$model,
-            'form'=>$form,
-            'campo'=>'codcli1',
-         'ordenCampo'=>1,
-         'addCampos'=>[2,3],
-        ]);  ?>
-
- </div>
-  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
  </div>        
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-       <?php 
-  // $necesi=new Parametros;
-    echo selectWidget::widget([
-           // 'id'=>'mipapa',
-            'model'=>$model,
-            'form'=>$form,
-            'campo'=>'codtra',
-         'ordenCampo'=>1,
-         'addCampos'=>[2,3],
-        ]);  ?>
+      <?= $form->field($model, 'codtra')->textInput(['value'=>$model->trabajador->fullName(),'maxlength' => true,'disabled'=>true]) ?>
 
  </div>         
    <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
@@ -116,13 +79,13 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                           
                             //'dateFormat' => h::getFormatShowDate(),
                             'options'=>['class'=>'form-control',
-                            //   'disabled'=>(!$aprobado)?false:true  
+                               'disabled'=>true  
                                 ]
                             ]) ?>
 
  </div>
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'validez')->textInput() ?>
+     <?= $form->field($model, 'validez')->textInput(['disabled'=>true]) ?>
 
  </div>
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
@@ -133,7 +96,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     <?PHP
      echo $form->field($model, 'detalle_interno')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
-        'options' => ['rows' => 2],
+        'options' => ['rows' => 2,'disabled'=>true],
          'clientOptions'=>['language'=>'es',
              ],
         ]);
@@ -144,7 +107,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     <?PHP
      echo $form->field($model, 'detalle_externo')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
-        'options' => ['rows' => 2],
+        'options' => ['rows' => 2,'disabled'=>true],
          'clientOptions'=>['language'=>'es',
              ],
         ]);
@@ -157,16 +120,6 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
   
      
     <?php ActiveForm::end(); ?>
-<?php  echo inputAjaxWidget::widget([
-            //'isHtml'=>true,
-             'id'=>'btn_versisson',
-            //'otherContainers'=>[$send_zone],
-             'evento'=>'click',
-            'tipo'=>'POST',
-            'ruta'=>Url::to(['/com/coti/ajax-create-version','id'=>$model->id]),
-            'id_input'=>'btn_version',
-            'idGrilla'=>'grilla-contactos',
-      ]); 
-?>
+
 </div>
     </div>

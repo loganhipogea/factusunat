@@ -1350,10 +1350,27 @@ class CotiController extends baseController
    
    
    public function actionAjaxCreateVersion($id){
+     $this->layout="reportes";
        $model= ComCotizacion::findOne($id);
        h::response()->format = yii\web\Response::FORMAT_JSON;   
         $model->createVersion(); //En la funcion passInvoice validar el cambio de estado
            return ['success' => yii::t('base.messages','Se creo la version')];       
+   }
+   
+   
+   public function actionAjaxEnviaCoti($id){
+       $model= \frontend\modules\com\models\ComCotiversiones::findOne($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON;   
+        $respuesta=$model->mailCotizacion(); //En la funcion passInvoice validar el cambio de estado
+           
+        
+        return $respuesta;       
+   }
+   
+   public function actionAjaxShowPreview($id){
+       $this->layout="reportes";
+       $model= \frontend\modules\com\models\ComCotiversiones::findOne($id);        
+        return $this->renderPartial('view_attachments',['model'=>$model]);       
    }
    
 }

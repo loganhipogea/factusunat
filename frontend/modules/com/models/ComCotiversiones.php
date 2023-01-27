@@ -3,6 +3,8 @@
 namespace frontend\modules\com\models;
 use common\behaviors\FileBehavior;
 use common\helpers\h;
+use common\helpers\timeHelper;
+use common\models\masters\Contactos;
 use Yii;
 
 /**
@@ -66,6 +68,10 @@ class ComCotiversiones extends \common\models\base\modelBase
     public function getCoti(){
          return $this->hasOne(ComCotizacion::className(), ['id' => 'coti_id']);
     }
+    
+     public function getEnvios(){
+         return $this->hasMany(ComCotienvios::className(), ['id' => 'version_id']);
+    }
     /**
      * {@inheritdoc}
      * @return ComCotiversionesQuery the active query used by this AR class.
@@ -95,6 +101,7 @@ class ComCotiversiones extends \common\models\base\modelBase
     
      public function pathTempToStore($name=null){
        $dir=\yii::getAlias('@frontend/web/com/temp/');
+       
             if(!is_dir($dir)){
              mkdir($dir);
             }
@@ -104,9 +111,11 @@ class ComCotiversiones extends \common\models\base\modelBase
       }
       
       public function attachPdf(){
-        
-          $contenido=h::currentController()->render('reporte_coti',['model'=>$this->coti]);
-           $pdf= ComCotizacion::getPdf();
+         $controlador=h::currentController();
+         $controlador->layout="reportes";
+          $contenido=$controlador->render('reporte_coti',['model'=>$this->coti]);
+          
+          $pdf= ComCotizacion::getPdf();
           $pdf->WriteHTML($contenido);
             
                  yii::error('escribiendo en disco',__FUNCTION__);
@@ -121,5 +130,44 @@ class ComCotiversiones extends \common\models\base\modelBase
                 @unlink($ruta);
       
       }
+   public function mailCotizacion(){  
+         $mensajes=[];
+         $coti=$this->coti;
+         $destinatarios=$this->coti->getContactos()->alias('a')->select(['b.mail'])->
+          innerJoin(Contactos::tableName().' b','a.contacto_id=b.id')->column();
+         
+         $names=h::user()->getProfile()->names;
+         
+         if(is_null($names) or $names===''){
+             $mensajes['error']=yii::t('base.errors','Su perfil de usuario no registra un nombre, registre su identidad');
+         }elseif(!$this->hasAttachments()){
+            $mensajes['error']=yii::t('base.errors','Esta versión no contiene archivo adjunto'); 
+         }
+         elseif(!(count($destinatarios)>0)){
+           $mensajes['error']=yii::t('base.errors','No se han registrado destinatarios'); 
+          }else{
+          
+              $mailer = new \common\components\Mailer();
+            $message =new  \yii\swiftmailer\Message();
+            $message->setSubject('COTIZACION'.' '.$coti->numero.' '.substr($coti->descripcion,23))
+            ->setFrom([h::userEmail()=>$names])
+            ->setTo($destinatarios)
+             ->attach($this->files[0]->path)
+            ->SetHtmlBody(timeHelper::saludo().' Estimado '
+                    . 'adjunto encontrará nuestra propuesta económica por el servicio de '
+                    . $this->coti->descripcion.' Cualquier inquietud no duden en comunicarse con nosotros');           
+                try {        
+                $result = $mailer->send($message);
+                $mensajes['success']='Se envió el correo';
+                } catch (\Swift_TransportException $Ste) {      
+                        $mensajes['error']=$Ste->getMessage();
+                }
+         } 
 
+      return $mensajes;
+    }
+    
+   public function hasSends(){
+       return $this->getEnvios()->count() >0;
+   } 
 } 

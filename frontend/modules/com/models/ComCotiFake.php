@@ -115,12 +115,16 @@ class ComCotiFake extends \common\models\base\modelBase
         return $this->hasOne(Centros::className(), ['codcen' => 'codcen']);
     }
 
+     public function getSocio()
+    {
+        return $this->hasOne(Clipro::className(), ['codsoc' => 'codsoc']);
+    }
     /**
      * Gets query for [[Codcli0]].
      *
      * @return \yii\db\ActiveQuery|CliproQuery
      */
-    public function getCodcli0()
+    public function getCliente1()
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codcli']);
     }
@@ -130,7 +134,7 @@ class ComCotiFake extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|CliproQuery
      */
-    public function getCodcli10()
+    public function getCliente2()
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codcli1']);
     }
@@ -140,39 +144,9 @@ class ComCotiFake extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|TrabajadoresQuery
      */
-    public function getCodtra0()
+    public function getTrabajador()
     {
         return $this->hasOne(Trabajadores::className(), ['codigotra' => 'codtra']);
-    }
-
-    /**
-     * Gets query for [[ComCargoscotis]].
-     *
-     * @return \yii\db\ActiveQuery|ComCargoscotiQuery
-     */
-    public function getComCargoscotis()
-    {
-        return $this->hasMany(ComCargoscoti::className(), ['coti_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[ComContactocotis]].
-     *
-     * @return \yii\db\ActiveQuery|ComContactocotiQuery
-     */
-    public function getComContactocotis()
-    {
-        return $this->hasMany(ComContactocoti::className(), ['coti_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[ComCoticecos]].
-     *
-     * @return \yii\db\ActiveQuery|ComCoticecoQuery
-     */
-    public function getComCoticecos()
-    {
-        return $this->hasMany(ComCoticeco::className(), ['coti_id' => 'id']);
     }
 
     /**
@@ -185,10 +159,41 @@ class ComCotiFake extends \common\models\base\modelBase
         return $this->hasMany(ComDetcoti::className(), ['coti_id' => 'id']);
     }
 
+    
+    public function getPartidas()
+    {
+        return $this->hasMany(ComCotigrupos::className(), ['coti_id' => 'id']);
+    }
+    
+     public function getCargos()
+    {
+        return $this->hasMany(ComCargoscoti::className(), ['coti_id' => 'id']);
+    }
+    
+   public function getContactos(){
+        return $this->hasMany(ComContactocoti::className(), ['coti_id' => 'id']);
+    }
+    
+    
+    public function getSubpartidas(){
+        return $this->hasMany(ComCotiDet::className(), ['coti_id' => 'id']);
+    }
+    
+    public function getVersiones(){
+        return $this->hasMany(\frontend\modules\com\models\ComCotiversiones::className(), ['coti_id' => 'id']);
+    }
     /**
-     * {@inheritdoc}
-     * @return ComCotiFakeQuery the active query used by this AR class.
+     * Gets query for [[NDirecc]].
+     *
+     * @return \yii\db\ActiveQuery|DireccionesQuery
      */
+    public function getNDirecc()
+    {
+        return $this->hasOne(Direcciones::className(), ['id' => 'n_direcc']);
+    }
+
+   
+    
     public static function find()
     {
         return new ComCotiFakeQuery(get_called_class());

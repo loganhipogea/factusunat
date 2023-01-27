@@ -93,6 +93,10 @@ class h {
         //var_dump(yii::$app->user->isGuest);die();
         return yii::$app->user->identity->username;
     }
+    public static function  userEmail(){
+        //var_dump(yii::$app->user->isGuest);die();
+        return yii::$app->user->identity->email;
+    }
     public static function urlManager(){
         return yii::$app->urlManager;
     }

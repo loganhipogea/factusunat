@@ -138,7 +138,7 @@ class ComCotizacion extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|TrabajadoresQuery
      */
-    public function getCodtra0()
+    public function getTrabajador()
     {
         return $this->hasOne(Trabajadores::className(), ['codigotra' => 'codtra']);
     }
@@ -491,6 +491,7 @@ class ComCotizacion extends \common\models\base\modelBase
       yii::error($model->getErrors(),__FUNCTION__);
       $this->cloneFake();
       $model->refresh();
+      $model->attachPdf();
       return $model->numero;
   }
   
@@ -527,6 +528,7 @@ class ComCotizacion extends \common\models\base\modelBase
     }
   
   
-  
+     
+
   
 }
