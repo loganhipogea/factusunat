@@ -109,12 +109,16 @@ $formato=h::formato();
         <div style="position:relative; float:right; width:40%;text-align:right;">
             <p style="font-size:0.8em;"><b><?=$simbolo.' '.$formato->asDecimal($partida->total,2)?></b></p>
         </div>
+     
        <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
+          
          <?php        
         foreach($partida->detailPadres as $detalle){   ?>
             <?php  if(!$detalle->mostrar) {   ?>
-                  <tr><td><?=$detalle->item?></td>
-                      <td><?=$detalle->punit?></td>
+                  <tr>
+                
+                           <td><?=$detalle->item?></td>
+                           <td><?=$detalle->punit?></td>
                  </tr>
         <?php  }else{ ?>
                   <?php  foreach($detalle->detail as $detallazo) {  ?>

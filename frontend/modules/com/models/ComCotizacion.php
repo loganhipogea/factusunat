@@ -496,34 +496,44 @@ class ComCotizacion extends \common\models\base\modelBase
   }
   
   public static function  getPdf($config=[]){
-             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+           $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
             $fontDirs = $defaultConfig['fontDir'];
             $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
             $fontData = $defaultFontConfig['fontdata'];
-     
-            $configInicial=['format'=>'A4',
-                    'fontDir' => array_merge($fontDirs,[
-                    Yii::getAlias('@fonts')
+  $mpdf= new \Mpdf\Mpdf();
+            $mpdf = new \Mpdf\Mpdf([
+                'fontDir' => array_merge($fontDirs,[
+                Yii::getAlias('@fonts')
                     ]),
-                        'fontdata' => $fontData + [
-                            'cour' => [
-                            'R' => 'cour.ttf',
-                            'I' => 'CourierITALIC.ttf',
-                        ]
-                    ],];
-            foreach($config as $key=>$value){
-                    if(array_key_exists($key, $configInicial)){
-                         $configInicial[$key]=$value;
-                    }else{
-                        $configInicial[$key]=$config[$key];  
-                        }
-                    }
- 
-            $mpdf = new \Mpdf\Mpdf($configInicial);
-           $mpdf->simpleTables = true;
-           $mpdf->packTableData = true;
-           $mpdf->showImageErrors = true;
-           $mpdf->curlAllowUnsafeSslRequests = true; //Permite imagenes de url externas
+    'fontdata' => $fontData + [
+        'cour' => [
+            'R' => 'Courier.ttf',
+            
+        ],
+       'helvetica' => [
+            'R' => 'Helvetica.ttf',
+            'I' => 'VerdanaBOLD.ttf',
+        ],
+        'verdana' => [
+            'R' => 'Verdana.ttf',
+            'B' => 'VerdanaBOLD.ttf',
+        ],
+        
+    ],
+    'default_font' => 'cour'
+]);    
+           $mpdf->simpleTables = false;
+            $mpdf->packTableData = true;
+            
+             $mpdf->margin_header = 1;
+        $mpdf->margin_footer = 1;
+        $mpdf->setAutoTopMargin = 'stretch';
+        $mpdf->setAutoBottomMargin = 'stretch';
+        $mpdf->setFooter('Página {PAGENO} de {nb}');
+        $mpdf->SetWatermarkText('SIN APROBACION');
+        $mpdf->showWatermarkText = true;
+      
+      
          return $mpdf;
     }
   
