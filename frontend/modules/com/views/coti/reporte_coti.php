@@ -17,7 +17,7 @@ $formato=h::formato();
 
 
 <!--El titulo del numero -->
-<div style="text-align: center; font-weight: 900; "><u><b>COTIZACIÓN <?= $model->numero ?></b></u></div>
+<div style="text-align: center; font-weight: 900; "><u><b>COTIZACIÓN <?= $model->numero ?></u></b></div>
 <!--FIN DEL TITULO -->
 
 
@@ -92,8 +92,7 @@ $formato=h::formato();
 
 
  <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
-     <table style="width:100%; background-color: #efefef;"> 
-         <tr>
+     <table style="width:100%; background-color: #efefef;"> <tr>
                <th  style="width:8%;">Item</th>
                <th style="width:60%;">Descripcion</th>
                <th style="width:7%;">Um</th>
@@ -112,29 +111,37 @@ $formato=h::formato();
      
        <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
           
-         <?php        
+         
+        <?php 
+       
         foreach($partida->detailPadres as $detalle){   ?>
+            
+                 
+            
+           
             <?php  if(!$detalle->mostrar) {   ?>
-                  <tr>
+             <tr>
                 
-                           <td><?=$detalle->item?></td>
-                           <td><?=$detalle->punit?></td>
-                 </tr>
+                 <td style="width:8%"><p style="font-size:0.8em;"><?=$detalle->item?></p></td>
+                 <td style="width:60%"><p style="font-size:0.8em;"><?=$detalle->descripcion?></p></td>
+                  <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$detalle->codum?></p></td>
+                 <td style="width:8%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->cant,2)?></p></td>
+                 <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal/$detalle->cant,2)?></p></td>
+                 <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal,2)?></p></td>
+             </tr>
         <?php  }else{ ?>
                   <?php  foreach($detalle->detail as $detallazo) {  ?>
-                    <tr>                
-                        <td><?=$detallazo->item?></td>
+                        <tr>                
+                        <td style="width:8%"><p style="font-size:0.8em;"><?=$detallazo->item?></p></td>
+                        <td style="width:60%"><p style="font-size:0.8em;"><?=$detallazo->descripcion?></p></td>
+                        <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$detallazo->codum?></p></td>
+                        <td style="width:8%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->cant,2)?></p></td>
+                        <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->ptotal/$detallazo->cant,2)?></p></td>
+                        <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->ptotal,2)?></p></td>
                     </tr>
                   <?php }  ?>
         <?php }  ?>
         <?php }  ?>
-                    
-                    
-                    
-                    
-                    
-        
-           
        </table>
                  
 
