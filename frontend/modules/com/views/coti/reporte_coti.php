@@ -113,13 +113,13 @@ $formato=h::formato();
           
          
         <?php 
-       
+       $items=0;
         foreach($partida->detailPadres as $detalle){   ?>
             
                  
             
            
-            <?php  if(!$detalle->mostrar) {   ?>
+            <?php  if(!$detalle->mostrar) {  $items++;  ?>
              <tr>
                 
                  <td style="width:8%"><p style="font-size:0.8em;"><?=$detalle->item?></p></td>
@@ -129,8 +129,8 @@ $formato=h::formato();
                  <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal/$detalle->cant,2)?></p></td>
                  <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detalle->ptotal,2)?></p></td>
              </tr>
-        <?php  }else{ ?>
-                  <?php  foreach($detalle->detail as $detallazo) {  ?>
+        <?php  }else{  ?>
+                  <?php  foreach($detalle->detail as $detallazo) {$items++;   ?>
                         <tr>                
                         <td style="width:8%"><p style="font-size:0.8em;"><?=$detallazo->item?></p></td>
                         <td style="width:60%"><p style="font-size:0.8em;"><?=$detallazo->descripcion?></p></td>
@@ -142,6 +142,15 @@ $formato=h::formato();
                   <?php }  ?>
         <?php }  ?>
         <?php }  ?>
+        <?php if($items > 15 ){  ?>
+               </table>
+                </div>  
+               </div>
+                <div style="page-break-before:always;"></div>
+                <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
+                    <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
+                   <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
+            <?php }  ?>
        </table>
                  
 
@@ -165,7 +174,7 @@ $formato=h::formato();
 <br>
 </div>
 
-<div style="page-break-before:always;">
+
     <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
         position:relative;
          
@@ -180,7 +189,6 @@ $formato=h::formato();
         </div> 
       <?php  }  ?>
 
-</div>
 
 
 
