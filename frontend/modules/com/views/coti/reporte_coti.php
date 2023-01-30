@@ -101,7 +101,9 @@ $formato=h::formato();
                <th style="width:10%;">Total</th>
            </tr>
      </table>
-     <?php foreach($model->partidas as $partida){   ?>
+     <?php
+     $items=0;
+     foreach($model->partidas as $partida){   ?>
         <div style="position:relative;  width:60%; float:left; text-align: left; ">
             <b><p style="font-size:0.8em;"><?=$partida->descripartida?></p></b>
         </div>
@@ -113,12 +115,8 @@ $formato=h::formato();
           
          
         <?php 
-       $items=0;
+       
         foreach($partida->detailPadres as $detalle){   ?>
-            
-                 
-            
-           
             <?php  if(!$detalle->mostrar) {  $items++;  ?>
              <tr>
                 
@@ -139,10 +137,10 @@ $formato=h::formato();
                         <td style="width:7%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->ptotal/$detallazo->cant,2)?></p></td>
                         <td style="width:10%; text-align: right;"><p style="font-size:0.8em;"><?=$formato->asDecimal($detallazo->ptotal,2)?></p></td>
                     </tr>
-                  <?php }  ?>
+                        <?php }  ?>
+                <?php }  ?>
         <?php }  ?>
-        <?php }  ?>
-        <?php if($items > 5 ){ $items=0;  ?>
+        <?php if($items > 20 ){ $items=0;  ?>
                </table>
                 </div>  
                </div>
