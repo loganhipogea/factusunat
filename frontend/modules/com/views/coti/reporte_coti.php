@@ -147,8 +147,18 @@ $formato=h::formato();
                 </div>  
                </div>
                 <div style="page-break-before:always;"></div>
-                <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
+               <div style="position:absolute;  left:40px; top:100px; margin:0px; padding:0px; width:90%; ">
                     <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
+                    <table style="width:100%; background-color: #efefef;"> 
+                                <tr>
+                                <th  style="width:8%;">Item</th>
+                                <th style="width:60%;">Descripcion</th>
+                                <th style="width:7%;">Um</th>
+                                <th style="width:8%;">Cant</th>
+                                <th style="width:7%;">Punit</th>
+                                <th style="width:10%;">Total</th>
+                                </tr>
+                    </table>
                    <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
             <?php }  ?>
        </table>
