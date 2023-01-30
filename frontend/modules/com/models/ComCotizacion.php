@@ -548,7 +548,7 @@ class ComCotizacion extends \common\models\base\modelBase
         $mpdf->SetWatermarkText('SIN APROBACION');
         $mpdf->showWatermarkText = true;
         //$mpdf->use_kwt = true; 
-        $mpdf->autoPageBreak = true;
+        //$mpdf->autoPageBreak = true;
       
          return $mpdf;
     }

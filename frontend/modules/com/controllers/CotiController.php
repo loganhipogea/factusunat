@@ -1191,8 +1191,14 @@ class CotiController extends baseController
         $nombre= uniqid().'.pdf';
         $model=$this->findModel($id);
         
-        $contenido=$this->render('reporte_coti',['model'=>$model]); 
-       
+       // $contenido=$this->render('reporte_coti',['model'=>$model]); 
+       $contenido="<html>"
+                  ."<h1>Hola amigos esta es la primer pagina</h1> "
+                   ."contenido de la primera pagina "
+                  ."<pagebreak/></div>"
+                  ."<h1>Hola amigos esta es la segunda pagina</h1> "
+                   ."contenido de la primera pagina "
+                  ."</html>";
        /* return Yii::$app->html2pdf
     ->convert($contenido)    
     ->send();
