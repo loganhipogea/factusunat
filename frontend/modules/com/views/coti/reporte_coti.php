@@ -142,7 +142,7 @@ $formato=h::formato();
                   <?php }  ?>
         <?php }  ?>
         <?php }  ?>
-        <?php if($items > 15 ){  ?>
+        <?php if($items > 5 ){  ?>
                </table>
                 </div>  
                </div>
