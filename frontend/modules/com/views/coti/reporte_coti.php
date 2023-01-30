@@ -163,6 +163,7 @@ $formato=h::formato();
 
 <!--El tenor inferior-->
 <br>
+</div>
 </pagebreak>
     <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
         position:relative;
@@ -177,7 +178,7 @@ $formato=h::formato();
             <b><p style="font-size:0.8em;"><b>Numero: <?=$cuenta->nombre.' '.$cuenta->numero?></b></p></b>
         </div> 
       <?php  }  ?>
-</div>
+
 
 
 
