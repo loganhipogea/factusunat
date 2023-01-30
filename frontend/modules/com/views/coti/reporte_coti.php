@@ -140,7 +140,7 @@ $formato=h::formato();
                         <?php }  ?>
                 <?php }  ?>
         <?php }  ?>
-        <?php if($items > 18 ){ $items=0;  ?>
+        <?php if($items > 10 ){ $items=0;  ?>
                </table>
                 </div>  
                </div>
