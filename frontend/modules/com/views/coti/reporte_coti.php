@@ -163,7 +163,7 @@ $formato=h::formato();
 
 <!--El tenor inferior-->
 <br>
-    <div style="page-break-before:always;width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
+    <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
         position:relative;
          
         font-size: 0.9em;
