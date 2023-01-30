@@ -47,7 +47,26 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                         ]
                     ) ?>
  </div>   
- 
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+      <?= $form->field($model, 'fpago')->
+            dropDownList($model::dataComboValores('fpago') ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        
+              //'disabled'=>$deshabilitado
+                        ]
+                    ) ?>
+ </div>  
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+      <?= $form->field($model, 'sumaopunit')->
+            dropDownList($model::dataComboValores('sumaopunit') ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        
+              //'disabled'=>$deshabilitado
+                        ]
+                    ) ?>
+ </div>  
   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'numero')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
@@ -60,7 +79,10 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                     ) ?>
 
  </div>
-  
+ <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'validez')->textInput() ?>
+
+ </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
        <?php 
   // $necesi=new Parametros;
@@ -121,10 +143,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                             ]) ?>
 
  </div>
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'validez')->textInput() ?>
-
- </div>
+ 
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
    <?= $form->field($model, 'version')->textInput(['disabled'=>true]) ?>
 
@@ -143,6 +162,17 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?PHP
      echo $form->field($model, 'detalle_externo')
+             ->widget(\dosamigos\ckeditor\CKEditor::className(), [
+        'options' => ['rows' => 2],
+         'clientOptions'=>['language'=>'es',
+             ],
+        ]);
+      ?>
+ </div>
+          
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <?PHP
+     echo $form->field($model, 'memoria')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
         'options' => ['rows' => 2],
          'clientOptions'=>['language'=>'es',

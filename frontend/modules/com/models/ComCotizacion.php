@@ -21,6 +21,7 @@ class ComCotizacion extends \common\models\base\modelBase
      * {@inheritdoc}
      */
     const PREFIX_CACHE_CARGOS='xjsdkjdsk_cargos';
+    const NUMERO_ITEMS_POR_PAGINA=30;
     public $femision1=null;
     public $monto1=null;
     public $dateorTimeFields=[
@@ -56,7 +57,10 @@ class ComCotizacion extends \common\models\base\modelBase
                  'femision','codtra','validez',
                  'codcli','codcli1',
                  'descripcion'], 'required'],
-             [['monto','igv','version','filtro'], 'safe'],
+             [[
+                 'monto','igv','version',
+                 'filtro','punit','memoria','fpago','sumaopunit'
+                 ], 'safe'],
             [['detalle_interno', 'detalle_externo'], 'string'],
             [['validez', 'n_direcc'], 'integer'],
             [['numero', 'codcli', 'codcli1', 'femision'], 'string', 'max' => 10],
@@ -441,6 +445,17 @@ class ComCotizacion extends \common\models\base\modelBase
      return $array_data;
   }
   
+  private function fixcoti_det($array_detalles_hijos,$id){
+      $array_data=[];
+      $array_detalles_padres=$this->getComDetcotis()->asArray()->all();
+      $array_detalles_hijos=$this->getComDetcotis()->asArray()->all();     
+      foreach($array_detalles_padres as $filaPadre){
+          foreach($array_detalles_hijos as $filaHijo){
+                        $array_data[]=array_replace($filaHijo,['coti_id'=>$id,'id'=>null,'detcoti_id'=>$filaPadre['id']]);
+                }
+          }           
+     return $array_data;  
+  }
   
   public function cloneFake(){
      $model=New \frontend\modules\com\models\ComCotiFake();
@@ -471,7 +486,7 @@ class ComCotizacion extends \common\models\base\modelBase
           $array_detalles=$this->getComDetcotis()->asArray()->all();
           Yii::$app->db->createCommand()->batchInsert(
                   ComCotiDet::tableName(),array_keys($this->comDetcotis[0]->attributes),
-            $this->fixCoti_id($array_detalles,$model->id))->execute();
+            $this->fixCoti_det($array_detalles,$model->id))->execute();
       } 
      
     if(count($this->cargos)>0){
@@ -532,13 +547,24 @@ class ComCotizacion extends \common\models\base\modelBase
         $mpdf->setFooter('Página {PAGENO} de {nb}');
         $mpdf->SetWatermarkText('SIN APROBACION');
         $mpdf->showWatermarkText = true;
-      
+        //$mpdf->use_kwt = true; 
+        $mpdf->autoPageBreak = true;
       
          return $mpdf;
     }
   
   
-     
+   public function nItemsForReport(){
+       $cuantospadre=$this->getComDetcotis()->count();
+       $quitar=getComDetcotis()->select(['detcoti_id'])->disctint()->andWhere(['mostrar'=>'1'])->count(); 
+      $cuantoshijos=$this->getComDetcotis()->andWhere(['mostrar'=>'1'])->count(); 
+      return $cuantospadre+$cuantoshijos-$quitar;
+      
+   }
+   
+   
 
+   
+   
   
 }

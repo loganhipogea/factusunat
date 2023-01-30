@@ -112,13 +112,28 @@ class ComCotiversiones extends \common\models\base\modelBase
       
       public function attachPdf(){
          $controlador=h::currentController();
+         $modelCoti=$this->coti;
          $controlador->layout="reportes";
-          $contenido=$controlador->render('reporte_coti',['model'=>$this->coti]);
-          
+         $formato=h::formato();
+         $simbolo=$simbolo= \common\models\masters\Monedas::Simbolo($modelCoti->codmon);
+          $encabezado=$controlador->render('reporte_coti_encabezado',[
+              'model'=>$this->coti,
+              'formato'=>$formato,
+              'simbolo'=>$simbolo,
+                  ]);
+          $cuerpo=$controlador->render('reporte_coti_cuerpo',[
+              'model'=>$this->coti,
+              'formato'=>$formato,
+              'simbolo'=>$simbolo,
+                  ]);
+           $pie=$controlador->render('reporte_coti_pie',[
+              'model'=>$this->coti,
+              'formato'=>$formato,
+              'simbolo'=>$simbolo,
+                  ]);
           $pdf= ComCotizacion::getPdf();
-          $pdf->WriteHTML($contenido);
-            
-                 yii::error('escribiendo en disco',__FUNCTION__);
+          $pdf->WriteHTML($encabezado.$cuerpo.$pie);
+               yii::error('escribiendo en disco',__FUNCTION__);
                 $ruta=$this->pathTempToStore();
                  yii::error('ruta '.$ruta,__FUNCTION__);
                   yii::error('haciendo el  output al file  '.$ruta,__FUNCTION__);
