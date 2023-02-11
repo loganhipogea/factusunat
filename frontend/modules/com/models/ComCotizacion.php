@@ -384,14 +384,22 @@ class ComCotizacion extends \common\models\base\modelBase
    public function array_cargos(){
        $cache=h::cache();
        if(!$cache->get(self::PREFIX_CACHE_CARGOS)){
+           yii:error('no hay cache',__FUNCTION__);
+            yii:error($cache->get(self::PREFIX_CACHE_CARGOS),__FUNCTION__);
             $arreglo=$this->getCargos()->alias('t')->
              innerJoin('{{%com_cargos}} b', 't.cargo_id=b.id')->
                select(['b.etiqueta','t.porcentaje'])->orderBy(['b.id'=>SORT_ASC])->asArray()->all();
             $arreglo= array_combine(array_column($arreglo,'etiqueta'),array_column($arreglo,'porcentaje'));
+            yii:error('El arreglo',__FUNCTION__);
+             yii:error($arreglo,__FUNCTION__);
             $cache->set(self::PREFIX_CACHE_CARGOS,$arreglo);
             
        }else{
           $arreglo=$cache->get(self::PREFIX_CACHE_CARGOS);
+           yii:error('El sacando del cache',__FUNCTION__);
+             yii:error($arreglo,__FUNCTION__);
+            $cache->set(self::PREFIX_CACHE_CARGOS,$arreglo);
+          
        }
      return $arreglo;
    } 
