@@ -437,21 +437,40 @@ class ComCotizacion extends \common\models\base\modelBase
   }
   
   
-  private function fixCoti_id($array_filas,$id){
+  private function fixCoti_id($array_filas,$model){
       $array_data=[];
       foreach($array_filas as $fila){
-           $array_data[]=array_replace($fila,['coti_id'=>$id,'id'=>null]);
+           $array_data[]=array_replace($fila,['coti_id'=>$model->id,'id'=>null]);
       }
      return $array_data;
   }
   
-  private function fixcoti_det($array_detalles_hijos,$id){
+  private function fixCoti_det($model){
       $array_data=[];
-      $array_detalles_padres=$this->getComDetcotis()->asArray()->all();
+      $array_detalles_padres=$model->getSubpartidas()->asArray()->all();
       $array_detalles_hijos=$this->getComDetcotis()->asArray()->all();     
       foreach($array_detalles_padres as $filaPadre){
           foreach($array_detalles_hijos as $filaHijo){
-                        $array_data[]=array_replace($filaHijo,['coti_id'=>$id,'id'=>null,'detcoti_id'=>$filaPadre['id']]);
+                        $array_data[]=array_replace($filaHijo,[
+                            'coti_id'=>$model->id,
+                             'cotigrupo_id'=>$filaPadre['cotigrupo_id'],
+                            'id'=>null,
+                            'detcoti_id'=>$filaPadre['id']
+                                ]);
+                }
+          }           
+     return $array_data;  
+  }
+  
+  
+  private function fixCoti_subpartidas($model){
+      $array_data=[];
+      $array_partidas=$model->getPartidas()->asArray()->all();
+      
+      $array_subpartidas=$this->getSubpartidas()->asArray()->all();     
+      foreach($array_partidas as $partida){
+          foreach($array_subpartidas as $subpartida){
+                        $array_data[]=array_replace($subpartida,['coti_id'=>$model->id,'id'=>null,'cotigrupo_id'=>$partida['id']]);
                 }
           }           
      return $array_data;  
@@ -467,26 +486,26 @@ class ComCotizacion extends \common\models\base\modelBase
             $array_partidas=$this->getPartidas()->asArray()->all();
             Yii::$app->db->createCommand()->batchInsert(
             ComCotigrupos::tableName(),array_keys($this->partidas[0]->attributes),
-            $this->fixCoti_id( $array_partidas,$model->id))->execute();
+            $this->fixCoti_id( $array_partidas,$model))->execute();
      }
      if(count($this->contactos)>0){
        $array_contactos=$this->getContactos()->asArray()->all();
         Yii::$app->db->createCommand()->batchInsert(
                 ComContactocoti::tableName(),array_keys($this->contactos[0]->attributes),
-            $this->fixCoti_id( $array_contactos,$model->id))->execute();
+            $this->fixCoti_id( $array_contactos,$model))->execute();
      } 
       if(count($this->subpartidas)>0){
-          $array_padres=$this->getSubpartidas()->asArray()->all();
+         // $array_padres=$this->getSubpartidas()->asArray()->all();
           Yii::$app->db->createCommand()->batchInsert(
                   ComCotiDet::tableName(),array_keys($this->subpartidas[0]->attributes),
-            $this->fixCoti_id($array_padres,$model->id))->execute();
+            $this->fixCoti_subpartidas($model))->execute();
       } 
       
       if(count($this->comDetcotis)>0){
           $array_detalles=$this->getComDetcotis()->asArray()->all();
           Yii::$app->db->createCommand()->batchInsert(
                   ComCotiDet::tableName(),array_keys($this->comDetcotis[0]->attributes),
-            $this->fixCoti_det($array_detalles,$model->id))->execute();
+            $this->fixCoti_det($model))->execute();
       } 
      
     if(count($this->cargos)>0){
@@ -562,7 +581,13 @@ class ComCotizacion extends \common\models\base\modelBase
       
    }
    
-   
+   public function itemsArrayToReport(){
+       $items=[];
+       $array_items=$this->getPartidas()->select(['x.descripcion as descridetalla'])->
+               alias('a')
+               ->innerJoin('{{%com_detcoti}} x','a.id=x.cotigrupo_id')->createCommand()->rawSql;
+       
+   }
 
    
    

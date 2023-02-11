@@ -306,6 +306,15 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      $model= \frontend\modules\com\models\ComCotizacion::findOne(74);
+      echo $model->getPartidas()->select([
+          'a.*','x.id as iddet','x.item as itemdet','x.descripcion as descridet',
+          'x.cant','x.punit','x.codum','x.ptotal'
+      ])->alias('a')->innerJoin('{{%com_detcoti}} x','a.id=x.cotigrupo_id')
+              ->createCommand()->rawSql;
+      
+      
+      die();
       $model=\frontend\modules\com\models\ComCotiversiones::findOne(16);
       PRINT_R($model->mailCotizacion());
       die();
