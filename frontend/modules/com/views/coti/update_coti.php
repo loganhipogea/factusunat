@@ -13,8 +13,8 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 
-$this->title = Yii::t('app', 'Update Com Cotizacion: {name}', [
-    'name' => $model->id,
+$this->title = Yii::t('app', 'Editar cotización: {name}', [
+    'name' => $model->numero,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Com Cotizacions'), 'url' => ['index-coti']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
@@ -38,20 +38,20 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Partidas'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa align-justify"></i> '.yii::t('base.names','Partidas'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_partidas',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],
         ],
        
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Colectores'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-shopping-bag"></i> '.yii::t('base.names','Colectores'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_tab_cecos',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myvefseryownID4'],
         ],
        [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Cargos'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-money"></i> '.yii::t('base.names','Cargos'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_tab_cargos',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'my5t6vefser54er'],
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
              'options' => ['id' => 'm45A569n'],
         ],
         [
-          'label'=>'<i class="fa fa-paper-plane"></i> '.yii::t('base.names','Versoiones'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-search"></i> '.yii::t('base.names','Versoiones'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_versiones',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'm45A569ds324n'],

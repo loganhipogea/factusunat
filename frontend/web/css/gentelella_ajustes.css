@@ -264,3 +264,8 @@ ORDEN DE FRONTAL EN MODALES
     font-family: 'Font Awesome 5 Free' !important;
     font-weight: 600 !important;
 }*/
+div.required .control-label:not(span):after, td.required:after {
+    content: ' *';
+    color: #d22020;
+    font-weight: bold;
+}

@@ -19,11 +19,15 @@ use yii\widgets\ActiveForm;
             'data-pjax' => 1
         ],
     ]); ?>
-<div class="form-group">
+<div class="form-group row">
+    <div class="col-md-12">
+            <div class="btn-group"> 
         <?= Html::submitButton(Yii::t('app', 'Buscar'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Limpiar'), ['class' => 'btn btn-default']) ?>
        <?= Html::a(Yii::t('app', 'Nueva cotización'), ['create'], ['class' => 'btn btn-success']) ?>
-    </div>
+            </div> 
+         </div> 
+</div>
      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <?= $form->field($model, 'numero')->textInput(['maxlength' => true]) ?>
     </div>  

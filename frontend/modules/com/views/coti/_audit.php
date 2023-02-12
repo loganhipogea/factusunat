@@ -14,7 +14,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
    //print_r($mapModels);die();
    $gridColumns=[       
            
-        
+        [
+            'attribute' => 'action',
+            'value'=>function($model)use($mapModels){
+                return $model->action;
+            }
+         ],  
        
         [
             'attribute' => 'model',

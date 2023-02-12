@@ -21,8 +21,14 @@ $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' 
 $this->params['breadcrumbs'][] = Yii::t('app', 'Ver');
 ?>
 <div class="com-cotizacion-update">
-<h4><i class="fa fa-edit"></i><?= Html::encode($this->title) ?></h4>
-   
+<h4><i class="fa fa-search"></i><?= Html::encode($this->title) ?></h4>
+   <div class="form-group row">
+    <div class="col-md-12">
+            <div class="btn-group"> 
+        <?= Html::a(Yii::t('app', 'Editar'),Url::to(['/com/coti/update-coti','id'=>$model->id]), ['class' => 'btn btn-success']) ?>
+            </div> 
+         </div> 
+</div>
     <div class="box box-success">
     
     <?php echo TabsX::widget([

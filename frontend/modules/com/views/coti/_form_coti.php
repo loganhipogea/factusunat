@@ -17,8 +17,8 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
       <div class="box-header">
-        <div class="col-md-12">
-            <div class="form-group no-margin">
+       <div class="col-md-12">
+            <div class="btn-group"> 
                 
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
          <?php if(!$model->isNewRecord){?>                    
@@ -122,7 +122,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'form'=>$form,
             'campo'=>'codtra',
          'ordenCampo'=>1,
-         'addCampos'=>[2,3],
+         'addCampos'=>[2,3,4],
         ]);  ?>
 
  </div>         

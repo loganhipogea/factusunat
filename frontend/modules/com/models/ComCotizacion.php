@@ -59,7 +59,7 @@ class ComCotizacion extends \common\models\base\modelBase
                  'descripcion'], 'required'],
              [[
                  'monto','igv','version',
-                 'filtro','punit','memoria','fpago','sumaopunit'
+                 'filtro','punit','memoria','fpago','sumaopunit','codtra',
                  ], 'safe'],
             [['detalle_interno', 'detalle_externo'], 'string'],
             [['validez', 'n_direcc'], 'integer'],
@@ -89,17 +89,19 @@ class ComCotizacion extends \common\models\base\modelBase
             'serie' => Yii::t('app', 'Serie'),
             'codsoc' => Yii::t('app', 'Codsoc'),
             'codcen' => Yii::t('app', 'Codcen'),
-            'codcli' => Yii::t('app', 'Codcli'),
-            'codcli1' => Yii::t('app', 'Codcli1'),
+            'codcli' => Yii::t('app', 'Cliente'),
+            'codcli1' => Yii::t('app', 'Cliente'),
             'estado' => Yii::t('app', 'Estado'),
             'descripcion' => Yii::t('app', 'Descripcion'),
             'detalle_interno' => Yii::t('app', 'Detalle Interno'),
             'detalle_externo' => Yii::t('app', 'Detalle Externo'),
-            'femision' => Yii::t('app', 'Femision'),
+            'femision' => Yii::t('app', 'Fecha'),
             'validez' => Yii::t('app', 'Validez'),
-            'codtra' => Yii::t('app', 'Codtra'),
+            'codtra' => Yii::t('base.names', 'Responsable'),
             'n_direcc' => Yii::t('app', 'N Direcc'),
-            'codmon' => Yii::t('app', 'Codmon'),
+            'codmon' => Yii::t('app', 'Moneda'),
+            'fpago' => Yii::t('app', 'Forma de pago'),
+            'sumaopunit' => Yii::t('app', 'Modalidad'),
         ];
     }
 

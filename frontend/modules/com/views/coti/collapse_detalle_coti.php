@@ -180,8 +180,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             
  $modelCoti=$model->coti;
  $carguitos=$modelCoti->array_cargos();
- yii::error('carguitos',__FUNCTION__);
-  yii::error($carguitos,__FUNCTION__);
+
  foreach($carguitos as $cargo=>$porcentaje){
      array_push($gridColumns,['attribute'=>$cargo,'value'=>function($model)use($porcentaje,$formato){return $formato->asDecimal($model->montoneto*$porcentaje/100);}]);
     }

@@ -32,10 +32,10 @@ class CotiController extends baseController
         return array_merge(
             parent::behaviors(),
             [
-                'filterCenter' => [
+                /*'filterCenter' => [
                     'class' =>FilterCurrentCenter::className(),
                     
-                ],
+                ],*/
             ]
         );
     }
@@ -81,6 +81,7 @@ class CotiController extends baseController
         if ($this->request->isPost) {
            
             if ($model->load($this->request->post()) && $model->save()) {
+                h::session()->setFlash('success',yii::t('base.names','Se grabó el registro de la cotización, favor de completar los datos complementarios'));
                 return $this->redirect(['view-coti', 'id' => $model->id]);
             }
         } else {
