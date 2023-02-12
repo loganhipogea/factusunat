@@ -599,7 +599,10 @@ class ComCotizacion extends \common\models\base\modelBase
        
    }
 
-   
+  public function retiraComportamientoLog(){
+      $this->detachBehavior('auditoriaBehavior');
+      return $this;
+  }  
    
   
 }

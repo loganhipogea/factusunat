@@ -136,6 +136,11 @@ class ComCotigrupos extends \common\models\base\modelBase
     } 
   
     private function sincronizeMontos(){
-          return   $this->coti->refreshMontos()->save();
+          return   $this->coti->retiraComportamientoLog()->refreshMontos()->save();
     }
+    
+    public function retiraComportamientoLog(){
+      $this->detachBehavior('auditoriaBehavior');
+      return $this;
+  }
 }

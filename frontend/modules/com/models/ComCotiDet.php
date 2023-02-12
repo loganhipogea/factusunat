@@ -177,10 +177,15 @@ class ComCotiDet extends \common\models\base\modelBase
         return parent::afterDelete();
     }
     private function sincronizeMontos(){
-    return $this->partida->refreshMontos()->save();
+    return $this->partida->retiraComportamientoLog()->refreshMontos()->save();
     }
     
   public function subTotalTotal(){
      return $this->getDetail()->select('sum(ptotal)')->scalar();  
+  }
+  
+  public function retiraComportamientoLog(){
+      $this->detachBehavior('auditoriaBehavior');
+      return $this;
   }
 }
