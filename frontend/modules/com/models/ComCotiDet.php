@@ -75,7 +75,7 @@ class ComCotiDet extends \common\models\base\modelBase
             'pventa' => Yii::t('app', 'Pventa'),
             'punitcalculado' => Yii::t('app', 'Punitcalculado'),
             'cotigrupo_id' => Yii::t('app', 'Cotigrupo ID'),
-            'coticeco_id' => Yii::t('app', 'Coticeco ID'),
+            'coticeco_id' => Yii::t('app', 'Calificación'),
             'detcoti_id' => Yii::t('app', 'Detcoti ID'),
             'detcoti_id_id' => Yii::t('app', 'Detcoti Id ID'),
             'servicio_id' => Yii::t('app', 'Servicio ID'),
