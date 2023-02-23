@@ -17,7 +17,7 @@ use yii\helpers\Url;
      <div class="box-body">
       <?php $form = ActiveForm::begin([
        'id'=>'myformulario',
-    'fieldClass'=>'\common\components\MyActiveField'
+   // 'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
       <div class="box-header">
           
