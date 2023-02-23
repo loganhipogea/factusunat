@@ -44,6 +44,17 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
    
    $gridColumns=[       
             $column,
+       [
+            'attribute' => 'descriceco_id',
+            'format'=>'raw',
+             'value' => function ($model) {
+      
+                    return $model->coticeco->ceco->descripcion;
+                           
+                                },
+                   
+           
+         ],  
         [
             'attribute' => 'item',
             'value'=>function($model){
@@ -55,6 +66,19 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
           'attribute' => 'descripcion',         
           'contentOptions'=>['style'=>'width: 30%;'],  
          ],
+        
+        [
+            'attribute' => 'mostrar',
+            'format'=>'raw',
+             'value' => function ($model) {
+                          if($model->mostrar){
+                              return '<span class="fa fa-eye"></span>';
+                          }
+                           
+                                },
+                   
+           
+         ],     
         'tipo',
        
         'codart',

@@ -38,7 +38,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'attribute' => 'item',
            
          ],  
-                      
+                     
        [
             //'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'descripartida',

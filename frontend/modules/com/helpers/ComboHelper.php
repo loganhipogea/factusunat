@@ -1,6 +1,8 @@
 <?php
 namespace frontend\modules\com\helpers;
 use frontend\modules\com\models\ComFactura;
+use frontend\modules\com\models\ComCoticeco;
+use frontend\modules\cc\models\CcCc;
 USE yii;
 use \yii\helpers\ArrayHelper;
 class ComboHelper extends \common\helpers\ComboHelper{
@@ -51,16 +53,20 @@ class ComboHelper extends \common\helpers\ComboHelper{
     }
     
     public static function cecosCoti($id_coti){
-        $idsCecosCoti= \frontend\modules\com\models\ComCoticeco::find()->
+      $idsCecosCoti= ComCoticeco::find()->
                 select(['ceco_id'])-> andWhere(['coti_id'=>$id_coti])->column();
-        //var_dump($id_coti,$idsCecosCoti);die();
-       return ArrayHelper::map(
-                       \frontend\modules\cc\models\CcCc::find()->
-              andWhere([
-                 'in','id', $idsCecosCoti,
-              ])
-               ->all(),
-                'id','descripcion');   
+      $arreglo= ComCoticeco::find()->alias('t')->
+         select(['t.id','b.descripcion'])->
+       innerJoin(CcCc::tableName().' as b','t.ceco_id=b.id' )->
+       andWhere(['in','b.id', $idsCecosCoti])->
+       andWhere(['coti_id'=>$id_coti])->
+         asArray()->all();
+        
+        return array_combine(
+                array_column($arreglo,'id'),
+                array_column($arreglo,'descripcion')
+                );
+        
     }
     
     

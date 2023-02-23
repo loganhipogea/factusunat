@@ -585,11 +585,34 @@ class ComCotizacion extends \common\models\base\modelBase
   
    public function nItemsForReport(){
        $cuantospadre=$this->getComDetcotis()->count();
-       $quitar=getComDetcotis()->select(['detcoti_id'])->disctint()->andWhere(['mostrar'=>'1'])->count(); 
-      $cuantoshijos=$this->getComDetcotis()->andWhere(['mostrar'=>'1'])->count(); 
+       //Ids de padres que deben mostrar
+       $idsPadresMostrar=getComDetcotis()->select(['id'])->disctint()->andWhere(['mostrar'=>'1'])->column(); 
+       $quitar=count($idsPadresMostrar);
+       
+      /*
+       * Aquellos que son items hijos, ademas pertenecen 
+       * a un padre que tiene mostrar='1'
+       */
+       $cuantoshijos=$this->getComDetcotis()
+               ->andWhere(['in','detcoti_id',$idsPadresMostrar])->
+               count(); 
+       
+       
       return $cuantospadre+$cuantoshijos-$quitar;
       
    }
+   
+   /*
+    * Array preparado para mostrar el reporte 
+    *   -PARTIDA1=>[
+    *                01=>iTEM1
+    *                02=>iTEM2
+    *                   ],
+    *   -PARTIDA2=>[
+    *                01=>iTEM1
+    *                02=>iTEM2
+    *                   ],
+    */
    
    public function itemsArrayToReport(){
        $items=[];
@@ -598,7 +621,10 @@ class ComCotizacion extends \common\models\base\modelBase
                ->innerJoin('{{%com_detcoti}} x','a.id=x.cotigrupo_id')->createCommand()->rawSql;
        
    }
-
+/*
+ * Evita el log de auditoria, usarlo en actualizaciones 
+ * automaticas
+ */
   public function retiraComportamientoLog(){
       $this->detachBehavior('auditoriaBehavior');
       return $this;

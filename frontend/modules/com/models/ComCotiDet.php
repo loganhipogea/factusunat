@@ -98,6 +98,12 @@ class ComCotiDet extends \common\models\base\modelBase
     {
         return $this->hasOne(ComCotigrupos::className(), ['id' => 'cotigrupo_id']);
     }
+    
+    
+     public function getCoticeco()
+    {
+        return $this->hasOne(ComCoticeco::className(), ['id' => 'coticeco_id']);
+    }
     /**
      * {@inheritdoc}
      * @return ComCotiDetQuery the active query used by this AR class.
