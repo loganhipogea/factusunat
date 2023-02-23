@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\modules\com\models;
-
+use frontend\modules\com\models\ComCoticeco;
 use Yii;
 
 /**
