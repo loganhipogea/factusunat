@@ -186,10 +186,14 @@ class ComDetcoti extends \common\models\base\modelBase
         
         } 
         if($this->isSameUnits()){
+            yii::error('Son las mismas unidades',__FUNCTION__);
             $padre=$this->padre;
             $padre->codum=$this->codum;
+            $padre->cant=$padre->getDetail()->sum('cant');
             $padre->retiraComportamientoLog();
             $padre->save();
+        }else{
+            yii::error('No Son las mismas unidades',__FUNCTION__);
         }
         return parent::afterSave($insert, $changedAttributes);
     }
