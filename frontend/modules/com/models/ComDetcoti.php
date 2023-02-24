@@ -177,14 +177,20 @@ class ComDetcoti extends \common\models\base\modelBase
     }
     public function afterSave($insert, $changedAttributes) {
         if(in_array('punit',array_keys($changedAttributes)) or in_array('cant',array_keys($changedAttributes))){
-            yii::error('sincronizando en detalles',__FUNCTION__);
+            //yii::error('sincronizando en detalles',__FUNCTION__);
            $this->sincronizeMontos();
            
         }else{
           
-           yii::error('se romkpio la cadena en detcoti',__FUNCTION__);
+           //yii::error('se romkpio la cadena en detcoti',__FUNCTION__);
         
         } 
+        if($this->isSameUnits()){
+            $padre=$this->padre;
+            $padre->codum=$this->codum;
+            $padre->retiraComportamientoLog();
+            $padre->save();
+        }
         return parent::afterSave($insert, $changedAttributes);
     }
     public function afterDelete() {
@@ -335,6 +341,17 @@ class ComDetcoti extends \common\models\base\modelBase
         $this->ptotal=$this->ptotal*(1+$this->coti->cargoPorcentajeAcumulado()/100);
         
         return $this;
+    }
+    
+    /*
+     * Verifica si todas las unidades hijas 
+     * del mismo padre comparten la misma unidad 
+     * de medida
+     */
+    private function isSameUnits(){
+        return $this->find()->select(['codum'])
+                ->distinct()
+                ->andWhere(['detcoti_id'=>$this->detcoti_id])->count()==1;
     }
  
 }
