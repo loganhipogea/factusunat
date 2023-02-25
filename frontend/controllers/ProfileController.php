@@ -117,11 +117,11 @@ class ProfileController extends \common\controllers\base\baseController
   public function actionSetCompany(){
      $codpro=h::request()->get('codpro',null);
      if(!is_null($codpro)){
-         $sesion=\yii::$app->session;
+         $cache=h::cache();
          $model=\common\models\masters\VwSociedades::find(['codpro'=>$codpro])->one();
          $model->storeCompany();
-         $sesion->remove(\common\models\masters\Centros::keySesion());
-         
+         $cache->delete(\common\models\masters\Centros::keyCache());
+         $sesion=h::session();
          $url=$sesion->has('mi-ex-url')?$sesion->get('mi-ex-url'):\Yii::$app->request->referrer;
          $sesion->remove('mi-ex-url');         
          $sesion->setFlash('success',yii::t('base.names','Company {company} was selected',['company'=>$model->despro]));

@@ -169,18 +169,20 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'family'=>'holas',
           'type'=>'POST',
            'evento'=>'click',
+       'posicion'=>\yii\web\View::POS_END
             //'foreignskeys'=>[1,2,3],
         ]); 
    ?>
       <?php 
    echo inputAjaxWidget::widget([
-           //'id'=>'widgetgruixxdBancos',
+           'id_input'=>'widgetgruixxdBancos',
             'idGrilla'=>'grilla-materiales',
             'id'=>'btn-add-material',
           'tipo'=>'POST',
            'evento'=>'click',
          'ruta'=> Url::to([$this->context->id.'/ajax-rellena-ids-from-req','id'=>$model->id]),
             //'foreignskeys'=>[1,2,3],
+         'posicion'=>\yii\web\View::POS_END
         ]); 
    ?>
       

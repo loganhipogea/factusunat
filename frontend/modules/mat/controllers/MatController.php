@@ -408,10 +408,10 @@ public function actionAjaxDesactivaItem($id){
                     if($model->isCreado()){
                         $model->Aprobar();
                     }else{
-                        return ['error'=>yii::t('sta.errors','No tiene el status adecuado')];
+                        return ['error'=>yii::t('base.errors','No tiene el status adecuado')];
                     }                   
                   }   
-                return ['success'=>yii::t('sta.errors','Se aprobó el vale')];
+                return ['success'=>yii::t('base.errors','Se aprobó el vale')];
             }    
   }
   

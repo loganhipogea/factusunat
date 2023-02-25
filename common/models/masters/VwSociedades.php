@@ -4,7 +4,7 @@ namespace common\models\masters;
 use yii\helpers\Url;
 use common\helpers\h;
 use Yii;
-
+use yii\web\NotFoundHttpException;
 /**
  * This is the model class for table "{{%vw_sociedades}}".
  *
@@ -19,7 +19,7 @@ class VwSociedades extends \common\models\base\modelBase
     
     private $_data=null;
     
-    const CURRENT_COMPANY_KEY_SESION='current_compay';
+    const CURRENT_COMPANY_KEY_CACHE='current_compay4343';
     /**
      * {@inheritdoc}
      */
@@ -66,30 +66,37 @@ class VwSociedades extends \common\models\base\modelBase
         return new VwSociedadesQuery(get_called_class());
     }
     
-    public static function keySesion(){
-        return   h::userId().'_'.self::CURRENT_COMPANY_KEY_SESION;
+    public static function keyCache(){
+        return  self::CURRENT_COMPANY_KEY_CACHE;
     }
+    
+    /*
+     * Retorna un array con attributos 
+     * de la sociedad actual
+     * [codpro=>'A', DESPRO=>'ANDINA SOCIEDAD ANONIMA', rucpro=>'20600279832']
+     */
     public static function currentCompany(){
-        $sesion=\yii::$app->session;
-        if($sesion->has(self::keySesion())){
+        $cache=h::cache();
+        if($cache->exists(self::keyCache())){
             yii::error('Encontro el key sesion');
-          // VAR_DUMP($sesion->get(self::keySesion()));die();
-            return $sesion->get(self::keySesion());
+          // VAR_DUMP($sesion->get(self::keyCache()));die();
+            return $cache->get(self::keyCache());
         }else{
-             yii::error('NO Encontro el key sesion, redireccionando');
-           //$sesion->set('permiso',true);
-            return  \yii::$app->controller->redirect(['/profile/select-company']);
-            yii::error('despues de redireciconarFi');
-             
-        }        
+                        
+              return  \yii::$app->controller->redirect(['/profile/select-company'])->send();
+                          
+        }
     }
-    
-    
+    /*
+     * Almacena la informacion de la empresa 
+     * con sus atributos en cache, array 
+     * [codpro=>'A', DESPRO=>'ANDINA SOCIEDAD ANONIMA', rucpro=>'20600279832']
+     */
     public  function storeCompany($attributes=null){
-       $sesion=\yii::$app->session;
+        $cache=h::cache();
        if(is_null($attributes))$attributes=$this->attributes;
-       $sesion->set(self::keySesion(),$attributes);
-       return $sesion->get(self::keySesion());
+       $cache->set(self::keyCache(),$attributes,60*60*24*365);
+       return $cache->get(self::keyCache());
     }
     
     public static function codsoc(){  
@@ -97,8 +104,12 @@ class VwSociedades extends \common\models\base\modelBase
         
       $array_company=self::currentCompany();
        //yii::error($array_company,__FUNCTION__);
-       if(is_array($array_company))
-       return $array_company['codsoc'];
+       if(is_array($array_company)){
+           return $array_company['codsoc'];
+       }else{
+           return null;
+       }
+       
     } 
     
     public static function codpro(){  
@@ -153,15 +164,14 @@ class VwSociedades extends \common\models\base\modelBase
        $data=array_combine(array_column($data,'codpro'),
       array_column($data,'despro')
               );
-       
-       if(\yii::$app->session->has(self::keySesion()) && $except && array_key_exists(self::codpro(), $data)){
+       $cache=h::cache(); 
+       if($cache->exists(self::keyCache()) && $except && array_key_exists(self::codpro(), $data)){
            unset($data[self::codpro()]);
        }
      RETURN   $data;
    }
   public static function currentCompanyModel(){
-     // var_dump(['codsoc'=>self::codsoc()]);die();
-     return VwSociedades::find()->andWhere(['codsoc'=>self::codsoc()])->one();
+       return VwSociedades::find()->andWhere(['codsoc'=>self::codsoc()])->one();
   }  
   
   public function renderLogo(){

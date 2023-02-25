@@ -18,6 +18,7 @@ use frontend\models\ContactForm;
 USE common\helpers\h;
 use yii\base\UnknownPropertyException;
 use mdm\admin\models\searchs\User as UserSearch;
+use common\models\masters\VwSociedades;
 
 /**
  * Site controller
@@ -128,6 +129,8 @@ class SiteController extends Controller
         $model = new LoginForm();
         
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+           $current= VwSociedades::currentCompany();
+           //var_dump($current); die();
            $this->redirect(['index']); 
         }
 

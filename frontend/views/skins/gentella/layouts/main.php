@@ -36,6 +36,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     $this->registerCssFile('@web/css/Adminlte_personalizado.css', 
            ['depends' => [yiister\gentelella\assets\Asset::className()]]
             );
+    $cache=h::cache();
     ?>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -267,14 +268,14 @@ echo ModalAjax::widget([
                              <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                            
                                     <?php 
-                                if(\yii::$app->session->has(VwSociedades::keysesion())){
+                                if($cache->exists(VwSociedades::keyCache())){
                                     yii::error('en el layourt main, emcomntro la sesion SOCIEDADES');
                                      echo substr(VwSociedades::despro(),0,10); 
                                 }else{
                                     yii::error('en el layourt main, NO emcomntro la sesion SCIEDADE');
                                 }
                                
-                                if(\yii::$app->session->has(Centros::keysesion())){
+                                if(\yii::$app->session->has(Centros::keyCache())){
                                     yii::error('en el layourt main, emcomntro ELCENTRO ');
                                     echo '->'.substr(Centros::nomcen(),0,10); 
                                 }else{

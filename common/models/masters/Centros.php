@@ -24,7 +24,7 @@ class Centros extends modelBase
     /**
      * {@inheritdoc}
      */
-    const CURRENT_CENTER_KEY_SESION='key_center_sesion';
+    const CURRENT_CENTER_KEY_CACHE='key_center_sesion';
     public static function tableName()
     {
         return '{{%centros}}';
@@ -107,14 +107,14 @@ class Centros extends modelBase
       }
    }
     
-    public static function keySesion(){
-        return h::userId().'_'.self::CURRENT_CENTER_KEY_SESION;
+    public static function keyCache(){
+        return self::CURRENT_CENTER_KEY_CACHE;
     }
   
      public static function currentCenter(){
-        $sesion=\yii::$app->session;
-        if($sesion->has(self::keySesion()) && !empty(self::keySesion())){
-            return $sesion->get(self::keySesion());
+        $cache=h::cache();
+        if($cache->exists(self::keySesion()) && !empty(self::keyCache())){
+            return $cache->get(self::keyCache());
             
         }else{
             //echo "se foe";die();
@@ -124,9 +124,9 @@ class Centros extends modelBase
       }
     
     public  function storeCenter(){
-       $sesion=\yii::$app->session;
-       $sesion->set(self::keySesion(),$this->attributes);
-       return $sesion->get(self::keySesion());
+       $cache=h::cache();
+       $cache->set(self::keyCache(),$this->attributes);
+       return $cache->get(self::keyCache());
     }
     
     public static function codcen(){  
