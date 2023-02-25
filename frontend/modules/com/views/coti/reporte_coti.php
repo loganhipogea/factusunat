@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\helpers\h;
+use common\models\masters\Monedas;
 ?>
 <?php
 
@@ -20,7 +21,7 @@ $formato=h::formato();
 <div style="text-align: center; font-weight: 900; "><u><b>COTIZACIÓN <?= $model->numero ?></u></b></div>
 <!--FIN DEL TITULO -->
 
-
+<!--DIV CONTENEDOR GENERAL-->
 <div style="position:absolute;  left:40px; top:100px; margin:0px; padding:0px; width:90%; ">
 
 <!--Nombre del cliente y ruc contactos 50% de ancho ladoizquierdo-->
@@ -83,15 +84,16 @@ $formato=h::formato();
  
 
 <!--Condiciones-->  
-<div style="width:90%; margin:0px; padding:0px; font-size:1.1em;">
+<div style="width:90%; margin:0px; padding:0px; font-size:0.8em;">
     
         <b>Condiciones:</b> <?=$model->detalle_externo?>
     
 </div>
 <!--Fin de las condiciones-->
 
-
+<!--DIV CONTENEDOR DE LA GRILLA -->
  <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
+     <!--TABLA DE ENCABEZADOS -->
      <table style="width:100%; background-color: #efefef;"> <tr>
                <th  style="width:8%;">Item</th>
                <th style="width:60%;">Descripcion</th>
@@ -101,16 +103,22 @@ $formato=h::formato();
                <th style="width:10%;">Total</th>
            </tr>
      </table>
+     <!--FIN DE LA TABLA DE ENCABEZADOS -->
      <?php
      $items=0;
      foreach($model->partidas as $partida){   ?>
+     
+     
+        <!--FILA DE PARTIDA COMPUESTO POR 2 DIVS FLOTANTES-->
         <div style="position:relative;  width:60%; float:left; text-align: left; ">
             <b><p style="font-size:0.8em;"><?=$partida->descripartida?></p></b>
         </div>
         <div style="position:relative; float:right; width:40%;text-align:right;">
             <p style="font-size:0.8em;"><b><?=$simbolo.' '.$formato->asDecimal($partida->total,2)?></b></p>
         </div>
-     
+       <!--FIN DE FILA DE PARTIDA COMPUESTO POR 2 DIVS -->
+       
+       <!--TABLA DE DETALLES ITEMS, OJO TIENE LOS MISMOS % ED ANCHURA QUE LOS ENCABEZADOS-->
        <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
           
          
@@ -139,14 +147,21 @@ $formato=h::formato();
                     </tr>
                         <?php }  ?>
                 <?php }  ?>
-        <?php }  ?>
-        <?php if($items > 10 ){ $items=0;  ?>
-               </table>
-                </div>  
-               </div>
-                <div style="page-break-before:always;"></div>
-               <div style="position:absolute;  left:40px; top:100px; margin:0px; padding:0px; width:90%; ">
-                    <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
+        <?php } //fin del FOR  ?>
+        <?php if($items > 5){ $items=0; //Si excede los items romper  la página, pero antes cerrar  ?>
+               </table><!--CERRAR LA TABLA DETALLE ITEMS PRIMERO-->
+            </div> <!--CERRAR EL CONTENEDOR DE LA GRILLA LUEGO--> 
+      </div><!--CERRAR EL DIV CONTENEDOR GENERAL  LUEGO--> 
+               
+      <!-- SALTO DE PAGINA-->
+                <div style="page-break-before:always;">      
+                </div>
+      <!-- FIN DE SALTO  DE PAGINA-->
+    
+    <!-- ABRIR EL DIV CONTENEDOR GENERAL EN LA NUEVA PAGINA-->
+     <div style="position:absolute;left:40px; top:100px; margin:10px; padding:10px; width:90%; ">
+         <!-- ABRIR EL DIV CONTENEDOR DE LA  EN LA NUEVA PAGINA-->
+         <div style="margin:0px; padding:5px; position:relative; width:100%;  border-width:1px;   border-style:solid;">
                     <table style="width:100%; background-color: #efefef;"> 
                                 <tr>
                                 <th  style="width:8%;">Item</th>
@@ -157,8 +172,10 @@ $formato=h::formato();
                                 <th style="width:10%;">Total</th>
                                 </tr>
                     </table>
-                   <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
+        <!--Debe de abrir una tabla antes de cerrar la condición,porque el for empieza colocando <tr>-->
+        <table style="width:100%; border-top-style:solid; border-width:1px; border-color:#efefef;">
             <?php }  ?>
+       <!--Al final siempre cerrar la tabla, asi haya cambiado de pagina o no-->
        </table>
                  
 
@@ -183,20 +200,38 @@ $formato=h::formato();
 </div>
 
 
-    <div style="width:100%; margin-top:3px;margin-left:0px;margi-rigth:0px; padding:0px;;
-        position:relative;
-         
-        font-size: 0.9em;
+    <div style="width:100%;
+         margin-top:3px;
+         margin-left:0px;
+         margi-rigth:0px;
+         padding:0px;;
+        bottom: 50;        
+        position: fixed;        
+        z-index: 5000;         
+        font-size: 0.6em;
         ">
         <?=h::gsetting('com','tenorinf_coti')?>
     </div>
 <!--Fin del tenor inferior-->
+
+
+<!--Cuentas de banco-->
+<div style="width:100%;
+         
+         margin-left:0px;
+         margi-rigth:0px;
+         padding:0px;;
+        bottom: 5;        
+        position: fixed;        
+        z-index: 5000;         
+        font-size: 0.9em;
+        ">
      <?php foreach($model->socio->cuentas as $cuenta){   ?>
-          <div style="margin:0px; padding:0px;  float:left; width:100%;text-align:left;">
-            <b><p style="font-size:0.8em;"><b>Numero: <?=$cuenta->nombre.' '.$cuenta->numero?></b></p></b>
+          <div style=" float:left; text-align:left;">
+            <p style="font-size:0.8em;"><?=$cuenta->comboValueText('tipo')?>-<?=Monedas::textoMoneda($cuenta->codmon)?>-<?=$cuenta->banco->nombre?>-<?=$cuenta->numero?></p>
         </div> 
       <?php  }  ?>
-
+ </DIV>
 
 
 

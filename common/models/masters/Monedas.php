@@ -75,4 +75,9 @@ class Monedas extends \common\models\base\modelBase
     public static function Centimos($codmon){
         return static::findOne($codmon)->centimos;
     }
+    
+    public static  function textoMoneda($codmon){
+      return self::find()->select(['desmon'])->andWhere(['codmon'=>$codmon])->scalar();
+  }
+  
 }
