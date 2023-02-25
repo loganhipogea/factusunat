@@ -2,12 +2,19 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\helpers\h;
+use common\helpers\ComboHelper;
 use common\models\masters\Monedas;
 ?>
 <?php
 
 $simbolo= \common\models\masters\Monedas::Simbolo($model->codmon);
 $formato=h::formato();
+$unidades= ComboHelper::getCboUms(false, $model->ums());
+$cadena='';
+ foreach($unidades as $clave=>$valor){
+     $cadena.=$clave.'=>'.$valor.', ';
+ }
+ 
 ?>
 
 <!--El logo -->
@@ -111,7 +118,7 @@ $formato=h::formato();
      
         <!--FILA DE PARTIDA COMPUESTO POR 2 DIVS FLOTANTES-->
         <div style="position:relative;  width:60%; float:left; text-align: left; ">
-            <b><p style="font-size:0.8em;"><?=$partida->descripartida?></p></b>
+            <b><p style="font-size:0.8em;"><b><?=$partida->item.'-'.$partida->descripartida?></b></p></b>
         </div>
         <div style="position:relative; float:right; width:40%;text-align:right;">
             <p style="font-size:0.8em;"><b><?=$simbolo.' '.$formato->asDecimal($partida->total,2)?></b></p>
@@ -231,6 +238,7 @@ $formato=h::formato();
             <p style="font-size:0.8em;"><?=$cuenta->comboValueText('tipo')?>-<?=Monedas::textoMoneda($cuenta->codmon)?>-<?=$cuenta->banco->nombre?>-<?=$cuenta->numero?></p>
         </div> 
       <?php  }  ?>
+    <?=$cadena?>
  </DIV>
 
 

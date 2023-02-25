@@ -522,7 +522,7 @@ class ComCotizacion extends \common\models\base\modelBase
           $array_cargos=$this->getCargos()->asArray()->all();
           Yii::$app->db->createCommand()->batchInsert(
                   ComCargoscoti::tableName(),array_keys($this->cargos[0]->attributes),
-            $this->fixCoti_id($array_cargos,$model->id))->execute();
+            $this->fixCoti_id($array_cargos,$model))->execute();
       } 
      
    return $model->id;
@@ -630,5 +630,9 @@ class ComCotizacion extends \common\models\base\modelBase
       return $this;
   }  
    
-  
+  public function Ums(){
+     $query=new \yii\db\Query();
+     return $query->select(['codum'])->from(ComDetcoti::tableName())->distinct()->
+      andWhere(['coti_id'=>$this->id])->column();
+  }
 }

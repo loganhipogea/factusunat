@@ -188,14 +188,21 @@ class ComboHelper  {
     /*
     * Obtiene todos los nombres de los modelos de la aplicacion
     */
-    public static function getCboUms($withBlank=false){
-         $valores= ArrayHelper::map(
+    public static function getCboUms($withBlank=false,$codes=[]){
+        if(count($codes)>0){
+             $valores= ArrayHelper::map(
+                        \common\models\masters\Ums::find()->andWhere(['in','codum',$codes])->all(),
+                'codum','desum'); 
+         }else{
+             $valores= ArrayHelper::map(
                         \common\models\masters\Ums::find()->all(),
-                'codum','desum');
+                'codum','desum'); 
+         }
+        
          if($withBlank)
              
              $valores=[''=>yii::t('base.verbs','--Choose a Value--')]+$valores;
-    
+         
          return $valores;
     }
    
