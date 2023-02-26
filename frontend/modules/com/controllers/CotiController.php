@@ -1207,6 +1207,10 @@ class CotiController extends baseController
         
        //echo $contenido; die();
         $pdf=$this->preparePdf($contenido);
+        if($model->isAprobed()){
+                $pdf->SetWatermarkText('SIN APROBACION');
+                $pdf->showWatermarkText = true;
+          }
       //  $pdf->WriteHTML($contenido);
         $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
         
@@ -1307,14 +1311,21 @@ class CotiController extends baseController
      $this->layout="reportes";
        $model= ComCotizacion::findOne($id);
        h::response()->format = yii\web\Response::FORMAT_JSON;   
-        $model->createVersion(); //En la funcion passInvoice validar el cambio de estado
-           return ['success' => yii::t('base.messages','Se creo la version')];       
+       $res= $model->createVersion(); //En la funcion passInvoice validar el cambio de estado
+        if($res===null)  
+        return ['error' => yii::t('base.messages','No ha habido modificaciones desde la última version')];
+        if(is_array($res))
+        return $res;
+        return ['success' => yii::t('base.messages','Se creo la version')];       
    }
    
    
    public function actionAjaxEnviaCoti($id){
        $model= \frontend\modules\com\models\ComCotiversiones::findOne($id);
-       h::response()->format = yii\web\Response::FORMAT_JSON;   
+       h::response()->format = yii\web\Response::FORMAT_JSON; 
+       if(!$model->isAprobed)
+      return ['error' => yii::t('base.messages','La cotización no ha sido aprobada aun')];
+       
         $respuesta=$model->mailCotizacion(); //En la funcion passInvoice validar el cambio de estado
            
         
@@ -1327,4 +1338,34 @@ class CotiController extends baseController
         return $this->renderPartial('view_attachments',['model'=>$model]);       
    }
    
+   public function actionAjaxAprobarCoti($id){
+       $model=$this->findModel($id);
+       h::response()->format = yii\web\Response::FORMAT_JSON; 
+       if($model->hasPartidasVacias())
+        return ['error' => yii::t('base.messages','Esta cotización tiene partidas vacías, por favor revise')];   
+      $model->estado=$model::ESTADO_APROBADO;
+       $model->save();
+        
+      return ['success' => yii::t('base.messages','Se aprobó la cotización')];
+       
+   }
+   
+  public function actionAjaxAnularCoti($id){
+       $model->$this->findModel($id);
+       $model->estado=$model::ESTADO_ANULADO;
+       $model->save();
+        h::response()->format = yii\web\Response::FORMAT_JSON; 
+      return ['success' => yii::t('base.messages','Se anuló la cotización')];
+       
+   }
+   
+  public function actionAjaxDesaprobarCoti($id){
+       $model=$this->findModel($id);
+      
+       $model->estado=$model::ESTADO_ABIERTO;
+       $model->save();
+        h::response()->format = yii\web\Response::FORMAT_JSON; 
+      return ['success' => yii::t('base.messages','Se desaprobó la cotización')];
+       
+   }
 }

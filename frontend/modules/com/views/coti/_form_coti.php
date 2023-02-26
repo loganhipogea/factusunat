@@ -6,6 +6,7 @@ use common\helpers\h;
 use common\widgets\selectwidget\selectWidget;
 use kartik\date\DatePicker;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\com\models\ComCotizacion */
 /* @var $form yii\widgets\ActiveForm */
@@ -19,19 +20,33 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
       <div class="box-header">
        <div class="col-md-12">
             <div class="btn-group"> 
-                
+          <?php Pjax::begin(['id'=>'grilla-botones']);  ?>      
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
          <?php if(!$model->isNewRecord){?>                    
                     <?php $url=Url::to(['/com/coti/make-pdf','id'=>$model->id]);?>
                     <?=Html::a('<span class="fa fa-file-pdf-o" ></span>'.Yii::t('app', 'Pdf'),$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-warning"])?>
                     <?php }?>    
                 <?php
-          echo Html::button("<span class=\"fa fa-paper-plane\"></span>Version", 
+          echo Html::button("<span class=\"fa fa-clone\"></span>Version", 
                           [
                               'id'=>'btn_version',
                               'class' => 'btn btn-warning']
                           );
+         if(!$model->isAprobed()){
+             echo Html::button("<span class=\"fa fa-check\"></span>Aprobar", 
+                          [
+                              'id'=>'btn_aprobar',
+                              'class' => 'btn btn-info']
+                          );
+         }else{
+             echo Html::button("<span class=\"fa fa-undo\"></span>Desaprobar", 
+                          [
+                              'id'=>'btn_desaprobar',
+                              'class' => 'btn btn-danger']
+                          );
+         }
          ?> 
+            <?php Pjax::end();  ?>   
             </div>
         </div>
     </div>
@@ -197,6 +212,34 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'id_input'=>'btn_version',
             'idGrilla'=>'grilla-contactos',
       ]); 
+?>
+<?php 
+ Pjax::begin(['id'=>'zona-scripts']);
+ if(!$model->isAprobed()){
+     echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_aprobar',
+            'otherContainers'=>['zona-scripts'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/com/coti/ajax-aprobar-coti','id'=>$model->id]),
+            'id_input'=>'btn_aprobar',
+            'idGrilla'=>'grilla-botones',
+      ]); 
+
+ }else{
+    echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn_desaprobar',
+            'otherContainers'=>['zona-scripts'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/com/coti/ajax-desaprobar-coti','id'=>$model->id]),
+            'id_input'=>'btn_desaprobar',
+            'idGrilla'=>'grilla-botones',
+      ]); 
+ Pjax::end();
+ }
 ?>
 </div>
     </div>

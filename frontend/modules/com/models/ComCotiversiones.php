@@ -44,6 +44,8 @@ class ComCotiversiones extends \common\models\base\modelBase
     {
         return [
             [['coti_id'], 'integer'],
+            [['lastlog_id'], 'safe'],
+
             [['numero'], 'number'],
             [['detalles'], 'string'],
             [['cuando'], 'string', 'max' => 19],
@@ -116,23 +118,16 @@ class ComCotiversiones extends \common\models\base\modelBase
          $controlador->layout="reportes";
          $formato=h::formato();
          $simbolo=$simbolo= \common\models\masters\Monedas::Simbolo($modelCoti->codmon);
-          $encabezado=$controlador->render('reporte_coti_encabezado',[
-              'model'=>$this->coti,
-              'formato'=>$formato,
-              'simbolo'=>$simbolo,
-                  ]);
-          $cuerpo=$controlador->render('reporte_coti_cuerpo',[
-              'model'=>$this->coti,
-              'formato'=>$formato,
-              'simbolo'=>$simbolo,
-                  ]);
-           $pie=$controlador->render('reporte_coti_pie',[
-              'model'=>$this->coti,
-              'formato'=>$formato,
-              'simbolo'=>$simbolo,
-                  ]);
+         $contenido=$controlador->render('reporte_coti',['model'=>$modelCoti]); 
           $pdf= ComCotizacion::getPdf();
-          $pdf->WriteHTML($encabezado.$cuerpo.$pie);
+          if($modelCoti->isAprobed()){
+                $pdf->SetWatermarkText('SIN APROBACION');
+                $pdf->showWatermarkText = true;
+          }
+          
+         
+          
+          $pdf->WriteHTML($contenido);
                yii::error('escribiendo en disco',__FUNCTION__);
                 $ruta=$this->pathTempToStore();
                  yii::error('ruta '.$ruta,__FUNCTION__);

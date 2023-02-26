@@ -31,6 +31,16 @@ class ComCotizacion extends \common\models\base\modelBase
     
     public $prefijo='78';
     
+    const ESTADO_ABIERTO='AB';
+    const ESTADO_APROBADO='AP';
+    const ESTADO_ANULADO='AN';
+
+    
+    public function isEditable(){
+        return $this->estado==self::ESTADO_ABIERTO;
+    }
+    
+    
     public static function tableName()
     {
         return '{{%com_cotizaciones}}';
@@ -182,6 +192,10 @@ class ComCotizacion extends \common\models\base\modelBase
     public function getVersiones(){
         return $this->hasMany(\frontend\modules\com\models\ComCotiversiones::className(), ['coti_id' => 'id']);
     }
+    
+    public function getEnvios(){
+        return $this->hasMany(\frontend\modules\com\models\ComCotienvios::className(), ['coti_id' => 'id']);
+    }
     /**
      * Gets query for [[NDirecc]].
      *
@@ -250,6 +264,7 @@ class ComCotizacion extends \common\models\base\modelBase
           $this->version=0;
           $this->numero=$this->correlativo('numero');
           $this->codsoc= \common\models\masters\VwSociedades::codsoc();
+          $this->estado=self::ESTADO_ABIERTO;
       }
        
       $this->refreshMontos();
@@ -340,7 +355,11 @@ class ComCotizacion extends \common\models\base\modelBase
      return '';
  }
  
- public function providerLog(){
+ /*
+  * Dataprovider del log pero sin ordenar
+  */
+ 
+ private function queryLog(){
      $idspartidas=$this->getPartidas()->select('id')->column();//'ComCotigrupos',
      $idscargos=$this->getCargos()->select('id')->column();//'ComCargoscoti',
      $idsdetalles=$this->getComDetcotis()->select('id')->column(); //ComDetcoti    
@@ -376,10 +395,16 @@ class ComCotizacion extends \common\models\base\modelBase
                 ['clave'=>$idssubpartidas],
                ['like','model',$this->nameModel(yii::t('base.names','Subpartidas'))],
           ]
-            )->orderBy(['model'=>SORT_ASC,'action'=>SORT_ASC,'creationdate'=>SORT_ASC]);
+            );
+    return $queryLog;
+ }
+ 
+ 
+ public function providerLog(){
+     
           
    return new \yii\data\ActiveDataProvider([
-       'query'=>$queryLog,
+       'query'=>$this->queryLog()->orderBy(['model'=>SORT_ASC,'action'=>SORT_ASC,'creationdate'=>SORT_ASC]),
    ]);    
  }
  
@@ -489,7 +514,8 @@ class ComCotizacion extends \common\models\base\modelBase
   public function cloneFake(){
      $model=New \frontend\modules\com\models\ComCotiFake();
      $model->setAttributes($this->attributes);
-     $model->save();
+     if(!$model->save()) return -1;
+    
      $model->refresh();
      
      if(count($this->partidas)>0){
@@ -529,14 +555,25 @@ class ComCotizacion extends \common\models\base\modelBase
   }
   
   public function createVersion(){
-      $model=New \frontend\modules\com\models\ComCotiversiones();
-      $model->coti_id=$this->id;
-     yii::error($model->save(),__FUNCTION__);
-      yii::error($model->getErrors(),__FUNCTION__);
-      $this->cloneFake();
-      $model->refresh();
-      $model->attachPdf();
-      return $model->numero;
+      if($this->hasModifies()){
+            $model=New \frontend\modules\com\models\ComCotiversiones();
+            $model->coti_id=$this->id;
+            $model->lastlog_id=$this->lastLog()->id;
+            $transaccion=$this->getDb()->beginTransaction();            
+           if($model->save() && $this->cloneFake()>0){
+              $model->refresh();
+              $model->attachPdf(); 
+              $transaccion->commit();
+            return $model->numero;
+
+           }else{
+               $transaccion->rollBack();
+               return ['error' => yii::t('base.messages','Hubo un error en la creación de la version')];
+     
+           }
+      }else{
+          return null;
+      }
   }
   
   public static function  getPdf($config=[]){
@@ -574,8 +611,8 @@ class ComCotizacion extends \common\models\base\modelBase
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
         $mpdf->setFooter('Página {PAGENO} de {nb}');
-        $mpdf->SetWatermarkText('SIN APROBACION');
-        $mpdf->showWatermarkText = true;
+       
+        
         //$mpdf->use_kwt = true; 
         //$mpdf->autoPageBreak = true;
       
@@ -635,4 +672,83 @@ class ComCotizacion extends \common\models\base\modelBase
      return $query->select(['codum'])->from(ComDetcoti::tableName())->distinct()->
       andWhere(['coti_id'=>$this->id])->column();
   }
+  
+  /*
+   * Retorna un carbon con la fecha ultima de la version
+   * 
+   */
+  private function whenLastEnvio(){
+      $registro=$this->getEnvios()->orderBy(['cuando'=>SORT_DESC])->one();
+      if(is_null($registro)){
+          return self::CarbonNow()->subDays(365*10);
+      }else{
+          return $registro->toCarbon('cuando');
+      }
+      
+  }
+  
+  
+  public function isTimeToSend(){
+      return $this->CarbonNow()->gt($this->whenLastEnvio()->addSeconds(30));
+  }
+  
+  public function lastEnvio(){
+      return $this->getEnvios()->orderBy(['cuando'=>SORT_DESC])->one();
+      
+  }
+  
+  public function lastLog(){
+      return $this->queryLog()->orderBy(['id'=>SORT_DESC])->one();
+      
+  }
+  
+  public function lastVersion(){
+      return $this->getVersiones()->orderBy(['id'=>SORT_DESC])->one();
+      
+  }
+  
+  /*
+   * Se fija si hubieron modificaciones 
+   * en le registor del log
+   * Si la el idlog de la ultima version 
+   * es menor que el log actual entonces si hubo
+   * modificaciones
+   * 
+   */
+  public function hasModifies(){
+      $lv=$this->lastVersion();
+      $ll=$this->lastLog();
+      if(!is_null($lv) && !is_null($ll)){
+          return $lv->lastlog_id < $ll->id;
+      }elseif(is_null($lv) && !is_null($ll)){ //Si no hay versiones pero si modificaciones
+          return true;
+      } elseif(!is_null($lv) && is_null($ll)){//Si hay versiones pero no modificaciones
+          return false;
+      } else{//Si no hay ambas
+          return false;
+      }    
+  }
+  
+  public function hasSends(){
+      return $this->getEnvios()->count()>0;
+  }
+  public function isAprobed(){
+        return $this->estado==self::ESTADO_APROBADO;
+    }
+    
+    
+   /*
+    * Verifica inconsistencias en la cotizacion 
+    * por ejemplo partidas que no tienen subpartidas 
+    */ 
+  public function hasPartidasVacias(){
+      //Verificando si la partida tiene regitros huérfanos 
+      $idsDetalle=$this->getSubpartidas()->select(['cotigrupo_id'])->column();
+      return $this->getPartidas()->andWhere([
+          'not in',
+          'id',
+          $idsDetalle])->count()>0;
+      
+  }
+  
 }

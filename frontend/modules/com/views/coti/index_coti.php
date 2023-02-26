@@ -49,7 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => Yii::t('base.verbs', 'Delete'),                            
                         ];
                         return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-remove"></span>', $url, $options/*$options*/);
-                         }
+                         },
+                       'view' => function($url, $model) {                        
+                        $options = [
+                            'title' => Yii::t('base.verbs', 'View'),                            
+                        ];
+                        $url=Url::to(['view-coti','id'=>$model->id]);
+                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-search"></span>', $url, $options/*$options*/);
+                         }, 
                     ]
                 ],
          

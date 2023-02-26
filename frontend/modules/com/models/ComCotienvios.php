@@ -16,6 +16,11 @@ use Yii;
  */
 class ComCotienvios extends \common\models\base\modelBase
 {
+   
+    public $booleanFields=[
+        'cuando'=>self::_FDATETIME,
+    ];
+    
     /**
      * {@inheritdoc}
      */
@@ -31,6 +36,7 @@ class ComCotienvios extends \common\models\base\modelBase
     {
         return [
             [['version_id', 'coti_id'], 'integer'],
+             [['cuando'], 'safe'],
             [['destinatarios'], 'string'],
             [['canal'], 'string', 'max' => 5],
             [['exito'], 'string', 'max' => 19],
