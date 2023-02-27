@@ -1305,6 +1305,68 @@ class CotiController extends baseController
                         ]);  
         }
    }
+    public function actionModalNewAdjuntoCoti($id){
+       $this->layout = "install";
+         $modelCoti= \frontend\modules\com\models\ComCotizacion::findOne($id);
+         $model=new \frontend\modules\com\models\ComCotiadjuntos();
+         $model->coti_id=$modelCoti->id;
+         
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_coti_adjunto',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   }  
+   public function actionModalEditAdjuntoCoti($id){
+       $this->layout = "install";
+         $model= \frontend\modules\com\models\ComCotiadjuntos::findOne($id);
+        
+          $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+           return $this->renderAjax(
+                 'modal_coti_adjunto',
+                   [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]);  
+        }
+   }
    
    
    public function actionAjaxCreateVersion($id){
@@ -1323,7 +1385,7 @@ class CotiController extends baseController
    public function actionAjaxEnviaCoti($id){
        $model= \frontend\modules\com\models\ComCotiversiones::findOne($id);
        h::response()->format = yii\web\Response::FORMAT_JSON; 
-       if(!$model->isAprobed)
+       if(!$model->coti->isAprobed())
       return ['error' => yii::t('base.messages','La cotización no ha sido aprobada aun')];
        
         $respuesta=$model->mailCotizacion(); //En la funcion passInvoice validar el cambio de estado

@@ -60,15 +60,15 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
       $column,
         
    ];
-   \yii\widgets\Pjax::begin(['id'=>'grilla-versiones']);
+   
  ?>
 <div class="box">
 <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 <?php
    echo grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
-        'query'=> frontend\modules\com\models\ComCotiversiones::find()
-           ->andWhere(['coti_id'=>$model->id])
+        'query'=> frontend\modules\com\models\ComCotienvios::find()
+           ->andWhere(['version_id'=>$model->id])
             ,
     ]),
    // 'filterModel' => $searchModel,
@@ -79,40 +79,13 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
        ]);
    
   
-    echo linkAjaxGridWidget::widget([
-           'id'=>'widgetgru4546idBancos',
-        //'otherContainers'=>['grilla-partidas'],
-            'idGrilla'=>'grilla-versiones',
-            'family'=>'holas',
-          'type'=>'POST',
-           'evento'=>'click',
-        'posicion'=>\yii\web\View::POS_END
-       
-            //'foreignskeys'=>[1,2,3],
-        ]);
-       echo linkAjaxGridWidget::widget([
-           'id'=>'widgetgruidBdsd4ancos',
-        //'otherContainers'=>['grilla-partidas'],
-            'idGrilla'=>'grilla-versiones',
-           'divReplace'=>'envios',
-            'family'=>'holas2',
-           'mode'=>'html',
-          'type'=>'POST',
-           'evento'=>'click',
-        'posicion'=>\yii\web\View::POS_END
-       
-            //'foreignskeys'=>[1,2,3],
-        ]);
-       
    
-   
-   
-    \yii\widgets\Pjax::end();
+    
    ?> 
  
     
 </div>
-<div id="envios" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     
 </div>
 </div>

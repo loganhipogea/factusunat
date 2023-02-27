@@ -83,8 +83,9 @@ array_push($gridColumns, [
       'footer'=>$formato->asDecimal($model->monto),
       'contentOptions'=>['style'=>'text-align:right; font-weight:900;'],
      ]);
-          
-        
+      ?>    
+ <div class="box-header">  
+<?php      
    \yii\widgets\Pjax::begin(['id'=>'grilla-partidas']);
    echo grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
@@ -125,3 +126,4 @@ array_push($gridColumns, [
  ?>
  </div>
 
+ </div> 

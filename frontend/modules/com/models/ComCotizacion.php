@@ -196,6 +196,10 @@ class ComCotizacion extends \common\models\base\modelBase
     public function getEnvios(){
         return $this->hasMany(\frontend\modules\com\models\ComCotienvios::className(), ['coti_id' => 'id']);
     }
+    
+    public function getAdjuntos(){
+        return $this->hasMany(\frontend\modules\com\models\ComCotiadjuntos::className(), ['coti_id' => 'id']);
+    }
     /**
      * Gets query for [[NDirecc]].
      *

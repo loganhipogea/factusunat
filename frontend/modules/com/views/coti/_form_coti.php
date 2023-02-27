@@ -238,8 +238,9 @@ use yii\widgets\Pjax;
             'id_input'=>'btn_desaprobar',
             'idGrilla'=>'grilla-botones',
       ]); 
- Pjax::end();
+ 
  }
+ Pjax::end();
 ?>
 </div>
     </div>

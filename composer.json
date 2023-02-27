@@ -51,7 +51,8 @@
       "kartik-v/yii2-widget-switchinput": "dev-master",
       "guzzlehttp/guzzle": "^7.4",
       "longman/telegram-bot": "^0.78.0",
-      "aki/yii2-bot-telegram": "*"
+      "aki/yii2-bot-telegram": "*",
+      "yiisoft/yii2-imagine": "^2.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

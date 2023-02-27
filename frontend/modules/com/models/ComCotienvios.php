@@ -17,8 +17,9 @@ use Yii;
 class ComCotienvios extends \common\models\base\modelBase
 {
    
-    public $booleanFields=[
-        'cuando'=>self::_FDATETIME,
+   public $dateorTimeFields = [
+        'cuando' => self::_FDATETIME,
+        
     ];
     
     /**

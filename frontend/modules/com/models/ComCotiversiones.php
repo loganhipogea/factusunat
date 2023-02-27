@@ -2,10 +2,13 @@
 
 namespace frontend\modules\com\models;
 use common\behaviors\FileBehavior;
+use common\helpers\FileHelper;
 use common\helpers\h;
 use common\helpers\timeHelper;
 use common\models\masters\Contactos;
+use yii\imagine\Image;
 use Yii;
+
 
 /**
  * This is the model class for table "{{%com_cotiversiones}}".
@@ -128,6 +131,38 @@ class ComCotiversiones extends \common\models\base\modelBase
          
           
           $pdf->WriteHTML($contenido);
+          
+          /*aqui agregamos los adjuntos*/
+             $contadorAnexos=0;
+            foreach($modelCoti->adjuntos as $adjunto){
+                $contadorAnexos++;
+                if($adjunto->hasAttachments()){
+                    
+                    if(FileHelper::isImage($adjunto->files[0]->path)){
+                        $pdf->addPage();
+                        $pdf->WriteHTML(self::printAnexo($contadorAnexos));
+                         $pdf->addPage();
+                        $pdf->WriteHTML($this->htmlImage($adjunto->files[0]->path,$adjunto->detalle));
+                    }else{
+                        
+                         $pdf->addPage();
+                        $pdf->WriteHTML(self::printAnexo($contadorAnexos));
+                         $pdf->addPage();
+                        $pagecount = $pdf->setSourceFile($adjunto->files[0]->path);
+                                for ($i=1; $i<=($pagecount); $i++) {
+                                $pdf->AddPage();
+                                $import_page = $pdf->ImportPage($i);
+                                $pdf->UseTemplate($import_page);
+                                    }                                    
+                    }
+                }
+            }
+          
+          
+          
+          /*fin de agregar los adjunts*/
+          
+          
                yii::error('escribiendo en disco',__FUNCTION__);
                 $ruta=$this->pathTempToStore();
                  yii::error('ruta '.$ruta,__FUNCTION__);
@@ -168,16 +203,50 @@ class ComCotiversiones extends \common\models\base\modelBase
                     . $this->coti->descripcion.' Cualquier inquietud no duden en comunicarse con nosotros');           
                 try {        
                 $result = $mailer->send($message);
+                $this->prepareEnvio('OK');
+                
                 $mensajes['success']='Se envió el correo';
                 } catch (\Swift_TransportException $Ste) {      
                         $mensajes['error']=$Ste->getMessage();
+                     $this->prepareEnvio(substr($Ste->getMessage(),0,14));   
                 }
          } 
 
       return $mensajes;
     }
+  
+  /*
+   * Coloca los datos del envio
+   */
+  private function prepareEnvio($exito){
+      $model=new ComCotienvios();
+      $model->setAttributes([
+          'version_id'=>$this->id,
+          'coti_id'=>$this->coti_id,
+          'exito'=>$exito,
+          'cuando'=>self::SwichtFormatDate(date(timeHelper::formatMysqlDateTime()),'datetime',true)
+      ]);
+      //var_dump($model->cuando);die();
+      return  $model->save();
+  }  
+    
     
    public function hasSends(){
        return $this->getEnvios()->count() >0;
    } 
+   
+   private function htmlImage($filePath,$texto){
+       Image::resize($filePath, 2000, null, true, false);
+       return "<div style='top:250px;text-align:center;border-style:solid; border-color:#ccc;padding:5px;boder-width:1px;'><img src='".$filePath."'><br><p>".$texto."<p></div>";
+   }
+   
+   private static function printAnexo($number){
+       return "<div style= 'display: flex;     
+                align-items: center;
+                justify-content: center;top:900px;'>
+                    <div style='text-align: center;
+                            font-size:3em;font-weight:800;'>ANEXO ".$number.""
+                    . "</div>"
+               . "</div>";
+   }
 } 

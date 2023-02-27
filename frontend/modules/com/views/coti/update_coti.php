@@ -35,20 +35,20 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
           'label'=>'<i class="fa fa-home"></i> '.yii::t('base.names','Principal'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_form_coti',['model' => $model]),
             'active' => true,
-             'options' => ['id' => 'myveryownID3'],
+             'options' => ['id' => 'mwnID3'],
         ],
         [
           'label'=>'<i class="fa align-justify"></i> '.yii::t('base.names','Partidas'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_partidas',[ 'model' => $model]),
             'active' => false,
-             'options' => ['id' => 'myveryownID4'],
+             'options' => ['id' => 'myhD4'],
         ],
        
         [
           'label'=>'<i class="fa fa-shopping-bag"></i> '.yii::t('base.names','Colectores'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_tab_cecos',[ 'model' => $model]),
             'active' => false,
-             'options' => ['id' => 'myvefseryownID4'],
+             'options' => ['id' => 'myvefsownID4'],
         ],
        [
           'label'=>'<i class="fa fa-money"></i> '.yii::t('base.names','Cargos'), //$this->context->countDetail() obtiene el contador del detalle
@@ -69,10 +69,16 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
              'options' => ['id' => 'm45A569n'],
         ],
         [
-          'label'=>'<i class="fa fa-search"></i> '.yii::t('base.names','Versoiones'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-search"></i> '.yii::t('base.names','Versiones'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_versiones',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'm45A569ds324n'],
+        ],
+        [
+          'label'=>'<i class="fa fa-paperclip"></i> '.yii::t('base.names','Adjuntos'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_tab_adjuntos',[ 'model' => $model]),
+            'active' => false,
+             'options' => ['id' => '4yu24n'],
         ],
     ],
 ]);  ?>
