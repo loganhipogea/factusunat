@@ -53,7 +53,7 @@ class ComDetcoti extends \common\models\base\modelBase
             [['cant', 'punit', 'ptotal', 'igv', 'pventa'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
-            [['descripcion'], 'string', 'max' => 60],
+            [['descripcion'], 'string', 'max' => 80],
             [['codum'], 'string', 'max' => 4],
             [['coti_id'], 'exist', 'skipOnError' => true, 'targetClass' => ComCotizacion::className(), 'targetAttribute' => ['coti_id' => 'id']],
         ];

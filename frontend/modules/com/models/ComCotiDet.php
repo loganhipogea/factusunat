@@ -45,7 +45,7 @@ class ComCotiDet extends \common\models\base\modelBase
             [['cant', 'punit', 'ptotal', 'igv', 'pventa', 'punitcalculado'], 'number'],
             [['item', 'tipo'], 'string', 'max' => 3],
             [['codart'], 'string', 'max' => 14],
-            [['descripcion'], 'string', 'max' => 60],
+            [['descripcion'], 'string', 'max' => 80],
             [['codum'], 'string', 'max' => 4],
             [['flag'], 'string', 'max' => 1],
             [['codcargo'], 'string', 'max' => 6],

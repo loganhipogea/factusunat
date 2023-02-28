@@ -45,7 +45,7 @@ class ComCotigrupos extends \common\models\base\modelBase
             [['descripartida'], 'required'],
             [['coti_id'], 'integer'],
                [['montoneto'], 'safe'],
-            [['descripartida'], 'string', 'max' => 40],
+            [['descripartida'], 'string', 'max' => 80],
             [['calificacion'], 'string', 'max' => 1],
             [['item'], 'string', 'max' => 6],
         ];
