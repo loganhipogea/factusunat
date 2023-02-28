@@ -33,7 +33,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                     
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-            'template' => '{edit}{delete}',
+            'template' => '{edit}{delete}{refresh}',
                'buttons' => [  
                        'edit' => function ($url,$model) use($identidad) {
                             $grillas=['grilla-detalle-by-partidas-'.$identidad,'pjax-monto-partida'];
@@ -44,7 +44,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                                 $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-detalle-detalle','id'=>$model->id]);
                               return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
-                            
+                        'refresh' => function ($url,$model) {                             
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-poner-precio-sugerido','id'=>$model->id]);
+                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-refresh"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                             },    
                         
                     ],
                  'contentOptions'=>['style'=>'width: 20%;'],  

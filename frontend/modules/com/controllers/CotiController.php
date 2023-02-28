@@ -1430,4 +1430,19 @@ class CotiController extends baseController
       return ['success' => yii::t('base.messages','Se desaprobó la cotización')];
        
    }
+   
+   
+   public function actionAjaxPonerPrecioSugerido($id){
+       
+       $model=ComDetcoti::findOne($id);       
+      $model->punit=$model->punitcalculado;
+       //$model->estado=$model::ESTADO_ABIERTO;
+       $model->save();
+        h::response()->format = yii\web\Response::FORMAT_JSON; 
+      return ['success' => yii::t('base.messages','Se coloco el precio')];
+       
+   }
+   
+   
+   
 }
