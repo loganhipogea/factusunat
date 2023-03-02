@@ -413,7 +413,7 @@ class ComCotizacion extends \common\models\base\modelBase
  }
  
    public function array_cargos(){
-       $cache=h::cache();
+       /*$cache=h::cache();
        $keyCache=self::PREFIX_CACHE_CARGOS.$this->id;
        if(!$cache->get($keyCache)){
            yii::error('no hay cache',__FUNCTION__);
@@ -432,7 +432,12 @@ class ComCotizacion extends \common\models\base\modelBase
              yii::error($arreglo,__FUNCTION__);
             $cache->set($keyCache,$arreglo);
           
-       }
+       }*/
+        $arreglo=$this->getCargos()->alias('t')->
+             innerJoin('{{%com_cargos}} b', 't.cargo_id=b.id')->
+               select(['b.etiqueta','t.porcentaje'])->orderBy(['b.id'=>SORT_ASC])->asArray()->all();
+            $arreglo= array_combine(array_column($arreglo,'etiqueta'),array_column($arreglo,'porcentaje'));
+           
      return $arreglo;
    } 
  
