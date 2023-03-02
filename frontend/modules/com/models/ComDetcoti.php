@@ -334,7 +334,7 @@ class ComDetcoti extends \common\models\base\modelBase
     case 'T':
           $this->punitcalculado=$this->precioUnitarioManoObra($this->coti->codmon);
          
-         $this->punit=$this->punitcalculado;
+         
         break;
         }  
  } 
