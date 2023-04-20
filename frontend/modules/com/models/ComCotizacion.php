@@ -571,6 +571,8 @@ class ComCotizacion extends \common\models\base\modelBase
             $model->lastlog_id=$this->lastLog()->id;
             $transaccion=$this->getDb()->beginTransaction(); 
             $resultado=$this->cloneFake();
+            \yii::error('EL resultado es ',__FUNCTION__);
+            \yii::error($resultado,__FUNCTION__);
            if($model->save() && is_numeric($resultado)){
               $model->refresh();
               $model->attachPdf(); 
