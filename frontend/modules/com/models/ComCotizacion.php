@@ -565,6 +565,8 @@ class ComCotizacion extends \common\models\base\modelBase
   }
   
   public function createVersion(){
+                  \yii::error('Creando la version',__FUNCTION__);
+
       if($this->hasModifies()){
             $model=New \frontend\modules\com\models\ComCotiversiones();
             $model->coti_id=$this->id;
@@ -588,6 +590,8 @@ class ComCotizacion extends \common\models\base\modelBase
      
            }
       }else{
+                      \yii::error('NO ha ahbido modificaciones ',__FUNCTION__);
+
           return null;
       }
   }
