@@ -71,19 +71,7 @@ class SiteController extends Controller
             ],
         ];
     }
-    public function actionSetHomeUrl($id){
-      if(h::request()->isAjax){
-          
-         h::response()->format = \yii\web\Response::FORMAT_JSON;
-        $registro=  \common\models\Userfavoritos::findOne($id);
-        if(is_null($registro)){
-            return ['error'=>yii::t('base.errors','No se encontró el registro para este id')];
-        }else{
-            $registro->setHomeUrl();
-            return ['success'=>yii::t('base.errors','Se cambió la página de inicio')]; 
-        }
-      }
-  }
+    
      public function actionAddfavorite(){
          $this->layout="install";
         $url=Yii::$app->request->referrer;  
