@@ -1079,4 +1079,11 @@ class ComboHelper  {
                 'id','nombres');
     }  
     
+     public static function getCboTablasDesplegables(){        
+        
+        return ArrayHelper::map(
+        \common\models\masters\Combovalores::find()->distinct('nombretabla')->all(),
+                'nombretabla','nombretabla');
+    }  
+    
 }

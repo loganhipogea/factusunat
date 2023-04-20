@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use common\helpers\ComboHelper;
 /* @var $this yii\web\View */
 /* @var $model common\models\masters\Combovalores */
 /* @var $form yii\widgets\ActiveForm */
@@ -26,7 +26,12 @@ use yii\widgets\ActiveForm;
       <div class="box-body">
  
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'nombretabla')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($model, 'nombretabla')->dropDownList(
+ ComboHelper::getCboTablasDesplegables(),
+              ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]) ?>
 
  </div>
  
