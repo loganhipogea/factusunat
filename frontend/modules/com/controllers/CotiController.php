@@ -1207,12 +1207,12 @@ class CotiController extends baseController
         
        //echo $contenido; die();
         $pdf=$this->preparePdf($contenido);
-        if(!$model->isAprobed()){
+        /*if(!($model->isAprobed())){
                $pdf->SetWatermarkText('SIN APROBACION');
                 $pdf->showWatermarkText = true; 
           }else{
             $pdf->showWatermarkText = false;  
-          }
+          }*/
       //  $pdf->WriteHTML($contenido);
         $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
         
