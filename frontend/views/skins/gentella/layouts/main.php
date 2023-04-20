@@ -254,7 +254,12 @@ echo ModalAjax::widget([
                                 
                               </li>
                               <li>
-                                  <?= Html::button(yii::t('base.names','Añadir Favoritos'), ['href' => Url::to(['/site/addfavorite']), 'title' => yii::t('base.verbs','Agregar a favoritos'), 'class' => 'botonAbre btn btn-default']); ?>
+                                  <?= Html::a(
+                                           yii::t('base.verbs','<i style="color:#96c15e;"><span class="glyphicon glyphicon-bookmark"></span></i>'.'Añadir a favoritos'),
+                                    ['/site/addfavorite'],
+                                          [                                              
+                                              'class' => 'botonAbre btn btn-default'
+                                              ]); ?>
                               </li>
                                 
                             </ul>

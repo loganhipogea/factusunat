@@ -72,6 +72,29 @@ class SiteController extends Controller
         ];
     }
 
+     public function actionAddfavorite(){
+         $this->layout="install";
+        $url=Yii::$app->request->referrer;  
+        
+        if(!is_null($url)){
+            $url=str_replace(\yii\helpers\Url::home(true),'',$url);
+           
+            $model= new \common\models\Userfavoritos();
+            $model->setAttributes([
+                            'url'=>$url,
+                             'user_id'=>h::userId(),
+                                ]);        
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {           
+           return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
+                }        
+        return $this->render('favorites', [
+            'model' => $model,
+        ]);
+        }else{
+            return;
+        }
+         
+    }
     
     public function actionPio(){
         echo date('Y').date('m').date('d');
