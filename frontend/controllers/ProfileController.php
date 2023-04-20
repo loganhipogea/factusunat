@@ -14,11 +14,11 @@ USE common\models\masters\VwSociedades;
 use yii\base\UnknownPropertyException;
 use yii\web\NotFoundHttpException;
 use mdm\admin\models\searchs\User as UserSearch;
-
+use frontend\controllers\base\baseController;
 /**
  * Site controller
  */
-class ProfileController extends \common\controllers\base\baseController
+class ProfileController extends baseController
 {
     /**
      * {@inheritdoc}
