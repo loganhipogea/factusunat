@@ -31,12 +31,12 @@
                'buttons' => [
                   'delete' => function ($url,$model) {
 			   $url = \yii\helpers\Url::toRoute($this->context->id.'/deletemodel-for-ajax');
-                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,'id'=>$model->id,'family'=>'pinke','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),'title' => $url]);
+                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,'id'=>$model->id,'family'=>'pinke','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),'rel' => $url]);
                             },
                     'home' => function ($url,$model) {
                              if(!$model->ishome){
                                   $url = \yii\helpers\Url::toRoute([$this->context->id.'/set-home-url','id'=>$model->id]);
-                              return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-home"></span>', '#', ['title'=>$url,'id'=>$model->id,'family'=>'pinke','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),'title' => $url]);
+                              return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-home"></span>', '#', ['title'=>$url,'id'=>$model->id,'family'=>'pinke','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),'rel' => $url]);
                                 
                              }else{
                                 return ''; 
