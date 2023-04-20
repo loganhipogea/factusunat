@@ -386,7 +386,17 @@ echo ModalAjax::widget([
         </footer>
         <!-- /footer content -->
     </div>
-
+<?php echo \yii\helpers\Html::script("$(function(){
+      // bind change event to select
+      $('#cboFavorites').on('change', function () {
+          var url = $(this).val(); // get selected value
+          var abso='".\yii\helpers\Url::home(true)."';
+          window.location=abso+url;
+          
+          return false;
+      });
+    });" ); ?>
+   
 </div>
 
 <div id="custom_notifications" class="custom-notifications dsp_none">
