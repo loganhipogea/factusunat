@@ -131,40 +131,37 @@ class User extends UserOriginal {
    }
    
    public function getUrlDefault(){
-       return $this->profile->url;
+        $reg= \common\models\Userfavoritos::find()->where(['user_id'=>h::userId(),'ishome'=>'1'])->one();
+     yii::error('urldefault',__FUNCTION__);
+      yii::error((!is_null($reg))?$reg->url:null,__FUNCTION__);
+      return (!is_null($reg))?$reg->url:null;
    }
    
    public function resolveUrlAfterLogin(){
-      $url=\yii\helpers\Url::previous('intentona');
-      yii::error('REOSLVE AFTER login');
-       yii::error('El url recordado es '.$url);
-      yii::error($url);
-      if(!is_null($url)){
+      //$url=\yii\helpers\Url::previous('intentona');
+      yii::error('REOSLVE AFTER login',__FUNCTION__);
+       //yii::error('El url recordado es '.$url);
+     // yii::error($url);
+     /* if(!is_null($url)){
            yii::error('Se encontro un recuerdo '.$url);
           return str_replace($url, \yii\helpers\Url::home(),'');
       }else{
         yii::error('NO Se encontro un recuerdo ');  
-      }
-       $url=$this->profile->url;
-       if(!empty($url)){
-           //yii::error('no esta vacio');
+      }*/
+       $url=$this->getUrlDefault();
+       if(!is_null($url)){
+           yii::error('tiene favorito',__FUNCTION__);
+           yii::error($url,__FUNCTION__);
           return $url;  
        }else{
-           // yii::error(' esta vacio y se leera de settings');
            $tipo=$this->profile->tipo;
-           //yii::error(' tipo '.$tipo);
-           //yii::error(' tipo '.$tipo);
            $url=h::gsetting('general','url.profile.'.$tipo);
-           //yii::error('url.profile.'.$tipo);
-          if(!is_null($url)){
-             // yii::error('se leyo del settinds '.$url);
+            if(!is_null($url)){
+              yii::error('Se encontro en el profile ',__FUNCTION__); 
+                yii::error($url,__FUNCTION__);  
               return $url;
           } else{
-              yii::error('NO se encontro nada en l settinfs ');
-               $url=is_null(\yii\helpers\Url::previous('intentona'))?'':\yii\helpers\Url::previous('intentona');
-          // yii::error('de la intenot a');
-           //yii::error($url);
-               return $url;
+              yii::error('NO RESLVIO NADA , REVISE ',__FUNCTION__);
           }
        }
    }

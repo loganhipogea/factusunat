@@ -19,6 +19,7 @@ USE common\helpers\h;
 use yii\base\UnknownPropertyException;
 use mdm\admin\models\searchs\User as UserSearch;
 use common\models\masters\VwSociedades;
+use yii\helpers\Url;
 
 /**
  * Site controller
@@ -153,8 +154,10 @@ class SiteController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
            $current= VwSociedades::currentCompany();
+            $this->redirect(Url::toRoute([Yii::$app->user->resolveUrlAfterLogin()]));
+           
            //var_dump($current); die();
-           $this->redirect(['index']); 
+          //$this->redirect(['index']); 
         }
 
         $model->password = '';
