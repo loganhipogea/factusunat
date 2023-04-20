@@ -524,7 +524,7 @@ class ComCotizacion extends \common\models\base\modelBase
   public function cloneFake(){
      $model=New \frontend\modules\com\models\ComCotiFake();
      $model->setAttributes($this->attributes);
-     if(!$model->save()) return -1;
+     if(!$model->save()) return ['error'=>$model->getFirstError()];
     
      $model->refresh();
      
@@ -569,8 +569,9 @@ class ComCotizacion extends \common\models\base\modelBase
             $model=New \frontend\modules\com\models\ComCotiversiones();
             $model->coti_id=$this->id;
             $model->lastlog_id=$this->lastLog()->id;
-            $transaccion=$this->getDb()->beginTransaction();            
-           if($model->save() && $this->cloneFake()>0){
+            $transaccion=$this->getDb()->beginTransaction(); 
+            $resultado=$this->cloneFake();
+           if($model->save() && is_numeric($resultado)){
               $model->refresh();
               $model->attachPdf(); 
               $transaccion->commit();
@@ -578,7 +579,10 @@ class ComCotizacion extends \common\models\base\modelBase
 
            }else{
                $transaccion->rollBack();
-               return ['error' => yii::t('base.messages','Hubo un error en la creación de la version')];
+               $messageError=($model->hasErrors())?$model->getFirstError():"";
+               $messageError.=(is_array($resultado))?$resultado['error']:"";
+               
+               return ['error' => yii::t('base.messages','Hubo un error en la creación de la version '.$messageError)];
      
            }
       }else{
