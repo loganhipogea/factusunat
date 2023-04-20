@@ -30,8 +30,14 @@ class m220805_152006_create_newattachments_table extends baseMigration
             'user_id'=>$this->integer(11)->notNull(),
         ],
            $this->collateTable());
-      }
-    }
+      }else{
+          $this->addColumn($table, 'detalle', $this->text());
+          $this->addColumn($table, 'titulo', $this->string(50));
+           $this->addColumn($table, 'cuando', $this->string(19));
+            $this->addColumn($table, 'codocu', $this->char(3));
+             $this->addColumn($table, 'user_id', $this->integer(11));
+       }
+    } 
 
     /**
      * {@inheritdoc}
@@ -40,6 +46,12 @@ class m220805_152006_create_newattachments_table extends baseMigration
     {
         if($this->existsTable($this->table)){
         $this->dropTable($this->table);
+        }else{
+           $this->dropColumn($table, 'detalle');
+          $this->dropColumn($table, 'titulo');
+           $this->dropColumn($table, 'cuando');
+            $this->dropColumn($table, 'codocu');
+             $this->dropColumn($table, 'user_id'); 
         }
     }
 }
