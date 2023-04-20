@@ -1207,7 +1207,7 @@ class CotiController extends baseController
         
        //echo $contenido; die();
         $pdf=$this->preparePdf($contenido);
-        if($model->isAprobed()){
+        if(!$model->isAprobed()){
                 $pdf->SetWatermarkText('SIN APROBACION');
                 $pdf->showWatermarkText = true;
           }
