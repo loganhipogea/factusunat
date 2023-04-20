@@ -36,12 +36,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                         },
                         'try' => function ($url,$model) {
 			    $url = Url::toRoute([$this->context->id.'/import','id'=>$model->id,/*'verdadero'=>'1',*/]);
-                             return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-cog"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=> \yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                             return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-cog"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'rel'=>'holas','id'=> \yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                             },
                         
                         'upload' => function ($url,$model) {
 			    $url = Url::toRoute([$this->context->id.'/import','id'=>$model->id,'verdadero'=>'1']);
-                             return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-upload"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=> \yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                             return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-upload"></span>', '#', ['title'=>$url,/*'id'=>$model->codparam,*/'rel'=>'holas','id'=> \yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                             }
                     ]
                 ],
@@ -94,7 +94,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
            'id'=>'mifpapay67xfx',
             'idGrilla'=>'grillax-cargax',
             'divReplace'=>'div_carga_reflejo',
-            'family'=>'holas',
+            'rel'=>'holas',
              'mode'=>'html',
           'type'=>'GET',
            'evento'=>'click',
