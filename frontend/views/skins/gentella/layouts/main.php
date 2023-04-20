@@ -386,7 +386,10 @@ echo ModalAjax::widget([
         </footer>
         <!-- /footer content -->
     </div>
-<?php echo \yii\helpers\Html::script("$(function(){
+<?php 
+
+  
+ $this->registerJs("$(function(){
       // bind change event to select
       $('#cboFavorites').on('change', function () {
           var url = $(this).val(); // get selected value
@@ -395,7 +398,9 @@ echo ModalAjax::widget([
           
           return false;
       });
-    });" ); ?>
+    });", \yii\web\View::POS_END); 
+
+?>
    
 </div>
 
