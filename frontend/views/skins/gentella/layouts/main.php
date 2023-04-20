@@ -65,7 +65,13 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-
+                   
+                    <div class="form-group field-clipro-codpro">
+                    <?= \yii\helpers\Html::dropDownList(
+                    'cboFavorites',null,\common\helpers\h::getCboFavorites(),
+                    ['prompt'=>'--'.yii::t('base.names','Escoja dirección').'--','id'=>'cboFavorites','class'=>'form-control btn btn-success ']) ?>
+                </div>
+                    
                     <div class="menu_section">
                         
            <?php $items=common\helpers\MenuHelper::getAssignedMenu(
@@ -242,7 +248,15 @@ echo ModalAjax::widget([
                                             ['/profile/profile','id'=>h::userId()],
                                                 ['class' => '']
                                                 ) ?>                                
-                                  </li>    
+                                  </li> 
+                                  <li>
+                                  <?= Html::a(
+                                           yii::t('base.verbs','<i style="color:#96c15e;"><span class="glyphicon glyphicon-bookmark"></span></i>'.'Añadir a favoritos'),
+                                    ['/site/addfavorite'],
+                                          [                                              
+                                              'class' => 'botonAbre'
+                                              ]); ?>
+                              </li>
                                 <li>
                                    <span class="badge bg-red pull-right"></span>                            
                                    
@@ -253,14 +267,7 @@ echo ModalAjax::widget([
                                 ) ?>
                                 
                               </li>
-                              <li>
-                                  <?= Html::a(
-                                           yii::t('base.verbs','<i style="color:#96c15e;"><span class="glyphicon glyphicon-bookmark"></span></i>'.'Añadir a favoritos'),
-                                    ['/site/addfavorite'],
-                                          [                                              
-                                              'class' => 'botonAbre btn btn-default'
-                                              ]); ?>
-                              </li>
+                              
                                 
                             </ul>
                             
