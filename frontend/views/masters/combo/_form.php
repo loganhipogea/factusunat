@@ -11,7 +11,8 @@ use common\helpers\ComboHelper;
 <div class="combovalores-form">
     <br>
     <?php $form = ActiveForm::begin([
-    'fieldClass'=>'\common\components\MyActiveField'
+    'fieldClass'=>'\common\components\MyActiveField',
+        'enableAjaxValidation' => true
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">
