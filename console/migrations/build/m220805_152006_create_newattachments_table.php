@@ -31,11 +31,11 @@ class m220805_152006_create_newattachments_table extends baseMigration
         ],
            $this->collateTable());
       }else{
-          $this->addColumn($table, 'detalle', $this->text());
-          $this->addColumn($table, 'titulo', $this->string(50));
-           $this->addColumn($table, 'cuando', $this->string(19));
-            $this->addColumn($table, 'codocu', $this->char(3));
-             $this->addColumn($table, 'user_id', $this->integer(11));
+          $this->addColumn($this->table, 'detalle', $this->text());
+          $this->addColumn($this->table, 'titulo', $this->string(50));
+           $this->addColumn($this->table, 'cuando', $this->string(19));
+            $this->addColumn($this->table, 'codocu', $this->char(3));
+             $this->addColumn($this->table, 'user_id', $this->integer(11));
        }
     } 
 
