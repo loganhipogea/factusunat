@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box box-success">
      <div class="box-body">
     <?php Pjax::begin(); ?>
-    <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_vale_search', ['model' => $searchModel]); ?>
 
     <?php  echo '.';  ?>
     <div style='overflow:auto;'>
@@ -51,9 +51,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             
             'numero',
-                            'item',
-            
+             'item',
+            'cant',
+            'codart',
             'descripcion',
+            'codal',
+            'fecha',
+             'transa'                    
             //'descripcion',
             //'texto:ntext',
             //'codest',

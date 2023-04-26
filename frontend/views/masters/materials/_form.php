@@ -44,12 +44,12 @@ use common\behaviors\FileBehavior;
     <?= $form->field($model, 'numeroparte')->textInput(['maxlength' => true]) ?>
 </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-    
+    <?php $deshabilitado=($model->hasChilds()); ?>
     <?= $form->field($model, 'codum')->
             dropDownList(ComboHelper::getCboUms() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
-                      'disabled'=>($model->isBlockedField('codtipo'))?'disabled':null,
+                      'disabled'=>($model->isBlockedField('codtipo') or $deshabilitado)?'disabled':null,
                         ]
                     ) ?>
        

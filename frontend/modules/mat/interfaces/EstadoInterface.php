@@ -6,6 +6,10 @@ namespace frontend\modules\mat\interfaces;
  * para los colecrtores como claulan las particiapciones en
  * la facturacion
  */
+
+
+
+
 interface  EstadoInterface { 
     /*  
      */
@@ -15,6 +19,13 @@ interface  EstadoInterface {
    public function isAprobado();
    public function isAnulado();
    public function isBloqueado();
-   
+ 
+    /*  
+     */
+    //public function factorProRateo();
+    
+  
+    
     
 }
+

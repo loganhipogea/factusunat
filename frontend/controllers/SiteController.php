@@ -335,6 +335,12 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      
+     $model= \common\models\masters\Transadocs::findOne('100');
+      
+      var_dump($model); 
+      die();
+      
       $model= \frontend\modules\com\models\ComCotizacion::findOne(74);
       echo $model->getPartidas()->select([
           'a.*','x.id as iddet','x.item as itemdet','x.descripcion as descridet',

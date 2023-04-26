@@ -1,7 +1,7 @@
 <?php
 
 namespace frontend\modules\cc\models;
-
+use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
 use Yii;
 
 /**
@@ -13,7 +13,7 @@ use Yii;
  * @property string $descripcion
  * @property string $activo
  */
-class CcCc extends \common\models\base\modelBase
+class CcCc extends \common\models\base\modelBase implements DocRelacionadoValeInterface
 {
    public $booleanFields=['activo'];
    const PREFIJO_COD='9';
@@ -86,5 +86,9 @@ class CcCc extends \common\models\base\modelBase
         if($insert)
         $this->esorden=self::CODIGO_COLECTOR;
         return parent::beforeSave($insert);
+    }
+    
+    public function buscarporNumero($numero) {
+        return self::findOne(['codigo'=>$numero]);
     }
 }

@@ -99,6 +99,21 @@ class Maestrocompo extends \common\models\base\modelBase
         return $this->hasOne(Sustancia::className(), ['id' => 'sustancia_id']);
     }
 
+    public function getKardex()
+    {
+        return $this->hasMany(\frontend\modules\mat\models\MatKardex::className(), ['codart' => 'codart']);
+    }
+
+    public function getStockModels()
+    {
+        return $this->hasMany(\frontend\modules\mat\models\MatStock::className(), ['codart' => 'codart']);
+    }
+    
+     public function getVales()
+    {
+        return $this->hasMany(\frontend\modules\mat\models\MatDetvale::className(), ['codart' => 'codart']);
+    }
+   
     /**
      * {@inheritdoc}
      * @return MaestrocompoQuery the active query used by this AR class.
@@ -124,7 +139,7 @@ class Maestrocompo extends \common\models\base\modelBase
     }
     
     public function existsUm($codum,$returnModel=true){
-       $reg=$this->getConversiones()->andWhere(['codum2'=>$codum])->one();
+       $reg=$this->getConversiones()->andWhere(['codum'=>$codum])->one();
        if(!is_null($reg)){
           return ($returnModel)?$reg:true;
        }else{
@@ -133,16 +148,12 @@ class Maestrocompo extends \common\models\base\modelBase
     }
     
     public function factorConversion($codum){
-       // $reg=$this->getConversiones()->andWhere(['codum2'=>$codum])->one();
-        if($reg=$this->existsUm($codum)){
-            if(!empty($reg->valor1) && !empty($reg->valor1) && $reg->valor2 >0){
-                return $reg->valor1/$reg->valor2;
-            }else{
-               return 1; 
-            }            
-        }else{
-            return 1;
-        }
+      $existe=$this->existsUm($codum,true);
+      if($existe){
+          return $existe->valor1;
+      }else{
+          return 1;
+      }
     }
     
   private function attributesStock($codal){
@@ -170,5 +181,9 @@ class Maestrocompo extends \common\models\base\modelBase
   public function peso(){
       return ($this->sustancia_id>0)?$this->sustancia->densidad:0;
   }
+  
+  
+  
+  
  }
 

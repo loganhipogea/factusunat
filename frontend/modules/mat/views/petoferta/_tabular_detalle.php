@@ -98,7 +98,7 @@ use yii\widgets\Pjax;
             //'items'=> ComboHelper::getCboUms(),
             ],
         
-            /*['name'  => 'codart',
+            ['name'  => 'codart',
             'title' => 'codart',
             //'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT, 
             'type'  =>selectWidget::className(),
@@ -110,7 +110,7 @@ use yii\widgets\Pjax;
             
                               ],
         'enableError' => true,
-            ],*/
+            ],
         
         
     ],

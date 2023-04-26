@@ -45,6 +45,9 @@ return [
         'mat' => [
             'class' => 'frontend\modules\mat\Module',
         ],
+        'bigitems' => [
+            'class' => 'frontend\modules\bigitems\Module',
+        ],
     ],
     'components' => [       
         

@@ -15,17 +15,11 @@ use yii;
 class ComboHelper extends Combito
 {
     
-    public static function getCboMovAlmacen(){
-         //$idsEdificios= ;
-        return [
-            '100'=>'SALIDA PARA CONSUMO',
-            '101'=>'DEVOLUCION',
-            '103'=>'ANULACION VALE',
-            '900'=>'INGRESO POR COMPRA',
-             '901'=>'REINGRESO',
-            
-            ];
-        
+    public static function getCboTransaccionesAlmacen(){
+       return ArrayHelper::map(
+                       \common\models\masters\Transacciones::find()->
+                  all(),
+                'codtrans','descripcion');
         
     }
     
@@ -60,6 +54,20 @@ class ComboHelper extends Combito
             ];
         
     }
+    
+    
+   public static function getCboTransaccionesDocus($codmov){
+       return ArrayHelper::map(
+       \frontend\modules\com\models\MatVwTransadocs::find()->andWhere([
+           //'codocu'=>$codocu,
+           'codtrans'=>$codmov,
+       ])->
+                  all(),
+                'codocu','desdocu');
+        
+    } 
+    
+    
     
 }
 

@@ -11,8 +11,10 @@ use frontend\modules\mat\models\MatReqSearch;
 use frontend\controllers\base\baseController;
 use \frontend\modules\mat\models\MatDetreq;
 use \frontend\modules\mat\models\VwValeSearch;
+use frontend\modules\mat\models\MatVwStockSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Model;
 USE yii\db\Query;
 use common\helpers\h;
 use yii\helpers\Url;
@@ -229,27 +231,7 @@ public function actionAjaxDesactivaItem($id){
 
    
    
-     public function actionCreaVale()
-    {
-        $model = new MatVale();
-        
-        
-        if (h::request()->isAjax && $model->load(h::request()->post())) {
-                h::response()->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-        }
-        
-        
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-vale', 'id' => $model->id]);
-        }
-
-        return $this->render('create_vale', [
-            'model' => $model,
-        ]);
-    }
-
+    
      public function actionUpdateVale($id)
     {
         $model = MatVale::findOne($id);
@@ -279,6 +261,9 @@ public function actionAjaxDesactivaItem($id){
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    
+    
     
     
     public function actionModAgregaMatVale($id){
@@ -350,10 +335,14 @@ public function actionAjaxDesactivaItem($id){
     }
     
     
-    public function actionIndexStock(){
-        
-        return $this->render('view_vale', [
-            'model' => MatVale::findOne($id),
+     public function actionIndexStock()
+    {
+        $searchModel = new MatVwStockSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_stock', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
     
@@ -508,6 +497,299 @@ public function actionAjaxDesactivaItem($id){
         }
     } 
     
-   
+  
+  public function actionCreaValeMultiple(){ 
+        
+        $model = new MatVale();
+        $request = Yii::$app->getRequest();       
+         $models =[new MatDetvale()];// $this->getItemsOvdet();//Obenter los items detalles
+           
+        /*
+         * Validacion ajax 
+         */
+        // var_dump($request->isAjax); die();
+        if ($request->isPost && $request->post('ajax') !== null) {
+            
+            
+            yii::error('VALIDACION AJAX');
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                 $data = Yii::$app->request->post('MatDetvale', []); 
+                 if(count($data)==0){
+                        $result[\yii\helpers\Html::getInputId($model,'numero')] = [yii::t('base.errors','No child records have been registered')];
+                         return $result;
+                 }
+                 
+                   //yii::error('La data eta aqui');
+                   //yii::error($data,__FUNCTION__);
+                    foreach (array_keys($data) as $index) {
+                     $models[$index] = new \frontend\modules\mat\models\MatDetvale();
+                        }
+                    Model::loadMultiple($models, Yii::$app->request->post());
+                    
+                      $model->load($this->request->post());
+                      
+                    $resultPadre = ActiveForm::validate($model);   
+                    $resultDetalle= ActiveForm::validateMultiple($models); 
+                    return $resultPadre+$resultDetalle;
+                             
+        }
+        
+         if ($this->request->isPost) {  
+             // VAR_DUMP($this->request->post(),$model->attributes);
+            // DIE();
+            if ($model->load($this->request->post()) && $model->save()) {
+                 $model->refresh();
+                 $data = Yii::$app->request->post('MatDetvale', []);
+                    foreach (array_keys($data) as $index) {
+                     $models[$index] = new MatDetvale();
+                        }
+                if(Model::loadMultiple($models, Yii::$app->request->post())){
+                      $item=100;
+                    foreach($models as $modeldetalle){
+                          $modeldetalle->vale_id=$model->id;
+                        /*$modeldetalle->setIdChild($model->id)
+                                ->setItem($item.'')->
+                                setTipoDocSunat($model->sunat_tipodoc)-> //Boleta o factura
+                                setTipoTributoIGV() //Tiene IGV
+                                ->setTipoAfectacionEsGravada(); //  Es gravada  (Puede ser exonerada, pero tiene que indicarlo el usuario)                   
+                       */ if(!$modeldetalle->save()){
+                            yii::error($modeldetalle->getErrors(),__FUNCTION__);
+                        }
+                       $item++;
+                    }
+                     //$model->refreshValues(); 
+                     yii::error('attributos del modelo');
+                     yii::error($model->attributes);
+                      // $model->preparePdfInvoice();  
+                     
+                       
+                     return $this->redirect(['view', 'id' => $model->id]);
+                }else{
+                    var_dump(Model::loadMultiple($models, Yii::$app->request->post()));die();
+                }                
+            }else{
+                var_dump($model->attributes);
+                print_r($model->getErrors()); die();
+            }
+        } else { 
+            
+        }       
+        return $this->render('create_vale', ['model' => $model,'items' => $models]);
+    }
+    
+     public function actionCreaVale()
+    {
+        $model = new MatVale();
+        //$model->valuesDefault();
+
+       //var_dump($model->attributes);die();
+        
+        /*$models = [new Item()];
+        $request = Yii::$app->getRequest();
+        if ($request->isPost && $request->post('ajax') !== null) {
+            $data = Yii::$app->request->post('Item', []);
+            foreach (array_keys($data) as $index) {
+                $models[$index] = new Item();
+            }
+            Model::loadMultiple($models, Yii::$app->request->post());
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $result = ActiveForm::validateMultiple($models);
+            return $result;
+        }
+
+        if (Model::loadMultiple($models, Yii::$app->request->post())) {
+            // your magic
+        }
+        */
+        
+       /* VAR_DUMP(Yii::$app->request->post('Detdocbotellas'));
+        echo "<br>";
+        */
+        
+        
+          //$items=[new Detdocbotellas()];
+          //$request = Yii::$app->getRequest();
+         if(Yii::$app->request->isPost){
+             $arraydetalle=Yii::$app->request->post('MatDetvale');
+             $arraycabecera=Yii::$app->request->post('MatVale');
+             
+             /*Nos aseguramos que los indices se reseteen con array_values
+              * ya que cada vez que borramos con ajax en el form quedan 
+              * vacancias en los indices y al momento de hacer el loadMultiple
+              * no coinciden los indices; algunos modelos no cargan los atributos
+              * y arroja false 
+              */
+             
+             //Pero primero guardamos los indices del form antes de resetearlo
+             //para despues restablecerlos; esto para enviar los mensajes de error
+             // con la accion Form::ValidateMultiple()
+             $OldIndices=array_keys($arraydetalle);
+             //Ahora si reseteamos los indices para hacerl el loadMultiple
+             $arraydetalle=array_values($arraydetalle);
+             
+            
+             
+             /*Generamos los items necesarios*/           
+              $items = $this->generateItems(MatDetvale::className(),
+                      count($arraydetalle),
+                     null
+                      );
+              
+              
+                           
+         if ( h::request()->isAjax &&
+                  $model->load($arraycabecera,'')&& 
+                 Model::loadMultiple($items, $arraydetalle,'')
+                  ) {
+                // var_dump( $model->load($arraycabecera,''));
+               // VAR_DUMP($model->attributes);DIE();
+              //VAR_DUMP($arraycabecera);DIE();
+             
+             
+             /*
+              * Propagando el valor del codal en los hijos
+              */
+             foreach($items as $item){
+                 $item->codal=$arraycabecera['codal'];
+             }
+             
+             /*Antes de hacer Form::ValidateMultiple() , reestablecemos los 
+              * indices originales, de esta manera nos aseguramos que los
+              * mensajes de error salgan cada cual en su sitio
+              */
+             $items=array_combine($OldIndices,$items);
+                h::response()->format = Response::FORMAT_JSON;
+                 return array_merge(
+                         ActiveForm::validate($model),
+                         ActiveForm::validateMultiple($items)
+                         );
+                
+        }
+            /* foreach(Yii::$app->request->post('Parametrosdocu') as $index=>$valor){
+              $items[]= new \common\models\masters\Parametrosdocu();
+          }*/
+         // var_dump(Yii::$app->request->post('Documentos'));echo "<br><br>";
+         //var_dump(Yii::$app->request->post('Parametrosdocu',[]));
+          /*var_dump(Model::loadMultiple($items, Yii::$app->request->post('Detdocbotellas'),''));
+          var_dump(Model::validateMultiple($items));
+          var_dump($model->load(Yii::$app->request->post('Docbotellas'),''));
+          var_dump($model->validate());
+          $items[0]->validate();
+          VAR_DUMP($items[0]->getErrors());
+          
+          die();*/
+        //var_dump($items);
+       /* $arreglo=Yii::$app->request->post('Detdocbotellas');
+        $arreglo=array_values($arreglo);
+        var_dump($arreglo);
+        echo "<br>";
+        echo "<br>";
+        echo "<br><br>";
+        echo " load mulpitple :";
+        var_dump(Model::loadMultiple($items, $arreglo,''));
+        echo "<br><br>";
+       
+             
+       ECHO "SIN LA LINKEADA <BR>";
+         foreach($items as $item){
+            print_r($item->attributes);
+                        if($item->validate(null)){
+                           echo $item->codigo."->".$item->getFirstError()."<br>";
+                        }else{
+                          echo \yii\helpers\Json::encode($item->getErrors())."->fallo <br><br><br>";
+                        }
+                           }
+        
+        ECHO "<br>AHORA CON LA LINKEADA<BR><BR>";
+        
+         $items=$this->linkeaCampos(18, $items);
+        foreach($items as $item){
+            echo "El form  ".$item->formName()."<br>";
+            print_r($item->attributes);
+                        if($item->validate(null)){
+                           echo $item->codigo."->".$item->getFirstError()."<br>";
+                        }else{
+                          echo \yii\helpers\Json::encode($item->getErrors())."->fallo <br><br><br>";
+                        }
+                           }
+        var_dump(Model::validateMultiple($items));DIE();
+        
+        */
+        
+        if ($model->load($arraycabecera,'') &&       
+        Model::loadMultiple($items, $arraydetalle,'')&&
+         $model->validate()   ){
+             
+           
+           
+              $model->save();$model->refresh();
+               $items=$this->linkeaCampos($model->id, $items);
+                     /*
+              * Propagando el valor del codal en los hijos
+              */
+             foreach($items as $item){
+                 $item->codal=$arraycabecera['codal'];
+             }
+               
+               
+               
+              if(Model::validateMultiple($items)){
+                 
+                  
+             
+             
+                   
+                  foreach($items as $item){
+                        if($item->save()){ 
+                           // yii::error($item->attributes,__FUNCTION__);
+                        }else{
+                           // yii::error('errores del item',__FUNCTION__);
+                            //yii::error($item->getErrors());
+                        }
+                           }                    
+                } else{  
+                    
+                }               
+              }
+              return $this->redirect(['update-vale','id'=>$model->id]);
+         }
+             
+        
+        
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }else{
+            print_r($model->attributes
+                    );die();
+        }*/
+         $items=$this->generateItems(MatDetvale::className(),
+         4, //cantidad de items por defeto al crear
+                 null);
+         foreach($items as $index=> $item){           
+             $valor=100+$index;
+             $item->item= $valor.'';
+         }
+         /*Aqui colocamos los valores por default*/
+         
+         //$model->valuesDefault();
+        return $this->render('create_vale', [
+            'model' => $model,'items'=>$items
+        ]);
+        
+    }
+  
+    /*
+     * Esta funcion rellena los registoes hijos 
+     * con el id recien grabado del padre
+     * @valorId: Id integer
+     * @items: Array de modelos hijos
+     */
+    private function linkeaCampos($valorId,&$items){
+        for($i = 0; $i < count($items); $i++) {
+                                $items[$i]->vale_id=$valorId;
+           }
+       return $items;
+        
+    }
    
 }

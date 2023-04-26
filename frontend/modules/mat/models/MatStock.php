@@ -22,6 +22,11 @@ use Yii;
  */
 class MatStock extends \common\models\base\modelBase
 {
+    
+    const SEMAFORO_EXCESO='E'; //Exceso de stock
+    const SEMAFORO_OK='G';
+    const SEMAFORO_CUIDADO='Y';
+    const SEMAFORO_PELIGRO='R';//Ruptura de stock
     /**
      * {@inheritdoc}
      */
@@ -40,7 +45,7 @@ class MatStock extends \common\models\base\modelBase
             [['cant', 'cantres', 'valor'], 'number'],
             [['codart', 'ubicacion'], 'string', 'max' => 14],
              [['um'], 'valida_um_base'],
-             [['valor_unit'], 'safe'],
+             [['valor_unit','cant_disp','semaforo','valor','codal'], 'safe'],
             [['um', 'codal'], 'string', 'max' => 4],
             [['lastmov'], 'string', 'max' => 10],
             [['codart'], 'unique'],
@@ -74,10 +79,10 @@ class MatStock extends \common\models\base\modelBase
         return $this->hasOne(Maestrocompo::className(), ['codart' => 'codart']);
     }
 
-    public function geStock()
+   public function getMatalmacen()
     {
-        return $this->hasMany(MatStock::className(), ['codart' => 'codart']);
-   }
+        return $this->hasOne(MatMatAlmacen::className(), ['codart' => 'codart','codal'=>'codal']);
+    }
      /*public function getKardex() {
         return $this->hasMany(MatKardex::className(), ['stock_id' => 'id']);
     }*/
@@ -104,5 +109,57 @@ class MatStock extends \common\models\base\modelBase
         
     }
     
+    private function resolveStock(){
+         $this->cant=((is_null($this->cant_disp))?0:$this->cant_disp)+((is_null($this->cantres))?0:$this->cantres);        
+         if($this->hasChanged('valor')){
+             $this->valor_unit=$this->valor/$this->cant;
+         }  
+    }
+    /*
+     * Si se trata de materiales
+     * con contrl de reorden
+     */
+     private function resolveSemaforo(){
+        if(!is_null($this->semaforo)){
+            $this->semaforo=$this->resolveSemaforo();
+        }
+    }
+    
+    
+    private function calificaSemaforo($cant){
+        
+      
+        if($this->cantres >0){
+           $cantidad=$this->cant_disp; 
+        }else{
+          $cantidad=$this->cant;   
+        }
+        $propiedades=$this->matalmacen;
+     if(is_null( $propiedades)){
+      if($cantidad > $propiedades->ceconomica)
+         return self::SEMAFORO_EXCESO;
+      elseif($cantidad > $propiedades->creorden)
+         return self::SEMAFORO_OK;
+      elseif($cantidad > $propiedades->crepo)
+         return self::SEMAFORO_CUIDADO;
+       else
+         return self::SEMAFORO_PELIGRO;       
+        
+       }else{
+         return null;  
+       }
+   
+     
+    }
+    public function beforeSave($insert) {
+        yii::error($this->attributes,__FUNCTION__);
+        $this->resolveStock();
+         yii::error($this->attributes,__FUNCTION__);
+        $this->resolveSemaforo();
+        return parent::beforeSave($insert);
+    }
+    
+    
+   
     
 }

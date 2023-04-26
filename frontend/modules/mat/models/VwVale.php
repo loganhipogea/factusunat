@@ -26,7 +26,15 @@ class VwVale extends \common\models\base\modelBase
     {
         return '{{%mat_vw_vale}}';
     }
-
+    
+  public $fecha1;
+    public $fechacon1;  
+ public $dateorTimeFields = [
+        'fecha' => self::_FDATE,  
+          'fechacon' => self::_FDATE,
+         'fecha1' => self::_FDATE,  
+          'fechacon1' => self::_FDATE,
+    ];
     /**
      * {@inheritdoc}
      */
@@ -35,7 +43,7 @@ class VwVale extends \common\models\base\modelBase
         return [
             [['numero', 'codmov', 'codpro', 'codart', 'descripcion'], 'required'],
             [['cant'], 'number'],
-            [['numero', 'fecha'], 'string', 'max' => 10],
+            [['numero', 'fecha','fechacon'], 'string', 'max' => 10],
             [['codmov'], 'string', 'max' => 3],
             [['codpro', 'codart'], 'string', 'max' => 6],
             [['um', 'item'], 'string', 'max' => 4],

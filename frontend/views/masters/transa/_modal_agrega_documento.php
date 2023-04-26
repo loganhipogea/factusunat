@@ -21,8 +21,8 @@ use common\helpers\ComboHelper;
         <div class="col-md-12">
             <div class="form-group no-margin">
             <?php
-          $operacion=($model->isNewRecord)?'modal-assign-document':'modal-edit-document';             
-          $url=\yii\helpers\Url::to(['/masters/trabajadores/'.$operacion,'id'=>$id]); 
+          $operacion=($model->isNewRecord)?'modal-agrega-documento':'modal-edita-documento';             
+          $url=\yii\helpers\Url::to(['/masters/transa/'.$operacion,'codtrans'=>$codtrans]); 
            ?>
            <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
                   ['idModal'=>$idModal,
@@ -40,26 +40,14 @@ use common\helpers\ComboHelper;
       
     
   
-  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?= $form->field($model, 'codocu')->
-            dropDownList(ComboHelper::getCboDocuments() ,
+            dropDownList(ComboHelper::getCboDocumentsWithModel() ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
                     ) ?>
     </div>
-  
-   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?= $form->field($model, 'numero')->textInput() ?>
-   </div>
-   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?= $form->field($model, 'descripcion')->textInput() ?>
-   </div>
-   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
-        <?= $form->field($model, 'textointerno')->textArea() ?>
-   </div>       
-       
-   
             
      
     <?php ActiveForm::end(); ?>

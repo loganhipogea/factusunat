@@ -44,7 +44,7 @@ class Documentos extends modelBase
              [['codocu'], 'match', 'pattern' => '/[1-9]{1}[0-9]{2}/','message'=>yii::t('base.errors','The {field} doesn\'t match with format')],
             [['idreportedefault'], 'integer'],
             [['codocu'], 'string', 'max' => 3],
-            [['withaudit'], 'safe'],
+            [['withaudit','modelo'], 'safe'],
             [['desdocu', 'tabla'], 'string', 'max' => 60],
             [['clase', 'escomprobante'], 'string', 'max' => 1],
             [['tipo'], 'string', 'max' => 2],
@@ -69,6 +69,7 @@ class Documentos extends modelBase
             'prefijo' => 'Prefijo',
             'escomprobante' => 'Escomprobante',
             'idreportedefault' => 'Idreportedefault',
+            'modelo'=>'Modelo'
         ];
     }
     

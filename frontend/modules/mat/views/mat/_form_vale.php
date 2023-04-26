@@ -10,6 +10,7 @@ use frontend\modules\mat\helpers\ComboHelper;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
+use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\mat\models\MatReq */
 /* @var $form yii\widgets\ActiveForm */
@@ -17,8 +18,10 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
 
 <div class="mat-req-form">
     <br>
+  <div class="box-body">
     <?php $form = ActiveForm::begin([
-    'fieldClass'=>'\common\components\MyActiveField'
+    'fieldClass'=>'\common\components\MyActiveField',
+        'enableAjaxValidation'=>true,
     ]); 
     $bloqueado=$model->isBloqueado();
    
@@ -26,31 +29,39 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
       <div class="box-header">
         <div class="col-md-12">
             <div class="form-group no-margin">
-                
+               <div class="btn-group">  
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
            <?php 
             if($model->isCreado())
-           echo Html::button(
-                                    '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
-                                     ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
+           echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
+                  ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
                  );
-          ?> 
-
+            if($model->isCreado())
+           echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
+                  ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
+                 );
+            
+               ?> 
+                </div>
             </div>
         </div>
     </div>
-      <div class="box-body">
+      
     
 
   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'numero')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
  </div>
- <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,'disabled'=>(!$bloqueado)?false:true  ]) ?>
      
  </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'codest')->textInput(['maxlength' => true,'disabled'=>true  ]) ?>
+     
+ </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
      <?php 
   // $necesi=new Parametros;
     echo selectWidget::widget([
@@ -63,7 +74,73 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
         ]);  ?>
 
  </div> 
-  <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+ <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">    
+ <?= $form->field($model, 'codal')->
+            dropDownList(ComboHelper::getCboAlmacenes(null),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                     'disabled'=>($model->hasChilds())?'disabled':null,
+                        ]
+                    ) ?>
+ </div> 
+ 
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+    <?= ComboDep::widget([
+               'model'=>$model,               
+               'form'=>$form,
+               'data'=> ComboHelper::getCboTransaccionesAlmacen(),
+               'campo'=>'codmov',
+               'idcombodep'=>'matvale-codocu',
+               /* 'source'=>[ //fuente de donde se sacarn lso datos 
+                    /*Si quiere colocar los datos directamente 
+                     * para llenar el combo aqui , hagalo coloque la matriz de los datos
+                     * aqui:  'id1'=>'valor1', 
+                     *        'id2'=>'valor2,
+                     *         'id3'=>'valor3,
+                     *        ...
+                     * En otro caso 
+                     * de la BD mediante un modelo  
+                     */
+                        /*Docbotellas::className()=>[ //NOmbre del modelo fuente de datos
+                                        'campoclave'=>'id' , //columna clave del modelo ; se almacena en el value del option del select 
+                                        'camporef'=>'descripcion',//columna a mostrar 
+                                        'campofiltro'=>'codenvio'/* //cpolumna 
+                                         * columna que sirve como criterio para filtrar los datos 
+                                         * si no quiere filtrar nada colocwue : false | '' | null
+                                         *
+                        
+                         ]*/
+                   'source'=>[frontend\modules\com\models\MatVwTransadocs::className()=>
+                                [
+                                  'campoclave'=>'codocu' , //columna clave del modelo ; se almacena en el value del option del select 
+                                        'camporef'=>'desdocu',//columna a mostrar 
+                                        'campofiltro'=>'codtrans'  
+                                ]
+                                ],
+                            ]
+               
+               
+        )  ?>
+ </div> 
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
+ <?= $form->field($model, 'codocu')->
+            dropDownList(($model->isNewRecord)?[]:ComboHelper::getCboTransaccionesDocus($model->codmov),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    ) ?>
+ </div> 
+          
+  
+                  
+ <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'numerodoc')->textInput(['maxlength' => true,'disabled'=>(!$bloqueado)?false:true  ]) ?>
+     
+ </div>   
+         
+      
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
      
  <?= $form->field($model, 'fecha')->widget(DatePicker::class, [
                             'language' => h::app()->language,
@@ -80,119 +157,44 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                                 ]
                             ]) ?>
  </div>
-  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">    
- <?= $form->field($model, 'codmov')->
-            dropDownList(ComboHelper::getCboMovAlmacen(),
-                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                      'disabled'=>(!$bloqueado)?false:true  
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    ) ?>
- </div>  
-    
+ <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
      
-    <?php ActiveForm::end(); ?>
+ <?= $form->field($model, 'fechacon')->widget(DatePicker::class, [
+                            'language' => h::app()->language,
+                           'pluginOptions'=>[
+                                     'format' => h::gsetting('timeUser', 'date')  , 
+                                   'changeMonth'=>true,
+                                  'changeYear'=>true,
+                                 'yearRange'=>'2014:'.date('Y'),
+                               ],
+                          
+                            //'dateFormat' => h::getFormatShowDate(),
+                            'options'=>['class'=>'form-control',
+                               'disabled'=>(!$bloqueado)?false:true  
+                                ]
+                            ]) ?>
+ </div>
+   
 
-    <?php Pjax::begin(['id'=>'grilla-materiales']); ?>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
-   <?php //var_dump((new SigiApoderadosSearch())->searchByEdificio($model->id)); die(); ?>
-    <?= GridView::widget([
-        'dataProvider' =>(new \frontend\modules\mat\models\MatDetvaleSearch())->search_by_vale($model->id),
-         //'summary' => '',
-         'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
-        'columns' => [
-                 [
-                'class' => 'yii\grid\ActionColumn',
-                //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-            'template' => '{edit}{delete}',
-               'buttons' => [
-                    
-                                
-                                'edit' => function ($url,$model) use($bloqueado)  {
-			    $url= Url::to(['/mat/mat/mod-edit-mat-vale','id'=>$model->id,'gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
-                              if($bloqueado)return '';
-                            return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
-                            },
-                        'delete' => function ($url,$model) use($bloqueado){
-                                 if($bloqueado)return '';
-			   $url = \yii\helpers\Url::to([$this->context->id.'/ajax-desactiva-item','id'=>$model->id]);
-                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
-                            }
-                        
-                    ]
-                ],
-            'item',
-             'um',
-              'cant',
-              'codart',              
-           ['attribute' => 'descripcion',
-                'format'=>'raw',
-                'value'=>function($model){
-                        return $model->material->descripcion;
-                              } 
-                
-                ], 
-                        ['attribute' => 'valor',
-                'format'=>'raw',
-                'value'=>function($model){
-                        return h::formato()->asDecimal($model->valor,2);
-                              } 
-                
-                ], 
-                        ['attribute' => 'V. Unit',
-                'format'=>'raw',
-                'value'=>function($model){
-                        return h::formato()->asDecimal($model->valor/$model->cant,2);
-                              } 
-                
-                ], 
-             ['attribute' => 'imagen',
-                'format'=>'raw',
-                'value'=>function($model){
-                        
-                          if(!empty($model->codart)){
-                             $material=$model->material;
-                            if($material->hasAttachments())
-                            return \yii\helpers\Html::img ($material->files[0]->url,['width'=>50,'height'=>50]);
-                            
-                          }                           
-                              } 
-                
-                ], 
-        ],
-    ]); ?>
-         <?php 
-   echo linkAjaxGridWidget::widget([
-           'id'=>'widgetgruidBancos',
-            'idGrilla'=>'grilla-materiales',
-            'family'=>'holas',
-          'type'=>'POST',
-           'evento'=>'click',
-       'posicion'=>\yii\web\View::POS_END
-            //'foreignskeys'=>[1,2,3],
-        ]); 
-   ?>
-      <?php 
-   echo inputAjaxWidget::widget([
-           'id_input'=>'widgetgruixxdBancos',
-            'idGrilla'=>'grilla-materiales',
-            'id'=>'btn-add-material',
-          'tipo'=>'POST',
-           'evento'=>'click',
-         'ruta'=> Url::to([$this->context->id.'/ajax-rellena-ids-from-req','id'=>$model->id]),
-            //'foreignskeys'=>[1,2,3],
-         'posicion'=>\yii\web\View::POS_END
-        ]); 
-   ?>
-      
-      <?php
- $url= Url::to(['mod-agrega-mat-vale','id'=>$model->id,'gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
-  if(!$bloqueado)
-   echo  Html::button(yii::t('base.verbs','Agregar material'), ['href' => $url, 'title' => yii::t('base.names','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
-       ?>   
-  </div>
-    <?php Pjax::end(); ?>
+   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
+    <?php  
+     if($model->isNewRecord){
+       echo $this->render('_vale_tabular_detalle',[
+         'model'=>$model,
+         'form'=>$form,
+         'items'=>$items]);  
+     }else{
+        echo $this->render('_vale_grid_detalle',[
+         'model'=>$model,
+         //'form'=>$form,
+         //'items'=>$items
+         ]);  
+     }
+    ?>
+   </div>        
+           
+  <?php ActiveForm::end(); ?>      
+   </div>     
      
           
  <?php 
@@ -235,5 +237,5 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
    $this->registerJs($string, \yii\web\View::POS_END);
  }
   ?>          
-</div>
+
     </div>

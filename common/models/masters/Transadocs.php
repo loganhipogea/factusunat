@@ -59,7 +59,7 @@ class Transadocs extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
      */
-    public function getCodocu0()
+    public function getDocu()
     {
         return $this->hasOne(Documentos::className(), ['codocu' => 'codocu']);
     }

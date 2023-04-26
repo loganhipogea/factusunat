@@ -23,7 +23,7 @@ class Transacciones extends \common\models\base\modelBase
     {
         return '{{%transacciones}}';
     }
-
+   public $booleanFields=['exigirvalidacion','afecta_reserva'];
     /**
      * {@inheritdoc}
      */
@@ -33,6 +33,7 @@ class Transacciones extends \common\models\base\modelBase
             [['codtrans', 'descripcion', 'signo'], 'required'],
             [['signo'], 'integer'],
             [['detalles'], 'string'],
+            [['exigirvalidacion','afecta_reserva','afecta_precio'], 'safe'],
             [ ['codtrans'],
                 'match', 
                 'pattern' => '/[1-9]{1}[0-9]{2}/',

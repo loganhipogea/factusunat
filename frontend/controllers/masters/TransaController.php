@@ -141,4 +141,81 @@ class TransaController extends baseController
 
         throw new NotFoundHttpException(Yii::t('base.labels', 'The requested page does not exist.'));
     }
+    public function actionModalAgregaDocumento($codtrans){       
+            $this->layout = "install";
+           
+        $modelPadre = $this->findModel($codtrans);
+        $model = new \common\models\masters\Transadocs();
+        $model->setAttributes(['codtrans'=>$modelPadre->codtrans,
+            'tipodoc'=>'10','codestado'=>'10'
+            ]);
+        
+        if(h::request()->isPost){   
+            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+                
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+               
+               if(!$model->save()) print_r($model->getErrors()); 
+              
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_agrega_documento', [
+                        'model' => $model,
+                        'codtrans' => $codtrans,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+        
+        
+       
+        
+    }
+     public function actionModalEditaDocumento($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $model= \common\models\masters\Transadocs::findOne($id);
+       // $model=New \common\models\masters\Docutrabajadores();
+        //$model->codpro=$modelCentros->codpro;
+        //$model->codtra=$modelTrabajador->codigotra;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                $this->closeModal(
+                      h::request()->get('gridName'),
+                      h::request()->get('gridName')
+                      );
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->codtra];
+            }
+        }else{
+           return $this->renderAjax('_modal_agrega_documento', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        }
+    }
+    
 }

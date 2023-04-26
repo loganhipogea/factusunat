@@ -60,7 +60,13 @@ $this->params['breadcrumbs'][] = $this->title;
          
          
          
-
+              ['attribute'=>'semaforo',
+               // 'headerOptions' => ['style' => 'width:50%'],
+                  //'filter'=> \common\helpers\ComboHelper::getCboCentros(),
+                  'value'=>function ($model){
+                    return '<i style="color:'.$model->colorSemaforo.'"><span class="fa fa-circle"></span></i>';
+                  }
+                ],
             
             'codart',
             ['attribute'=>'descripcion',

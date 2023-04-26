@@ -2,6 +2,8 @@
 
 namespace frontend\modules\mat\models;
 use common\models\masters\Clipro;
+use \common\models\masters\Documentos;
+use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
 use Yii;
 
 /**
@@ -27,8 +29,13 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
      const ESTADO_APROBADO='20';
       const ESTADO_ANULADO='99';
     public $prefijo='67';
+    public $fecha1;
+    public $fechacon1;
      public $dateorTimeFields = [
-        'fecha' => self::_FDATE,       
+        'fecha' => self::_FDATE,  
+          'fechacon' => self::_FDATE,
+         'fecha1' => self::_FDATE,  
+          'fechacon1' => self::_FDATE,
     ];
     public static function movimientos(){
         return [    
@@ -59,12 +66,18 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
         return [
             [[ 'codpro', 'codmov'], 'required'],
             [['texto'], 'string'],
+            [['codocu','numerodoc','fechacon'], 'string'],
+             [['codocu','numerodoc','fechacon','codal'], 'safe'],
+            [['numerodoc'], 'validate_docu'],
             [['numero', 'fecha'], 'string', 'max' => 10],
             [['codpro'], 'string', 'max' => 10],
             [['codmov', 'codest'], 'string', 'max' => 3],
             [['descripcion'], 'string', 'max' => 40],
             [['codpro'], 'exist', 'skipOnError' => true, 'targetClass' => Clipro::className(), 'targetAttribute' => ['codpro' => 'codpro']],
-        ];
+             [['codocu'], 'exist', 'skipOnError' => true, 'targetClass' => Documentos::className(), 'targetAttribute' => ['codocu' => 'codocu']],
+        [['codmov'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\masters\Transacciones::className(), 'targetAttribute' => ['codmov' => 'codtrans']],
+        
+            ];
     }
 
     /**
@@ -74,13 +87,16 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'numero' => Yii::t('app', 'Numero'),
+            'numero' => Yii::t('app', 'Número'),
             'fecha' => Yii::t('app', 'Fecha'),
-            'codpro' => Yii::t('app', 'Codpro'),
-            'codmov' => Yii::t('app', 'Codmov'),
+            'fechacon' => Yii::t('app', 'F Cont'),
+            'codpro' => Yii::t('app', 'Proveedor'),
+            'codmov' => Yii::t('app', 'Movimiento'),
+             'codocu' => Yii::t('app', 'Doc. rel.'),
+             'numerodoc' => Yii::t('app', 'Número doc.'),
             'descripcion' => Yii::t('app', 'Descripcion'),
             'texto' => Yii::t('app', 'Texto'),
-            'codest' => Yii::t('app', 'Codest'),
+            'codest' => Yii::t('app', 'Estado'),
         ];
     }
 
@@ -91,6 +107,17 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
     }
+    
+     public function getDocu()
+    {
+        return $this->hasOne(Documentos::className(), ['codpro' => 'codpro']);
+    }
+    
+     public function getTransaccion()
+    {
+        return $this->hasOne(\common\models\masters\Transacciones::className(), ['codtrans' => 'codmov']);
+    }
+    
   public function getDetalles()
     {
         return $this->hasMany(MatDetvale::className(), ['vale_id' => 'id']);
@@ -138,5 +165,50 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
        return $this->isAnulado()|| $this->isAprobado();
     }
     
-   
-}
+ public function validate_docu($attribute,$params){
+       if($this->transaccion->exigirvalidacion){
+           yii::error('si exige validacion',__FUNCTION__);
+           $obj=$this->modelTransa();
+           if(is_object($obj)){
+                yii::error('Encontro el obejto',__FUNCTION__);
+                yii::error($obj,__FUNCTION__);
+               if($obj instanceof DocRelacionadoValeInterface){
+                   $mod=$obj->buscarporNumero($this->numerodoc);
+                  if($mod===null)
+                   $this->addError('numerodoc',yii::t('base.errors','No existe el documento con ese número'));
+               }
+           }else{
+             yii::error('El objeto e null',__FUNCTION__);  
+           }
+       }else{
+           yii::error('anda',__FUNCTION__);
+       }
+    }
+    
+    
+    
+    /*
+     * Funcion que obtiene el modelo del documento relacionado
+     * a la transaccion (TABLA TRANSADOCS)
+     * 
+     */
+    private function modelTransa(){
+        $model= \frontend\modules\com\models\MatVwTransadocs::findOne([
+            'codtrans'=>$this->codmov,
+            'codocu'=>$this->codocu,
+        ]);
+       if(is_null($model)){
+           return null;
+       }else{
+         $objeto=$model->modelo;
+         yii::error('el texto del modelo es '.$objeto,__FUNCTION__);
+          return $objeto::instance(); 
+
+            }
+       }
+        
+    }
+    
+    
+      
+

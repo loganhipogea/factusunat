@@ -7,6 +7,7 @@ use common\models\masters\Centros;
 use common\models\masters\CentrosSearch;
 use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
+use common\models\masters\Almacenes;
 use yii\filters\VerbFilter;
 use common\helpers\h;
 use yii\helpers\Url;
@@ -182,5 +183,98 @@ class CentrosController extends baseController
        
     } 
     
+   public function actionUpdateAlmacen($codal){
+       $model= Almacenes::findOne($codal);
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('update_almacen', [
+            'model' => $model,
+        ]);
+   }
    
+   
+   
+    public function actionModalCreaMaterialAlmacen($codal) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $modelAlmacen= \common\models\masters\Almacenes::findOne($codal);
+        $model=New \frontend\modules\mat\models\MatMatAlmacen();
+        //$model->codpro=$modelCentros->codpro;
+        $model->codal=$modelAlmacen->codal;
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_almacen_material', [
+                        'model' => $model,
+                        'id' => $codal,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+        
+
+       
+    } 
+    public function actionModalEditaMaterialAlmacen($id) {
+
+        //$vendorsForCombo=ArrayHelper::map(Clipro::find()->all(),'codpro','despro');
+        $this->layout = "install";
+        $model= \frontend\modules\mat\models\MatMatAlmacen::findOne($id);
+       
+        //$model->codpro=$modelCentros->codpro;
+        
+         $datos=[];
+        if(h::request()->isPost){            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_almacen_material', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+        
+
+       
+    } 
 }

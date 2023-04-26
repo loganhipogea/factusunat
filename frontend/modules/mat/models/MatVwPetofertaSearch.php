@@ -16,7 +16,7 @@ class MatVwPetofertaSearch extends MatVwPetoferta
         return [
            
             [['id','idedetalle', 'codart', 'codum', 'codmon','codart','descripcion','fecha1','fecha',
-                'pventa','punit','igv','despro','codpro'], 'safe'],
+                'pventa','punit','igv','despro','codpro',], 'safe'],
         ];
     }
 

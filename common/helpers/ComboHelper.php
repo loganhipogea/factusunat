@@ -70,6 +70,15 @@ class ComboHelper  {
                 'codocu','desdocu');
     }
     
+     public static function getCboDocumentsWithModel(){
+         //$iduser=is_null($iduser)?static::userId():$iduser;        
+        return ArrayHelper::map(
+                        \common\models\masters\Documentos::find()->
+                andWhere(['not in','modelo',[null]])->all(),
+                'codocu','desdocu');
+    }
+
+    
     
       public static function getCboDepartamentos(){
          //$iduser=is_null($iduser)?static::userId():$iduser;        

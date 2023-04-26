@@ -18,7 +18,10 @@ class VwValeSearch extends VwVale
     {
         return [
             
-            [['descripcion', 'codart', 'numero', 'fecha'], 'safe'],
+            [['descripcion', 'codart', 'numero','codal',
+                'fecha','fecha1','fechacon','codmov',
+                
+                'fechacon1'], 'safe'],
         ];
     }
 
@@ -97,12 +100,32 @@ class VwValeSearch extends VwVale
         
 
         $query->andFilterWhere(['like', 'numero', $this->numero])
-            ->andFilterWhere(['like', 'fecha', $this->fecha])
-            ->andFilterWhere(['like', 'item', $this->item])
+            ->andFilterWhere(['codmov'=> $this->codmov])
+            //->andFilterWhere(['like', 'item', $this->item])
             ->andFilterWhere(['like', 'codart', $this->codart])
-            ->andFilterWhere(['like', 'um', $this->um])
+            ->andFilterWhere(['codal'=> $this->codal])
+           ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+           ->andFilterWhere(['like', 'despro', $this->despro])
+                ->andFilterWhere(['like', 'um', $this->um])
             //->andFilterWhere(['like', 'cant', $this->texto])
             ->andFilterWhere(['like', 'cant', $this->cant]);
+         if(!empty($this->fecha) && !empty($this->fecha1)){
+         $query->andFilterWhere([
+             'between',
+             'fecha',
+             $this->openBorder('fecha',false),
+             $this->openBorder('fecha1',true)
+                        ]);   
+        }
+        
+         if(!empty($this->fechacon) && !empty($this->fechacon1)){
+         $query->andFilterWhere([
+             'between',
+             'fechacon',
+             $this->openBorder('fechacon',false),
+             $this->openBorder('fechacon1',true)
+                        ]);   
+        }
 
         return $dataProvider;
     }

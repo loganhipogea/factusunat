@@ -6,6 +6,8 @@ use frontend\modules\mat\models\MatKardex;
 use frontend\modules\mat\models\MatAtenciones;
 USE frontend\modules\mat\interfaces\ReqInterface;
 use frontend\modules\mat\interfaces\EstadoInterface;
+use common\models\masters\Transacciones;
+use common\helpers\h;
 use Yii;
 
 /**
@@ -45,18 +47,18 @@ implements ReqInterface,EstadoInterface {
     public function rules()
     {
         return [
-            [['vale_id', 'codart'], 'required'],
+            [['vale_id', 'codart','cant','punit','um'], 'required'],
             [['vale_id'], 'integer'],
             [['detreq_id'], 'required','on'=>self::MOV_SALIDA],
             [['cant'], 'number'],
-            [['cant'], 'validate_cant_stock','on'=>self::MOV_SALIDA],
-            //[['um'], 'verify_um'],
+            [['cant'], 'validate_cant_stock'],
+            [['um'], 'verify_um'],
            // [['codart'], 'validate_stock'],
-             [['valor'], 'safe'],
+             [['valor','cant','punit','codal'], 'safe'],
             [['item', 'um'], 'string', 'max' => 4], 
             [['codart'], 'string', 'max' => 14],
             [['codest'], 'string', 'max' => 2],
-            [['codart'], 'exist', 'skipOnError' => true, 'targetClass' => Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
+           // [['codart'], 'exist', 'skipOnError' => true, 'targetClass' => Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
         ];
     }
 
@@ -92,6 +94,8 @@ implements ReqInterface,EstadoInterface {
         return $this->hasOne(Maestrocompo::className(), ['codart' => 'codart']);
     }
     
+   
+    
      public function getKardex()
     {
         return $this->hasOne(MatKardex::className(), ['vale_id' => 'id']);
@@ -104,12 +108,15 @@ implements ReqInterface,EstadoInterface {
 
      public function stock()
     {
-        return MatStock::findOne(['codart'=>$this->codart]);
+         //yii::error(MatStock::find()->where(['codart'=>$this->codart,'codal'=>$this->codal])->createCommand()->rawSql);
+        return MatStock::find()->where(['codart'=>$this->codart,'codal'=>$this->codal])->one();
     }
         public function getAtenciones()
     {
         return $this->hasMany(MatAtenciones::className(), ['detvale_id' => 'id']);
     }
+    
+     
     
     
     
@@ -130,7 +137,9 @@ implements ReqInterface,EstadoInterface {
            // $this->activo=true;            
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
             $this->codest=self::ESTADO_CREADO;
-        }        
+        }    
+        $this->valor=$this->punit*$this->cant;
+        
         return parent::beforeSave($insert);
     }
     
@@ -145,9 +154,13 @@ implements ReqInterface,EstadoInterface {
     
    
   public function verify_um() {
-     if(!$this->material->existsUm($this->um,false)){
-          $this->addError('um',yii::t('base.errors','La unidad de medida no está registrada'));
-       }
+    if(!empty($this->codart)){
+       $material=$this->material;
+     if($this->um <> $material->codum && !$material->existsUm($this->um,false)){
+          $this->addError('um',yii::t('base.errors','Este material no tiene registrada esta unidad de medida'));
+       }  
+    }
+     
   }
   
   
@@ -156,14 +169,15 @@ implements ReqInterface,EstadoInterface {
       $vale=$this->vale;
       $kardex->setAttributes([
           'stock_id'=>$this->stock()->id,
-          'signo'=>$vale->signo(),
+          'signo'=>$vale->transaccion->signo,
+           'codart'=>$this->codart,
           'cant'=>$this->cant,
           'um'=>$this->material->codum,
           'umreal'=>$this->um,
           'fecha'=>$vale->fecha,
           'detvale_id'=>$this->id,
            'codmov'=>$vale->codmov,
-          'detvale_id'=>$this->id,
+         // 'detvale_id'=>$this->id,
           //'detreq_id'=>$this->id,
       ]);
      // print_r($kardex->attributes);die();
@@ -180,6 +194,8 @@ implements ReqInterface,EstadoInterface {
           'codart'=>$this->codart,
           'cant'=>$this->cant,
           'cantres'=>0,
+          'cant_disp'=>0,
+          'codal'=>$this->codal,
           //'signo'=>$vale->signo(),
           //'cant'=>$this->cant,
           'um'=>$this->material->codum,
@@ -202,22 +218,61 @@ implements ReqInterface,EstadoInterface {
   }*/
   
   private function updateStock(MatStock $stock){
-     // $vale=$this->vale;
-     // yii::error('cant stock  antes dwl cambio');
-       //yii::error($stock->cant);
-      $stock->cant=$stock->cant+$this->cantreal->cant; 
-      /* yii::error('signo');
-       yii::error($this->vale->signo());
-        yii::error('valor del detalle ');
-       yii::error($this->valor);
-          yii::error('cant stock  cambiado');
-       yii::error($stock->cant);
-          yii::error('valor stock ');
-       yii::error($stock->valor);*/
-            /*$stock->valor=($stock->valor+$this->vale->signo()*$this->valor)/
-               ($stock->cant+$this->cant); */
-      $stock->valor+=$this->vale->signo()*$this->valor;
-       $stock->valor_unit=$stock->valor/($stock->cant);
+      /*
+       * Actualizando las cantidades primero
+       */   
+      
+      
+      $transaccion=$this->vale->transaccion;
+       $signo=$transaccion->signo;
+      $cantidad=$this->cantreal->cant*$signo;      
+      $afecta_reserva=$transaccion->afecta_reserva;      
+       $afecta_precio=$transaccion->afecta_precio;       
+       
+       if($stock->isNewRecord){
+          $stock->setAttributes([
+          'codart'=>$this->codart,
+          'cant'=>$this->cant,
+          'cantres'=>0,
+          'cant_disp'=>0,
+          'codal'=>$this->codal,
+          'um'=>$this->material->codum,
+                    ]); 
+             }       
+      /*
+       * Si se trata de movimientos que afectan la reserva
+       * 
+       */
+      if($afecta_reserva){
+          $stock->cantres+=$cantidad;          
+      }else{
+         $stock->cant_disp+=$cantidad;   
+      }
+      
+       /*
+       * Si se trata de movimientos que afectan el precio
+       * 
+       */
+      if($afecta_precio){ //Sacamos el P.U. del mismo vale
+          $montoafectado=abs($this->punit)*abs($this->cant)*$signo;           
+      }else{//Sacamos el P.U. del stock
+          $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;
+          /*
+           * Actualizamos el P.U. pero de este vale
+           * ¿Por que?:  Porque de este modo nos aseguramos que 
+           * quede una foto del precio verdaero con el que se ha movido
+           * en el vale
+           */
+          $this->updateAll([
+              'punit'=>$stock->valor_unit,
+              'valor'=>$stock->valor_unit*$this->cant,
+              ],['id'=>$this->id]);
+      }
+      $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
+        
+            /*
+             * Aquí el stock solito se las arregla en el resolveStock
+             */
              return $stock->save();
   }
  
@@ -252,12 +307,12 @@ implements ReqInterface,EstadoInterface {
       $vale=$this->vale;
       $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
         if(is_null($stock=$this->stock())){
-            $this->createStock();
+            $this->updateStock(New MatStock());
         }else{
             $this->updateStock($stock);
         }
-         $this->createKardex();   
-         $this->trazabilidad();
+        // $this->createKardex();   
+         //$this->trazabilidad();
          $this->codest=self::ESTADO_APROBADO;
          $this->save();
       $transaccion->commit();
@@ -265,17 +320,36 @@ implements ReqInterface,EstadoInterface {
    }
    
    public function validate_cant_stock(){
-       if($this->getScenario()==self::MOV_SALIDA){
-          if(is_null($stock=$this->stock())){
-              $this->addError('cant',yii::t('base.labels','El material no tiene registro de stock'));
-          }else{
-              if($this->getCantReal()->cant > $stock->cant){
-                $this->addError('cant',yii::t('base.labels','No hay cantidad suficiente de material en stock'));  
-              }
-          }
-           
-           
+       /*
+        * Siempre que se intente sacar algo
+        * verificar primero si las cantidades son
+        * consistentes
+        */
+       if($this->vale_id >0){
+           $transaccion=$this->vale->transaccion;
+       }else{
+          $envioPost=h::request()->post(); 
+          $transaccion= Transacciones::findOne(['codtrans'=>$envioPost['MatVale']['codmov']]);
        }
+       
+      // var_dump($this->stock(),$this->attributes ,$transaccion);die();
+      if($transaccion->signo <0){
+           if(is_null($stock=$this->stock())){
+              $this->addError('cant',yii::t('base.errors','El material no tiene registro de stock'));
+          }else{
+             if($transaccion->afecta_reserva){
+                if($this->getCantReal()->cant > $stock->cantres){
+                $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material reservado en stock',['canti'=>$stock->cant_disp]));  
+                }  
+             }else{
+                if($this->getCantReal()->cant > $stock->cant_disp){
+                $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material en stock',['canti'=>$stock->cant_disp]));  
+                }   
+             }
+              
+          }
+      }  
+       
    }
      
      public function isCreado(){

@@ -62,17 +62,17 @@ class Almacenes extends \common\models\base\modelBase
     public function attributeLabels()
     {
         return [
-            'codal' => Yii::t('base.names', 'Codal'),
-            'nomal' => Yii::t('base.names', 'Nomal'),
+            'codal' => Yii::t('base.names', 'Código'),
+            'nomal' => Yii::t('base.names', 'Nombre'),
             'tipo' => Yii::t('base.names', 'Tipo'),
-            'codcen' => Yii::t('base.names', 'Codcen'),
-            'tipoval' => Yii::t('base.names', 'Tipoval'),
-            'reposicionsololibre' => Yii::t('base.names', 'Reposicionsololibre'),
+            'codcen' => Yii::t('base.names', 'Centro'),
+            'tipoval' => Yii::t('base.names', 'Tipo Valorización'),
+            'reposicionsololibre' => Yii::t('base.names', 'Reposic libre'),
             'estructura' => Yii::t('base.names', 'Estructura'),
-            'novalorado' => Yii::t('base.names', 'Novalorado'),
-            'tolstockres' => Yii::t('base.names', 'Tolstockres'),
-            'codmon' => Yii::t('base.names', 'Codmon'),
-            'agregarauto' => Yii::t('base.names', 'Agregarauto'),
+            'novalorado' => Yii::t('base.names', 'Materiales no valorados'),
+            'tolstockres' => Yii::t('base.names', 'Tolerancia Stock'),
+            'codmon' => Yii::t('base.names', 'Moneda'),
+            'agregarauto' => Yii::t('base.names', 'Reposición automática'),
             'bloqueado' => Yii::t('base.names', 'Bloqueado'),
         ];
     }
