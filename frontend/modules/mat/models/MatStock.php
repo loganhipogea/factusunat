@@ -126,12 +126,12 @@ class MatStock extends \common\models\base\modelBase
      */
      private function resolveSemaforo(){
         if(!is_null($this->semaforo)){
-            $this->semaforo=$this->resolveSemaforo();
+            $this->semaforo=$this->calificaSemaforo();
         }
     }
     
     
-    private function calificaSemaforo($cant){
+    private function calificaSemaforo(){
         
       
         if($this->cantres >0){
@@ -140,7 +140,8 @@ class MatStock extends \common\models\base\modelBase
           $cantidad=$this->cant;   
         }
         $propiedades=$this->matalmacen;
-     if(is_null( $propiedades)){
+        
+     if(!is_null( $propiedades)){
       if($cantidad > $propiedades->ceconomica)
          return self::SEMAFORO_EXCESO;
       elseif($cantidad > $propiedades->creorden)

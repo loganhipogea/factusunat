@@ -106,6 +106,9 @@ class MatValeFake extends \common\models\base\modelBase
         }
         $transaccion=$valeNuevo->getDb()->beginTransaction();
             $exito=$valeNuevo->save();
+               /*Nos adeguramos que el vale original se usa una sola vez*/
+                $valeOriginal->codest=$valeOriginal::ESTADO_CERRADO;
+                $exito=$valeOriginal->save();
             $valeNuevo->refresh();
             if($exito){
                foreach($valeOriginal->detalles as $item){
@@ -122,6 +125,8 @@ class MatValeFake extends \common\models\base\modelBase
                 if(!is_null($stock)){$modelDetalle->punit=$stock->valor_unit;};
                 
                 $exito=$modelDetalle->save();
+                
+                
                 //if(!$exito){print_r($modelDetalle->getErrors());die(); };
               } 
             }else{

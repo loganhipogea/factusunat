@@ -61,18 +61,18 @@ class MatVwStock extends \common\models\base\modelBase
     {
         return [
             'id' => Yii::t('base.names', 'ID'),
-            'codart' => Yii::t('base.names', 'Codart'),
+            'codart' => Yii::t('base.names', 'Cod.'),
             'cant' => Yii::t('base.names', 'Cant'),
             'um' => Yii::t('base.names', 'Um'),
-            'ubicacion' => Yii::t('base.names', 'Ubicacion'),
-            'cantres' => Yii::t('base.names', 'Cantres'),
-            'codal' => Yii::t('base.names', 'Codal'),
-            'valor' => Yii::t('base.names', 'Valor'),
-            'lastmov' => Yii::t('base.names', 'Lastmov'),
-            'valor_unit' => Yii::t('base.names', 'Valor Unit'),
-            'cant_disp' => Yii::t('base.names', 'Cant Disp'),
-            'semaforo' => Yii::t('base.names', 'Semaforo'),
-            'descripcion' => Yii::t('base.names', 'Descripcion'),
+            'ubicacion' => Yii::t('base.names', 'Ubic'),
+            'cantres' => Yii::t('base.names', 'Res'),
+            'codal' => Yii::t('base.names', 'Almac'),
+            'valor' => Yii::t('base.names', 'Val'),
+            'lastmov' => Yii::t('base.names', 'Last'),
+            'valor_unit' => Yii::t('base.names', 'PU'),
+            'cant_disp' => Yii::t('base.names', 'Disp'),
+            'semaforo' => Yii::t('base.names', 'Control'),
+            'descripcion' => Yii::t('base.names', 'Descripción'),
         ];
     }
 
@@ -86,12 +86,13 @@ class MatVwStock extends \common\models\base\modelBase
     }
     
      public function colorSemaforo(){
+        
        switch ($this->semaforo) {
     case self::SEMAFORO_OK:
         return '#67E41E';
         break;
     case self::SEMAFORO_PELIGRO:
-        return '#5BCF40';
+        return '#f72044';
         break;
      case self::SEMAFORO_CUIDADO:
         return '#FDD523';

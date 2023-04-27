@@ -27,6 +27,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
      */
     const ESTADO_CREADO='10';
      const ESTADO_APROBADO='20';
+     const ESTADO_CERRADO='30';
       const ESTADO_ANULADO='99';
     public $prefijo='67';
     public $fecha1;
@@ -163,7 +164,9 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
      public function isAnulado(){
        return ($this->codest==self::ESTADO_ANULADO)?true:false; 
     }
-    
+     public function isCerrado(){
+       return ($this->codest==self::ESTADO_CERRADO)?true:false; 
+    }
     public function isBloqueado(){
        return $this->isAnulado()|| $this->isAprobado();
     }

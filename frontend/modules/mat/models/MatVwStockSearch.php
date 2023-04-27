@@ -17,7 +17,7 @@ class MatVwStockSearch extends MatVwStock
            
             [['id','codal', 'codart', 'codum', 'valor',
                 'punit','descripcion','ubicacion','cantres','cant_disp',
-                'semaforo',], 'safe'],
+                'semaforo','valor_unit'], 'safe'],
         ];
     }
 
@@ -61,6 +61,8 @@ class MatVwStockSearch extends MatVwStock
         ->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])
        ->andFilterWhere(['like', 'ubicacion', $this->ubicacion])
         ->andFilterWhere(['semaforo'=>$this->semaforo])
+        ->andFilterWhere(['>','valor',$this->valor])
+         ->andFilterWhere(['>','valor_unit',$this->valor_unit])
         ->andFilterWhere(['codal'=>$this->codal]);
            // ->andFilterWhere(['like', 'fechasol', $this->fechasol])
             //->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])                  

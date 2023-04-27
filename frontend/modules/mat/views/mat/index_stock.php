@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 USE yii\widgets\Pjax;
+use common\helpers\h;
 use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\logi\models\StockSearch */
@@ -10,6 +11,7 @@ use kartik\export\ExportMenu;
 
 $this->title = Yii::t('logi.labels', 'Stocks');
 $this->params['breadcrumbs'][] = $this->title;
+$formato=h::formato();
 ?>
 <div class="stock-index">
 
@@ -98,10 +100,44 @@ $this->params['breadcrumbs'][] = $this->title;
                   }
                 ],
             'um',
-          'cant',
-          'cantres',
-           'cant_disp',
-            'valor',            
+          ['attribute'=>'cant',
+               // 'headerOptions' => ['style' => 'width:50%'],
+                 'contentOptions'=>['style' => 'font-weight:800;color:#283E6A;text-align:right;'],
+                //'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
+                  'value'=>function ($model) use($formato){
+                    return ($model->cant==0 or is_null($model->cant))?'':$formato->asDecimal($model->cant,2);
+                    
+                  }
+                ],
+          ['attribute'=>'cant_disp',
+               // 'headerOptions' => ['style' => 'width:50%'],
+                 'contentOptions'=>['style' => 'font-weight:800;color:#096A1A;text-align:right;'],
+               // 'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
+                  'value'=>function ($model) use($formato){
+                    return ($model->cant_disp==0 or is_null($model->cant_disp))?'':$formato->asDecimal($model->cant_disp,2);
+                    
+                  }
+                ],
+          
+          
+          ['attribute'=>'cantres',
+               // 'headerOptions' => ['style' => 'width:50%'],
+                 'contentOptions'=>['style' => 'font-weight:800;color:#FC9C33;text-align:right;'],
+               // 'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
+                  'value'=>function ($model) use($formato){
+                    return ($model->cantres==0 or is_null($model->cantres))?'':$formato->asDecimal($model->cantres,2);
+                    
+                  }
+                ],
+            ['attribute'=>'valor',
+               // 'headerOptions' => ['style' => 'width:50%'],
+                 'contentOptions'=>['style' => 'font-weight:800;color:#000;text-align:right;'],
+               // 'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
+                  'value'=>function ($model) use($formato){
+                    return ($model->valor==0 or is_null($model->valor))?'':$formato->asDecimal($model->valor,2);
+                    
+                  }
+                ],           
             'valor_unit'
            
             //'ubicacion',

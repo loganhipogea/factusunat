@@ -62,11 +62,14 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      <?= $form->field($model, 'tolstockres')->checkBox([]) ?>
      
  </div>    
-          
-      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
      <?= $form->field($model, 'agregarauto')->checkBox([]) ?>
      
- </div>   
+  </div> 
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+     <?= $form->field($model, 'codal')->textInput(['value'=>$model->valor,'maxlength' => true,'disabled'=>true  ]) ?>
+     
+  </div> 
   <?php  ActiveForm::end(); 
    
    

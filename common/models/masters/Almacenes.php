@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models\masters;
-
+use frontend\modules\mat\models\MatStock;
 use Yii;
 
 /**
@@ -31,6 +31,9 @@ class Almacenes extends \common\models\base\modelBase
         'reposicionsololibre', 'novalorado',
         'agregarauto', 'bloqueado'
         ];
+    
+    
+    private $_valortotal=0;
     public static function tableName()
     {
         return 'almacenes';
@@ -94,5 +97,15 @@ class Almacenes extends \common\models\base\modelBase
     public static function find()
     {
         return new AlmacenesQuery(get_called_class());
+    }
+    
+    
+    public function getValor(){
+        if($this->_valortotal>0){
+            
+        }else{
+           $this->_valortotal=MatStock::find()->andWhere(['codal'=>$this->codal])->sum('valor');
+        }
+        return $this->_valortotal;
     }
 }

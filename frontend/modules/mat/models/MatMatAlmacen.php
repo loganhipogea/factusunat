@@ -92,8 +92,10 @@ class MatMatAlmacen extends \common\models\base\modelBase
        
     }
     
-    private function modelStock(){
-       return MatStock::findOne(['codal'=>$this->codart,'codart'=>$this->codart]);
+    private function updateStock(){
+      RETURN MatStock::UpdateAll(
+              ['semaforo'=>'R'],
+              ['codal'=>$this->codal,'codart'=>$this->codart]);
        
     }
     
@@ -103,7 +105,7 @@ class MatMatAlmacen extends \common\models\base\modelBase
              * Activando el semaforo del stock
              */
             
-           if(!is_null($stock=$this->modelStock())){$stock->semaforo='R';$stock->save();}
+           $this->updateStock();
         }
         return parent::beforeSave($insert);
     }
