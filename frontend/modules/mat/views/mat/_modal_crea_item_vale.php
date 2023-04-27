@@ -69,13 +69,10 @@ use common\widgets\selectwidget\selectWidget;
 
  </div> 
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'cant')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($model, 'punit')->textInput(['maxlength' => true]) ?>
 
  </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'valor')->textInput(['maxlength' => true]) ?>
-
- </div>
+  
        
           
   

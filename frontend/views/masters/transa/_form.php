@@ -15,7 +15,7 @@ use yii\helpers\Url;
     <?php $form = ActiveForm::begin([
     'id'=>'kio',
     'enableAjaxValidation'=>true,
-    'fieldClass'=>'\common\components\MyActiveField'
+    //'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">
@@ -56,6 +56,20 @@ use yii\helpers\Url;
  </div>
  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
      <?= $form->field($model, 'afecta_precio')->checkbox() ?>
+
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+     <?= $form->field($model, 'exigehistorial')->checkbox() ?>
+
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+     <?= $form->field($model, 'inversa_id')->dropDownList(
+ frontend\modules\mat\helpers\ComboHelper::getCboTransaccionesAlmacen(),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    ) ?>
 
  </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -48,7 +48,7 @@ class MatStock extends \common\models\base\modelBase
              [['valor_unit','cant_disp','semaforo','valor','codal'], 'safe'],
             [['um', 'codal'], 'string', 'max' => 4],
             [['lastmov'], 'string', 'max' => 10],
-            [['codart'], 'unique'],
+            [['codart','codal'], 'unique','targetAttribute'=>['codart','codal']],
             [['codart'], 'exist', 'skipOnError' => true, 'targetClass' => Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
         ];
     }
@@ -112,7 +112,12 @@ class MatStock extends \common\models\base\modelBase
     private function resolveStock(){
          $this->cant=((is_null($this->cant_disp))?0:$this->cant_disp)+((is_null($this->cantres))?0:$this->cantres);        
          if($this->hasChanged('valor')){
-             $this->valor_unit=$this->valor/$this->cant;
+             if($this->cant==0){
+                 $this->valor=0;$this->valor_unit=0;
+             }else{
+                 $this->valor_unit=$this->valor/$this->cant;
+             }
+             
          }  
     }
     /*

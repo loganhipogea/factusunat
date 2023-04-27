@@ -111,6 +111,16 @@ class Documentos extends modelBase
                             ],
                                     ]);
         }
-  
+        
+  /*
+   * Encuentra un código de documento
+   * mediante la ruta a la clase 
+   * Solo para documentos asociados a modelos
+   */
+  public static function codigoByModelClass($objeto){
+      $mo=self::find()->andWhere(['modelo'=>'\\'.$objeto::className()])->one();
+      if(!is_null($mo)) return $mo->codocu;
+     return null;
+  }
   
 }

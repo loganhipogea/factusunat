@@ -272,6 +272,7 @@ public function actionAjaxDesactivaItem($id){
       $modeldet=New MatDetvale();
        
        $modeldet->vale_id=$id;
+       $modeldet->codal=$model->codal;
            
        $datos=[];
         if(h::request()->isPost){
@@ -792,4 +793,46 @@ public function actionAjaxDesactivaItem($id){
         
     }
    
+    public function actionAnularVale(){
+        $model=New \frontend\modules\mat\models\MatValeFake();
+        $model->setScenarioAnulacion();
+         if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post())) {
+             if($id=$model->resolveVale()){
+               return $this->redirect(['update-vale', 'id' => $id]);  
+             }else{
+                 echo "error"; die();
+             }
+            
+        }
+
+        return $this->render('vale_form_fake', [
+            'model' => $model,
+        ]);
+    }
+    public function actionTransferirVale(){
+        $model=New \frontend\modules\mat\models\MatValeFake();
+        $model->setScenarioTransferencia();
+         if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post())) {
+             if($id=$model->resolveVale()){
+               return $this->redirect(['update-vale', 'id' => $id]);  
+             }else{
+                 echo "error"; die();
+             }
+            
+        }
+
+        return $this->render('vale_form_fake', [
+            'model' => $model,
+        ]);
+    }
 }

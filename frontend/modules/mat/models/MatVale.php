@@ -64,7 +64,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     public function rules()
     {
         return [
-            [[ 'codpro', 'codmov'], 'required'],
+            [[ 'codpro', 'codmov','codocu'], 'required'],
             [['texto'], 'string'],
             [['codocu','numerodoc','fechacon'], 'string'],
              [['codocu','numerodoc','fechacon','codal'], 'safe'],
@@ -142,13 +142,16 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     }
     
     public function Aprobar(){
+        if($this->isCreado()){
         $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
       foreach($this->detalles as $detvale){
+          yii::error('recorriendo ',__FUNCTION__);
           $detvale->aprobado();
       }
             $this->codest=self::ESTADO_APROBADO;
             $this->save();
            $transaccion->commit();
+        }
     }
     
     public function isCreado(){

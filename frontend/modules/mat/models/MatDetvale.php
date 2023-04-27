@@ -134,11 +134,13 @@ implements ReqInterface,EstadoInterface {
     
      public function beforeSave($insert) {
         if($insert){
+            
            // $this->activo=true;            
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
             $this->codest=self::ESTADO_CREADO;
-        }    
-        $this->valor=$this->punit*$this->cant;
+        } 
+        $signo=$this->vale->transaccion->signo;
+        $this->valor=$this->punit*$this->cant*$signo;
         
         return parent::beforeSave($insert);
     }
@@ -164,17 +166,19 @@ implements ReqInterface,EstadoInterface {
   }
   
   
-  private function createKardex(){
+  private function createKardex($idstock){
       $kardex=new MatKardex();
       $vale=$this->vale;
+      $signo=$vale->transaccion->signo;
       $kardex->setAttributes([
-          'stock_id'=>$this->stock()->id,
-          'signo'=>$vale->transaccion->signo,
+          'stock_id'=>$idstock,
+          'signo'=>$signo,
            'codart'=>$this->codart,
-          'cant'=>$this->cant,
+          'cant'=>$this->cant*$signo,
           'um'=>$this->material->codum,
           'umreal'=>$this->um,
           'fecha'=>$vale->fecha,
+          'codal'=>$this->codal,
           'detvale_id'=>$this->id,
            'codmov'=>$vale->codmov,
          // 'detvale_id'=>$this->id,
@@ -182,6 +186,7 @@ implements ReqInterface,EstadoInterface {
       ]);
      // print_r($kardex->attributes);die();
        $salio=$kardex->save();
+       
       //print_r($kardex->getErrors());
      return $salio;
      //return $kardex->save();
@@ -203,6 +208,7 @@ implements ReqInterface,EstadoInterface {
           
       ]);
       $salio=$stock->save();
+      
       //print_r($stock->getErrors());
      return $salio;
   }
@@ -255,25 +261,34 @@ implements ReqInterface,EstadoInterface {
        */
       if($afecta_precio){ //Sacamos el P.U. del mismo vale
           $montoafectado=abs($this->punit)*abs($this->cant)*$signo;           
-      }else{//Sacamos el P.U. del stock
-          $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;
+      }else{//Sacamos el P.U. del stock o del vale dependiendo
+          
+            $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;  
+          
+          
           /*
            * Actualizamos el P.U. pero de este vale
            * ¿Por que?:  Porque de este modo nos aseguramos que 
            * quede una foto del precio verdaero con el que se ha movido
            * en el vale
            */
-          $this->updateAll([
+          $this->punit=$stock->valor_unit;
+          /* $afectados= $this->updateAll([
               'punit'=>$stock->valor_unit,
               'valor'=>$stock->valor_unit*$this->cant,
-              ],['id'=>$this->id]);
+              ],['id'=>$this->id]);*/
+         
       }
       $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
         
             /*
              * Aquí el stock solito se las arregla en el resolveStock
              */
-             return $stock->save();
+              $exito=$stock->save();
+              yii::error('Los errores',__FUNCTION__);
+              yii::error($stock->getErrors(),__FUNCTION__);
+              $stock->refresh();
+              return $stock->id;
   }
  
 /*Establece la trazabilidad de 
@@ -303,20 +318,22 @@ implements ReqInterface,EstadoInterface {
    * aprueba el item
    */
   public function aprobado(){
-     if($this->isCreado()){
+    
       $vale=$this->vale;
       $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
         if(is_null($stock=$this->stock())){
-            $this->updateStock(New MatStock());
+            $idStock=$this->updateStock(New MatStock());
         }else{
-            $this->updateStock($stock);
+            $idStock=$this->updateStock($stock);
         }
-        // $this->createKardex();   
+        
+        yii::error($idStock,__FUNCTION__);
+           $this->createKardex($idStock);   
          //$this->trazabilidad();
          $this->codest=self::ESTADO_APROBADO;
          $this->save();
       $transaccion->commit();
-     }
+     
    }
    
    public function validate_cant_stock(){
@@ -335,7 +352,7 @@ implements ReqInterface,EstadoInterface {
       // var_dump($this->stock(),$this->attributes ,$transaccion);die();
       if($transaccion->signo <0){
            if(is_null($stock=$this->stock())){
-              $this->addError('cant',yii::t('base.errors','El material no tiene registro de stock'));
+              $this->addError('codart',yii::t('base.errors','El material no tiene registro de stock'));
           }else{
              if($transaccion->afecta_reserva){
                 if($this->getCantReal()->cant > $stock->cantres){
@@ -348,7 +365,17 @@ implements ReqInterface,EstadoInterface {
              }
               
           }
-      }  
+      }else{//Que sucede sin son positivo pero exige historial
+          if($transaccion->exigehistorial){
+             if(is_null($stock=$this->stock())){               
+             $this->addError('codart',yii::t('base.errors','Este material no tiene registro g de stock {df}',['df'=>$this->codal]));  
+               }else{
+                   if($stock->valor_unit==0)
+                   $this->addError('codart',yii::t('base.errors','Este material no tiene registro x de kardex {df}',['df'=>$this->codal]));  
+               
+               }
+          }
+      }
        
    }
      
@@ -364,7 +391,8 @@ implements ReqInterface,EstadoInterface {
     public function isBloqueado(){
        return $this->isAnulado()|| $this->isAprobado();
     }
-    
+  
+   
     
     
 }

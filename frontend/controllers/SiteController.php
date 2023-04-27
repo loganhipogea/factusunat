@@ -335,6 +335,13 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+     
+      var_dump(
+              \common\models\masters\Documentos::codigoByModelClass(
+                      New \frontend\modules\mat\models\MatVale()
+                      )
+              );
+      die();
       
      $model= \common\models\masters\Transadocs::findOne('100');
       

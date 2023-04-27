@@ -23,7 +23,7 @@ class Transacciones extends \common\models\base\modelBase
     {
         return '{{%transacciones}}';
     }
-   public $booleanFields=['exigirvalidacion','afecta_reserva'];
+   public $booleanFields=['exigirvalidacion','afecta_reserva','exigehistorial'];
     /**
      * {@inheritdoc}
      */
@@ -33,7 +33,7 @@ class Transacciones extends \common\models\base\modelBase
             [['codtrans', 'descripcion', 'signo'], 'required'],
             [['signo'], 'integer'],
             [['detalles'], 'string'],
-            [['exigirvalidacion','afecta_reserva','afecta_precio'], 'safe'],
+            [['exigirvalidacion','afecta_reserva','exigehistorial','afecta_precio','inversa_id'], 'safe'],
             [ ['codtrans'],
                 'match', 
                 'pattern' => '/[1-9]{1}[0-9]{2}/',
@@ -66,6 +66,11 @@ class Transacciones extends \common\models\base\modelBase
     public function getTransadocs()
     {
         return $this->hasMany(Transadocs::className(), ['codtrans' => 'codtrans']);
+    }
+    
+     public function getInversa()
+    {
+        return $this->hasOne(Transacciones::className(), ['codtrans' => 'inversa_id']);
     }
 
     /**
