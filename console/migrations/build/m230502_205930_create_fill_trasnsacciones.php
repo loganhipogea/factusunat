@@ -22,14 +22,14 @@ class m230502_205930_create_fill_trasnsacciones extends baseMigration
     }
 
      private static function  fields(){
-        return ['codtrans','descripcion','signo	detalles',
+        return ['codtrans','descripcion','signo','detalles',
             'exigirvalidacion','afecta_reserva','afecta_precio',
             'inversa_id','exigehistorial'];
 
     }
     private static function  getData(){
               return [
-            ['100','INGRESO POR COMPRA ','1','Todos los movimientos que aumente en el stock a traves de una orden de compra ','0','0','1','901',''],
+['100','INGRESO POR COMPRA ','1','Todos los movimientos que aumente en el stock a traves de una orden de compra ','0','0','1','901',''],
 ['101','INGRESO POR CONSIGNACION','1','','','','','',''],
 ['102','SALIDA PARA ORDEN','-1','Salida de mercadería por venta','0','1','0','500',''],
 ['103','REINGRESO','1','','0','0','0','','1'],
