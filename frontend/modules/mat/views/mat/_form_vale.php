@@ -6,7 +6,7 @@ USE common\helpers\h;
 use yii\widgets\ActiveForm;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 use  common\widgets\selectwidget\selectWidget;
-use frontend\modules\mat\helpers\ComboHelper;
+use frontend\modules\mat\helpers\comboHelper;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
@@ -76,7 +76,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
  </div> 
  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">    
  <?= $form->field($model, 'codal')->
-            dropDownList(ComboHelper::getCboAlmacenes(null),
+            dropDownList(comboHelper::getCboAlmacenes(null),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                      'disabled'=>($model->hasChilds())?'disabled':null,
@@ -88,7 +88,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
     <?= ComboDep::widget([
                'model'=>$model,               
                'form'=>$form,
-               'data'=> ComboHelper::getCboTransaccionesAlmacen(),
+               'data'=> comboHelper::getCboTransaccionesAlmacen(),
                'campo'=>'codmov',
                'idcombodep'=>'matvale-codocu',
                /* 'source'=>[ //fuente de donde se sacarn lso datos 
@@ -124,7 +124,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
  </div> 
  <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
  <?= $form->field($model, 'codocu')->
-            dropDownList(($model->isNewRecord)?[]:ComboHelper::getCboTransaccionesDocus($model->codmov),
+            dropDownList(($model->isNewRecord)?[]:comboHelper::getCboTransaccionesDocus($model->codmov),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,

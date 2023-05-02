@@ -9,7 +9,7 @@
  */
 namespace frontend\modules\clasi\helpers;
 use yii\helpers\ArrayHelper;
-use frontend\modules\mat\helpers\ComboHelper as Combito;
+use frontend\modules\mat\helpers\comboHelper as Combito;
 use common\helpers\h;
 use yii;
 class ComboHelper extends Combito

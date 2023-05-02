@@ -88,7 +88,7 @@ use yii\widgets\ActiveForm;
   </div> 
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
  <?= $form->field($model, 'codal')->
-            dropDownList(ComboHelper::getCboAlmacenes(null),
+            dropDownList(comboHelper::getCboAlmacenes(null),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
@@ -97,7 +97,7 @@ use yii\widgets\ActiveForm;
  </div> 
    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
  <?= $form->field($model, 'codmov')->
-            dropDownList(ComboHelper::getCboTransaccionesAlmacen(),
+            dropDownList(comboHelper::getCboTransaccionesAlmacen(),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-use frontend\modules\mat\helpers\ComboHelper;
+use frontend\modules\mat\helpers\comboHelper;
 
  use kartik\date\DatePicker;
 

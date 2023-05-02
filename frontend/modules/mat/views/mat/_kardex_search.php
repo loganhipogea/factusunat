@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
  use kartik\date\DatePicker;
  use common\helpers\h;
- use frontend\modules\mat\helpers\ComboHelper;
+ use frontend\modules\mat\helpers\comboHelper;
  use common\widgets\selectwidget\selectWidget;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\mat\models\MatReqSearch */
@@ -92,7 +92,7 @@ use yii\widgets\ActiveForm;
    
    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
  <?= $form->field($model, 'codmov')->
-            dropDownList(ComboHelper::getCboTransaccionesAlmacen(),
+            dropDownList(comboHelper::getCboTransaccionesAlmacen(),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
@@ -102,7 +102,7 @@ use yii\widgets\ActiveForm;
     
    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
  <?= $form->field($model, 'codocu')->
-            dropDownList(ComboHelper::getCboDocuments(),
+            dropDownList(comboHelper::getCboDocuments(),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,

@@ -64,7 +64,7 @@ use yii\helpers\Url;
  </div>
  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
      <?= $form->field($model, 'inversa_id')->dropDownList(
- frontend\modules\mat\helpers\ComboHelper::getCboTransaccionesAlmacen(),
+ frontend\modules\mat\helpers\comboHelper::getCboTransaccionesAlmacen(),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
