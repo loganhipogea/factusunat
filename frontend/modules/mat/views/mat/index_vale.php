@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel frontend\modules\mat\models\MatReqSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Mat Reqs');
+$this->title = Yii::t('app', 'Vale almacén');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mat-req-index">

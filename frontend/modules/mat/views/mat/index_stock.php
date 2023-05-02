@@ -1,5 +1,5 @@
 <?php
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 //use yii\grid\GridView;
 USE yii\widgets\Pjax;
@@ -64,8 +64,8 @@ $formato=h::formato();
                          }
                     ]*/
                 ],
-         
-         [
+        
+         /*[
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
                 'value' => function ($model, $key, $index, $column) {
@@ -78,11 +78,10 @@ $formato=h::formato();
                                //'key'=>$key,
                            ]);
                             },
-                     //'detailUrl' =>Url::toRoute(['/masters/clipro/_expand_almacen']),
+                    // 'detailUrl' =>Url::toRoute(['/mat/mat/ajax-show-kardex']),
                     //'headerOptions' => ['class' => 'kartik-sheet-style'], 
                     'expandOneOnly' => true
-                ],
-         
+                ],*/
          
          
               ['attribute'=>'semaforo',
@@ -102,10 +101,10 @@ $formato=h::formato();
                     return $model->codart;
                   }
                 ],
-            ['attribute'=>'descripcion',
+            ['attribute'=>'material.descripcion',
                 'headerOptions' => ['style' => 'width:30%'],
                   'value'=>function ($model){
-                    return $model->descripcion;
+                    return $model->material->descripcion;
                   }
                 ],
              
@@ -155,7 +154,7 @@ $formato=h::formato();
                     
                   }
                 ],           
-            'valor_unit'
+            'valor_unit',
            
             //'ubicacion',
             //'cantres',

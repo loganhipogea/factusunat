@@ -63,7 +63,7 @@ class MatVwStockSearch extends MatVwStock
         ->andFilterWhere(['semaforo'=>$this->semaforo])
         ->andFilterWhere(['>','valor',$this->valor])
          ->andFilterWhere(['>','valor_unit',$this->valor_unit])
-        ->andFilterWhere(['codal'=>$this->codal]);
+        ->andFilterWhere(['codal'=>$this->codal])->indexBy('codart');
            // ->andFilterWhere(['like', 'fechasol', $this->fechasol])
             //->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])                  
         

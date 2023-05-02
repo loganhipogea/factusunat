@@ -18,12 +18,17 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 
 
   <div class="box-body">
+      
+      
+      
+      
+      
     <?php $form = ActiveForm::begin([
     'fieldClass'=>'\common\components\MyActiveField',
         'enableAjaxValidation'=>true,
     ]); 
     $bloqueado=false;
-   
+   $formato=h::formato();
     ?>
       <div class="box-header">
         <div class="col-md-12">
@@ -32,9 +37,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
            <?php 
             
-           echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
-                  ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
-                 );
+          
             echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Calificar ABC'),
                   ['class' => 'btn btn-success','href' => '#','id'=>'btn-abc']
                  );
@@ -43,15 +46,56 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
              </div>     
             </div>
         </div>
-    </div>
-      
-    
+     </div>
 
-  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+   <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12">
+   <div class="small-box bg-success">
+        <div class="inner">
+            <h4><?=$formato->asDecimal($model->valor)?></h4>
+            <p>Valor total</p>
+        </div>
+        <div class="icon">
+            <i class="fa fa-money"></i>
+        </div>
+            <a href="#" class="small-box-footer">Detalles<i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+      
+ 
+ <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h4><?=$model->nItemsStockCuidado()?></h4>
+                    <p># Items a reponer</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-line-chart"></i>
+            </div>
+                <a href="#" class="small-box-footer">Detalles <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+</div>
+
+  <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h4><?=$model->nItemsStockRoto()?></h4>
+                <p># Items stock crítico</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-warning"></i>
+            </div>
+                <a href="#" class="small-box-footer">Detalles <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+   </div>   
+
+      
+      
+      
+  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
      <?= $form->field($model, 'codal')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
  </div>
- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+ <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
      <?= $form->field($model, 'nomal')->textInput(['maxlength' => true,'disabled'=>true  ]) ?>
      
  </div>
@@ -68,12 +112,13 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      <?= $form->field($model, 'agregarauto')->checkBox([]) ?>
      
   </div> 
-  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-     <?= $form->field($model, 'codal')->textInput(['value'=>$model->valor,'maxlength' => true,'disabled'=>true  ])->label(yii::t('base.names','Valor total')) ?>
-     
-  </div> 
-  <?php  ActiveForm::end(); ?>
   
+  <?php  ActiveForm::end(); ?>
+ <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12">
+
+   
+      
+      
     <?php   
        echo inputAjaxWidget::widget([
             //'isHtml'=>true,
@@ -89,3 +134,4 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
       
 </div>
   
+  </div>

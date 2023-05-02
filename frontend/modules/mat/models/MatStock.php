@@ -166,6 +166,14 @@ class MatStock extends \common\models\base\modelBase
     }
     
     
-   
-    
+   public static function valorStock($codal=null){
+       if(is_null($codal))
+       return self::find()->sum('valor');
+       return self::find()->andWhere(['codal'=>$codal])->sum('valor');
+   }
+   public static function nItems($codal=null){
+       if(is_null($codal))
+       return self::find()->count();
+       return self::find()->andWhere(['codal'=>$codal])->count();
+   } 
 }

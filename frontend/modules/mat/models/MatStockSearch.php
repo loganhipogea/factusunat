@@ -4,7 +4,7 @@ namespace frontend\modules\mat\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\modules\mat\models\MatReq;
+use frontend\modules\mat\models\MatStock;
 
 /**
  * MatReqSearch represents the model behind the search form of `frontend\modules\mat\models\MatReq`.
@@ -14,11 +14,22 @@ class MatStockSearch extends MatStock
     /**
      * {@inheritdoc}
      */
+   
+    public function attributes()
+        {
+         // add related fields to searchable attributes
+            return array_merge(parent::attributes(), ['material.descripcion']);
+        }
+
+    
+    
+    
     public function rules()
     {
         return [
             [['id'], 'integer'],
             [['codart', 'fechaprog', 'fechasol', 'codtra', 'descripcion', 'texto', 'codest'], 'safe'],
+            ['material.descripcion', 'safe'],
         ];
     }
 
@@ -40,7 +51,7 @@ class MatStockSearch extends MatStock
      */
     public function search($params)
     {
-        $query = MatReq::find();
+        $query = MatStock::find();
 
         // add conditions that should always apply here
 
@@ -61,13 +72,10 @@ class MatStockSearch extends MatStock
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'numero', $this->numero])
-            ->andFilterWhere(['like', 'fechaprog', $this->fechaprog])
-            ->andFilterWhere(['like', 'fechasol', $this->fechasol])
-            ->andFilterWhere(['like', 'codtra', $this->codtra])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'texto', $this->texto])
-            ->andFilterWhere(['like', 'codest', $this->codest]);
+        $query
+            ->andFilterWhere(['LIKE', 'material.descripcion', $this->getAttribute('material.descripcion')])
+            ->andFilterWhere(['like', 'codart', $this->codart])
+             ;
 
         return $dataProvider;
     }

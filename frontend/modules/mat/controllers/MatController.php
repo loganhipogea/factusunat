@@ -14,6 +14,7 @@ use \frontend\modules\mat\models\VwValeSearch;
 use frontend\modules\mat\models\MatVwKardex;
 use frontend\modules\mat\models\MatVwKardexSearch;
 use frontend\modules\mat\models\MatVwStockSearch;
+use frontend\modules\mat\models\MatStockSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Model;
@@ -340,7 +341,14 @@ public function actionAjaxDesactivaItem($id){
     
      public function actionIndexStock()
     {
-        $searchModel = new MatVwStockSearch();
+         
+          if ($this->is_editable()){
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            return $this->editField();
+           } 
+        //$searchModel = new MatVwStockSearch();
+         $searchModel = new MatStockSearch();  
+           
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index_stock', [
@@ -849,5 +857,17 @@ public function actionAjaxDesactivaItem($id){
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+   public function actionAjaxShowKardex() {
+        if (h::request()->isAjax) {
+           
+            $id = h::request()->post('expandRowKey');
+            //h::response()->format = \yii\web\Response::FORMAT_JSON;
+            var_dump($id);die();
+            $model= \frontend\modules\mat\models\MatStock::findOne($id);
+            return $this->renderPartial("_expand_kardex", ['model' => $model]);
+        }
+    } 
+    
     
 }

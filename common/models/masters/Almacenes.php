@@ -111,6 +111,12 @@ class Almacenes extends \common\models\base\modelBase
     }
     
     
+     public function getItemsCriticos()
+    {
+        return $this->hasMany(\frontend\modules\mat\models\MatMatAlmacen::className(), ['codal' => 'codal']);
+    }
+    
+    
     public function getValor(){
         if($this->_valortotal>0){
             
@@ -156,4 +162,28 @@ class Almacenes extends \common\models\base\modelBase
             }
         }
     }
+    
+    /*
+     * Items críticos con stock que deben de reponerse
+     */
+    public function nItemsStockCuidado(){
+        //$codes=$this->getItemsCriticos()->select(['codart'])->column();
+       return  MatStock::find()->andWhere([
+            'semaforo'=>MatStock::SEMAFORO_CUIDADO,
+            'codal'=>$this->codal,
+            ])->count();
+    }
+    
+    
+     /*
+     * Items críticos con stock de Ítems rotos
+     */
+    public function nItemsStockRoto(){
+        //$codes=$this->getItemsCriticos()->select(['codart'])->column();
+       return MatStock::find()->andWhere([
+            'semaforo'=>MatStock::SEMAFORO_PELIGRO,
+            'codal'=>$this->codal,
+            ])->count();
+    }
+    
 }
