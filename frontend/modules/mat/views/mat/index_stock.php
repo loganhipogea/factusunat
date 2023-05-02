@@ -110,7 +110,7 @@ $formato=h::formato();
              
          ['attribute'=>'codal',
                // 'headerOptions' => ['style' => 'width:50%'],
-                'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
+                'filter'=> frontend\modules\mat\helpers\comboHelper::getCboAlmacenes(),
                   'value'=>function ($model){
                     return $model->codal;
                   }
