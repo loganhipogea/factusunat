@@ -15,13 +15,13 @@ class m230502_213036_create_fill_trasnsacciones extends baseMigration
     {
        \Yii::$app->db->createCommand()->
          batchInsert(static::NAME_TABLE_DOCS,
-         ['codocu','desdocu','\frontend\modules\cc\models\CcCc'],
-                [['197','REGISTRO CECO','\frontend\modules\com\models\ComOv'],
+         ['codocu','desdocu','modelo'],
+                [['197','REGISTRO CECO','\frontend\modules\cc\models\CcCc'],
                 ['198','ORDEN DE VENTA','\frontend\modules\com\models\ComCotizacion'],
                 ['199','COTIZACION','\common\models\masters\Bancos'],
                 ['204','ORDEN DE TRABAJO','\common\models\masters\Bancos'],
-                ['459','ORDEN DE INVERSION','\common\models\masters\Cargos'],
-                ['548','ORDEN DE VENTA',''],
+                ['459','ORDEN DE INVERSION','\common\models\masters\Bancos'],
+                ['548','ORDEN DE VENTA','\common\models\masters\Cargos'],
                 ]                
                  )->execute();
         
