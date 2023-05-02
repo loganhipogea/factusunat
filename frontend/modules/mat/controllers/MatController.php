@@ -346,8 +346,8 @@ public function actionAjaxDesactivaItem($id){
             h::response()->format = \yii\web\Response::FORMAT_JSON;
             return $this->editField();
            } 
-        //$searchModel = new MatVwStockSearch();
-         $searchModel = new MatStockSearch();  
+        $searchModel = new MatVwStockSearch();
+       //  $searchModel = new MatStockSearch();  
            
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
