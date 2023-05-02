@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbe6db84c7bbb5cb26037b0bdecff704",
+    "content-hash": "0663b7cea479f85c6eca7f91953ef347",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -803,6 +803,54 @@
                 "wiki": "http://docs.ckeditor.com"
             },
             "time": "2017-09-13T13:09:47+00:00"
+        },
+        {
+            "name": "codiverum/yii2-relation-search-filter",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codiverum/yii2-relation-search-filter.git",
+                "reference": "d3aff6aeaad02882127ffd1cd261781a7e1642dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codiverum/yii2-relation-search-filter/zipball/d3aff6aeaad02882127ffd1cd261781a7e1642dc",
+                "reference": "d3aff6aeaad02882127ffd1cd261781a7e1642dc",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "codiverum\\relationSF\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "codiverum",
+                    "email": "info@codiverum.com"
+                }
+            ],
+            "description": "Simple extension for making searching and filtering by related field simple.",
+            "keywords": [
+                " active record",
+                " relation",
+                "extension",
+                "filter",
+                "search",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/codiverum/yii2-relation-search-filter/issues",
+                "source": "https://github.com/codiverum/yii2-relation-search-filter/tree/1.0.7"
+            },
+            "time": "2015-10-20T08:03:23+00:00"
         },
         {
             "name": "components/flag-icon-css",
@@ -10227,5 +10275,5 @@
         "php": ">=5.6.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

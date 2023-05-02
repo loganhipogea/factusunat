@@ -12,7 +12,7 @@ use yii\helpers\ArrayHelper;
 use common\helpers\ComboHelper as Combito;
 use common\helpers\h;
 use yii;
-class ComboHelper extends Combito
+class comboHelper extends Combito
 {
     
     public static function getCboTransaccionesAlmacen(){
