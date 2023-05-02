@@ -1,10 +1,11 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
 USE yii\widgets\Pjax;
 use common\helpers\h;
 use kartik\export\ExportMenu;
+use kartik\grid\GridView as GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\logi\models\StockSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -64,7 +65,23 @@ $formato=h::formato();
                     ]*/
                 ],
          
-         
+         [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                            return GridView::ROW_COLLAPSED;
+                                },
+                 'detail'=> function($model)  {          
+                                        
+                          return  $this->render('_expand_kardex',[
+                               'model'=>$model,
+                               //'key'=>$key,
+                           ]);
+                            },
+                     //'detailUrl' =>Url::toRoute(['/masters/clipro/_expand_almacen']),
+                    //'headerOptions' => ['class' => 'kartik-sheet-style'], 
+                    'expandOneOnly' => true
+                ],
          
          
          

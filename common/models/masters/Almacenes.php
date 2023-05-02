@@ -2,6 +2,7 @@
 
 namespace common\models\masters;
 use frontend\modules\mat\models\MatStock;
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -34,6 +35,10 @@ class Almacenes extends \common\models\base\modelBase
     
     
     private $_valortotal=0;
+    private $_nitems=null;
+    private $_items_valorizados=[];//Array ['id'=>'Valor]
+    //private $_=null;
+    
     public static function tableName()
     {
         return 'almacenes';
@@ -100,6 +105,12 @@ class Almacenes extends \common\models\base\modelBase
     }
     
     
+     public function getItems()
+    {
+        return $this->hasMany(\frontend\modules\mat\models\MatStock::className(), ['codal' => 'codal']);
+    }
+    
+    
     public function getValor(){
         if($this->_valortotal>0){
             
@@ -107,5 +118,42 @@ class Almacenes extends \common\models\base\modelBase
            $this->_valortotal=MatStock::find()->andWhere(['codal'=>$this->codal])->sum('valor');
         }
         return $this->_valortotal;
+    }
+    
+    public function getNitems(){
+        if($this->_nitems>0){
+            
+        }else{
+           $this->_nitems=MatStock::find()->andWhere(['codal'=>$this->codal])->count();
+        }
+        return $this->_nitems;
+    }
+    
+    
+    
+    
+   
+   
+   
+    /*Grupo de funciones para resolver el
+    * Diagrama de pareto
+    */
+   
+    public function resolvePareto(){
+        $monto=0;
+        $montoTotal=$this->valor;
+        
+        foreach($this->getItems()->
+                orderBy(['valor'=>SORT_DESC])
+                ->each(10) as $item){
+            $monto+=is_null($item->valor)?0:$item->valor;
+            if($monto<=$montoTotal*0.8){
+                MatStock::updateAll(['abc'=>'A'],['id'=>$item->id]);
+            }elseif($monto<=$montoTotal*0.9){
+                MatStock::updateAll(['abc'=>'B'],['id'=>$item->id]);
+            }else{
+                MatStock::updateAll(['abc'=>'C'],['id'=>$item->id]); 
+            }
+        }
     }
 }

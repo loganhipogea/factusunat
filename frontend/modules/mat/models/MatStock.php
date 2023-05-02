@@ -45,7 +45,7 @@ class MatStock extends \common\models\base\modelBase
             [['cant', 'cantres', 'valor'], 'number'],
             [['codart', 'ubicacion'], 'string', 'max' => 14],
              [['um'], 'valida_um_base'],
-             [['valor_unit','cant_disp','semaforo','valor','codal'], 'safe'],
+             [['valor_unit','cant_disp','semaforo','valor','codal','abc'], 'safe'],
             [['um', 'codal'], 'string', 'max' => 4],
             [['lastmov'], 'string', 'max' => 10],
             [['codart','codal'], 'unique','targetAttribute'=>['codart','codal']],

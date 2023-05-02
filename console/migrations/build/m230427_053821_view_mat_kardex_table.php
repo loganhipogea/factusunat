@@ -19,8 +19,8 @@ class m230427_053821_view_mat_kardex_table extends \console\migrations\baseMigra
     ->select(['a.*',
       'b.descripcion', 
        'c.descripcion as descritransa', 
-      'd.codocu','d.numerodoc',
-       'e.despro','x.valor','x.punit',
+      'd.codocu','d.numerodoc',,'d.id as vale_id',
+      'e.codpro','e.despro','x.valor','x.punit',
       'f.desdocu',
       
          ])

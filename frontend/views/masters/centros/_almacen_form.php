@@ -35,7 +35,9 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
            echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
                   ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
                  );
-           
+            echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Calificar ABC'),
+                  ['class' => 'btn btn-success','href' => '#','id'=>'btn-abc']
+                 );
         
                ?> 
              </div>     
@@ -67,12 +69,23 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      
   </div> 
   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-     <?= $form->field($model, 'codal')->textInput(['value'=>$model->valor,'maxlength' => true,'disabled'=>true  ]) ?>
+     <?= $form->field($model, 'codal')->textInput(['value'=>$model->valor,'maxlength' => true,'disabled'=>true  ])->label(yii::t('base.names','Valor total')) ?>
      
   </div> 
-  <?php  ActiveForm::end(); 
+  <?php  ActiveForm::end(); ?>
+  
+    <?php   
+       echo inputAjaxWidget::widget([
+            //'isHtml'=>true,
+             'id'=>'btn-abc',
+            'otherContainers'=>['zona-scripts'],
+             'evento'=>'click',
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/masters/centros/ajax-calificar-pareto','codal'=>$model->codal]),
+            'id_input'=>'btn-abc',
+            'idGrilla'=>'grilla-botones',
+      ]);  ?>
    
-   
-    ?>
+      
 </div>
   

@@ -1,18 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <?php
 
 use yii\helpers\Html;
@@ -28,8 +13,8 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 $this->title = Yii::t('base.names', 'Editar almacén: {name}', [
     'name' => $model->nomal,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Centros'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->codcen, 'url' => ['view', 'codcen' => $model->codcen]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('base.names', 'Almacenes'), 'url' => ['index-almacenes']];
+$this->params['breadcrumbs'][] = ['label' => $model->codcen, 'url' => ['view-almacen', 'codal' => $model->codal]];
 $this->params['breadcrumbs'][] = Yii::t('base.names', 'Update');
 ?>
 <div class="centros-update">

@@ -11,6 +11,8 @@ use frontend\modules\mat\models\MatReqSearch;
 use frontend\controllers\base\baseController;
 use \frontend\modules\mat\models\MatDetreq;
 use \frontend\modules\mat\models\VwValeSearch;
+use frontend\modules\mat\models\MatVwKardex;
+use frontend\modules\mat\models\MatVwKardexSearch;
 use frontend\modules\mat\models\MatVwStockSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -835,4 +837,17 @@ public function actionAjaxDesactivaItem($id){
             'model' => $model,
         ]);
     }
+    
+    
+      public function actionIndexKardex()
+    {
+        $searchModel = new MatVwKardexSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_kardex', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
 }

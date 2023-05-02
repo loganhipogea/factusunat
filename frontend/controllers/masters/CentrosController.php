@@ -277,4 +277,27 @@ class CentrosController extends baseController
 
        
     } 
+    
+    public function actionIndexAlmacenes(){
+       $searchModel = new \common\models\masters\AlmacenesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_almacenes', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);  
+    }
+  
+    
+   public function actionAjaxCalificarPareto($codal){
+       if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model= Almacenes::findOne($codal))){
+                    $model->resolvePareto();
+                    return ['success'=>yii::t('base.errors','Se realizó la calificación')];
+                  }   
+                
+            }    
+  }
+    
 }
