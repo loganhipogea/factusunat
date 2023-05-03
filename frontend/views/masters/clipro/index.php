@@ -24,7 +24,7 @@ $this->title = Yii::t('base.names', 'Customers/Vendors');
    
        <?php
          $url= Url::to(['/masters/clipro/modal-crea-rapido']);
-        echo  Html::button('<span class="fa fa-plus"></span>', ['href' => $url, 'title' => 'Crea un nuevo proveedor ','id'=>'btn_add_prove','idGrilla'=>'zona-pjax',  'class' => 'botonAbre btn btn-success']); 
+        echo  Html::button('<span class="fa fa-plus"></span>', ['href' => $url, 'title' => 'Crea un nuevo proveedor ','id'=>'btn_add_prove','idGrilla'=>'zona-pjax',  'class' => 'botonAbre btn btn-warning']); 
        ?>
        
     <?php
@@ -35,7 +35,7 @@ $this->title = Yii::t('base.names', 'Customers/Vendors');
             'rucpro'],
     'dropdownOptions' => [
         'label' => yii::t('base.names','Exportar'),
-        'class' => 'btn btn-success'
+        'class' => 'btn btn-danger'
     ]
 ]).' 
     </div>
