@@ -20,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
    <h4><?=h::awe('dropbox')?><?= Html::encode($this->title) ?></h4>
   
     <div class="box box-success">
-       <?php   
+       <?php  
+       $valores=$model::dataComboValores('codtipo');
   $gridColumns= [
           
            
@@ -36,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'modelo',
             'um.codum',
              ['attribute' => 'codtipo',
+                 'filter'=>$valores,
                 'headerOptions' => ['style' => 'width:20%'],
                 'format'=>'raw',
                 'value'=>function($model){                            
