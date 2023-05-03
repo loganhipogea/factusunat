@@ -26,16 +26,25 @@ $this->params['breadcrumbs'][] = $this->title;
            
             'codart',
              ['attribute' => 'descripcion',
-                'headerOptions' => ['style' => 'width:50%'],
+                'headerOptions' => ['style' => 'width:40%'],
                 'format'=>'raw',
                 'value'=>function($model){                            
                             return $model->descripcion;
-                            } 
-                
+                            }                
                 ],
             'marca',
             'modelo',
             'um.codum',
+             ['attribute' => 'codtipo',
+                'headerOptions' => ['style' => 'width:20%'],
+                'format'=>'raw',
+                'value'=>function($model){                            
+                            return $model::comboValueText('codtipo');
+                            }                
+                ],           
+                        
+            comboValueText(            
+                        
             ['attribute' => 'imagen',
                 'format'=>'raw',
                 'value'=>function($model){
