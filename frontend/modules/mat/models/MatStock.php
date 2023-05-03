@@ -27,6 +27,7 @@ class MatStock extends \common\models\base\modelBase
     const SEMAFORO_OK='G';
     const SEMAFORO_CUIDADO='Y';
     const SEMAFORO_PELIGRO='R';//Ruptura de stock
+    const SCE_BATCH='cargar_inventario';//Ruptura de stock
     /**
      * {@inheritdoc}
      */
@@ -45,6 +46,8 @@ class MatStock extends \common\models\base\modelBase
             [['cant', 'cantres', 'valor'], 'number'],
             [['codart', 'ubicacion'], 'string', 'max' => 14],
              [['um'], 'valida_um_base'],
+            
+            [['codart', 'cant', 'ubicacion', 'valor_unit',],'safe','on'=>self::SCE_BATCH],
              [['valor_unit','cant_disp','semaforo','valor','codal','abc'], 'safe'],
             [['um', 'codal'], 'string', 'max' => 4],
             [['lastmov'], 'string', 'max' => 10],
@@ -71,6 +74,12 @@ class MatStock extends \common\models\base\modelBase
         ];
     }
  
+     public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCE_BATCH] = ['codart', 'cant', 'ubicacion', 'valor_unit',];
+         return $scenarios;
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */
