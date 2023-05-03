@@ -65,7 +65,7 @@ $formato=h::formato();
                     ]*/
                 ],
         
-         /*[
+         [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
                 'value' => function ($model, $key, $index, $column) {
@@ -81,7 +81,7 @@ $formato=h::formato();
                     // 'detailUrl' =>Url::toRoute(['/mat/mat/ajax-show-kardex']),
                     //'headerOptions' => ['class' => 'kartik-sheet-style'], 
                     'expandOneOnly' => true
-                ],*/
+                ],
          
          
               ['attribute'=>'semaforo',
