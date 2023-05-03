@@ -28,9 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
              ['attribute' => 'descripcion',
                 'headerOptions' => ['style' => 'width:50%'],
                 'format'=>'raw',
-                'value'=>function($model){
-                            if($model->hasAttachments())
-                            return \yii\helpers\Html::img ($model->files[0]->url,['width'=>50,'height'=>50]);
+                'value'=>function($model){                            
+                            return $model->descripcion;
                             } 
                 
                 ],
