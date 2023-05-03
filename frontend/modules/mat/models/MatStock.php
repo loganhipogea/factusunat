@@ -123,15 +123,16 @@ class MatStock extends \common\models\base\modelBase
     }
     
     private function resolveStock(){
+      if(!$this->isScenario(self::SCE_BATCH)){
          $this->cant=((is_null($this->cant_disp))?0:$this->cant_disp)+((is_null($this->cantres))?0:$this->cantres);        
          if($this->hasChanged('valor')){
              if($this->cant==0){
                  $this->valor=0;$this->valor_unit=0;
              }else{
                  $this->valor_unit=$this->valor/$this->cant;
-             }
-             
-         }  
+             }             
+         }
+        }
     }
     /*
      * Si se trata de materiales
