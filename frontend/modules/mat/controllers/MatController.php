@@ -318,7 +318,7 @@ public function actionAjaxDesactivaItem($id){
             }else{
                 $modeldet->save(); 
                 //$model->assignStudentsByRandom();
-                  return ['success'=>1,'id'=>$model->id];
+                  return ['success'=>1,'id'=>$modeldet->id];
             }
         }else{
            return $this->renderAjax('_modal_crea_item_vale', [
