@@ -41,9 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function($model){                            
                             return $model::comboValueText('codtipo');
                             }                
-                ],           
-                        
-            comboValueText(            
+                ],  
                         
             ['attribute' => 'imagen',
                 'format'=>'raw',
