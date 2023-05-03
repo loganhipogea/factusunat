@@ -116,6 +116,15 @@ $formato=h::formato();
                   }
                 ],
             'um',
+            ['attribute'=>'ubicacion',
+               // 'headerOptions' => ['style' => 'width:50%'],
+                 'contentOptions'=>['style' => 'font-weight:800;color:#D35A00;text-align:right;'],
+                //'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
+                  'value'=>function ($model) use($formato){
+                    return $model->ubicacion;
+                    
+                  }
+                ], 
           ['attribute'=>'cant',
                // 'headerOptions' => ['style' => 'width:50%'],
                  'contentOptions'=>['style' => 'font-weight:800;color:#283E6A;text-align:right;'],
