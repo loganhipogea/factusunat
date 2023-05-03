@@ -39,10 +39,10 @@ $formato=h::formato();
         'columns' => [
             
          
-         [
+         /*[
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update}{view}',
-               /* 'buttons' => [
+                'buttons' => [
                     'update' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
@@ -62,8 +62,8 @@ $formato=h::formato();
                         ];
                         return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-remove"></span>', $url, $options);
                          }
-                    ]*/
-                ],
+                    ]
+                ],*/
         
          [
                 'class' => 'kartik\grid\ExpandRowColumn',
