@@ -17,7 +17,7 @@ class MaestrocompoSearch extends Maestrocompo
     public function rules()
     {
         return [
-            [['codart', 'descripcion', 'marca', 'modelo',  'numeroparte'], 'safe'],
+            [['codart', 'descripcion', 'marca', 'modelo',  'numeroparte','codtipo'], 'safe'],
         ];
     }
 
@@ -61,6 +61,7 @@ class MaestrocompoSearch extends Maestrocompo
          if(empty($this->descripcion)){
           $query->andFilterWhere(['like', 'codart', $this->codart])
             ->andFilterWhere(['like', 'marca', $this->marca])
+            ->andFilterWhere(['codtipo'=> $this->codtipo])
             ->andFilterWhere(['like', 'numeroparte', $this->numeroparte])     
             ->andFilterWhere(['like', 'modelo',$this->modelo]);     
          }else{
