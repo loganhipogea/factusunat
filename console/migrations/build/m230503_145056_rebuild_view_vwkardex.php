@@ -8,7 +8,7 @@ class m230503_145056_rebuild_view_vwkardex extends \console\migrations\baseMigra
      */
     public function safeUp()
     {
-          /* $vista=static::NAME_VIEW;
+           $vista=static::NAME_VIEW;
         $comando= $this->db->createCommand(); 
         if($this->existsTable($vista)) {
          
@@ -32,7 +32,7 @@ class m230503_145056_rebuild_view_vwkardex extends \console\migrations\baseMigra
      innerJoin('{{%mat_vale}} d', 'd.id=x.vale_id')->          
      innerJoin('{{%clipro}} e', 'd.codpro=e.codpro') ->
      innerJoin('{{%documentos}} f', 'f.codocu=d.codocu')
-                )->execute();*/
+                )->execute();
     }
 
     /**
@@ -40,11 +40,11 @@ class m230503_145056_rebuild_view_vwkardex extends \console\migrations\baseMigra
      */
     public function safeDown()
     {
-       /* $vista=static::NAME_VIEW;
+        $vista=static::NAME_VIEW;
         if($this->existsTable($vista)) {
             $comando= $this->db->createCommand();
          $comando->dropView($vista);
-        */
+        
          
        
        /* $comando->createView($vista,
@@ -58,7 +58,7 @@ class m230503_145056_rebuild_view_vwkardex extends \console\migrations\baseMigra
      innerJoin('{{%mat_detvale}} b', 'a.id=b.vale_id')->
      innerJoin('{{%maestrocompo}} c', 'c.codart=b.codart')
                 )->execute();*/
-    //}
+   }
     
     }
 
