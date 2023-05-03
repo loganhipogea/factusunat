@@ -101,10 +101,10 @@ $formato=h::formato();
                     return $model->codart;
                   }
                 ],
-            ['attribute'=>'material.descripcion',
+            ['attribute'=>'descripcion',
                 'headerOptions' => ['style' => 'width:30%'],
                   'value'=>function ($model){
-                    return $model->material->descripcion;
+                    return $model->descripcion;
                   }
                 ],
              
