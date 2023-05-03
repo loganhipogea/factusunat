@@ -50,10 +50,10 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
     
 
   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'numero')->textInput(['maxlength' => true,'disabled'=>true]) ?>
+     <?= $form->field($model, 'numero')->textInput(['style'=>'color:#6B0755; font-weight:700; font-size:1.2em',  'maxlength' => true,'disabled'=>true]) ?>
 
  </div>
- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+ <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,'disabled'=>(!$bloqueado)?false:true  ]) ?>
      
  </div>
@@ -74,17 +74,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
         ]);  ?>
 
  </div> 
- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">    
- <?= $form->field($model, 'codal')->
-            dropDownList(comboHelper::getCboAlmacenes(null),
-                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                     'disabled'=>($model->hasChilds())?'disabled':null,
-                        ]
-                    ) ?>
- </div> 
- 
- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">   
+ <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">   
     <?= ComboDep::widget([
                'model'=>$model,               
                'form'=>$form,
@@ -122,7 +112,20 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                
         )  ?>
  </div> 
- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
+   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
+   </div>
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">    
+ <?= $form->field($model, 'codal')->
+            dropDownList(comboHelper::getCboAlmacenes(null),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                     'disabled'=>($model->hasChilds())?'disabled':null,
+                        ]
+                    ) ?>
+ </div> 
+ 
+
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">    
  <?= $form->field($model, 'codocu')->
             dropDownList(($model->isNewRecord)?[]:comboHelper::getCboTransaccionesDocus($model->codmov),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
@@ -134,7 +137,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
           
   
                   
- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
      <?= $form->field($model, 'numerodoc')->textInput(['maxlength' => true,'disabled'=>(!$bloqueado)?false:true  ]) ?>
      
  </div>   
@@ -174,7 +177,11 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                                 ]
                             ]) ?>
  </div>
-   
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <?= $form->field($model, 'texto')->textArea(['disabled'=>(!$bloqueado)?false:true  ]) ?>
+    
+      
+      </div>  
 
    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
     <?php  
