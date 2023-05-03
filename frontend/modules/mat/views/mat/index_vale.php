@@ -1,7 +1,7 @@
 <?php
-
+use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\mat\models\MatReqSearch */
@@ -24,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             
          
-         [
+         /*[
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update}',
                 'buttons' => [
@@ -38,11 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
                         $url= \yii\helpers\Url::to(['/mat/mat/update','id'=>$model->id]);
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options);
                          },
                         
                     ]
-                ],
+                ],*/
          
          
          
@@ -50,14 +50,43 @@ $this->params['breadcrumbs'][] = $this->title;
          
 
             
-            'numero',
+            ['attribute'=>'numero',
+                'group'=>true,
+                'format'=>'raw',
+               // 'headerOptions' => ['style' => 'width:50%'],
+               // 'filter'=> frontend\modules\mat\helpers\comboHelper::getCboAlmacenes(),
+                  'value'=>function ($model){
+                    return Html::a($model->numero,Url::to(['update-vale','id'=>$model->id]),['target'=>'_blank']);
+                  }
+                ],
              'item',
             'cant',
             'codart',
             'descripcion',
-            'codal',
-            'fecha',
-             'transa'                    
+           ['attribute'=>'codal',
+               'group'=>true,
+               // 'headerOptions' => ['style' => 'width:50%'],
+               // 'filter'=> frontend\modules\mat\helpers\comboHelper::getCboAlmacenes(),
+                  'value'=>function ($model){
+                    return $model->codal;
+                  }
+                ],
+           ['attribute'=>'fecha',
+               'group'=>true,
+               // 'headerOptions' => ['style' => 'width:50%'],
+               // 'filter'=> frontend\modules\mat\helpers\comboHelper::getCboAlmacenes(),
+                  'value'=>function ($model){
+                    return $model->fecha;
+                  }
+                ],
+             ['attribute'=>'codmov',
+                  'group'=>true,
+               // 'headerOptions' => ['style' => 'width:50%'],
+               // 'filter'=> frontend\modules\mat\helpers\comboHelper::getCboTransaccionesAlmacen(),
+                  'value'=>function ($model){
+                    return $model->transa;
+                  }
+                ],                  
             //'descripcion',
             //'texto:ntext',
             //'codest',

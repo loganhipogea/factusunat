@@ -26,6 +26,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
     $bloqueado=$model->isBloqueado();
    
     ?>
+     <?php Pjax::begin(['id'=>'cabecera']);?>
       <div class="box-header">
         <div class="col-md-12">
             <div class="form-group no-margin">
@@ -33,13 +34,13 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
            <?php 
             if($model->isCreado())
-           echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
+           echo Html::button( '<span class="fa fa-check-circle"></span>   '.Yii::t('base.names', 'Aprobar'),
                   ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
                  );
-            if($model->isCreado())
-           echo Html::button( '<span class="fa fa-chek"></span>   '.Yii::t('base.names', 'Aprobar'),
-                  ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
-                 );
+            if($model->isAprobado()){
+            $url=Url::to(['/mat/mat/make-pdf-vale','id'=>$model->id]);
+                 echo Html::a('<span class="fa fa-print" ></span> Imprimir',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"]);
+                 }   
             
                ?> 
                 </div>
@@ -58,7 +59,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      
  </div>
  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-     <?= $form->field($model, 'codest')->textInput(['maxlength' => true,'disabled'=>true  ]) ?>
+     <?= $form->field($model, 'codest')->textInput(['style'=>'color:#F84E35; font-weight:700; font-size:1.2em','value'=>$model->comboValueText('codest'),'maxlength' => true,'disabled'=>true  ]) ?>
      
  </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
@@ -130,7 +131,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
             dropDownList(($model->isNewRecord)?[]:comboHelper::getCboTransaccionesDocus($model->codmov),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                      'disabled'=>$bloqueado,
                         ]
                     ) ?>
  </div> 
@@ -188,61 +189,36 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      if($model->isNewRecord){
        echo $this->render('_vale_tabular_detalle',[
          'model'=>$model,
+         'bloqueado'=>$bloqueado,
          'form'=>$form,
          'items'=>$items]);  
      }else{
         echo $this->render('_vale_grid_detalle',[
          'model'=>$model,
+         'bloqueado'=>$bloqueado,
          //'form'=>$form,
          //'items'=>$items
          ]);  
      }
     ?>
    </div>        
-           
+     <?php Pjax::end();?>        
   <?php ActiveForm::end(); ?>      
    </div>     
-     
+    <?php 
+       
+      // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
+       echo inputAjaxWidget::widget([
+           // 'isHtml'=>true,//Devuelve datos Html
+            //'isDivReceptor'=>true,//Es un diov que recibe Html
+            'tipo'=>'POST', 
+           // 'data'=>['idpet'=>$model->id],
+            'evento'=>'click',
+            'ruta'=>Url::to(['/mat/mat/ajax-aprobar-vale','id'=>$model->id]),
+            'id_input'=>'btn-aprobar',
+            'idGrilla'=>'cabecera'
+      ])  ?>  
           
- <?php 
- if(!$model->isNewRecord){
-  $string="$('#btn-aprobar').on( 'click', function(){ 
-     
-       $.ajax({
-              url: '".Url::to(['/mat/mat/ajax-aprobar-vale','id'=>$model->id])."', 
-              type: 'get',
-              data:{id:".$model->id."  },
-              dataType: 'json', 
-              error:  function(xhr, textStatus, error){               
-                            var n = Noty('id');                      
-                              $.noty.setText(n.options.id, error);
-                              $.noty.setType(n.options.id, 'error');       
-                                }, 
-              success: function(json) {
-              var n = Noty('id');
-                      
-                       if ( !(typeof json['error']==='undefined') ) {
-                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['error']);
-                              $.noty.setType(n.options.id, 'error');  
-                          }    
-
-                             if ( !(typeof json['warning']==='undefined' )) {
-                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['warning']);
-                              $.noty.setType(n.options.id, 'warning');  
-                             } 
-                          if ( !(typeof json['success']==='undefined' )) {
-                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['success']);
-                              $.noty.setType(n.options.id, 'success');  
-                             }      
-                   
-                        }
-                        });
-
-
-             })";
-  
-   $this->registerJs($string, \yii\web\View::POS_END);
- }
-  ?>          
+         
 
     </div>

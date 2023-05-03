@@ -25,13 +25,27 @@ use yii\widgets\ActiveForm;
         <?= Html::a(Yii::t('app', 'Crear vale'), ['crea-vale'], ['class' => 'btn btn-success']) ?>
         </div>
      </div>
-     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <?= $form->field($model, 'numero')->textInput(['maxlength' => true]) ?>
     </div>  
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
-    </div>
-    
+   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
+ <?= $form->field($model, 'codal')->
+            dropDownList(comboHelper::getCboAlmacenes(null),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    ) ?>
+ </div> 
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
+ <?= $form->field($model, 'codmov')->
+            dropDownList(comboHelper::getCboTransaccionesAlmacen(),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    ) ?>
+ </div>  
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
       <?php 
       
@@ -86,24 +100,8 @@ use yii\widgets\ActiveForm;
                     ]);
                 ?>
   </div> 
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
- <?= $form->field($model, 'codal')->
-            dropDownList(comboHelper::getCboAlmacenes(null),
-                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    ) ?>
- </div> 
-   <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">    
- <?= $form->field($model, 'codmov')->
-            dropDownList(comboHelper::getCboTransaccionesAlmacen(),
-                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
-                    // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
-                        ]
-                    ) ?>
- </div>  
+    
+   
     
     
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">

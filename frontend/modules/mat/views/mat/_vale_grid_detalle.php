@@ -8,13 +8,18 @@ USE common\helpers\h;
   use common\widgets\inputajaxwidget\inputAjaxWidget;       
  ?>         
     <?php Pjax::begin(['id'=>'grilla-materiales']);
-    $bloqueado=false;
+    //$bloqueado=false;
+    $total=$model->total();
+    $formato=h::formato();
     ?>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
    <?php //var_dump((new SigiApoderadosSearch())->searchByEdificio($model->id)); die(); ?>
     <?= GridView::widget([
         'dataProvider' =>(new \frontend\modules\mat\models\MatDetvaleSearch())->search_by_vale($model->id),
          //'summary' => '',
+        'footerRowOptions'=>['style'=>'text-align:right; font-weight:800;font-size:1.2em; color:#3A0A38'],
+        
+         'showFooter'=>true,
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
         'columns' => [
                  [
@@ -39,7 +44,7 @@ USE common\helpers\h;
                 ],
             'item',
              'um',
-              'cant',
+             
               'codart',              
            ['attribute' => 'descripcion',
                 'format'=>'raw',
@@ -48,21 +53,26 @@ USE common\helpers\h;
                               } 
                 
                 ], 
-                        ['attribute' => 'valor',
+                        
+                 'cant',          
+                        ['attribute' => 'punit',
                 'format'=>'raw',
-                'value'=>function($model){
-                        return h::formato()->asDecimal($model->valor,2);
+                'footer' => 'Total',
+                'value'=>function($model) use($formato){
+                        return $formato->asDecimal($model->valor/$model->cant,2);
                               } 
                 
                 ], 
-                        ['attribute' => 'V. Unit',
+              ['attribute' => 'valor',
                 'format'=>'raw',
-                'value'=>function($model){
-                        return h::formato()->asDecimal($model->valor/$model->cant,2);
-                              } 
+               'footer' => $formato->asDecimal($total,2),
+                'contentOptions'=>['style'=>'text-align:right; font-weight:800;'],
+                'value'=>function($model) use($formato){
+                        return $formato->asDecimal($model->valor,2);
+                            } 
                 
                 ], 
-             ['attribute' => 'imagen',
+            /* ['attribute' => 'imagen',
                 'format'=>'raw',
                 'value'=>function($model){
                         
@@ -74,7 +84,7 @@ USE common\helpers\h;
                           }                           
                               } 
                 
-                ], 
+                ], */
         ],
     ]); ?>
          <?php 

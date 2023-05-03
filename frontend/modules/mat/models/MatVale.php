@@ -111,7 +111,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     
      public function getDocu()
     {
-        return $this->hasOne(Documentos::className(), ['codpro' => 'codpro']);
+        return $this->hasOne(Documentos::className(), ['codocu' => 'codocu']);
     }
     
      public function getTransaccion()
@@ -212,7 +212,20 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
 
             }
        }
-        
+       
+       
+      public function ums(){
+         
+     $query=new \yii\db\Query();
+     return $query->select(['um'])->from(MatDetVale::tableName())->distinct()->
+      andWhere(['vale_id'=>$this->id])->column();
+  
+      } 
+       
+     public function total(){
+         return $this->getDetalles()->sum('valor');
+     }
+       
     }
     
     

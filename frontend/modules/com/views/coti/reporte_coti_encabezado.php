@@ -17,7 +17,7 @@ $formato=h::formato();
 
 
 <!--El titulo del numero -->
-<div style="text-align: center; font-weight: 900; "><u><b>COTIZACIÓN <?= $model->numero ?></u></b></div>
+<div style="text-align: center; font-weight: 900; "><u><b>VALE DE ALMACEN <?= $model->numero ?></u></b></div>
 <!--FIN DEL TITULO -->
 
 
@@ -26,7 +26,7 @@ $formato=h::formato();
 <!--Nombre del cliente y ruc contactos 50% de ancho ladoizquierdo-->
     <div style="width:40%; margin:0px; padding:0px; float:left; font-size:0.75em; ">
         
-            <b>Cliente:</b> <?=$model->cliente1->despro?>
+            <b>Cliente:</b> <?=$model->clipro->despro?>
         
   
     </div>
@@ -34,7 +34,7 @@ $formato=h::formato();
 <!--FECHA DE EMISION Y MONEDA 50% LADO DERECHO-->
     <div style="width:40%; margin:0px; padding:0px; float:right;  font-size:0.75em; ">
         
-        <b> Fecha:</b> <?=$model->femision?>  <b>Moneda:</b> <?=$model->codmon?> 
+        <b> Fecha:</b> <?=$model->fecha?>  <b>Fecha Contable:</b> <?=$model->fechacon?> 
         
  
     </div>
@@ -43,16 +43,16 @@ $formato=h::formato();
 
 <!--Nombre del contactos 50% de ancho ladoizquierdo-->
     <div style="width:40%; margin:0px; padding:0px; float:left; font-size:0.75em; ">
-        <?php if(count($model->contactos)) {  ?>
-            <b>Atencion:</b> <?=$model->contactos[0]->contacto->nombres.'/'.$model->contactos[0]->contacto->cargo;?>
-        <?php } ?>    
+        
+            <b>Detalles:</b> <?=$model->descripcion;?>
+        
   
     </div>
 
 <!--validez-->
     <div style="width:40%; margin:0px; padding:0px; float:right;  font-size:0.75em; ">
         
-        <b> Validez:</b> <?=$model->validez.' dias'?>  
+        <b> Almacén:</b> <?=$model->codal?>  
         
  
     </div>
@@ -60,13 +60,6 @@ $formato=h::formato();
 
 
 
- <!--La descripcion -->  
-    <div style="width:100%; margin:0px; padding:0px;  font-size:0.75em; ">
-        
-            <b>Descripción:</b>  <?=$model->descripcion?>
-        
- 
-    </div>
 <!--Fin de la descripcion-->
 
 <!--El tenor superior-->
@@ -76,19 +69,10 @@ $formato=h::formato();
         
         font-size: 0.9em;
         ">
-        <?=h::gsetting('com','tenorsup_coti')?>
+        <?=$model->texto?>
     </div>
 <!--Fin del tenor superior-->
 
  
-
-<!--Condiciones-->  
-<div style="width:90%; margin:0px; padding:0px; font-size:1.1em;">
-    
-        <b>Condiciones:</b> <?=$model->detalle_externo?>
-    
-</div>
-<!--Fin de las condiciones-->
-
 
  

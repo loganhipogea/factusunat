@@ -59,11 +59,12 @@ class VwVale extends \common\models\base\modelBase
         return [
             'numero' => Yii::t('app', 'Numero'),
             'fecha' => Yii::t('app', 'Fecha'),
-            'codmov' => Yii::t('app', 'Codmov'),
-            'codpro' => Yii::t('app', 'Codpro'),
+            'codmov' => Yii::t('app', 'Movimiento'),
+            'codpro' => Yii::t('app', 'Proveed'),
             'cant' => Yii::t('app', 'Cant'),
             'um' => Yii::t('app', 'Um'),
-            'codart' => Yii::t('app', 'Codart'),
+            'codart' => Yii::t('app', 'Código'),
+            'codal' => Yii::t('app', 'Almac'),
             'item' => Yii::t('app', 'Item'),
             'descripcion' => Yii::t('app', 'Descripcion'),
         ];
