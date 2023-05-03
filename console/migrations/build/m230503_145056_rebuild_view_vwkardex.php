@@ -20,7 +20,7 @@ class m230503_145056_rebuild_view_vwkardex extends \console\migrations\baseMigra
     ->select(['a.*',
       'b.descripcion', 
        'c.descripcion as descritransa', 
-      'd.codocu','d.numerodoc',,'d.id as vale_id','d.numero',
+      'd.codocu','d.numerodoc','d.id as vale_id','d.numero',
       'e.codpro','e.despro','x.valor','x.punit',
       'f.desdocu',
       
