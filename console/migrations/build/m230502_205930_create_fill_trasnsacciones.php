@@ -15,7 +15,9 @@ class m230502_205930_create_fill_trasnsacciones extends baseMigration
             \Yii::$app->db->createCommand()->
              batchInsert(static::NAME_TABLE,
              $this->fields(), $this->getData())->execute();
-    }
+   
+            }
+            
 
     public function safeDown()
     { static::deleteData();

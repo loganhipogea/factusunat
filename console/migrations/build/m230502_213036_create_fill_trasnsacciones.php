@@ -13,6 +13,7 @@ class m230502_213036_create_fill_trasnsacciones extends baseMigration
  //const NAME_TABLE_CENTROS='{{%centros}}';
     public function safeUp()
     {
+        
        \Yii::$app->db->createCommand()->
          batchInsert(static::NAME_TABLE_DOCS,
          ['codocu','desdocu','modelo'],
@@ -36,7 +37,8 @@ class m230502_213036_create_fill_trasnsacciones extends baseMigration
     }
 
     public function safeDown()
-    { static::deleteData();
+    { 
+        static::deleteData();
     }
 
      private static function  fields(){

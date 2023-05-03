@@ -23,7 +23,7 @@ use yii\widgets\Pjax;
    
     <?php
     $dataProvider=new \yii\data\ActiveDataProvider([
-                'query'=> \frontend\modules\mat\models\MatVwKardex::find()->andWhere(['codart'=>$model->codart]),
+                'query'=> \frontend\modules\mat\models\MatVwKardex::find()->andWhere(['codart'=>$model->codart,'codal'=>$model->codal]),
             ]);
   ?>
     </div>
@@ -34,36 +34,11 @@ use yii\widgets\Pjax;
         // 'summary' => '',
         //'tableOptions'=>['class'=>".thead-dark table table-condensed table-hover table-bordered table-striped"],
         'columns' => [
-           ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{update}{view}{delete}',
-                /*'buttons'=>[
-                    'update'=>function($url,$model){
-                        $url=\yii\helpers\Url::toRoute(['update','id'=>$model->codpro]);
-                        return \yii\helpers\Html::a(
-                                '<span class=" glyphicon glyphicon-pencil"></span>',
-                                $url,
-                                ['data-pjax'=>'0']
-                                );
-                     },
-                     'view'=>function($url,$model){
-                        $url=\yii\helpers\Url::toRoute(['view','id'=>$model->codpro]);
-                        return \yii\helpers\Html::a(
-                                '<span class="glyphicon glyphicon-search"></span>',
-                                $url,
-                                ['data-pjax'=>'0']
-                                );
-                     },
-                             
-                            'delete' => function ($url,$model) {                             
-                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->codpro]);
-                              return \yii\helpers\Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', ['title'=>$url,'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->codpro,'modelito'=> str_replace('@','\\',get_class($model))])]);
-                             }
-                   ]*/
-                ],
+            'cant',
             'fecha',
             'despro',
             'desdocu',
-            
+             'numerodoc',
            
             //'deslarga:ntext',
 
