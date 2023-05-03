@@ -48,7 +48,11 @@ class MatStock extends \common\models\base\modelBase
              [['um'], 'valida_um_base'],
             
             [['codart', 'cant', 'ubicacion', 'valor_unit','codal'],'safe','on'=>self::SCE_BATCH],
-             [['valor_unit','cant_disp','semaforo','valor','codal','abc'], 'safe'],
+            [['codart', 'cant', 'ubicacion', 'valor_unit','codal'],'required','on'=>self::SCE_BATCH],
+            
+            
+            
+            [['valor_unit','cant_disp','semaforo','valor','codal','abc'], 'safe'],
             [['um', 'codal'], 'string', 'max' => 4],
             [['lastmov'], 'string', 'max' => 10],
             [['codart','codal'], 'unique','targetAttribute'=>['codart','codal']],
@@ -167,9 +171,10 @@ class MatStock extends \common\models\base\modelBase
      
     }
     public function beforeSave($insert) {
-        yii::error($this->attributes,__FUNCTION__);
+        //yii::error($this->attributes,__FUNCTION__);
         $this->resolveStock();
-         yii::error($this->attributes,__FUNCTION__);
+        $this->resolveCargaInventario();
+         //yii::error($this->attributes,__FUNCTION__);
         $this->resolveSemaforo();
         return parent::beforeSave($insert);
     }
@@ -185,4 +190,21 @@ class MatStock extends \common\models\base\modelBase
        return self::find()->count();
        return self::find()->andWhere(['codal'=>$codal])->count();
    } 
+   
+   
+   private function resolveCargaInventario(){
+       if($this->isScenario(self::SCE_BATCH) && $this->isNewRecord){
+          /*El valor total*/
+          $this->valor=$this->valor_unit*$this->cant;
+          /*La unidad de medida*/
+          $this->um=$this->material->codum;
+          /*La cant reservada*/
+          $this->cantres=0;
+           /*La cantidad disponible*/
+          $this->cant_disp=$this->cant;
+          
+       }
+   }
+   
+  
 }
