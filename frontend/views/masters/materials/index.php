@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'width:20%'],
                 'format'=>'raw',
                 'value'=>function($model){                            
-                            return $model::comboValueText('codtipo');
+                            return $model->comboValueText('codtipo');
                             }                
                 ],  
                         
