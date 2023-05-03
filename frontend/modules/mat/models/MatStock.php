@@ -47,7 +47,7 @@ class MatStock extends \common\models\base\modelBase
             [['codart', 'ubicacion'], 'string', 'max' => 14],
              [['um'], 'valida_um_base'],
             
-            [['codart', 'cant', 'ubicacion', 'valor_unit',],'safe','on'=>self::SCE_BATCH],
+            [['codart', 'cant', 'ubicacion', 'valor_unit','codal'],'safe','on'=>self::SCE_BATCH],
              [['valor_unit','cant_disp','semaforo','valor','codal','abc'], 'safe'],
             [['um', 'codal'], 'string', 'max' => 4],
             [['lastmov'], 'string', 'max' => 10],
@@ -76,7 +76,7 @@ class MatStock extends \common\models\base\modelBase
  
      public function scenarios() {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCE_BATCH] = ['codart', 'cant', 'ubicacion', 'valor_unit',];
+        $scenarios[self::SCE_BATCH] = ['codart', 'cant', 'ubicacion', 'valor_unit','codal'];
          return $scenarios;
     }
     
