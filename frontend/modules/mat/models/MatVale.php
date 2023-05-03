@@ -4,6 +4,7 @@ namespace frontend\modules\mat\models;
 use common\models\masters\Clipro;
 use \common\models\masters\Documentos;
 use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
+use frontend\modules\mat\models\MatDetvale;
 use Yii;
 
 /**
