@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
   
     <div class="box box-success">
        <?php  
-       $valores=$model::dataComboValores('codtipo');
+       $valores=$searchModel::dataComboValores('codtipo');
   $gridColumns= [
           
            
