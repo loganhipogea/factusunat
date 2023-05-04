@@ -920,7 +920,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
     
     public function correlativo($field,$longitud=null,$campocriterio=null){
         
-        $criteria=['1'=>'1'];
+        $criteria=[];
         $tamano=$this->getFieldSize($field);
          //var_dump($longitud);die();
         if(!is_null($longitud))
