@@ -959,7 +959,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                 yii::error('Salio null',__FUNCTION__);
                 
             $longitud=$tamano-strlen($this->prefijo);
-            return $this->prefijo.str_pad('0',$tamano,'0',STR_PAD_LEFT); 
+            return $this->prefijo.str_pad('0',$longitud,'0',STR_PAD_LEFT); 
           }else{
               yii::error('maximo valor',__FUNCTION__);
                yii::error($maximoValor,__FUNCTION__);  
