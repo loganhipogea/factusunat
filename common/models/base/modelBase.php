@@ -949,6 +949,8 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
         }        
         
         $maximoValor=self::find()->where($criteria)->max($field);
+            yii::error('el sql',__FUNCTION__);
+            yii::error(self::find()->where($criteria)->max($field)->createCommand()->rawSql,__FUNCTION__);
           if(is_null($maximoValor)){
             $longitud=$tamano-strlen($this->prefijo);
             return $this->prefijo.str_pad('0',$tamano,'0',STR_PAD_LEFT); 
