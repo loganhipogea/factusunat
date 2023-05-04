@@ -190,7 +190,7 @@ class Maestrocompo extends \common\models\base\modelBase
    * Solo puede cambiar el tipo cuando existe un 
    * código con correlativo superior
    */
-  private function canChangeType(){
+  public function canChangeType(){
      return  !is_null($this->find()->andWhere(['codtipo'=>$this->codtipo])->
               andWhere(['>','codart',$this->codart])->one());
   }
