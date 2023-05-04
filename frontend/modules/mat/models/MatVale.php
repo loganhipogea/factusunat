@@ -147,12 +147,20 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
         if($this->isCreado()){
         $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
       foreach($this->detalles as $detvale){
-          yii::error('recorriendo ',__FUNCTION__);
-          $detvale->aprobado();
+          yii::error('recorriendo '.$detvale->codart,__FUNCTION__);
+         $exito= $detvale->aprobado();
+         if(!$exito) break;
       }
+        if(!$exito){
+            $transaccion->rollBack();
+           // return ['error'=>'Ocurrió un error al momento de efectuar la operación'];
+        }else{
             $this->codest=self::ESTADO_APROBADO;
             $this->save();
-           $transaccion->commit();
+            $transaccion->commit();  
+            //return ['success'=>'La operación resultó un éxito'];
+        }          
+        return $exito;    
         }
     }
     

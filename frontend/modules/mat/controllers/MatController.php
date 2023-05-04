@@ -29,6 +29,8 @@ use yii\widgets\ActiveForm;
  */
 class MatController extends baseController
 {
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -406,12 +408,29 @@ public function actionAjaxDesactivaItem($id){
                 h::response()->format = \yii\web\Response::FORMAT_JSON;
                 if(!is_null($model= MatVale::findOne($id))){
                     if($model->isCreado()){
-                        $model->Aprobar();
+                        $key=$model->id.'sesion'.h::userId();
+                        $sesion=h::session();
+                        $sesion->set($key,[]);
+                        
+                        $resultado=$model->Aprobar(); 
+                        if(!$resultado){
+                            $errores=$sesion->get($key);
+                            if(count($errores)>0){
+                                $error=$errores[array_keys[$errores][0]];//primer error
+                            }else{
+                                $error='';
+                            }
+                            
+                            
+                          return ['error'=>yii::t('base.errors','Se encontraron errores '.$error)];  
+                        }else{
+                           return ['success'=>yii::t('base.errors','Se realizó el proceso con éxito')]; 
+                        }
                     }else{
                         return ['error'=>yii::t('base.errors','No tiene el status adecuado')];
                     }                   
                   }   
-                return ['success'=>yii::t('base.errors','Se aprobó el vale')];
+                
             }    
   }
   

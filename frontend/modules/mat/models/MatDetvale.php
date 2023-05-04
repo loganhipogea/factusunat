@@ -138,9 +138,13 @@ implements ReqInterface,EstadoInterface {
            // $this->activo=true;            
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
             $this->codest=self::ESTADO_CREADO;
-        } 
+        }
+        yii::error('Otra ve el precio unitaro',__FUNCTION__);            
+          yii::error($this->punit,__FUNCTION__);
         $signo=$this->vale->transaccion->signo;
         $this->valor=$this->punit*$this->cant*$signo;
+        yii::error('El valor ',__FUNCTION__);            
+          yii::error($this->valor,__FUNCTION__);
         
         return parent::beforeSave($insert);
     }
@@ -187,7 +191,13 @@ implements ReqInterface,EstadoInterface {
       ]);
      // print_r($kardex->attributes);die();
        $salio=$kardex->save();
-       
+       if(!$salio){
+                   $key=$vale->id.'sesion'.h::userId();
+                  $sesion=h::session();
+                  $errores=$sesion->get($key);
+                  $errores['Kardex']=$kardex->getFirstError();
+                  $sesion->set($key,$errores);
+       }
       //print_r($kardex->getErrors());
      return $salio;
      //return $kardex->save();
@@ -229,8 +239,8 @@ implements ReqInterface,EstadoInterface {
        * Actualizando las cantidades primero
        */   
       
-      
-      $transaccion=$this->vale->transaccion;
+      $vale=$this->vale;
+      $transaccion=$vale->transaccion;
       
        $signo=$transaccion->signo;
       $cantidad=$this->cantreal->cant*$signo;      
@@ -276,7 +286,10 @@ implements ReqInterface,EstadoInterface {
            * quede una foto del precio verdaero con el que se ha movido
            * en el vale
            */
+          yii::error('sacando el precio unitaro',__FUNCTION__);
+            
           $this->punit=$stock->valor_unit;
+          yii::error($this->punit,__FUNCTION__);
           /* $afectados= $this->updateAll([
               'punit'=>$stock->valor_unit,
               'valor'=>$stock->valor_unit*$this->cant,
@@ -292,6 +305,16 @@ implements ReqInterface,EstadoInterface {
               //yii::error('Los errores',__FUNCTION__);
               //yii::error($stock->getErrors(),__FUNCTION__);
               $stock->refresh();
+              if(!$exito){ 
+                  $key=$vale->id.'sesion'.h::userId();
+                  $sesion=h::session();
+                  $errores=$sesion->get($key);
+                  $errores['Stock']=$stock->getFirstError();
+                  $sesion->set($key,$errores);
+                  return false;
+                  
+                  
+              }
               return $stock->id;
        }
   }
@@ -325,20 +348,33 @@ implements ReqInterface,EstadoInterface {
   public function aprobado(){
     
       $vale=$this->vale;
-      $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
+    ///  $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
         if(is_null($stock=$this->stock())){
             $idStock=$this->updateStock(New MatStock());
         }else{
             $idStock=$this->updateStock($stock);
         }
         
-        yii::error($idStock,__FUNCTION__);
-           $this->createKardex($idStock);   
+       // yii::error($idStock,__FUNCTION__);
+        //yii::error('Entrando al create kardex',__FUNCTION__);
+           if(!$idStock) return $idStock;
+           $exito=$this->createKardex($idStock);  
+           if(!$exito)return $exito;
          //$this->trazabilidad();
          $this->codest=self::ESTADO_APROBADO;
-         $this->save();
-      $transaccion->commit();
-     
+         
+         $exito=$this->save();
+         if(!$exito){
+                  $key=$vale->id.'sesion'.h::userId();
+                  $sesion=h::session();
+                  $errores=$sesion->get($key);
+                  $errores['Item']=$this->getFirstError();
+                  $sesion->set($key,$errores); 
+         }
+         
+        return $exito;
+      //$transaccion->commit();
+      
    }
    
    public function validate_cant_stock(){
