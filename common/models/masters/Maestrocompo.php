@@ -48,6 +48,7 @@ class Maestrocompo extends \common\models\base\modelBase
             [['marca', 'modelo', 'numeroparte'], 'string', 'max' => 30],
             [['codum', 'peso'], 'string', 'max' => 4],
             [['codart'], 'unique'],
+            [['codfam'], 'safe'],
             [['codum'], 'exist', 'skipOnError' => true, 'targetClass' => Ums::className(), 'targetAttribute' => ['codum' => 'codum']],
         ];
     }
@@ -129,7 +130,8 @@ class Maestrocompo extends \common\models\base\modelBase
         if($insert){
             //$this->prefijo=$this->codtipo;
             if(empty($this->codart))
-            $this->codart=$this->correlativo('codart',10,'codtipo');
+            $this->codart=$this->correlativo('codart',10,'codfam');
+            $this->codfam=$this->codtipo;
         }
         return parent::beforeSave($insert);
     }
