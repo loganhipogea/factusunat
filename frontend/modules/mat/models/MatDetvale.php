@@ -181,6 +181,7 @@ implements ReqInterface,EstadoInterface {
           'codal'=>$this->codal,
           'detvale_id'=>$this->id,
            'codmov'=>$vale->codmov,
+          'valor'=>$this->valor,
          // 'detvale_id'=>$this->id,
           //'detreq_id'=>$this->id,
       ]);

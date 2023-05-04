@@ -5,14 +5,20 @@ use yii\db\Migration;
 /**
  * Class m230504_174645_alter_table_kardex
  */
-class m230504_174645_alter_table_kardex extends Migration
+class m230504_174645_alter_table_kardex extends \console\migrations\baseMigration
 {
+    public $table='{{%mat_kardex}}';
+    public $campo='valor';
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-
+        if(!$this->existsColumn($this->table,$this->campo)){  
+            $this->addColumn($this->table,$this->campo,$this->decimal(10,4)); 
+        }
+        
+       
     }
 
     /**
@@ -20,23 +26,11 @@ class m230504_174645_alter_table_kardex extends Migration
      */
     public function safeDown()
     {
-        echo "m230504_174645_alter_table_kardex cannot be reverted.\n";
-
-        return false;
+        
+        if($this->existsColumn($this->table,$this->campo)){  
+            $this->dropColumn($this->table,$this->campo);
+       }
+        
+        
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230504_174645_alter_table_kardex cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

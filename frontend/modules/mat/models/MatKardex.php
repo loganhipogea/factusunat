@@ -35,6 +35,7 @@ class MatKardex extends \common\models\base\modelBase
         return [
             //[['detreq_id'], 'required'],
             [['detreq_id'], 'integer'],
+            [['valor'], 'safe'],
              [['detvale_id','codart','um',
                  'umreal','stock_id','codmov','signo','codal'], 'safe'],
             [['cant'], 'number'],
