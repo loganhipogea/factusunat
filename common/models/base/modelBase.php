@@ -935,7 +935,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
             if(is_null($campocriterio)){
                 $this->prefijo='1';
             }else{
-               $this->prefijo=$campocriterio; 
+               $this->prefijo=$this->{$campocriterio}; 
                $criteria=[$campocriterio=>$this->{$campocriterio}];
             }
             
@@ -944,7 +944,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                 
             }else{
                $criteria=[$campocriterio=>$this->{$campocriterio}];
-               $this->prefijo=$campocriterio; 
+               $this->prefijo=$this->{$campocriterio}; 
             }
         }        
          yii::error('El prefijo',__FUNCTION__);
