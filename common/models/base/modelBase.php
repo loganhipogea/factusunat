@@ -919,14 +919,52 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
     }
     
     public function correlativo($field,$longitud=null,$campocriterio=null){
-        /*verificando la longitud con el tamaño del campo
-         * */
+        
+        $criteria=['1'=>'1'];
         $tamano=$this->getFieldSize($field);
          //var_dump($longitud);die();
         if(!is_null($longitud))
         if($tamano > $longitud){
            $tamano=$longitud;
         }
+        
+        /*
+         * Resolviendo prioridades
+         */
+        if(is_null($this->prefijo)){
+            if(is_null($campocriterio)){
+                $this->prefijo='1';
+            }else{
+               $this->prefijo=$campocriterio; 
+               $criteria=[$campocriterio=>$this->{$campocriterio}];
+            }
+            
+        }else{
+            if(is_null($campocriterio)){
+                
+            }else{
+               $criteria=[$campocriterio=>$this->{$campocriterio}];
+               $this->prefijo=$campocriterio; 
+            }
+        }        
+        
+        $maximoValor=self::find()->where($criteria)->max($field);
+          if(is_null($maximoValor)){
+            $longitud=$tamano-strlen($this->prefijo);
+            return $this->prefijo.str_pad('0',$tamano,'0',STR_PAD_LEFT); 
+          }else{
+             return ((integer)$maximoValor+1).'';
+          }
+        
+        
+        die();
+        
+        
+        
+        
+        /*verificando la longitud con el tamaño del campo
+         * */
+        
        // var_dump($tamano);
         
         /*Si el campo criterio es diferente a null*
@@ -940,7 +978,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
            if(!is_null($this->prefijo)){
                
                             $diferenciatamano=$tamano-strlen(trim($this->prefijo));
-                          if($diferenciatamano < 4){
+                         /* if($diferenciatamano < 4){
                               //si es menor que 4 o es negativa, dejar el taaño com es y no aplicar el prefijo
                          $this->prefijo="1";
                          $tamano=$tamano-1;
@@ -949,10 +987,12 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                                   
                               $tamano=$diferenciatamano;
                              // VAR_DUMP($tamano) ;DIE();
-                          }
+                          }*/
+                       $tamano=$diferenciatamano;
               }else{
                   //ECHO "PREFIJO NULL";DIE();
-                          $this->prefijo="";
+                          $this->prefijo="1";
+                          $tamano=$tamano-1;
              }
             //var_dum($tamano);die();      
                                 
