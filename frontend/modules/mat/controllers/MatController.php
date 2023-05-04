@@ -955,5 +955,36 @@ public function actionAjaxDesactivaItem($id){
            //$mpdf->curlAllowUnsafeSslRequests = true; //Permite imagenes de url externas
          return $mpdf;
     }  
+   
+   public function actionModalEditarUbicacion($id){
+    $this->layout = "install";
+      $modeldet= \frontend\modules\mat\models\MatStock::findOne($id);
+                 
+       $datos=[];
+        if(h::request()->isPost){
+            
+            $modeldet->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($modeldet);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                $modeldet->save(); 
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$modeldet->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_edita_ubicacion', [
+                        'model' => $modeldet,
+                        'id' => $modeldet->id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+}  
+    
+    
     
 }

@@ -41,10 +41,12 @@ use yii\widgets\Pjax;
              'numerodoc',
              ['attribute'=>'numero',
                  'header'=>'Vale',
+                 'format'=>'html',
                 //'headerOptions' => ['style' => 'width:20%'],
                   'value'=>function ($model){
-                    $url=Url::to(['/mat/mat/']);
-                    return Html::a($model->numero,$url,['target'=>'_blank']);
+                    //$url=Url::to(['/mat/mat/']);
+                    return $model->numero;
+                    //return Html::a($model->numero,$url,['target'=>'_blank']);
                   }
                 ],
             //'deslarga:ntext',
