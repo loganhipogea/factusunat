@@ -67,6 +67,7 @@ use common\behaviors\FileBehavior;
             dropDownList($model::dataComboValores('codtipo') ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
+                        'disabled'=>!$model->canChangeType(),
                         ]
                     ) ?>
     </div>
