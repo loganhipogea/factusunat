@@ -947,14 +947,24 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
                $this->prefijo=$campocriterio; 
             }
         }        
-        
+         yii::error('El prefijo',__FUNCTION__);
+            yii::error($this->prefijo,__FUNCTION__);
         $maximoValor=self::find()->where($criteria)->max($field);
             yii::error('el sql',__FUNCTION__);
-            yii::error(self::find()->where($criteria)->max($field)->createCommand()->rawSql,__FUNCTION__);
-          if(is_null($maximoValor)){
+            yii::error(self::find()->where($criteria)->createCommand()->rawSql,__FUNCTION__);
+             yii::error('El maximo valor',__FUNCTION__);
+            yii::error($maximoValor,__FUNCTION__);
+          
+            if(is_null($maximoValor)){
+                yii::error('Salio null',__FUNCTION__);
+                
             $longitud=$tamano-strlen($this->prefijo);
             return $this->prefijo.str_pad('0',$tamano,'0',STR_PAD_LEFT); 
           }else{
+              yii::error('maximo valor',__FUNCTION__);
+               yii::error($maximoValor,__FUNCTION__);  
+                yii::error('El valor a devolver es ',__FUNCTION__);
+               yii::error(((integer)$maximoValor+1).'',__FUNCTION__); 
              return ((integer)$maximoValor+1).'';
           }
         
