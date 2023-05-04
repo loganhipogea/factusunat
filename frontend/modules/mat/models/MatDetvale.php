@@ -230,10 +230,13 @@ implements ReqInterface,EstadoInterface {
       
       
       $transaccion=$this->vale->transaccion;
+      
        $signo=$transaccion->signo;
       $cantidad=$this->cantreal->cant*$signo;      
       $afecta_reserva=$transaccion->afecta_reserva;      
        $afecta_precio=$transaccion->afecta_precio;       
+       
+       if(!$transaccion->es_servicio){
        
        if($stock->isNewRecord){
           $stock->setAttributes([
@@ -285,10 +288,11 @@ implements ReqInterface,EstadoInterface {
              * Aquí el stock solito se las arregla en el resolveStock
              */
               $exito=$stock->save();
-              yii::error('Los errores',__FUNCTION__);
-              yii::error($stock->getErrors(),__FUNCTION__);
+              //yii::error('Los errores',__FUNCTION__);
+              //yii::error($stock->getErrors(),__FUNCTION__);
               $stock->refresh();
               return $stock->id;
+       }
   }
  
 /*Establece la trazabilidad de 

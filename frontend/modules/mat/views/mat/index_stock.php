@@ -127,7 +127,7 @@ $formato=h::formato();
                     }else{
                        $contenido=$model->ubicacion; 
                     }
-                    return Html::a($contenido,Url::to(['/mat/mat/modal-editar-ubicacion','id'=>$model->id,'gridName'=>'stock-index','idModal'=>'buscarvalor']),['class'=>'botonAbre']);
+                    return Html::a($contenido,Url::to(['/mat/mat/modal-editar-ubicacion','id'=>$model->id,'gridName'=>'stock-index','idModal'=>'buscarvalor']),['style'=>'color:#F86E35','class'=>'botonAbre']);
                     
                   }
                 ], 

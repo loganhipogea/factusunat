@@ -62,6 +62,10 @@ use yii\helpers\Url;
      <?= $form->field($model, 'exigehistorial')->checkbox() ?>
 
  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+     <?= $form->field($model, 'es_servicio')->checkbox() ?>
+
+ </div>
  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
      <?= $form->field($model, 'inversa_id')->dropDownList(
  frontend\modules\mat\helpers\comboHelper::getCboTransaccionesAlmacen(),
