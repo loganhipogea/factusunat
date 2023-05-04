@@ -10,7 +10,7 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\mat\models\MatReq */
 
-$this->title = Yii::t('app', 'Editar requerimiento: {name}', [
+$this->title = Yii::t('app', 'Editar req: {name}', [
     'name' => $model->numero,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Listado requerimientos'), 'url' => ['index']];
