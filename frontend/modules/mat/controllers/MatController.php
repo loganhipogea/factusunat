@@ -831,14 +831,24 @@ public function actionAjaxDesactivaItem($id){
         }
         
         if ($model->load(Yii::$app->request->post())) {
-             if($id=$model->resolveVale()){
-               return $this->redirect(['update-vale', 'id' => $id]);  
-             }else{
-                 echo "error"; die();
-             }
-            
-        }
-
+                        $key=$model->id.'sesion'.h::userId();
+                        $sesion=h::session();
+                        $sesion->set($key,[]);                        
+                        $id=$model->resolveVale(); 
+                        if(!$id){
+                            $errores=$sesion->get($key);
+                            if(count($errores)>0){
+                                $error=array_keys($errores)[0].'->'.$errores[array_keys($errores)[0]];//primer error
+                            }else{
+                                $error='';
+                            }
+                            $sesion->remove($key);
+                            $sesion->setFlash('error',yii::t('base.errors','Hubo errores: '.$error));
+                        }else{
+                            //$sesion->setFlash('Success',yii::t('base.errors','Hubo errores: '.$error)); 
+                        }
+                return $this->redirect(['update-vale', 'id' => $id]); 
+           }
         return $this->render('vale_form_fake', [
             'model' => $model,
         ]);

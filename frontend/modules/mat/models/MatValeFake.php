@@ -109,8 +109,18 @@ class MatValeFake extends \common\models\base\modelBase
                /*Nos adeguramos que el vale original se usa una sola vez*/
                 $valeOriginal->codest=$valeOriginal::ESTADO_CERRADO;
                 $exito=$valeOriginal->save();
+                if(!$exito){
+                    $key=$vale->id.'anulacionvale'.h::userId();
+                    $sesion=h::session();
+                    $errores=$sesion->get($key);
+                    $errores['Cabecera']=$valeOriginal->getFirstError();
+                    $sesion->set($key,$errores); 
+                    return $exito;
+                }
+                
+                
             $valeNuevo->refresh();
-            if($exito){
+            
                foreach($valeOriginal->detalles as $item){
                 $modelDetalle=New MatDetvale();
                 $atributos=$item->attributes;
@@ -125,19 +135,24 @@ class MatValeFake extends \common\models\base\modelBase
                 if(!is_null($stock)){$modelDetalle->punit=$stock->valor_unit;};
                 
                 $exito=$modelDetalle->save();
-                
-                
-                //if(!$exito){print_r($modelDetalle->getErrors());die(); };
+                 if(!$exito){
+                  $key=$vale->id.'sesion'.h::userId();
+                  $sesion=h::session();
+                  $errores=$sesion->get($key);
+                  $errores['Item']=$modelDetalle->codart.'-'.$modelDetalle->getFirstError();
+                  $sesion->set($key,$errores); 
+                    break;
+                }
+      
               } 
-            }else{
-              // print_r($valeNuevo->getErrors()); 
-            }
+            
             
            if($exito){
                $transaccion->commit();return $valeNuevo->id;
            }else{
                $transaccion->rollBack();return false;
            }
+          
           
     }
     
