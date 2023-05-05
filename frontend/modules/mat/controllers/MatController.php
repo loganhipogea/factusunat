@@ -844,10 +844,15 @@ public function actionAjaxDesactivaItem($id){
                             }
                             $sesion->remove($key);
                             $sesion->setFlash('error',yii::t('base.errors','Hubo errores: '.$error));
-                        }else{
+                                return $this->render('vale_form_fake', [
+                                'model' => $model,
+                                        ]);
+                            
+                            }else{
+                             return $this->redirect(['update-vale', 'id' => $resultado['id']]); 
                             //$sesion->setFlash('Success',yii::t('base.errors','Hubo errores: '.$error)); 
                         }
-                return $this->redirect(['update-vale', 'id' => $resultado['id']]); 
+                
            }
         return $this->render('vale_form_fake', [
             'model' => $model,
