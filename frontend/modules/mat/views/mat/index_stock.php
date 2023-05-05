@@ -68,6 +68,7 @@ $formato=h::formato();
          [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
+             'expandIcon'=>'fa fa-plus',
                 'value' => function ($model, $key, $index, $column) {
                             return GridView::ROW_COLLAPSED;
                                 },
