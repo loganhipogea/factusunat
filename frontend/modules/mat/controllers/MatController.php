@@ -835,7 +835,7 @@ public function actionAjaxDesactivaItem($id){
                         $sesion=h::session();
                         $sesion->set($key,[]);                        
                         $resultado=$model->resolveVale(); 
-                        if(!$resultado['error']){
+                        if($resultado['error']){
                             $errores=$sesion->get($key);
                             if(count($errores)>0){
                                 $error=array_keys($errores)[0].'->'.$errores[array_keys($errores)[0]];//primer error
