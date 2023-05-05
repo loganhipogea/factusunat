@@ -416,7 +416,7 @@ public function actionAjaxDesactivaItem($id){
                         if(!$resultado){
                             $errores=$sesion->get($key);
                             if(count($errores)>0){
-                                $error=$errores[array_keys[$errores][0]];//primer error
+                                $error=$errores[array_keys($errores)[0]];//primer error
                             }else{
                                 $error='';
                             }
