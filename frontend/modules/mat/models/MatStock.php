@@ -47,7 +47,7 @@ class MatStock extends \common\models\base\modelBase
             [['codart', 'ubicacion'], 'string', 'max' => 14],
              [['um'], 'valida_um_base'],
             
-            [['codart', 'cant', 'ubicacion', 'valor_unit','codal'],'safe','on'=>self::SCE_BATCH],
+            [['codart', 'cant', 'ubicacion', 'valor_unit','codal'],'safe'],
             [['codart', 'cant', 'ubicacion', 'valor_unit','codal'],'required','on'=>self::SCE_BATCH],
             
             
