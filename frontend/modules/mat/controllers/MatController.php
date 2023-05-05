@@ -831,7 +831,7 @@ public function actionAjaxDesactivaItem($id){
         }
         
         if ($model->load(Yii::$app->request->post())) {
-                        $key=$model->id.'anulacionvale'.h::userId();
+                        $key='anulacionvale'.h::userId();
                         $sesion=h::session();
                         $sesion->set($key,[]);                        
                         $id=$model->resolveVale(); 

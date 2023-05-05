@@ -110,7 +110,7 @@ class MatValeFake extends \common\models\base\modelBase
                 $valeOriginal->codest=$valeOriginal::ESTADO_CERRADO;
                 $exito=$valeOriginal->save();
                 if(!$exito){
-                    $key=$vale->id.'anulacionvale'.h::userId();
+                    $key='anulacionvale'.h::userId();
                     $sesion=h::session();
                     $errores=$sesion->get($key);
                     $errores['Cabecera']=$valeOriginal->getFirstError();
@@ -136,7 +136,7 @@ class MatValeFake extends \common\models\base\modelBase
                 
                 $exito=$modelDetalle->save();
                  if(!$exito){
-                  $key=$vale->id.'anulacionvale'.h::userId();
+                  $key='anulacionvale'.h::userId();
                   $sesion=h::session();
                   $errores=$sesion->get($key);
                   $errores['Item']=$modelDetalle->codart.'-'.$modelDetalle->getFirstError();
