@@ -395,6 +395,8 @@ implements ReqInterface,EstadoInterface {
            if(is_null($stock=$this->stock())){
               $this->addError('codart',yii::t('base.errors','El material no tiene registro de stock'));
           }else{
+              yii::error('Los atributos del stock',__FUNCTION__);
+              yii::error($stock->attributes,__FUNCTION__);
              if($transaccion->afecta_reserva){
                 if($this->getCantReal()->cant > $stock->cantres){
                 $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material reservado en stock',['canti'=>$stock->cant_disp]));  
