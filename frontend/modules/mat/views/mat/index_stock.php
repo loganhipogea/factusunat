@@ -102,7 +102,7 @@ $formato=h::formato();
                   }
                 ],
             ['attribute'=>'descripcion',
-                'headerOptions' => ['style' => 'width:30%'],
+                'headerOptions' => ['style' => 'width:50%'],
                   'value'=>function ($model){
                     return $model->descripcion;
                   }
