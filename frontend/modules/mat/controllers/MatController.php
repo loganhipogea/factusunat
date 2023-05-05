@@ -416,11 +416,11 @@ public function actionAjaxDesactivaItem($id){
                         if(!$resultado){
                             $errores=$sesion->get($key);
                             if(count($errores)>0){
-                                $error=$errores[array_keys($errores)[0]];//primer error
+                                $error=array_keys($errores)[0].'->'.$errores[array_keys($errores)[0]];//primer error
                             }else{
                                 $error='';
                             }
-                            
+                            $sesion->remove($key);
                             
                           return ['error'=>yii::t('base.errors','Se encontraron errores '.$error)];  
                         }else{

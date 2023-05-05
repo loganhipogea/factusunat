@@ -368,7 +368,7 @@ implements ReqInterface,EstadoInterface {
                   $key=$vale->id.'sesion'.h::userId();
                   $sesion=h::session();
                   $errores=$sesion->get($key);
-                  $errores['Item']=$this->getFirstError();
+                  $errores['Item']=$this->codart.'-'.$this->getFirstError();
                   $sesion->set($key,$errores); 
          }
          
