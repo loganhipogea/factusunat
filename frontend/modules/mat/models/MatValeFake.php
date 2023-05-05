@@ -136,7 +136,7 @@ class MatValeFake extends \common\models\base\modelBase
                 
                 $exito=$modelDetalle->save();
                  if(!$exito){
-                  $key=$vale->id.'sesion'.h::userId();
+                  $key=$vale->id.'anulacionvale'.h::userId();
                   $sesion=h::session();
                   $errores=$sesion->get($key);
                   $errores['Item']=$modelDetalle->codart.'-'.$modelDetalle->getFirstError();
