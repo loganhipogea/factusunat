@@ -280,20 +280,8 @@ implements ReqInterface,EstadoInterface {
             $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;  
           
           
-          /*
-           * Actualizamos el P.U. pero de este vale
-           * ¿Por que?:  Porque de este modo nos aseguramos que 
-           * quede una foto del precio verdaero con el que se ha movido
-           * en el vale
-           */
-          yii::error('sacando el precio unitaro',__FUNCTION__);
-            
-          $this->punit=$stock->valor_unit;
-          yii::error($this->punit,__FUNCTION__);
-          /* $afectados= $this->updateAll([
-              'punit'=>$stock->valor_unit,
-              'valor'=>$stock->valor_unit*$this->cant,
-              ],['id'=>$this->id]);*/
+         
+         
          
       }
       $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
@@ -347,9 +335,34 @@ implements ReqInterface,EstadoInterface {
    */
   public function aprobado(){
     
+       //$this->trazabilidad();
+         $this->codest=self::ESTADO_APROBADO;
+          $vale=$this->vale;
+         $stock=$this->stock();
+           /*
+           * Actualizamos el P.U. pero de este vale
+           * ¿Por que?:  Porque de este modo nos aseguramos que 
+           * quede una foto del precio verdaero con el que se ha movido
+           * en el vale
+           */
+          if(!is_null($stock) && !$this->vale->transaccion->afecta_precio){
+              $this->punit=$stock->valor_unit;
+          }
+         $exito=$this->save();
+         if(!$exito){
+                  $key=$vale->id.'sesion'.h::userId();
+                  $sesion=h::session();
+                  $errores=$sesion->get($key);
+                  $errores['Item']=$this->codart.'-'.$this->getFirstError();
+                  $sesion->set($key,$errores); 
+            return $exito;
+         }
+      
+      
+      
       $vale=$this->vale;
     ///  $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
-        if(is_null($stock=$this->stock())){
+        if(is_null($stock)){
             $idStock=$this->updateStock(New MatStock());
         }else{
             $idStock=$this->updateStock($stock);
@@ -360,17 +373,7 @@ implements ReqInterface,EstadoInterface {
            if(!$idStock) return $idStock;
            $exito=$this->createKardex($idStock);  
            if(!$exito)return $exito;
-         //$this->trazabilidad();
-         $this->codest=self::ESTADO_APROBADO;
-         
-         $exito=$this->save();
-         if(!$exito){
-                  $key=$vale->id.'sesion'.h::userId();
-                  $sesion=h::session();
-                  $errores=$sesion->get($key);
-                  $errores['Item']=$this->codart.'-'.$this->getFirstError();
-                  $sesion->set($key,$errores); 
-         }
+        
          
         return $exito;
       //$transaccion->commit();
@@ -403,7 +406,7 @@ implements ReqInterface,EstadoInterface {
                 }  
              }else{
                 if($this->getCantReal()->cant > $stock->cant_disp){
-                $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material en stock',['canti'=>$stock->getOldAttribute('cant_disp')]));  
+                $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material en stock',['canti'=>$stock->cant_disp]));  
                 }   
              }
               
