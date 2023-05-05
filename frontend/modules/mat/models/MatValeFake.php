@@ -148,9 +148,9 @@ class MatValeFake extends \common\models\base\modelBase
             
             
            if($exito){
-               $transaccion->commit();return $valeNuevo->id;
+               $transaccion->commit();return ['error'=>false,'id'=>$valeNuevo->id];
            }else{
-               $transaccion->rollBack();return false;
+               $transaccion->rollBack();return ['error'=>true,'id'=>$valeNuevo->id];
            }
           
           

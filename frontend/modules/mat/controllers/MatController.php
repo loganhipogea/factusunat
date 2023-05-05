@@ -834,8 +834,8 @@ public function actionAjaxDesactivaItem($id){
                         $key='anulacionvale'.h::userId();
                         $sesion=h::session();
                         $sesion->set($key,[]);                        
-                        $id=$model->resolveVale(); 
-                        if(!$id){
+                        $resultado=$model->resolveVale(); 
+                        if(!$resultado['error']){
                             $errores=$sesion->get($key);
                             if(count($errores)>0){
                                 $error=array_keys($errores)[0].'->'.$errores[array_keys($errores)[0]];//primer error
@@ -847,7 +847,7 @@ public function actionAjaxDesactivaItem($id){
                         }else{
                             //$sesion->setFlash('Success',yii::t('base.errors','Hubo errores: '.$error)); 
                         }
-                return $this->redirect(['update-vale', 'id' => $id]); 
+                return $this->redirect(['update-vale', 'id' => $resultado['id']]); 
            }
         return $this->render('vale_form_fake', [
             'model' => $model,
