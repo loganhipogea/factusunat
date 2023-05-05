@@ -96,7 +96,7 @@ $formato=h::formato();
                 ],
             
             ['attribute'=>'codart',
-                'headerOptions' => ['style' => 'width:20%'],
+                //'headerOptions' => ['style' => 'width:20%'],
                   'value'=>function ($model){
                     return $model->codart;
                   }
