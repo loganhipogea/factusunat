@@ -129,9 +129,10 @@ class Maestrocompo extends \common\models\base\modelBase
         
         if($insert){
             //$this->prefijo=$this->codtipo;
+            $this->codfam=$this->codtipo;
             if(empty($this->codart))
             $this->codart=$this->correlativo('codart',10,'codfam');
-            $this->codfam=$this->codtipo;
+            
         }
         return parent::beforeSave($insert);
     }
