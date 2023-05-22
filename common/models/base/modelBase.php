@@ -928,13 +928,18 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
            $tamano=$longitud;
         }
         
+        yii::error('VALOR DEL CAMPO CRITERIO');
+        yii::error($this->{$campocriterio},__FUNCTION__);
+        yii::error($this->attributes,__FUNCTION__);
         /*
          * Resolviendo prioridades
          */
         if(is_null($this->prefijo)){
             if(is_null($campocriterio)){
+                
                 $this->prefijo='1';
             }else{
+               
                $this->prefijo=$this->{$campocriterio}; 
                $criteria=[$campocriterio=>$this->{$campocriterio}];
             }
