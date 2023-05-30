@@ -928,9 +928,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
            $tamano=$longitud;
         }
         
-        yii::error('VALOR DEL CAMPO CRITERIO');
-        yii::error($this->{$campocriterio},__FUNCTION__);
-        yii::error($this->attributes,__FUNCTION__);
+      
         /*
          * Resolviendo prioridades
          */

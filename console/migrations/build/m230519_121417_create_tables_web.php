@@ -19,7 +19,7 @@ class m230519_121417_create_tables_web extends baseMigration
          if(!$this->existsTable($this->table)) {
             $this->createTable($this->table, [
             'id' => $this->primaryKey(),
-            'opcion'=> $this->string()->append($this->collateColumn()),            
+            'opcion'=> $this->text()->append($this->collateColumn()),            
               'parent_id'=>$this->integer(11) ,    
         ]);
       }

@@ -18,9 +18,9 @@ class ComDetcoti extends \common\models\base\modelBase
     const SCE_MANO_OBRA='SM';
     
     
-    public static function tableName()
+   public static function tableName()
     {
-        return 'com_detcoti';
+        return '{{%com_detcoti}}';
     }
     public function behaviors() {
         return [
