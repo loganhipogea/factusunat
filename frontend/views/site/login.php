@@ -1,6 +1,7 @@
 <?php
 use yii\widgets\ActiveForm;
-
+use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
@@ -29,9 +30,7 @@ use yii\widgets\ActiveForm;
 						<input type="password"  id="loginform-password" name="LoginForm[password]" aria-required="true" class="form-control" placeholder="contraseña">
                                                 <p class="help-block help-block-error""></p>
                                         </div>
-					<div class="row align-items-center remember">
-						<input type="checkbox">Recordar mis credenciales
-					</div>
+					
 					<div class="form-group">
 						<input type="submit" value="Ingresar" class="btn float-right login_btn">
 					</div>
@@ -41,7 +40,7 @@ use yii\widgets\ActiveForm;
 			<div class="card-footer">
 				
 				<div class="d-flex justify-content-center">
-					<a href="#">Olvidé mi constraseña</a>
+					<?=Html::a('Olvidé mi contraseña',Url::to(['/site/request-password-reset']))?>
 				</div>
 			</div>
 		</div>
