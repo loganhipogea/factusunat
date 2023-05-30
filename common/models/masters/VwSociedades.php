@@ -137,7 +137,7 @@ class VwSociedades extends \common\models\base\modelBase
     }
     
     private static function prepareData(){
-        $dependency=New \yii\caching\DbDependency(['sql'=>'SELECT COUNT(*) FROM {{%centros}}']);
+        $dependency=New \yii\caching\DbDependency(['sql'=>'SELECT COUNT(*) FROM {{%clipro}}']);
         $result = self::getDb()->cache(
                                              function ($db) {                                               
                                                 return  self::find()->asArray()->all();
