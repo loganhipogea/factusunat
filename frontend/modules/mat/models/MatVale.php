@@ -149,7 +149,10 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
       foreach($this->detalles as $detvale){
           yii::error('recorriendo '.$detvale->codart,__FUNCTION__);
          $exito= $detvale->aprobado();
-         if(!$exito) break;
+         if(!$exito){ 
+             yii::error('Hubo un error',__FUNCTION__);
+              
+             break;}
       }
         if(!$exito){
             $transaccion->rollBack();
