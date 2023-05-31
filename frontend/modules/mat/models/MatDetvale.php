@@ -350,6 +350,9 @@ implements ReqInterface,EstadoInterface {
           }
          $exito=$this->save();
          if(!$exito){
+             yii::error('Se esta guardando el error en la clave',__FUNCTION__);
+             yii::error($vale->id.'sesion'.h::userId(),__FUNCTION__);
+             yii::error($this->getFirstError(),__FUNCTION__);
                   $key=$vale->id.'sesion'.h::userId();
                   $sesion=h::session();
                   $errores=$sesion->get($key);

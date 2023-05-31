@@ -411,7 +411,8 @@ public function actionAjaxDesactivaItem($id){
                         $key=$model->id.'sesion'.h::userId();
                         $sesion=h::session();
                         $sesion->set($key,[]);
-                        
+                        yii::error('la sesion es  ',__FUNCTION__);
+                         yii::error($key,__FUNCTION__);
                         $resultado=$model->Aprobar(); 
                         if(!$resultado){
                             $errores=$sesion->get($key);
