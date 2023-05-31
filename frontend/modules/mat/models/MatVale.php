@@ -144,6 +144,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     }
     
     public function Aprobar(){
+        $sesion=\common\helpers\h::session();
         if($this->isCreado()){
         $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
       foreach($this->detalles as $detvale){
@@ -151,8 +152,9 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
          $exito= $detvale->aprobado();
          if(!$exito){ 
              yii::error('Hubo un error',__FUNCTION__);
-              
-             break;}
+              yii::error($sesion->get($this->vale->id.'sesion'.\common\helpers\h::userId()),__FUNCTION__);
+             yii::error($detvale->getFirstError(),__FUNCTION__);
+              break;}
       }
         if(!$exito){
             $transaccion->rollBack();
