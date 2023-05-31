@@ -152,7 +152,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
          $exito= $detvale->aprobado();
          if(!$exito){ 
              yii::error('Hubo un error',__FUNCTION__);
-              yii::error($sesion->get($this->vale->id.'sesion'.\common\helpers\h::userId()),__FUNCTION__);
+              yii::error($sesion->get($this->id.'sesion'.\common\helpers\h::userId()),__FUNCTION__);
              yii::error($detvale->getFirstError(),__FUNCTION__);
               break;}
       }
