@@ -304,6 +304,8 @@ implements ReqInterface,EstadoInterface {
                   
               }
               return $stock->id;
+       }else{
+           return true;
        }
   }
  
@@ -349,6 +351,8 @@ implements ReqInterface,EstadoInterface {
               $this->punit=$stock->valor_unit;
           }
          $exito=$this->save();
+         
+         
          if(!$exito){
              yii::error('Se esta guardando el error en la clave',__FUNCTION__);
              yii::error($vale->id.'sesion'.h::userId(),__FUNCTION__);
