@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use common\helpers\h;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
-use common\helpers\comboHelper;
+use common\helpers\ComboHelper as comboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
