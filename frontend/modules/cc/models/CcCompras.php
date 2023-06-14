@@ -221,6 +221,7 @@ class CcCompras extends \common\models\base\BaseDocument
             $this->activo=true;
             $this->setCreated();
         }
+        $this->mes=$this->toCarbon('fecha')->month();
         return parent::beforeSave($insert);
     }
     
