@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-use frontend\modules\cc\helpers\ComboHelper;
+use frontend\modules\cc\helpers\comboHelper;
 use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
 
@@ -87,7 +87,7 @@ use common\helpers\h;
       
      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">    
                         <?= $form->field($model, 'cuenta_id')->
-                            dropDownList(ComboHelper::getCboCuentas(),
+                            dropDownList(comboHelper::getCboCuentas(),
                             ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
