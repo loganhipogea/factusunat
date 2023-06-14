@@ -8,6 +8,9 @@ USE frontend\modules\mat\interfaces\ReqInterface;
 use frontend\modules\mat\interfaces\EstadoInterface;
 use common\models\masters\Transacciones;
 use common\helpers\h;
+use common\interfaces\CosteoInterface;
+use common\behaviors\CodocuBehavior;
+use frontend\modules\cc\models\CcCostos;
 use Yii;
 
 /**
@@ -24,14 +27,15 @@ use Yii;
  * @property Maestrocompo $codart0
  */
 class MatDetvale extends \common\models\base\modelBase 
-implements ReqInterface,EstadoInterface {
+implements ReqInterface,EstadoInterface, CosteoInterface {
 
         const ESTADO_CREADO='10';
         const ESTADO_APROBADO='20';
         const ESTADO_ANULADO='99';
         CONST MOV_SALIDA='scenario_i';
         CONSt MOV_INGRESO='scenario_i';
-
+        CONST FLAG_SERVICIO='S';
+        CONSt FLAG_MATERIALES='M';
    private $_cantreal=null;
     /**
      * {@inheritdoc}
@@ -174,6 +178,7 @@ implements ReqInterface,EstadoInterface {
       $kardex=new MatKardex();
       $vale=$this->vale;
       $signo=$vale->transaccion->signo;
+       
       $kardex->setAttributes([
           'stock_id'=>$idstock,
           'signo'=>$signo,
@@ -201,9 +206,14 @@ implements ReqInterface,EstadoInterface {
       //print_r($kardex->getErrors());
      return $salio;
      //return $kardex->save();
-  }
+       }
+  
+  
   
   private function createStock(){
+     $vale=$this->vale;
+      //$signo=$vale->transaccion->signo;
+       
       $stock= New MatStock();
      // $vale=$this->vale;
       $stock->setAttributes([
@@ -247,7 +257,7 @@ implements ReqInterface,EstadoInterface {
       $afecta_reserva=$transaccion->afecta_reserva;      
        $afecta_precio=$transaccion->afecta_precio;       
        
-       if(!$transaccion->es_servicio){
+       
        
        if($stock->isNewRecord){
           $stock->setAttributes([
@@ -275,14 +285,8 @@ implements ReqInterface,EstadoInterface {
        */
       if($afecta_precio){ //Sacamos el P.U. del mismo vale
           $montoafectado=abs($this->punit)*abs($this->cant)*$signo;           
-      }else{//Sacamos el P.U. del stock o del vale dependiendo
-          
-            $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;  
-          
-          
-         
-         
-         
+      }else{//Sacamos el P.U. del stock o del vale dependiendo          
+            $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;         
       }
       $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
         
@@ -304,10 +308,8 @@ implements ReqInterface,EstadoInterface {
                   
               }
               return $stock->id;
-       }else{
-           return true;
        }
-  }
+  
  
 /*Establece la trazabilidad de 
  * de la compra
@@ -341,23 +343,27 @@ implements ReqInterface,EstadoInterface {
          $this->codest=self::ESTADO_APROBADO;
           $vale=$this->vale;
          $stock=$this->stock();
+         $transaccion=$this->vale->transaccion;
+         $es_servicio=$transaccion->es_servicio;
+         $existeDocumento=$transaccion->exigirvalidacion;
+         
+         
+         
+         if(!$es_servicio){
            /*
            * Actualizamos el P.U. pero de este vale
            * ¿Por que?:  Porque de este modo nos aseguramos que 
            * quede una foto del precio verdaero con el que se ha movido
            * en el vale
            */
-          if(!is_null($stock) && !$this->vale->transaccion->afecta_precio){
+          if(!is_null($stock) && !$transaccion->afecta_precio){
               $this->punit=$stock->valor_unit;
           }
          $exito=$this->save();
          
          
          if(!$exito){
-             yii::error('Se esta guardando el error en la clave',__FUNCTION__);
-             yii::error($vale->id.'sesion'.h::userId(),__FUNCTION__);
-             yii::error($this->getFirstError(),__FUNCTION__);
-                  $key=$vale->id.'sesion'.h::userId();
+                 $key=$vale->id.'sesion'.h::userId();
                   $sesion=h::session();
                   $errores=$sesion->get($key);
                   $errores['Item']=$this->codart.'-'.$this->getFirstError();
@@ -375,18 +381,44 @@ implements ReqInterface,EstadoInterface {
             $idStock=$this->updateStock($stock);
         }
         
-       // yii::error($idStock,__FUNCTION__);
-        //yii::error('Entrando al create kardex',__FUNCTION__);
-           if(!$idStock) return $idStock;
-           $exito=$this->createKardex($idStock);  
+          if(!$idStock) return $idStock;
+          
+          
+           $exito=$this->createKardex($idStock);
+           
            if(!$exito)return $exito;
         
          
-        return $exito;
+        
       //$transaccion->commit();
       
-   }
-   
+      }else{
+          $exito=true;
+          
+      }   
+      
+      if($existeDocumento){
+          $resultado=CcCostos::createRegistro($this, $this->vale->ClaseDocRef());
+          if(count($resultado)>0){
+              $exito=false;
+             $key=$vale->id.'sesion'.h::userId();
+                  $sesion=h::session();
+                  $errores=$sesion->get($key);
+                  $errores['Item']=$this->codart.'-'.$resultado['error'];
+                  $sesion->set($key,$errores);  
+          }else{
+             $exito=true; 
+          }
+      }
+      return $exito;
+  } 
+  
+  
+  
+  
+  
+  
+  
    public function validate_cant_stock(){
        /*
         * Siempre que se intente sacar algo
@@ -445,7 +477,32 @@ implements ReqInterface,EstadoInterface {
        return $this->isAnulado()|| $this->isAprobado();
     }
   
-   
     
+    public function  numerodoc(){
+        return $this->vale->numero;
+    }
+    public function tipo(){
+        return ($this->vale->transaccion->es_servicio)?self::FLAG_SERVICIO:self::FLAG_MATERIALES;
+    }
+    public function codcen(){
+       return $this->vale->codcen;
+    }
     
+     public function codocu(){
+       return $this->vale->codocu();
+    }
+    
+    public function monto() {
+        $transaccion=$this->vale->transaccion;
+         $signo=$transaccion->signo;
+          $afecta_precio=$transaccion->afecta_precio;
+
+        
+      if($afecta_precio){ //Sacamos el P.U. del mismo vale
+          return abs($this->punit)*abs($this->cant)*$signo;           
+      }else{//Sacamos el P.U. del stock o del vale dependiendo          
+           return abs($this->stock()->valor_unit)*abs($this->cant)*$signo;         
+      }
+
+    }
 }

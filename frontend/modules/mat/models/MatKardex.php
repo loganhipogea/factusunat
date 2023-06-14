@@ -2,6 +2,7 @@
 
 namespace frontend\modules\mat\models;
 use frontend\modules\mat\models\MatDetVale;
+
 use Yii;
 
 /**

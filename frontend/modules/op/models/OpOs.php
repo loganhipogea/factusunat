@@ -4,7 +4,8 @@ namespace frontend\modules\op\models;
 use common\models\masters\Trabajadores;
 use common\models\masters\Clipro;
 use Yii;
-
+use common\behaviors\CodocuBehavior;
+use common\interfaces\CosteoInterface;
 /**
  * This is the model class for table "{{%op_os}}".
  *
@@ -22,7 +23,9 @@ use Yii;
  * @property string $textointerno
  * @property string $textotecnico
  */
-class OpOs extends \common\models\base\modelBase
+class OpOs extends \common\models\base\modelBase 
+implements CosteoInterface,
+        \frontend\modules\mat\interfaces\DocRelacionadoValeInterface
 {
     
     CONST LUGAR_TALLER='T';
@@ -50,7 +53,7 @@ class OpOs extends \common\models\base\modelBase
     {
         return [
             [['proc_id'], 'required'],
-             [['item'], 'safe'],
+             [['item','codcen'], 'safe'],
             [['proc_id'], 'integer'],
             [['textocomercial', 'textointerno', 'textotecnico'], 'string'],
             [['numero'], 'string', 'max' => 10],
@@ -63,6 +66,13 @@ class OpOs extends \common\models\base\modelBase
         ];
     }
 
+    
+    public function behaviors() {
+        return [
+           
+           
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -152,4 +162,23 @@ class OpOs extends \common\models\base\modelBase
         }
         return parent::afterSave($insert, $changedAttributes);
     }
+    
+    public function  numerodoc(){
+        return $this->numero;
+    }
+    public function tipo(){
+        return 'S';
+    }
+    public function codcen(){
+       return $this->codcen;
+    }
+    
+     public function monto(){
+         return 23.4;
+     }
+ 
+    public static function buscarporNumero($numero){
+        return self::findOne(['numero'=>$numero]);
+    } 
+     
 }

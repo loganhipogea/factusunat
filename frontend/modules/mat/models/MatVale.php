@@ -5,6 +5,8 @@ use common\models\masters\Clipro;
 use \common\models\masters\Documentos;
 use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
 use frontend\modules\mat\models\MatDetvale;
+use common\behaviors\CodocuBehavior;
+use common\interfaces\CosteoInterface;
 use Yii;
 
 /**
@@ -69,7 +71,7 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
             [[ 'codpro', 'codmov','codocu'], 'required'],
             [['texto'], 'string'],
             [['codocu','numerodoc','fechacon'], 'string'],
-             [['codocu','numerodoc','fechacon','codal'], 'safe'],
+             [['codocu','numerodoc','fechacon','codal','codcen'], 'safe'],
             [['numerodoc'], 'validate_docu'],
             [['numero', 'fecha'], 'string', 'max' => 10],
             [['codpro'], 'string', 'max' => 10],
@@ -82,6 +84,17 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
             ];
     }
 
+    public function behaviors() {
+        return [
+            'DocuBehavior' => [
+                'class' => CodocuBehavior::className()
+            ],
+           
+        ];
+    }
+    
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -144,18 +157,23 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     }
     
     public function Aprobar(){
-        $sesion=\common\helpers\h::session();
+        
         if($this->isCreado()){
         $transaccion=$this->getDb()->beginTransaction(\yii\db\Transaction::SERIALIZABLE);
       foreach($this->detalles as $detvale){
-          yii::error('recorriendo '.$detvale->codart,__FUNCTION__);
+          //yii::error('recorriendo '.$detvale->codart,__FUNCTION__);
          $exito= $detvale->aprobado();
          if(!$exito){ 
-             yii::error('Hubo un error',__FUNCTION__);
-              yii::error($sesion->get($this->id.'sesion'.\common\helpers\h::userId()),__FUNCTION__);
-             yii::error($detvale->getFirstError(),__FUNCTION__);
+            // yii::error('Hubo un error',__FUNCTION__);
+              //yii::error($sesion->get($this->id.'sesion'.\common\helpers\h::userId()),__FUNCTION__);
+             //yii::error($detvale->getFirstError(),__FUNCTION__);
               break;}
       }
+      
+      
+      
+      
+      
         if(!$exito){
             $transaccion->rollBack();
            // return ['error'=>'Ocurrió un error al momento de efectuar la operación'];
@@ -193,9 +211,17 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
                 yii::error('Encontro el obejto',__FUNCTION__);
                 yii::error($obj,__FUNCTION__);
                if($obj instanceof DocRelacionadoValeInterface){
+                   yii::error('Si es instancia de interface',__FUNCTION__);
                    $mod=$obj->buscarporNumero($this->numerodoc);
-                  if($mod===null)
-                   $this->addError('numerodoc',yii::t('base.errors','No existe el documento con ese número'));
+                   yii::error($mod,__FUNCTION__);
+                  if($mod===null){
+                       yii::error('aGRENAFO EK ELRRO',__FUNCTION__);
+                 
+                     $this->addError('numerodoc',yii::t('base.errors','No existe el documento con ese número'));
+                  }
+                   
+                     }else{
+                  yii::error('NO es instancia de interface',__FUNCTION__);  
                }
            }else{
              yii::error('El objeto e null',__FUNCTION__);  
@@ -239,6 +265,25 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
      public function total(){
          return $this->getDetalles()->sum('valor');
      }
+     
+    
+     /*
+   * 
+   */
+  public function ClaseDocRef(){
+      
+      if(!is_null($reg=Documentos::findOne(['codocu'=>$this->codocu]))){
+          $clase=$reg->modelo;
+          return $clase::findOne(['numero'=>$this->numerodoc]);
+      }else{
+          return null;
+      }
+      
+      
+  }
+     
+     
+     
        
     }
     

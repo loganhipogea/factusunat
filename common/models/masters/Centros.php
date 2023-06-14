@@ -113,7 +113,7 @@ class Centros extends modelBase
   
      public static function currentCenter(){
         $cache=h::cache();
-        if($cache->exists(self::keySesion()) && !empty(self::keyCache())){
+        if($cache->exists(self::keyCache()) && !empty(self::keyCache())){
             return $cache->get(self::keyCache());
             
         }else{

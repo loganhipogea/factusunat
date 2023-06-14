@@ -33,7 +33,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                        ]);
             echo Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
             ?>
-           <?= common\widgets\auditwidget\auditWidget::widget(['model'=>$model])?>
+           <?PHP 
+            if(!$model->iSnewRecord){
+              ECHO common\widgets\auditwidget\auditWidget::widget(['model'=>$model]);   
+            }
+           
+           ?>
                   
             </div>
             </div>
@@ -120,7 +125,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     ?>
     
    <?php //var_dump((new SigiApoderadosSearch())->searchByEdificio($model->id)); die(); ?>
-    <?= GridView::widget([
+   <?=\frontend\modules\cc\models\CcRendicion::find()
+                        ->andWhere(['movimiento_id'=>$model->id])
+                        ->createCommand()->rawSql?>
+   <?= GridView::widget([
         'dataProvider' =>(new \yii\data\ActiveDataProvider([
                         'query'=> \frontend\modules\cc\models\CcRendicion::find()
                         ->andWhere(['movimiento_id'=>$model->id])

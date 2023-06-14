@@ -88,7 +88,7 @@ class CcCc extends \common\models\base\modelBase implements DocRelacionadoValeIn
         return parent::beforeSave($insert);
     }
     
-    public function buscarporNumero($numero) {
+    public static function buscarporNumero($numero) {
         return self::findOne(['codigo'=>$numero]);
     }
 }

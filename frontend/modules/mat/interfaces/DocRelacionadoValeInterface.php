@@ -8,7 +8,7 @@ namespace frontend\modules\mat\interfaces;
  */
 
 interface  DocRelacionadoValeInterface { 
-   public function buscarporNumero($numero);
+   public static function buscarporNumero($numero);
   
     
 }

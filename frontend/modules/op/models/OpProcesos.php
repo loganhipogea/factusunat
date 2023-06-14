@@ -4,6 +4,7 @@ namespace frontend\modules\op\models;
 use common\models\masters\Clipro;
 use common\behaviors\FileBehavior;
 use common\helpers\h;
+use common\behaviors\CodocuBehavior;
 use Yii;
 
 /**
@@ -50,6 +51,9 @@ class OpProcesos extends \common\models\base\modelBase
             ],
             'auditoriaBehavior' => [
                 'class' => '\common\behaviors\AuditBehavior',
+            ],
+             'DocuBehavior' => [
+                'class' => CodocuBehavior::className()
             ],
            
         ];

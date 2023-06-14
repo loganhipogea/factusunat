@@ -314,7 +314,7 @@ class CuentasController extends baseController
 
      public function actionEditFondo($id)
     {
-         \common\models\masters\Centros::currentCenter();
+         //\common\models\masters\Centros::currentCenter();
         $model = \frontend\modules\cc\models\CcRendicion::findOne($id);
         $searchModel = new \frontend\modules\cc\models\CcComprasSearch();
         $dataprovider = $searchModel->searchByFondo($id,Yii::$app->request->queryParams);
@@ -378,11 +378,11 @@ class CuentasController extends baseController
    
    public function actionModCreaRendicion($id){
     $this->layout = "install";
-    $modelCompra= \frontend\modules\cc\models\CcMovimientos::findOne($id);
+    $modelMovimiento= \frontend\modules\cc\models\CcMovimientos::findOne($id);
       
     $model=New \frontend\modules\cc\models\CcCompras();
      $model->parent_id=$id;
-        $model->movimiento_id=$id;
+        $model->movimiento_id=$modelMovimiento->id;
        $datos=[];
         if(h::request()->isPost){ 
             //ECHO "EL ESCEANRIO ES ".$model->getScenario();die();
@@ -560,6 +560,41 @@ class CuentasController extends baseController
                 
                 return ['success' => yii::t('base.names', 'Se eliminó la observación')];
          }
+    }
+    
+    /*
+     * Crea un comprobante 
+     */
+    public function actionCreaComprobante(){
+         $modelMovimiento= \frontend\modules\cc\models\CcMovimientos::findOne($id);
+      
+    $model=New \frontend\modules\cc\models\CcCompras();
+     $model->parent_id=$id;
+        $model->movimiento_id=$modelMovimiento->id;
+       $datos=[];
+        if(h::request()->isPost){ 
+            //ECHO "EL ESCEANRIO ES ".$model->getScenario();die();
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{              
+               $model->save();
+                
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('crea_comprobante', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
     }
     
 }

@@ -137,7 +137,7 @@ class ProfileController extends baseController
   
   public function actionSelectCenter(){
       $codpro=null; 
-      if(\yii::$app->session->has(\common\models\masters\VwSociedades::keysesion()))
+      //if(\yii::$app->session->has(\common\models\masters\VwSociedades::keysesion()))
           $codpro=\common\models\masters\VwSociedades::codpro(); 
       //echo $codpro; die();
       return $this->render('index-centers',['codpro'=>$codpro]);

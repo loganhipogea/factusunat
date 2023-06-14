@@ -1751,7 +1751,7 @@ public function firstMessage($category=null){
      }
  }
  
- public static function createCarbonFromFormat($formato,$valor){
+ public static function createCarbonFromFormat(  $formato,$valor){
      return Carbon::createFromFormat(
                      $formato,
                       $valor);
