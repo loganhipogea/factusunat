@@ -50,7 +50,7 @@ use dosamigos\chartjs\ChartJs;
              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
                         <?= $form->field($model, 'codocu')->
-                            dropDownList(ComboHelper::getCboDocuments(),
+                            dropDownList(comboHelper::getCboDocuments(),
                             ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
@@ -79,7 +79,7 @@ use dosamigos\chartjs\ChartJs;
                      </div>
                   <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">      
                         <?= $form->field($model, 'codmon')->
-                             dropDownList(ComboHelper::getCboMonedas(),
+                             dropDownList(comboHelper::getCboMonedas(),
                             ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
