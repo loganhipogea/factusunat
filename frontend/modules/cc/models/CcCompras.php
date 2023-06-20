@@ -16,8 +16,11 @@ class CcCompras extends \common\models\base\BaseDocument
     use \frontend\modules\cc\traits\CcTrait;
     const ST_OBSERV='30';
     public $nameFieldEstado='estado'; 
+    public $fecha1;
+    public $monto1;
       public $dateorTimeFields = [
         'fecha' => self::_FDATE,
+        'fecha1' => self::_FDATE,
         /*'finicio' => self::_FDATETIME,
         'ftermino' => self::_FDATETIME*/
     ];  
@@ -64,7 +67,7 @@ class CcCompras extends \common\models\base\BaseDocument
             [['monto', 'igv', 'monto_usd', 'igv_usd'], 'number'],
             [['codocu',  'codmon'], 'string', 'max' => 3],
               [['serie'], 'required'],
-            [['obs'], 'safe'],
+            [['obs','glosa'], 'safe'],
             [['monto'], 'validate_monto'],
             [['activo','detalle','parent_id','acumulado','monto_calificado','estado','serie'], 'safe'],
             [['numero'], 'string', 'max' => 12],
@@ -127,6 +130,10 @@ class CcCompras extends \common\models\base\BaseDocument
         return null;
     }
     
+    public function getProveedor()
+    {
+        return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
+    }
     
     
     public function acumulado($exceptId=null,$express=null){
@@ -220,7 +227,10 @@ class CcCompras extends \common\models\base\BaseDocument
         if($insert){
             $this->activo=true;
             $this->setCreated();
+            
         }
+        if($this->parent_id>0 and empty($this->movimiento_id))
+        $this->movimiento_id=$this->padre->movimiento_id;
         $this->mes=$this->toCarbon('fecha')->month;
         return parent::beforeSave($insert);
     }
@@ -335,5 +345,7 @@ class CcCompras extends \common\models\base\BaseDocument
       return  $this->padre->firstComprobante()->id;
   }
  
- 
+ public function numeroCompleto(){
+     return $this->serie.'-'.$this->numero;
+ }
 }

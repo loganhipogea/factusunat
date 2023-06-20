@@ -47,6 +47,17 @@ class comboHelper extends Combito
                 'id','descripcion'); 
     } 
     
+     public static function getCboRendiciones(){     
+       /* $idsFacturados= \frontend\modules\sigi\models\SigiKardexdepa::find()->
+                select(['id','nombre'])->distinct()-> 
+                andWhere(['edificio_id'=>$edificio_id])->column();
+         */ return ArrayHelper::map(
+                        \frontend\modules\cc\models\CcRendicion::find()
+                  //->where(['cuentas_id'=>$edificio_id])
+                 ->all(),
+                'id','descripcion'); 
+    } 
+    
 }
 
 

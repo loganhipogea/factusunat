@@ -311,6 +311,17 @@ class CuentasController extends baseController
             'model' => $model,  ]);
          }
     }
+    
+    
+    
+    public function actionIndexComprobantes(){
+         $searchModel = new \frontend\modules\cc\models\CcComprasSearch();
+         $dataprovider = $searchModel->search(Yii::$app->request->queryParams);
+         return $this->render('index_comprobantes',
+                 ['dataprovider'=>$dataprovider,
+                    'searchModel'=>$searchModel 
+                     ]);
+    }
 
      public function actionEditFondo($id)
     {
@@ -378,7 +389,7 @@ class CuentasController extends baseController
    
    public function actionModCreaRendicion($id){
     $this->layout = "install";
-    $modelMovimiento= \frontend\modules\cc\models\CcMovimientos::findOne($id);
+    $modelMovimiento= \frontend\modules\cc\models\CcRendicion::findOne($id);
       
     $model=New \frontend\modules\cc\models\CcCompras();
      $model->parent_id=$id;
@@ -597,4 +608,31 @@ class CuentasController extends baseController
         } 
     }
     
+    
+  /*
+   * Crear un comprobante sin el modal
+   *
+   */
+  public function actionCreaRendicion(){ 
+    $model=New \frontend\modules\cc\models\CcCompras(); 
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
+            return $this->redirect([
+                'edit-comprobante', 'id' => $model->id,
+                                    ]);
+        }ELSE{
+           
+        }
+        return $this->render('crea_rendicion', [
+            'model' => $model,
+           // 'dataprovider'=>$dataprovider,
+            
+        ]);
+      
+      
+      
+   }  
 }

@@ -5,6 +5,7 @@ namespace frontend\modules\cc\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\cc\models\CcCompras;
+use common\models\masters\Clipro;
 
 /**
  * CcCuentasSearch represents the model behind the search form of `frontend\modules\cc\models\CcCuentas`.
@@ -18,7 +19,10 @@ class CcComprasSearch extends CcCompras
     {
         return [
             [['parent_id'], 'integer'],
-            [[ 'parent_id','id','rucpro','codmon', 'codpro', 'glosa', 'numero','codocu', 'activo','monto'], 'safe'],
+            [[ 'parent_id','id','rucpro','codmon', 'codpro',
+                'glosa', 'numero','codocu', 'activo','monto',
+                'monto1','fecha1'
+                ], 'safe'],
           
         ];
     }
@@ -60,23 +64,32 @@ class CcComprasSearch extends CcCompras
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'banco_id' => $this->banco_id,
-            'saldo' => $this->saldo,
+            
         ]);
-
-        $query->andFilterWhere(['like', 'tipo', $this->tipo])
-            ->andFilterWhere(['like', 'codmon', $this->codmon])
-            ->andFilterWhere(['like', 'codpro', $this->codpro])
-            ->andFilterWhere(['like', 'nombre', $this->nombre])
+        $query->andFilterWhere(['like', 'rucpro', $this->rucpro])
+            ->andFilterWhere(['codmon'=> $this->codmon])
+            ->andFilterWhere(['codpro'=>$this->codpro])
+            ->andFilterWhere(['codocu'=> $this->codocu])
             ->andFilterWhere(['like', 'numero', $this->numero])
-            ->andFilterWhere(['like', 'socio', $this->socio])
-            ->andFilterWhere(['like', 'detalles', $this->detalles])
-            ->andFilterWhere(['like', 'indicaciones', $this->indicaciones])
-            ->andFilterWhere(['like', 'indicaciones2', $this->indicaciones2])
-            ->andFilterWhere(['like', 'activa', $this->activa])
-            ->andFilterWhere(['like', 'cci', $this->cci])
-            ->andFilterWhere(['like', 'fecult', $this->fecult]);
-
+             ->andFilterWhere(['like', 'glosa', $this->glosa])
+            ;
+        if(!empty($this->fecha) && !empty($this->fecha1)){
+                            $query->andFilterWhere([
+                                    'between',
+                                    'fecha',
+                                $this->openBorder('fecha',false),
+                                $this->openBorder('fecha1',true)
+                                ]);   
+                        }
+      if(!empty($this->monto) && !empty($this->monto1)){
+                            $query->andFilterWhere([
+                                    'between',
+                                    'monto',
+                                $this->monto-0.001,
+                                $this->monto1+0.001
+                                ]);   
+        
+                }
         return $dataProvider;
     }
     
@@ -112,4 +125,10 @@ class CcComprasSearch extends CcCompras
 
         return $dataProvider;
     }
+    
+   public function getProveedor()
+    {
+        return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
+    } 
+    
 }

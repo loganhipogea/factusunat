@@ -2,6 +2,8 @@
 
 namespace frontend\modules\cc\models;
 use frontend\modules\cc\models\CcCompras;
+use common\helpers\h;
+use common\interfaces\CosteoInterface;
 use Yii;
 
 /**
@@ -17,7 +19,7 @@ use Yii;
  * @property string $monto_usd
  * @property int $user_id
  */
-class CcGastos extends \common\models\base\modelBase
+class CcGastos extends \common\models\base\modelBase implements CosteoInterface
 {
     /**
      * {@inheritdoc}
@@ -149,4 +151,36 @@ class CcGastos extends \common\models\base\modelBase
             $comprobante->monto_calificado=$comprobante->acumulado();
             return $comprobante->save();
     }
+    
+    
+   
+    
+    
+    
+    
+    /*FUNCIONES DE INTERFACE*/
+    public function monto(){
+      $comprobante=$this->comprobante;
+      if($comprobante->codmon===h::monedaBase()){
+         return $comprobante->monto;
+      }else{
+           return $comprobante->monto*h::tipoCambio($comprobante->codmon);          
+      }
+    }    
+    public function numerodoc(){      
+           return $this->comprobante->numeroCompleto();          
+      
+    }
+    public function tipo(){
+        return 'M';
+    }
+    public function codcen(){
+        return $this->comprobante->padre->codcen;
+    }
+    
+   public function codocu(){
+       return $this->comprobante->codocu;
+   } 
+    
+    
 }

@@ -311,6 +311,10 @@ public static function userNameExists($username){
 
 
 
+public static function monedaBase(){
+    return Tipocambio::COD_MONEDA_BASE;
+}
+
 
 
 private static function resolveCambio($codmon,$fecha,$eshoy){

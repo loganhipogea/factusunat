@@ -3,10 +3,7 @@ namespace common\interfaces;
 
 
 
-interface CosteoInterface {
-  
-    
- 
+interface CosteoInterface {  
  public function monto();
  public function  numerodoc();
  public function tipo();
