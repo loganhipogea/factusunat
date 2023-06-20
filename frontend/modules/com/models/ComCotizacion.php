@@ -523,6 +523,7 @@ class ComCotizacion extends \common\models\base\modelBase
   
   public function cloneFake(){
      $model=New \frontend\modules\com\models\ComCotiFake();
+     \yii::error($this->attributes,__FUNCTION__);
      $model->setAttributes($this->attributes);
      if(!$model->save()) return ['error'=>$model->getFirstError()];
     
