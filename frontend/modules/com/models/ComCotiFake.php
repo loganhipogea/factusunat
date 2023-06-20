@@ -65,7 +65,7 @@ class ComCotiFake extends \common\models\base\modelBase
             [['codsoc', 'filtro'], 'string', 'max' => 1],
             [['codcen'], 'string', 'max' => 5],
             [['estado'], 'string', 'max' => 2],
-            [['descripcion'], 'string', 'max' => 40],
+            [['descripcion'], 'string', 'max' => 80],
             [['codtra'], 'string', 'max' => 6],
             [['codcen'], 'exist', 'skipOnError' => true, 'targetClass' => Centros::className(), 'targetAttribute' => ['codcen' => 'codcen']],
             [['codcli1'], 'exist', 'skipOnError' => true, 'targetClass' => Clipro::className(), 'targetAttribute' => ['codcli1' => 'codpro']],
