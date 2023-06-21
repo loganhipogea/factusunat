@@ -75,7 +75,7 @@ echo frontend\modules\com\models\ComCotienvios::find()
     'dataProvider'=>New \yii\data\ActiveDataProvider([
         'query'=> frontend\modules\com\models\ComCotienvios::find()
            ->andWhere([
-               'version_id'=>$model->coti->version,
+               'version_id'=>$model->id,
                'coti_id'=>$model->coti_id
                ])
             ,
