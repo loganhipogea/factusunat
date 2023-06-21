@@ -1448,7 +1448,7 @@ class CotiController extends baseController
    
    public function actionAjaxExpandEnvios(){
         if (isset($_POST['expandRowKey'])) {
-        $model = \frontend\modules\com\models\ComCotienvios::findOne($_POST['expandRowKey']+0);
+        $model = \frontend\modules\com\models\ComCotiversiones::findOne($_POST['expandRowKey']+0);
          return $this->renderPartial('_envios', ['model'=>$model]);
         }  
         
