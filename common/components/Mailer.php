@@ -38,6 +38,7 @@ class Mailer extends Correo
      * @var \Swift_Transport|array Swift transport instance or its array configuration.
      */
     private $_transport = [];
+    
 
     const MAIL_PORT_DEFAULT='25';
     const MAIL_SERVER_DEFAULT='mail.neotegnia.com';
@@ -255,10 +256,11 @@ class Mailer extends Correo
             'username'=>h::gsetting('mail'.$cad,'userservermail'),
             'password'=>h::gsetting('mail'.$cad,'passworduserservermail'),
             'port'=>h::gsetting('mail'.$cad,'portservermail'),
+               
               'encryption' => 'ssl',
                     //'SMTPAuth' => true,
               /*Esta line ase agergo apra que funcione en localhost */
-             //'streamOptions'=>['ssl' =>['allow_self_signed' => true,'verify_peer_name' => false, 'verify_peer' => false]], 
+             'streamOptions'=>['ssl' =>['allow_self_signed' => true,'verify_peer_name' => false, 'verify_peer' => false]], 
          ];
             
              }

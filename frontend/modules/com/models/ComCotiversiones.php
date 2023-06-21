@@ -208,6 +208,8 @@ class ComCotiversiones extends \common\models\base\modelBase
                 $mensajes['success']='Se envió el correo';
                 } catch (\Swift_TransportException $Ste) {      
                         $mensajes['error']=$Ste->getMessage();
+                       yii::error('EL ERROR DEL CORREO',__FUNCTION__);  
+                        yii::error($mensajes['error'],__FUNCTION__);
                      $this->prepareEnvio(substr($Ste->getMessage(),0,14));   
                 }
          } 

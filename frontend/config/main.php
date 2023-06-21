@@ -97,7 +97,9 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-         
+         'mailer' =>['class'=>'common\components\Mailer',
+                'viewPath'=>'@frontend/mail',
+            ],
         
     ],
    'as access' => [
