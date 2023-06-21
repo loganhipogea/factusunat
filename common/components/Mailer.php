@@ -258,7 +258,7 @@ class Mailer extends Correo
             'port'=>h::gsetting('mail'.$cad,'portservermail'),
                
               'encryption' => 'ssl',
-              'SMTPAuth' => true,
+              //'SMTPAuth' => true,
               /*Esta line ase agergo apra que funcione en localhost */
              'streamOptions'=>['ssl' =>['allow_self_signed' => true,'verify_peer_name' => false, 'verify_peer' => false]], 
          ];
