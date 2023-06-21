@@ -50,12 +50,12 @@ class ComCotienvios extends \common\models\base\modelBase
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('base', 'ID'),
-            'version_id' => Yii::t('base', 'Version ID'),
-            'coti_id' => Yii::t('base', 'Coti ID'),
-            'canal' => Yii::t('base', 'Canal'),
-            'exito' => Yii::t('base', 'Exito'),
-            'destinatarios' => Yii::t('base', 'Destinatarios'),
+            'id' => Yii::t('base.names', 'ID'),
+            'version_id' => Yii::t('base.names', 'Version ID'),
+            'coti_id' => Yii::t('base.names', 'Coti ID'),
+            'canal' => Yii::t('base.names', 'Canal'),
+            'exito' => Yii::t('base.names', 'Exito'),
+            'destinatarios' => Yii::t('base.names', 'Destinatarios'),
         ];
     }
 
