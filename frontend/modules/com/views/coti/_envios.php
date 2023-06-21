@@ -69,8 +69,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     'dataProvider'=>New \yii\data\ActiveDataProvider([
         'query'=> frontend\modules\com\models\ComCotienvios::find()
            ->andWhere([
-               'version_id'=>$model->version,
-               'coti_id'=>$model->id
+               'version_id'=>$model->coti->version,
+               'coti_id'=>$model->coti_id
                ])
             ,
     ]),
