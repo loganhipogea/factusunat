@@ -31,7 +31,17 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
    }
    $gridColumns=[       
-                  
+         [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                            return grid::ROW_COLLAPSED;
+                                },
+                   
+                    'detailUrl' =>Url::toRoute(['/com/coti/ajax-expand-envios']),
+                    //'headerOptions' => ['class' => 'kartik-sheet-style'], 
+                    'expandOneOnly' => true
+                ],         
        
         [
             'attribute' => 'numero',
