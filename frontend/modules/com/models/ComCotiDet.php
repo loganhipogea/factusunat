@@ -153,11 +153,14 @@ class ComCotiDet extends \common\models\base\modelBase
     }
     
    public function refreshMontos(){
-       yii::error('refrescandfo los padres',__FUNCTION__);
+       yii::error(' SUBPARTIDAS -refrescandfo los padres',__FUNCTION__);
         $this->montoneto=$this->subtotal();
-       
+        yii::error(' SUBPARTIDAS -MONTO NETO ES ',__FUNCTION__);
+        yii::error($this->montoneto,__FUNCTION__);
         $this->ptotal=$this->montoneto;
         $this->ptotal=$this->ptotal*(1+$this->coti->cargoPorcentajeAcumulado()/100);
+        yii::error(' SUBPARTIDAS -PTOTAL ES ',__FUNCTION__);
+        yii::error($this->ptotal,__FUNCTION__);
         return $this;
     } 
     

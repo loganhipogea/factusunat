@@ -510,18 +510,25 @@ class ComCotizacion extends \common\models\base\modelBase
   
   private function fixCoti_subpartidas($model){
       $array_data=[];
-      $array_partidas=$model->getPartidas()->asArray()->all();
-      
+      $array_partidas=$model->getPartidas()->asArray()->all();      
       $array_subpartidas=$this->getSubpartidas()->asArray()->all();     
       foreach($array_partidas as $partida){
           foreach($array_subpartidas as $subpartida){
-                        $array_data[]=array_replace($subpartida,['coti_id'=>$model->id,'id'=>null,'cotigrupo_id'=>$partida['id']]);
+                        $array_data[]=array_replace($subpartida,
+                                [
+                                    'coti_id'=>$model->id,
+                                    'id'=>null,
+                                    'cotigrupo_id'=>$partida['id']
+                                ]);
                 }
           }           
      return $array_data;  
   }
   
   public function cloneFake(){
+      /*
+       * Clonando el encabezado
+       */
      $model=New \frontend\modules\com\models\ComCotiFake();
      \yii::error($this->attributes,__FUNCTION__);
      $model->setAttributes($this->attributes);
@@ -529,18 +536,30 @@ class ComCotizacion extends \common\models\base\modelBase
     
      $model->refresh();
      
+     
+     /*
+       * Clonando las partidas
+       */
      if(count($this->partidas)>0){
             $array_partidas=$this->getPartidas()->asArray()->all();
             Yii::$app->db->createCommand()->batchInsert(
             ComCotigrupos::tableName(),array_keys($this->partidas[0]->attributes),
             $this->fixCoti_id( $array_partidas,$model))->execute();
      }
+     
+      /*
+       * Clonando los contactos
+       */
      if(count($this->contactos)>0){
        $array_contactos=$this->getContactos()->asArray()->all();
         Yii::$app->db->createCommand()->batchInsert(
                 ComContactocoti::tableName(),array_keys($this->contactos[0]->attributes),
             $this->fixCoti_id( $array_contactos,$model))->execute();
      } 
+     
+      /*
+       * Clonando las subpartidas
+       */
       if(count($this->subpartidas)>0){
          // $array_padres=$this->getSubpartidas()->asArray()->all();
           Yii::$app->db->createCommand()->batchInsert(
@@ -548,12 +567,21 @@ class ComCotizacion extends \common\models\base\modelBase
             $this->fixCoti_subpartidas($model))->execute();
       } 
       
+      
+      /*
+       * Clonando el detalle de las cotizaciones
+       *       */
+      
       if(count($this->comDetcotis)>0){
           $array_detalles=$this->getComDetcotis()->asArray()->all();
           Yii::$app->db->createCommand()->batchInsert(
                   ComCotiDet::tableName(),array_keys($this->comDetcotis[0]->attributes),
             $this->fixCoti_det($model))->execute();
       } 
+      
+     /*
+       * Clonando los cargos
+       *       */  
      
     if(count($this->cargos)>0){
           $array_cargos=$this->getCargos()->asArray()->all();

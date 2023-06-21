@@ -41,7 +41,7 @@ class ComCotigrupos extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['total'], 'number'],
+            [['total','montoneto'], 'number'],
             [['descripartida'], 'required'],
             [['coti_id'], 'integer'],
                [['montoneto'], 'safe'],

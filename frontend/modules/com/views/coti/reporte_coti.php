@@ -155,7 +155,7 @@ $cadena='';
                         <?php }  ?>
                 <?php }  ?>
         <?php } //fin del FOR  ?>
-        <?php if($items > 5){ $items=0; //Si excede los items romper  la página, pero antes cerrar  ?>
+        <?php if($items > 10){ $items=0; //Si excede los items romper  la página, pero antes cerrar  ?>
                </table><!--CERRAR LA TABLA DETALLE ITEMS PRIMERO-->
             </div> <!--CERRAR EL CONTENEDOR DE LA GRILLA LUEGO--> 
       </div><!--CERRAR EL DIV CONTENEDOR GENERAL  LUEGO--> 

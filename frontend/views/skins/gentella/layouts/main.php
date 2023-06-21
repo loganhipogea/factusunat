@@ -54,7 +54,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/" class="site_title"><?=Html::img(Yii::$app->params['logo'], ['alt' => 'Logo','width'=>20,'height'=>20]); ?>  <span><?=h::app()->name?></span></a>
+                    <a href="/" class="site_title"><?=Html::img(Yii::$app->params['logo'], ['alt' => 'Logo','width'=>20,'height'=>20]); ?>  <span><?=Yii::$app->params['name']?></span></a>
                 </div>
                 <div class="clearfix"></div>
 
