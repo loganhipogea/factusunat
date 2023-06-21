@@ -65,6 +65,12 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 <div class="box">
 <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 <?php
+
+echo frontend\modules\com\models\ComCotienvios::find()
+           ->andWhere([
+               'version_id'=>$model->coti->version,
+               'coti_id'=>$model->coti_id
+               ])->createCommand()->rawSql;
    echo grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
         'query'=> frontend\modules\com\models\ComCotienvios::find()
