@@ -7,7 +7,8 @@ use yii\helpers\Url;
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h5>Ingresar</h5>
+                                <?=Html::img(Yii::$app->params['logo'],['width'=>50,'height'=>50])?>
+				<h7><?=yii::$app->params['name']?></h7>
 				<div class="d-flex justify-content-end social_icon">
 					<span><i class="fa fa-facebook-square"></i></span>
 					<span><i class="fa fa-google-plus-square"></i></span>
