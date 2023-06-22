@@ -202,9 +202,9 @@ class ComCotiversiones extends \common\models\base\modelBase
                     . 'adjunto encontrará nuestra propuesta económica por el servicio de '
                     . $this->coti->descripcion.' Cualquier inquietud no duden en comunicarse con nosotros');           
                
-            foreach($coti->files as $file){
-                   if(!$file->interno)
-                   $message->attach($file->path);
+            foreach($coti->adjuntos as $adjunto){
+                   if(!$adjunto->interno && $adjunto->hasAttachment())
+                   $message->attach($adjunto->file[0]->path);
                }
             try {        
                 $result = $mailer->send($message);
