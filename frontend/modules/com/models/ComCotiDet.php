@@ -26,8 +26,11 @@ class ComCotiDet extends \common\models\base\modelBase
            /* 'fileBehavior' => [
                 'class' => FileBehavior::className()
             ],*/
-            'auditoriaBehavior' => [
+            [
                 'class' => '\common\behaviors\AuditBehavior',
+                 'exceptFields'=>[
+                    'ptotal','montoneto',
+                               ]
             ],
             
         ];

@@ -85,6 +85,9 @@ use yii\widgets\Pjax;
                  [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
+                 'expandIcon'=>'<i style="color:#F86E35"><span class="fa fa-plus-square-o"></span></i>',
+                 'collapseIcon'=>'<i style="color:#F60101"><span class="fa fa-minus-square-o"></span></i>',
+                
                 'value' => function ($model, $key, $index, $column) {
                             return grid::ROW_COLLAPSED;
                                 },

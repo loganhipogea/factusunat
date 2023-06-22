@@ -34,6 +34,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
          [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
+                 'expandIcon'=>'<i style="color:#F86E35"><span class="fa fa-plus-square-o"></span></i>',
+                 'collapseIcon'=>'<i style="color:#F60101"><span class="fa fa-minus-square-o"></span></i>',
+                
                 'value' => function ($model, $key, $index, $column) {
                             return grid::ROW_COLLAPSED;
                                 },
@@ -45,15 +48,14 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
        
         [
             'attribute' => 'numero',
-           
+            'format'=>'raw',
+           'value'=>function($model){                
+                return '<div style="color:#6bb724;font-weight:700;font-size:1.2em;">'.$model->numero.'</div>';
+                
+           }
          ],  
-                      
-       [
-           
-            'attribute' => 'cuando',
-           
-            
-         ],
+                   
+       'cuando',
        [
            
             'attribute' => 'Attach',
@@ -78,7 +80,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
    echo grid::widget([
     'dataProvider'=>New \yii\data\ActiveDataProvider([
         'query'=> frontend\modules\com\models\ComCotiversiones::find()
-           ->andWhere(['coti_id'=>$model->id])
+           ->andWhere(['coti_id'=>$model->id])->orderBy(['cuando'=>SORT_DESC])
             ,
     ]),
    // 'filterModel' => $searchModel,

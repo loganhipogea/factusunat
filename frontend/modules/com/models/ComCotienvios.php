@@ -14,14 +14,26 @@ use Yii;
  * @property string|null $exito
  * @property string|null $destinatarios
  */
-class ComCotienvios extends \common\models\base\modelBase
+class ComCotienvios extends \common\models\base\BaseDocument
 {
    
+   public $nameFieldEstado='exito'; 
+   //public $estado=self::ST_CANCELED;
    public $dateorTimeFields = [
         'cuando' => self::_FDATETIME,
         
     ];
-    
+   
+   
+  
+  
+  
+  public function isPassed(){
+      return('OK'===$this->{$this->nameFieldEstado});
+  }
+    public function isRemoved(){
+      return !('OK'===$this->{$this->nameFieldEstado});
+  }
     /**
      * {@inheritdoc}
      */

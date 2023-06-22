@@ -28,8 +28,11 @@ class ComDetcoti extends \common\models\base\modelBase
            /* 'fileBehavior' => [
                 'class' => FileBehavior::className()
             ],*/
-            'auditoriaBehavior' => [
+           [
                 'class' => '\common\behaviors\AuditBehavior',
+                 'exceptFields'=>[
+                    'montoneto','ptotal'
+                               ]
             ],
             
         ];

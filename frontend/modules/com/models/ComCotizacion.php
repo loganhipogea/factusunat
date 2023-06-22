@@ -47,13 +47,17 @@ class ComCotizacion extends \common\models\base\modelBase
     }
     public function behaviors() {
         return [
+            [
+                'class' => '\common\behaviors\AuditBehavior',
+                 'exceptFields'=>[
+                    'monto','igv','montoneto','montocargo'
+                               ]
+            ],
            
             'fileBehavior' => [
                 'class' => FileBehavior::className()
             ],
-            'auditoriaBehavior' => [
-                'class' => '\common\behaviors\AuditBehavior',
-            ],
+            
             
         ];
     }

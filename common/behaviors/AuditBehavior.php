@@ -25,6 +25,10 @@ class AuditBehavior extends Behavior
      const NO_ES_NUEVO='UPDATE';
      const ES_BORRADO='DELETE';
     // public $_owner=null;
+    
+    public $exceptFields; 
+    private $_trueFields=[];
+  
      
    public function events()
     {
@@ -69,7 +73,13 @@ class AuditBehavior extends Behavior
        $username=yii::$app->user->identity->username;
        $controllerId=yii::$app->controller->id;
        $currentUrl=Yii::$app->request->getUrl();
-       foreach($owner->attributes as $attribute=>$value){
+       yii::error('Las excepciones',__FUNCTION__);
+       yii::error($this->exceptFields,__FUNCTION__);
+       yii::error('Los depurados',__FUNCTION__);
+       yii::error($this->trueAtributes(),__FUNCTION__);
+       $atri=$this->trueAtributes();
+       yii::error($atri,__FUNCTION__);
+       foreach($atri as $attribute=>$value){
            //yii::error($attribute);
           if($this->hasChanged($attribute)){ 
                //yii::error('este atributo ha cambiado');
@@ -117,6 +127,26 @@ class AuditBehavior extends Behavior
     }
     
     
+    private function trueAtributes(){
+      if(empty($this->_trueFields)){
+          if(!empty($this->exceptFields)){
+               $atri=$this->owner->attributes;
+           foreach($this->exceptFields as $valor){
+              // yii::error('eliminando el atributo '.$valor,__FUNCTION__);
+               unset($atri[$valor]);
+           }
+            //yii::error('Finalmente queda  ',__FUNCTION__);
+            //yii::error($atri,__FUNCTION__);
+          $this->_trueFields=  $atri;
+       }else{
+          $this->_trueFields= $this->owner->attributes; 
+       }
+      }
+          return $this->_trueFields;
+      
+       
+        
+    }
     
     
     public function doBeforeDelete(){
@@ -127,7 +157,7 @@ class AuditBehavior extends Behavior
        $username=yii::$app->user->identity->username;
        $controllerId=yii::$app->controller->id;
        $currentUrl=Yii::$app->request->getUrl();
-       foreach($this->owner->attributes as $attribute=>$value){
+       foreach($this->trueAtributes() as $attribute=>$value){
           
               $model=$this->setLogValues($model,$attribute,
             true,
