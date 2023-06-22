@@ -22,8 +22,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                               return \yii\helpers\Html::a('<span class="btn btn-danger fa fa-location-arrow"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
                          'view' => function ($url,$model) {                             
-                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-show-preview','id'=>$model->id]);
-                              return \yii\helpers\Html::a('<span class="btn btn-info fa fa-search"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas2','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                $url = \yii\helpers\Url::to([$this->context->id.'/view-coti-fake','id'=>$model->fakecoti_id]);
+                              return \yii\helpers\Html::a('<span class="btn btn-info fa fa-search"></span>', $url, ['data-pjax'=>'0']);
                              },
                          
                     ]
@@ -102,19 +102,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
        
             //'foreignskeys'=>[1,2,3],
         ]);
-       echo linkAjaxGridWidget::widget([
-           'id'=>'widgetgruidBdsd4ancos',
-        //'otherContainers'=>['grilla-partidas'],
-            'idGrilla'=>'grilla-versiones',
-           'divReplace'=>'envios',
-            'family'=>'holas2',
-           'mode'=>'html',
-          'type'=>'POST',
-           'evento'=>'click',
-        'posicion'=>\yii\web\View::POS_END
        
-            //'foreignskeys'=>[1,2,3],
-        ]);
        
    
    

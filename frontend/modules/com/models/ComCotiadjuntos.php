@@ -20,10 +20,10 @@ class ComCotiadjuntos extends \common\models\base\modelBase
      */
     public static function tableName()
     {
-        return 'com_cotiadjuntos';
+        return '{{%com_cotiadjuntos}}';
     }
 
-    
+    public $booleanFields=['interno'];
      public function behaviors() {
         return [
            
@@ -44,6 +44,7 @@ class ComCotiadjuntos extends \common\models\base\modelBase
         return [
             [['coti_id', 'orden'], 'integer'],
             [['detalle'], 'string'],
+              [['interno'], 'safe'],
             [['descripcion'], 'string', 'max' => 40],
         ];
     }

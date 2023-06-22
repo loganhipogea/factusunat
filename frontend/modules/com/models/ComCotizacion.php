@@ -604,8 +604,10 @@ class ComCotizacion extends \common\models\base\modelBase
             $model=New \frontend\modules\com\models\ComCotiversiones();
             $model->coti_id=$this->id;
             $model->lastlog_id=$this->lastLog()->id;
+            
             $transaccion=$this->getDb()->beginTransaction(); 
             $resultado=$this->cloneFake();
+            $model->fakecoti_id=$resultado;
             \yii::error('EL resultado es ',__FUNCTION__);
             \yii::error($resultado,__FUNCTION__);
            if($model->save() && is_numeric($resultado)){
@@ -771,7 +773,16 @@ class ComCotizacion extends \common\models\base\modelBase
   public function hasModifies(){
       $lv=$this->lastVersion();
       $ll=$this->lastLog();
-      if(!is_null($lv) && !is_null($ll)){
+      /*yii::error('Ultima version',__FUNCTION__);
+       yii::error($lv,__FUNCTION__);
+       yii::error('UltimO LOG',__FUNCTION__);
+       yii::error($lv,__FUNCTION__);*/
+      //var_dump(!empty($ll),!empty($lv));die();
+      if(!empty($ll) && !empty($lv)){
+          /*yii::error('Ultima id version',__FUNCTION__);
+       yii::error($lv->lastlog_id,__FUNCTION__);
+       yii::error('UltimO LOG id',__FUNCTION__);
+       yii::error($ll->id,__FUNCTION__);*/
           return $lv->lastlog_id < $ll->id;
       }elseif(is_null($lv) && !is_null($ll)){ //Si no hay versiones pero si modificaciones
           return true;

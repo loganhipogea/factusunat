@@ -4,6 +4,7 @@ namespace frontend\modules\com\models;
 use common\models\masters\Clipro;
 use common\models\masters\Trabajadores;
 use common\models\masters\Centros;
+use common\models\masters\Direcciones;
 use Yii;
 
 /**
@@ -203,4 +204,33 @@ class ComCotiFake extends \common\models\base\modelBase
         $this->filtro='0';
         return parent::beforeSave($insert);
     }
+    
+    public function array_cargos(){
+       /*$cache=h::cache();
+       $keyCache=self::PREFIX_CACHE_CARGOS.$this->id;
+       if(!$cache->get($keyCache)){
+           yii::error('no hay cache',__FUNCTION__);
+            yii::error($cache->get($keyCache),__FUNCTION__);
+            $arreglo=$this->getCargos()->alias('t')->
+             innerJoin('{{%com_cargos}} b', 't.cargo_id=b.id')->
+               select(['b.etiqueta','t.porcentaje'])->orderBy(['b.id'=>SORT_ASC])->asArray()->all();
+            $arreglo= array_combine(array_column($arreglo,'etiqueta'),array_column($arreglo,'porcentaje'));
+            yii::error('El arreglo',__FUNCTION__);
+             yii::error($arreglo,__FUNCTION__);
+            $cache->set($keyCache,$arreglo);
+            
+       }else{
+          $arreglo=$cache->get($keyCache);
+           yii::error('El sacando del cache',__FUNCTION__);
+             yii::error($arreglo,__FUNCTION__);
+            $cache->set($keyCache,$arreglo);
+          
+       }*/
+        $arreglo=$this->getCargos()->alias('t')->
+             innerJoin('{{%com_cargos}} b', 't.cargo_id=b.id')->
+               select(['b.etiqueta','t.porcentaje'])->orderBy(['b.id'=>SORT_ASC])->asArray()->all();
+            $arreglo= array_combine(array_column($arreglo,'etiqueta'),array_column($arreglo,'porcentaje'));
+           
+     return $arreglo;
+   } 
 }

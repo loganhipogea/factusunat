@@ -71,6 +71,18 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             }
             
          ],
+         [
+            //'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'interno',
+            'format'=>'raw',
+           /* 'pageSummary' => 'Total',
+            'vAlign' => 'middle',
+            'width' => '210px',*/
+           'value'=>function($model){
+                return (!$model->interno)?'<div style="color:red;font-size:1.2em;"><span class="fa fa-send"></span></div>':'';
+            }
+            
+         ],
      
         [
             //'class' => 'kartik\grid\EditableColumn',

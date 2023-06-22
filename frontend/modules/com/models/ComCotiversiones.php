@@ -47,7 +47,7 @@ class ComCotiversiones extends \common\models\base\modelBase
     {
         return [
             [['coti_id'], 'integer'],
-            [['lastlog_id'], 'safe'],
+            [['lastlog_id','fakecoti_id'], 'safe'],
 
             [['numero'], 'number'],
             [['detalles'], 'string'],
@@ -201,7 +201,12 @@ class ComCotiversiones extends \common\models\base\modelBase
             ->SetHtmlBody(timeHelper::saludo().' Estimado '
                     . 'adjunto encontrará nuestra propuesta económica por el servicio de '
                     . $this->coti->descripcion.' Cualquier inquietud no duden en comunicarse con nosotros');           
-                try {        
+               
+            foreach($coti->files as $file){
+                   if(!$file->interno)
+                   $message->attach($file->path);
+               }
+            try {        
                 $result = $mailer->send($message);
                 $this->prepareEnvio('OK');
                 

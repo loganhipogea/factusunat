@@ -56,6 +56,19 @@ class CotiController extends baseController
         ]);
     }
 
+    
+    
+    
+    public function actionViewCotiFake($id)
+    {
+        $model= \frontend\modules\com\models\ComCotiFake::findOne($id);
+        $idOriginal= ComCotizacion::findOne(['numero'=>$model->numero])->id;
+        return $this->render('view_coti_fake', [
+            'model' => $model,
+            'idOriginal'=>$idOriginal
+        ]);
+    }
+    
     /**
      * Displays a single ComOv model.
      * @param int $id ID
