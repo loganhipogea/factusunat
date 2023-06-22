@@ -107,7 +107,7 @@ class MatDetpetoferta extends \common\models\base\modelBase
     public function beforeSave($insert) {
         if($insert)$this->flag=self::FLAG_MATERIAL;
         $this->resolveMontos();
-        if($this->hasChanged('codart') && !$this->isNewRecord){
+        if($this->hasChanged('codart') /*&& !$this->isNewRecord*/){
          $this->descripcion=$this->material->descripcion;            
         }
         return parent::beforeSave($insert);

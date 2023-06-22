@@ -23,6 +23,8 @@ class PetofertaController extends baseController
     /**
      * {@inheritdoc}
      */
+    
+     public $nameSpaces = ['frontend\modules\mat\models'];
     public function behaviors()
     {
         return [
@@ -190,6 +192,12 @@ class PetofertaController extends baseController
      */
     public function actionUpdatePetOferta($id)
     {
+        
+        if ($this->is_editable()){
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            return $this->editField();
+           } 
+        
         $model = $this->findModel($id);
         $models=$model->matDetpetoferta;
         $request = Yii::$app->getRequest();   
@@ -309,7 +317,12 @@ class PetofertaController extends baseController
     
     public function actionEditPetOferta($id){
         $model = $this->findModel($id);
-
+        
+        if ($this->is_editable()){
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            return $this->editField();
+           } 
+        
         if (h::request()->isAjax && $model->load(h::request()->post())) {
                 h::response()->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
@@ -614,4 +627,109 @@ class PetofertaController extends baseController
             ]);  
         } 
    } 
+   
+   
+   public function actionCreaVale()
+    {
+        $model = new MatPetoferta();     
+         if(Yii::$app->request->isPost){
+             $arraydetalle=Yii::$app->request->post('MatDetpetoferta');
+             $arraycabecera=Yii::$app->request->post('MatPetoferta');
+             
+             /*Nos aseguramos que los indices se reseteen con array_values
+              * ya que cada vez que borramos con ajax en el form quedan 
+              * vacancias en los indices y al momento de hacer el loadMultiple
+              * no coinciden los indices; algunos modelos no cargan los atributos
+              * y arroja false 
+              */
+             
+             //Pero primero guardamos los indices del form antes de resetearlo
+             //para despues restablecerlos; esto para enviar los mensajes de error
+             // con la accion Form::ValidateMultiple()
+             $OldIndices=array_keys($arraydetalle);
+             //Ahora si reseteamos los indices para hacerl el loadMultiple
+             $arraydetalle=array_values($arraydetalle); 
+             /*Generamos los items necesarios*/           
+              $items = $this->generateItems(MatDetpetoferta::className(),
+                      count($arraydetalle),
+                     null
+                      );                           
+         if ( h::request()->isAjax &&
+                  $model->load($arraycabecera,'')&& 
+                 Model::loadMultiple($items, $arraydetalle,'')
+                  ) {               
+             /*
+              * Propagando el valor del codal en los hijos
+              */
+             /*foreach($items as $item){
+                 $item->codal=$arraycabecera['codal'];
+             }*/
+             
+             /*Antes de hacer Form::ValidateMultiple() , reestablecemos los 
+              * indices originales, de esta manera nos aseguramos que los
+              * mensajes de error salgan cada cual en su sitio
+              */
+             $items=array_combine($OldIndices,$items);
+                h::response()->format = Response::FORMAT_JSON;
+                 return array_merge(
+                         ActiveForm::validate($model),
+                         ActiveForm::validateMultiple($items)
+                         );
+        if ($model->load($arraycabecera,'') &&       
+        Model::loadMultiple($items, $arraydetalle,'')&&
+         $model->validate()   ){            
+              $model->save();$model->refresh();
+               $items=$this->linkeaCampos($model->id, $items);
+                     /*
+              * Propagando el valor del codal en los hijos
+              */
+             /*foreach($items as $item){
+                 $item->codal=$arraycabecera['codal'];
+             }*/
+              if(Model::validateMultiple($items)){
+                  foreach($items as $item){
+                        if($item->save()){ 
+                           // yii::error($item->attributes,__FUNCTION__);
+                        }else{
+                           // yii::error('errores del item',__FUNCTION__);
+                            //yii::error($item->getErrors());
+                        }
+                           }                    
+                } else{  
+                    
+                }               
+              }
+              return $this->redirect(['update-pet-oferta','id'=>$model->id]);
+         }
+       
+         $items=$this->generateItems(MatDetvale::className(),
+         4, //cantidad de items por defeto al crear
+                 null);
+         foreach($items as $index=> $item){           
+             $valor=100+$index;
+             $item->item= $valor.'';
+         }
+         /*Aqui colocamos los valores por default*/
+         
+         //$model->valuesDefault();
+        return $this->render('create', ['model' => $model,'items' => $items]);
+   
+        
+       }
+    }
+  
+   /*
+     * Esta funcion rellena los registoes hijos 
+     * con el id recien grabado del padre
+     * @valorId: Id integer
+     * @items: Array de modelos hijos
+     */
+    private function linkeaCampos($valorId,&$items){
+        for($i = 0; $i < count($items); $i++) {
+                                $items[$i]->petoferta_id=$valorId;
+           }
+       return $items;
+        
+    }
+   
 }

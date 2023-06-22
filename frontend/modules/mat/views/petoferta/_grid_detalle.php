@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\data\ActiveDataProvider;
 use common\helpers\h;
@@ -59,6 +59,22 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
            
             'item',
+                            [
+            'class' => 'kartik\grid\EditableColumn',
+            'editableOptions'=>[
+                            'pjaxContainerId'=>'pjax-detpet',
+                            //'format' => Editable::FORMAT_BUTTON,
+                            //'inputType' => Editable::INPUT_DROPDOWN_LIST,
+                          //'data'=>['1'=>'Yes','0'=>'No'],  
+                                            ],
+            'attribute' => 'pventa',
+           // 'pageSummary' => 'Total',
+            'vAlign' => 'left',
+            'width' => '60px',
+            'readonly' => false,
+           //'data'=>['modelo'=>'mimodelo']
+            
+         ],     
             'codart',
             'codum',
             [  
@@ -86,7 +102,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                
                 ],  
              'descripcion',
-             [  
+             /*[  
                 'attribute' => 'pventa', 
                      'headerOptions' => [
                         'class' => 'text-right',
@@ -100,8 +116,8 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                  },
                 
                     
-             ],
-                       
+             ],*/
+               
             //'codtra',
             //'user_id',
             //'estado',

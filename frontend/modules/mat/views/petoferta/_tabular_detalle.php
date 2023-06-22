@@ -1,10 +1,9 @@
 <?php  use unclead\multipleinput\TabularInput;
 use yii\helpers\Html;
-use common\widgets\selectwidget\selectWidget;
+use common\widgets\prueba\pruebaWidget;
 use common\helpers\ComboHelper;
 use yii\widgets\Pjax;
 ?>
-<?php Pjax::begin(['id'=>'monet']);  ?>
 <?= TabularInput::widget([
     'models' => $items,
      'cloneButton' => false,
@@ -18,8 +17,8 @@ use yii\widgets\Pjax;
     ],
     'attributeOptions' => [
        'enableAjaxValidation'      => true,
-        'enableClientValidation'    => false,
-        'validateOnChange'          => false,
+        'enableClientValidation'    => true,
+        'validateOnChange'          => true,
         'validateOnSubmit'          => true,
         'validateOnBlur'            => false,
     ],
@@ -42,7 +41,7 @@ use yii\widgets\Pjax;
             ],
         [
             'name'  => 'codum',
-            'title' => 'codum',
+            'title' => 'um',
             'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_DROPDOWN,
        'enableError' => true,
             'items'=> ComboHelper::getCboUms(true),
@@ -62,33 +61,36 @@ use yii\widgets\Pjax;
             ],  
             
             ],
-        [
-            'name'  => 'codart',
-            'title' => 'codart',
-            'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
-       'enableError' => true,
-          'headerOptions' => [
-                'style' => 'width: 15%',
-                //'class' => 'day-css-class'
-            ],  
-            
+      ['name'  => 'codart',
+            'title' => 'CODIGO',
+         'type'  =>pruebaWidget::className(),/*kartik\date\DatePicker::className(),*//*pruebaWidget::className(),*/
+    //'type'  =>kartik\select2\Select2::className(),
+            'options'=>[
+            'tabular'=>true,
+           // 'id'=>'mipapa',
+          // 'model'=>$data,
+            'form'=>$form,
+            //'campo'=>'codigo',
+            'ordenCampo'=>2,
+            //'foreignskeys'=>[1,3],
+                              ],
+           /* 'options'=>[
+             'id'=> uniqid(),
+           // 'tabular'=>true,
+           // 'id'=>'mipapa',
+            'model'=>$items[0],
+            'form'=>$form,
+            'attribute'=>'codigo',
+            'campo'=>'codigo',
+            'ordenCampo'=>5,
+             'inputOptions'=>['labelOptions'=>['label'=>false]],
+            //'foreignskeys'=>[1,2,3],
+                              ],*/
+        'enableError' => true,
             ],
-       
         [
-            'name'  => 'descripcion',
-            'title' => 'descripcion',
-            'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
-       'enableError' => true,
-            'headerOptions' => [
-                'style' => 'width: 50%',
-                //'class' => 'day-css-class'
-            ],
-            
-            //'items'=> ComboHelper::getCboUms(),
-            ],
-        [
-            'name'  => 'pventa',
-            'title' => 'pventa',
+            'name'  => 'punit',
+            'title' => 'punit',
             'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
        'enableError' => true,
             'headerOptions' => [
@@ -98,7 +100,7 @@ use yii\widgets\Pjax;
             //'items'=> ComboHelper::getCboUms(),
             ],
         
-            ['name'  => 'codart',
+            /*['name'  => 'codart',
             'title' => 'codart',
             //'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT, 
             'type'  =>selectWidget::className(),
@@ -110,9 +112,8 @@ use yii\widgets\Pjax;
             
                               ],
         'enableError' => true,
-            ],
+            ],*/
         
         
     ],
 ]) ?>
-<?php Pjax::end();  ?>
