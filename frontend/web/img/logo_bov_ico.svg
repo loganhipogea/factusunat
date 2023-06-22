@@ -38,9 +38,17 @@
      inkscape:label="Capa 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#ff6600;fill-rule:evenodd;stroke-width:0.264583"
+       id="rect1553"
+       width="221.81799"
+       height="220.5753"
+       x="-8.2299296e-09"
+       y="-8.4294435e-08"
+       ry="32.930962" />
     <path
        id="path858"
-       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ff9900;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.16507;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.16507;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        d="M 110.61966,0 A 110.61949,110.61933 0 0 0 0,110.61957 110.61949,110.61933 0 0 0 110.61966,221.23866 110.61949,110.61933 0 0 0 221.23928,110.61957 110.61949,110.61933 0 0 0 110.61966,0 Z m 10.25004,21.217823 a 90.00012,89.999999 0 0 1 78.74505,77.033515 l -78.74505,-0.16071 z m -20.50011,0.208256 V 199.81257 a 90.00012,89.999999 0 0 1 -79.750172,-89.193 90.00012,89.999999 0 0 1 79.750172,-89.193491 z m 20.50011,97.164581 79.07165,0.16123 a 90.00012,89.999999 0 0 1 -79.07165,81.06068 z" />
   </g>
 </svg>
