@@ -203,7 +203,7 @@ class ComCotiversiones extends \common\models\base\modelBase
                     . $this->coti->descripcion.' Cualquier inquietud no duden en comunicarse con nosotros');           
                
             foreach($coti->adjuntos as $adjunto){
-                   if(!$adjunto->interno && $adjunto->hasAttachment())
+                   if(!$adjunto->interno && $adjunto->hasAttachments())
                    $message->attach($adjunto->file[0]->path);
                }
             try {        
