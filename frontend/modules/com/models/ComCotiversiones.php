@@ -197,7 +197,7 @@ class ComCotiversiones extends \common\models\base\modelBase
             $message->setSubject('COTIZACION'.' '.$coti->numero.' '.substr($coti->descripcion,23))
             ->setFrom([h::userEmail()=>$names])
             ->setTo($destinatarios)
-             ->attach($this->files[0]->path,['fileName'=>'COT-'.$coti->numero.'-'.substr($coti->descripcion,20)])
+             ->attach($this->files[0]->path,['fileName'=>'COT-'.$coti->numero.'-'.substr($coti->descripcion,1,20)])
             ->SetHtmlBody(timeHelper::saludo().' Estimado '
                     . 'adjunto encontrará nuestra propuesta económica por el servicio de '
                     . $this->coti->descripcion.' Cualquier inquietud no duden en comunicarse con nosotros');           

@@ -34,28 +34,22 @@ $this->params['breadcrumbs'][] = $this->title;
          
          [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}{view}',
+                'template' => '{update}{view}',
                 'buttons' => [
                     'update' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
                         $url=Url::to(['update-coti','id'=>$model->id]);
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class="btn btn-success btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
                          },                          
-                         'delete' => function($url, $model) {                        
-                        $options = [
-                            'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
-                            'title' => Yii::t('base.verbs', 'Delete'),                            
-                        ];
-                        return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-remove"></span>', $url, $options/*$options*/);
-                         },
+                        
                        'view' => function($url, $model) {                        
                         $options = [
                             'title' => Yii::t('base.verbs', 'View'),                            
                         ];
                         $url=Url::to(['view-coti','id'=>$model->id]);
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-search"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class="btn btn-danger btn-sm glyphicon glyphicon-search"></span>', $url, $options/*$options*/);
                          }, 
                     ]
                 ],
