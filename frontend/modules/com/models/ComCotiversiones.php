@@ -204,7 +204,7 @@ class ComCotiversiones extends \common\models\base\modelBase
                
             foreach($coti->adjuntos as $adjunto){
                    if(!$adjunto->interno && $adjunto->hasAttachments())
-                   $message->attach($adjunto->file[0]->path);
+                   $message->attach($adjunto->files[0]->path);
                }
             try {        
                 $result = $mailer->send($message);
