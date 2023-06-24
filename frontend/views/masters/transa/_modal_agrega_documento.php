@@ -47,7 +47,7 @@ use common\helpers\ComboHelper;
      * entonces debemos filtrar solo aquellos documentos
      * que tengan asociado una clase al campo 'modelo'
      */
-        if($model->transa->exigirValidacion){
+        if($model->transa->exigirvalidacion){
             $datos=ComboHelper::getCboDocumentsWithModel();
         }else{
             $datos=ComboHelper::getCboDocuments();
