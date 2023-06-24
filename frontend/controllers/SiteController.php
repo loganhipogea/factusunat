@@ -335,6 +335,11 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      $model=New \frontend\modules\mat\models\MatDetvale();
+      var_dump($model instanceof \common\interfaces\CosteoInterface); 
+      die();
+      
+      
      
       var_dump(
               \common\models\masters\Documentos::codigoByModelClass(

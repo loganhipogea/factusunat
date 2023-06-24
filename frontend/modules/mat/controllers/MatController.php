@@ -1020,6 +1020,15 @@ public function actionAjaxDesactivaItem($id){
         } 
 }  
     
-    
+ public function actionAjaxVerifTransa(){
+    if (h::request()->isAjax) {
+         h::response()->format = yii\web\Response::FORMAT_JSON;  
+            $codtransa=h::request()->get('codtrans');
+            $model=\common\models\masters\Transacciones::findOne(['codtrans'=>$codtransa]);
+            $es=($model->afecta_precio)?'1':'0'; 
+            return ['success'=>$es];
+            
+         }     
+ }   
     
 }

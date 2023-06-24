@@ -415,7 +415,7 @@ class TrabajadoresController extends baseController
                   return ['success'=>1,'id'=>$model->codtra];
             }
         }else{
-           return $this->renderAjax('modal_crea_documento', [
+           return $this->renderAjax('_modal_crea_documento', [
                         'model' => $model,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
@@ -451,7 +451,7 @@ class TrabajadoresController extends baseController
                   return ['success'=>1,'id'=>$model->codtra];
             }
         }else{
-           return $this->renderAjax('modal_crea_documento', [
+           return $this->renderAjax('_modal_crea_documento', [
                         'model' => $model,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),

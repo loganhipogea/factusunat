@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-use frontend\modules\op\helpers\ComboHelper;
+use common\helpers\ComboHelper;
 
  //use kartik\date\DatePicker;
 use kartik\datetime\DateTimePicker;
@@ -27,9 +27,9 @@ use common\helpers\h;
         <div class="col-md-12">
             <div class="form-group no-margin">
            <?PHP 
-           $operacion=($model->isNewRecord)?'modal-agrega-doc':'modal-edita-doc';
+           $operacion=($model->isNewRecord)?'modal-assign-document':'modal-edita-document';
              
-               $url=\yii\helpers\Url::to(['/op/proc/'.$operacion,'id'=>$id]);  
+               $url=\yii\helpers\Url::to(['/masters/trabajadores/'.$operacion,'id'=>$id]);  
              
            ?>
            <?= \common\widgets\buttonsubmitwidget\buttonSubmitWidget::widget(
@@ -47,12 +47,16 @@ use common\helpers\h;
      
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
  <?= $form->field($model, 'codocu')->
-            dropDownList(comboHelper::getCboDocuments(),
+            dropDownList(ComboHelper::getCboDocuments(),
                   ['prompt'=>'--'.yii::t('base.verbs','Escoja un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
                         ]
                     ) ?>
+ </div>
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'numero')->textInput(['maxlength' => true,/*'disabled'=>!$model->activo,*/]) ?>
+
  </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,/*'disabled'=>!$model->activo,*/]) ?>

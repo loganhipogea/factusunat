@@ -4,6 +4,7 @@ use common\widgets\prueba\pruebaWidget;
 use common\helpers\ComboHelper;
 use yii\widgets\Pjax;
 ?>
+<div id="colector_tabular">
 <?= TabularInput::widget([
     'models' => $items,
      'cloneButton' => false,
@@ -117,3 +118,41 @@ use yii\widgets\Pjax;
         
     ],
 ]) ?>
+</div>
+
+  <?php  
+     $this->registerJs("$('#matvale-codmov').on( 'change', function() { 
+        var resulta;
+        var identi=this.id;  
+        var urli='".\yii\helpers\Url::to(['mat/ajax-verif-transa'])."';
+        var cod=$('#matvale-codmov').val();
+        var promesa1= $.ajax({
+           url : urli,
+          type : 'GET', 
+          data : {codtrans:cod}, 
+          dataType: 'json', 
+          success : function(json) {
+                            resulta1=json['success'];
+                                                  
+                     }, //fin funcion success ajax 1
+                    error : function(xhr,errmsg,err) {
+                     console.log(xhr.status + ': ' + xhr.responseText);
+                            } //fin de funcion  error ajax 1
+        }).then(function(){ 
+            if(resulta1=='0'){
+                      $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
+        	         $('#'+this.id).hide();
+                       });  
+            } else{
+                $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
+        	        $('#'+this.id).show();
+                       
+                        });  
+            }
+
+       });
+    
+});
+
+", \yii\web\View::POS_READY);
+    ?>    

@@ -398,17 +398,32 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
       }   
       
       if($existeDocumento){
-          $resultado=CcCostos::createRegistro($this, $this->vale->ClaseDocRef());
-          if(count($resultado)>0){
-              $exito=false;
-             $key=$vale->id.'sesion'.h::userId();
-                  $sesion=h::session();
-                  $errores=$sesion->get($key);
-                  $errores['Item']=$this->codart.'-'.$resultado['error'];
-                  $sesion->set($key,$errores);  
+          /*
+           * Verificando que los modelos sean de la interfaz
+           */
+          $docRelacionado=$this->vale->ClaseDocRef(); //Es el documento relacionado al movimiento 
+          
+          if($this instanceof CosteoInterface && $docRelacionado instanceof CosteoInterface){
+              $resultado=CcCostos::createRegistro($this, $this->vale->ClaseDocRef());
+                    if(count($resultado)>0){
+                        $exito=false;
+                        $key=$vale->id.'sesion'.h::userId();
+                        $sesion=h::session();
+                        $errores=$sesion->get($key);
+                        $errores['Item']=$this->codart.'-'.$resultado['error'];
+                        $sesion->set($key,$errores);  
+                    }else{
+                        $exito=true; 
+                    }
           }else{
-             $exito=true; 
+               $exito=false;
+                        $key=$vale->id.'sesion'.h::userId();
+                        $sesion=h::session();
+                        $errores=$sesion->get($key);
+                        $errores['Item']=$this->codart.'-'.yii::t('base.errors','Una de las clases pasadas al registro de Costos no pertenece a CosteoInterface, revise por favor');
+                        $sesion->set($key,$errores); 
           }
+          
       }
       return $exito;
   } 

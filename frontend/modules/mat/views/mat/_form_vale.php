@@ -79,7 +79,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
     <?= ComboDep::widget([
                'model'=>$model,               
                'form'=>$form,
-               'data'=> comboHelper::getCboTransaccionesAlmacen(),
+               'data'=> comboHelper::getCboTransaccionesDepuradasAlmacen(),
                'campo'=>'codmov',
                'idcombodep'=>'matvale-codocu',
                /* 'source'=>[ //fuente de donde se sacarn lso datos 
@@ -221,4 +221,5 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
           
          
 
-    </div>
+
+ </div>

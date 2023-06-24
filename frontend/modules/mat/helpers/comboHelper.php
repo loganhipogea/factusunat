@@ -23,6 +23,15 @@ class comboHelper extends Combito
         
     }
     
+     public static function getCboTransaccionesDepuradasAlmacen(){
+       return ArrayHelper::map(
+                       \common\models\masters\Transacciones::find()->
+               andWhere(['NOT LIKE','descripcion','[X]'])->
+                  all(),
+                'codtrans','descripcion');
+        
+    }
+    
     public static function getCboColectores(){
          //$idsEdificios= ;
         return [
