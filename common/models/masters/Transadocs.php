@@ -69,7 +69,7 @@ class Transadocs extends \common\models\base\modelBase
      *
      * @return \yii\db\ActiveQuery|TransaccionesQuery
      */
-    public function getCodtrans0()
+    public function getTransa()
     {
         return $this->hasOne(Transacciones::className(), ['codtrans' => 'codtrans']);
     }

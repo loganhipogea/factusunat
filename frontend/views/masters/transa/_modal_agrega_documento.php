@@ -41,8 +41,21 @@ use common\helpers\ComboHelper;
     
   
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <?php 
+    /*
+     * Si la transacción exige validacion de documento
+     * entonces debemos filtrar solo aquellos documentos
+     * que tengan asociado una clase al campo 'modelo'
+     */
+        if($model->transa->exigirValidacion){
+            $datos=ComboHelper::getCboDocumentsWithModel();
+        }else{
+            $datos=ComboHelper::getCboDocuments();
+        }
+    
+    ?>
     <?= $form->field($model, 'codocu')->
-            dropDownList(ComboHelper::getCboDocumentsWithModel() ,
+            dropDownList($datos ,
                     ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
                         ]
