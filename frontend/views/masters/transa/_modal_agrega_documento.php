@@ -50,7 +50,7 @@ use common\helpers\ComboHelper;
         if($model->transa->exigirValidacion){
             $datos=ComboHelper::getCboDocumentsWithModel();
         }else{
-            $daStos=ComboHelper::getCboDocuments();
+            $datos=ComboHelper::getCboDocuments();
         }
     
     ?>
