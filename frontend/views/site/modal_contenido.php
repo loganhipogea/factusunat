@@ -58,6 +58,10 @@ use common\widgets\selectwidget\selectWidget;
 
  </div>
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
+
+ </div>
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?PHP
      echo $form->field($model, 'cuerpo')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
