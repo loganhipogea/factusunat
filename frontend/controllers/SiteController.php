@@ -454,6 +454,329 @@ die();
             ['not in','id',[12,34,45]]
                 ])->createCommand()->rawSql;
         DIE();
-    }  
+    } 
     
+    
+    public function actionContenidoWeb(){
+        $dataProvider=New \yii\data\ActiveDataProvider([
+            'query'=>\frontend\models\AitContenidos::find(),
+        ]);
+        
+        return $this->render('ait_contenido',['dataProvider'=>$dataProvider]);
+    }
+    
+    public function actionModalEditarContenido($id){
+        $this->layout="install";
+        $model= \frontend\models\AitContenidos::findOne($id);
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_contenido',
+                 [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+    
+    
+    public function actionModalCrearContenido(){
+        $this->layout="install";
+        $model= new\frontend\models\AitContenidos();
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_contenido',
+                 [
+                        'model' => $model,
+                         //'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+    
+    
+    public function actionModalEditarMenu($id){
+        $this->layout="install";
+        $model= \frontend\models\AitMenus::findOne($id);
+        
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_menu',
+                 [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+    
+    
+    public function actionModalCrearMenu(){
+        $this->layout="install";
+        $model= new\frontend\models\AitMenus();
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_menu',
+                 [
+                        'model' => $model,
+                         //'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+     public function actionMenus(){
+        $dataProvider=New \yii\data\ActiveDataProvider([
+            'query'=> \frontend\models\AitMenus::find(),
+        ]);
+        
+        return $this->render('ait_menus',['dataProvider'=>$dataProvider]);
+    }
+    
+    
+    
+    
+    
+    
+    public function actionModalEditarColumna($id){
+        $this->layout="install";
+        $model= \frontend\models\AitColumnas::findOne($id);
+        
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_columna',
+                 [
+                        'model' => $model,
+                         'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+    
+    
+    public function actionModalCrearColumna($id){
+        $this->layout="install";
+        $mpadre= \frontend\models\AitContenidos::findOne($id);
+        $model= new\frontend\models\AitColumnas();
+        $model->contenido_id=$mpadre->id;
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_columna',
+                 [
+                        'model' => $model,
+                         //'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+    public function actionColumnas(){
+        $dataProvider=New \yii\data\ActiveDataProvider([
+            'query'=> \frontend\models\AitColumnas::find(),
+        ]);
+        
+        return $this->render('ait_columnas',['dataProvider'=>$dataProvider]);
+    }
+ 
+   public function actionAjaxExpandColumnas(){
+        if (isset($_POST['expandRowKey'])) {
+        $model = \frontend\modules\com\models\ComCotiversiones::findOne($_POST['expandRowKey']+0);
+         return $this->renderPartial('expand_columnas', ['model'=>$model]);
+        }  
+        
+        
+    }   
+   
+  public function actionCorreolibre(){
+    // return h::request()->get('email');
+       $mailer = new \common\components\Mailer();
+            $message =new  \yii\swiftmailer\Message();
+            $message->setSubject('NUEVO MENSAJE DE LA WEB')
+            ->setFrom([h::gsetting('mail', 'userservermail')])
+            ->setTo('hipogea@hotmail.com')
+             ->SetHtmlBody(h::request()->get('mensaje').
+                     '<br><br>Nombre:'.h::request()->get('nombre').'<br>'.
+                     'Correo:'.h::request()->get('email').'<br>'.
+                     'Teléfono:'.h::request()->get('telefono')
+                     );           
+               
+           
+            try {        
+                $result = $mailer->send($message);
+               
+                
+                return true;
+                } catch (\Swift_TransportException $Ste) {      
+                 return false;  
+                }
+      
+  }
+  
+  
+   public function actionNoticias(){
+        $dataProvider=New \yii\data\ActiveDataProvider([
+            'query'=> \frontend\models\AitNoticias::find(),
+        ]);
+        
+        return $this->render('ait_noticias',['dataProvider'=>$dataProvider]);
+    }
+  
+  public function actionModalCrearNoticia(){
+        $this->layout="install";
+        $model=new  \frontend\models\AitNoticias();
+        //$model= new\frontend\models\AitColumnas();
+       // $model->contenido_id=$mpadre->id;
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_noticia',
+                 [
+                        'model' => $model,
+                         //'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
+    
+    
+  public function actionModalEditarNoticia($id){
+        $this->layout="install";
+        $model= \frontend\models\AitNoticias::findOne($id);
+        //$model= new\frontend\models\AitColumnas();
+      
+       if(h::request()->isPost){            
+            $model->load(h::request()->post());
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if($model->save()){
+                   $model->refresh();
+                   return ['success'=>1];  
+                }else{                    
+                }                
+            }
+        }else{
+        //if(h::request()->isPost){var_dump(h::request()->get('gridName'));die();}
+        return $this->render('modal_noticia',
+                 [
+                        'model' => $model,
+                         //'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        ]
+                );
+        }
+    }
 }

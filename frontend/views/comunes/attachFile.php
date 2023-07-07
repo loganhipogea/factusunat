@@ -9,7 +9,8 @@ use yii\helpers\Json;
    $form = ActiveForm::begin(['id' => 'registration-form',
         'enableAjaxValidation'=>true
         ]); ?>
- 
+   
+ <?php    ?>
   <?php echo Html::hiddenInput('grillas',is_array($grillas)?Json::encode($grillas):$grillas); ?>
  <?= \nemmo\attachments\components\AttachmentsInput::widget([
 	'id' => 'file-input', // Optional
