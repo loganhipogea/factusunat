@@ -63,9 +63,16 @@ use common\widgets\selectwidget\selectWidget;
 
  </div>
  
-  
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <?= $form->field($model, 'frontal')->checkBox([]) ?>
+
+    </div>
       
-          
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <?= $form->field($model, 'activo')->checkBox([]) ?>
+
+    </div>
+              
      
     <?php ActiveForm::end(); ?>
 

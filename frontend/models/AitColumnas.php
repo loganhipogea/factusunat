@@ -22,6 +22,8 @@ class AitColumnas extends \common\models\base\modelBase
         return '{{%ait_columnas}}';
     }
 
+    
+    public $booleanFelds=['frontal','activo'];
     /**
      * {@inheritdoc}
      */
@@ -29,7 +31,7 @@ class AitColumnas extends \common\models\base\modelBase
     {
         return [
             [['leyenda'], 'string'],
-             [['contenido_id'], 'safe'],
+             [['contenido_id','frontal','activo'], 'safe'],
             [['titulo'], 'string', 'max' => 100],
         ];
     }
@@ -82,5 +84,9 @@ class AitColumnas extends \common\models\base\modelBase
         }
         return parent::afterFind();
     }
-    
+   public function beforeSave($insert) {
+       if($insert)
+        $this->frontal=false;
+       return parent::beforeSave($insert);
+   }
 }
