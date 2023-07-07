@@ -87,9 +87,12 @@ class AitContenidos extends \common\models\base\modelBase
     }
     
     public function beforeSave($insert) {
-        $this->zona='ENLACE';
-        if($insert)
-        $this->activo=true;
+        
+        if($insert){
+            $this->zona='ENLACE';
+             $this->activo=true;
+        }
+       
         return parent::beforeSave($insert);
     }
     
