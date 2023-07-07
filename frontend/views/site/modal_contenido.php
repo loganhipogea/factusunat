@@ -48,7 +48,10 @@ use common\widgets\selectwidget\selectWidget;
             <?= $form->field($model, 'clave')->textInput(['maxlength' => true,'disabled'=>true]) ?>
 
     </div>
-    
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <?= $form->field($model, 'activo')->checkBox([]) ?>
+
+    </div>
  
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
      <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
