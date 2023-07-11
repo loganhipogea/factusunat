@@ -23,7 +23,7 @@ $formato=h::formato();
      <?php 
      $options=['class'=>'botonAbre','data-pjax'=>'0'];
       $url= Url::to(['site/modal-crear-contenido','gridName'=>'contenido-index','idModal'=>'buscarvalor']);
-      $boton= Html::a('<span class="glyphicon glyphicon-pencil btn btn-danger"></span>', $url, $options);
+      $boton= Html::a('<span class="glyphicon glyphicon-plus-sign btn btn-success"></span>', $url, $options);
      ?>
        
    
