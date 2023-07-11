@@ -130,7 +130,12 @@ $formato=h::formato();
                     return $model->url;
                   }
                 ],
-           
+           ['attribute'=>'orden',
+                'format'=>'raw',
+                'value'=>function ($model){
+                    return $model->orden;
+                  }
+                ], 
           ['attribute'=>'activo',
                 'format'=>'raw',
                 'value'=>function ($model){
