@@ -82,7 +82,10 @@ use common\widgets\selectwidget\selectWidget;
      <?= $form->field($model, 'activo')->checkBox([]) ?>
 
  </div>         
-     
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'orden')->textInput(['maxlength' => true]) ?>
+
+ </div>    
     <?php ActiveForm::end(); ?>
 
 </div>

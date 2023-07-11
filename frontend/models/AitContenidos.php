@@ -46,7 +46,7 @@ class AitContenidos extends \common\models\base\modelBase
     {
         return [
             [['menu_id', 'orden'], 'integer'],
-            [['adjuntos'], 'safe'],
+            [['adjuntos','activo'], 'safe'],
             [['clave', 'titulo', 'cuerpo'], 'string'],
             [['activo'], 'string', 'max' => 1],
             [['zona'], 'string', 'max' => 50],

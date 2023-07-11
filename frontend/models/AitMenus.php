@@ -33,7 +33,9 @@ class AitMenus extends \common\models\base\modelBase
     {
         return [
             [['valor', 'url'], 'string'],
+             [['activo'], 'safe'],
             [['parent_id', 'orden'], 'integer'],
+            
             [['activo', 'tiene_hijos'], 'string', 'max' => 1],
             [['clave'], 'string', 'max' => 50],
         ];

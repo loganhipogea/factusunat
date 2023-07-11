@@ -633,11 +633,11 @@ die();
     }
     
     
-    public function actionModalCrearColumna($id){
+    public function actionModalCrearColumna(){
         $this->layout="install";
-        $mpadre= \frontend\models\AitContenidos::findOne($id);
+        
         $model= new\frontend\models\AitColumnas();
-        $model->contenido_id=$mpadre->id;
+        
        if(h::request()->isPost){            
             $model->load(h::request()->post());
             h::response()->format = \yii\web\Response::FORMAT_JSON;
