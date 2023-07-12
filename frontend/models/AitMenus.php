@@ -95,6 +95,10 @@ class AitMenus extends \common\models\base\modelBase
         return parent::beforeSave($insert);
     }
     
-    
-    
+    public function afterSave($insert, $changedAttributes) {
+        if($this->parent_id > 0){
+            self::updateAll(['tiene_hijos'=>'1'], ['id'=>$this->parent_id]);
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
 }
