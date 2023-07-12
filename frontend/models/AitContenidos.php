@@ -92,6 +92,9 @@ class AitContenidos extends \common\models\base\modelBase
             $this->zona='ENLACE';
              $this->activo=true;
         }
+        if($this->zona=='ENLACE'){
+            $this->fixTexto();
+        }
        
         return parent::beforeSave($insert);
     }
@@ -107,4 +110,51 @@ class AitContenidos extends \common\models\base\modelBase
          AitContenidos::updateAll(['adjuntos'=>$valor],['id'=>$this->id]);
         return parent::afterSave($insert, $changedAttributes);
     }
+    
+    private function copyImages(){
+       if($this->hasAttachments()){
+           foreach($this->files as $archivo){
+               copy($archivo->path, __DIR__.'../../../images/'.$archivo->name.'.'.$archivo->type);
+           }
+       }
+        
+    }
+    
+   
+    
+    private function fixTexto(){
+       if($this->hasAttachments()){
+           $contador=0;
+           foreach($this->files as $archivo){
+               $nombre=$archivo->name.'.'.$archivo->type;
+               $pos= strpos($this->cuerpo,$nombre);
+               if (!($posicion_coincidencia === false)){
+                 $this->cuerpo=substr($this->cuerpo,0,$pos).
+                         $archivo->urlTempWeb.
+                        substr($this->cuerpo,$pos+len($nombre));
+                 $contador++;
+               }
+               
+           }
+          return $contador;
+       }else{
+           return 0;
+       }
+           
+       
+    }
+    
+    
+    private function replaceUrlImages(){
+        
+    }
+    
+    public function triggerUpload(){
+        
+    }
+    
+    public function triggerDelete(){
+        
+    }
+    
 }

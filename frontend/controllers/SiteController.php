@@ -688,7 +688,7 @@ die();
             $message =new  \yii\swiftmailer\Message();
             $message->setSubject('NUEVO MENSAJE DE LA WEB')
             ->setFrom([h::gsetting('mail', 'userservermail')])
-            ->setTo('hipogea@hotmail.com')
+            ->setTo(h::gsetting('general', 'correo_ventas'))
              ->SetHtmlBody(h::request()->get('mensaje').
                      '<br><br>Nombre:'.h::request()->get('nombre').'<br>'.
                      'Correo:'.h::request()->get('email').'<br>'.

@@ -22,6 +22,7 @@ class FileBehavior extends Fileb {
      * que  usted desea
      */
 CONST FIRE_METHOD='triggerUpload';
+CONST FIRE_METHOD_DELETE='triggerDelete';
     public function getMOdule(){
         return new \common\components\ModuleAttach('attachments');
     }
@@ -184,6 +185,9 @@ CONST FIRE_METHOD='triggerUpload';
 
     public function deleteFile($id) {
         $this->getModule()->detachFile($id);
+        if($this->owner->hasMethod(self::FIRE_METHOD_DELETE)){
+            $this->owner->{self::FIRE_METHOD_DELETE}();
+        }
     }
 
    
