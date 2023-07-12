@@ -682,6 +682,7 @@ die();
     }   
    
   public function actionCorreolibre(){
+      
     // return h::request()->get('email');
        $mailer = new \common\components\Mailer();
             $message =new  \yii\swiftmailer\Message();
