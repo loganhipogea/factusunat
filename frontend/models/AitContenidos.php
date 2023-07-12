@@ -131,7 +131,7 @@ class AitContenidos extends \common\models\base\modelBase
                if (!($posicion_coincidencia === false)){
                  $this->cuerpo=substr($this->cuerpo,0,$pos).
                          $archivo->urlTempWeb.
-                        substr($this->cuerpo,$pos+len($nombre));
+                        substr($this->cuerpo,$pos+strlen($nombre));
                  $contador++;
                }
                
