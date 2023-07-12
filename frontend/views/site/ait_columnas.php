@@ -116,6 +116,12 @@ $formato=h::formato();
                     return $model->leyenda;
                   }
                 ],
+         ['attribute'=>'frontal',
+                'format'=>'raw',
+                'value'=>function ($model){
+                    return Html::checkbox($model->id, $model->fronytal,['disabled'=>true]);
+                  }
+                ], 
          
         ],
     ]); ?>
