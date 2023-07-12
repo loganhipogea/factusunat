@@ -128,7 +128,7 @@ class AitContenidos extends \common\models\base\modelBase
            foreach($this->files as $archivo){
                $nombre=$archivo->name.'.'.$archivo->type;
                $pos= strpos($this->cuerpo,$nombre);
-               if (!($posicion_coincidencia === false)){
+               if (!($pos === false)){
                  $this->cuerpo=substr($this->cuerpo,0,$pos).
                          $archivo->urlTempWeb.
                         substr($this->cuerpo,$pos+strlen($nombre));
