@@ -147,7 +147,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
         yii::error('Otra ve el precio unitaro',__FUNCTION__);            
           yii::error($this->punit,__FUNCTION__);
         $signo=$this->vale->transaccion->signo;
-        $this->valor=$this->punit*$this->cant*$signo;
+        $this->valor=$this->punit*$this->cantreal*$signo;
         yii::error('El valor ',__FUNCTION__);            
           yii::error($this->valor,__FUNCTION__);
         
@@ -289,8 +289,9 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
               $this->punit=$this->punit*h::tipoCambio($vale->codmon)['compra'];
           }
           $montoafectado=abs($this->punit)*abs($this->cantreal)*$signo;           
-      }else{//Sacamos el P.U. del stock o del vale dependiendo          
-            $montoafectado=abs($stock->valor_unit)*abs($this->cantreal)*$signo;         
+      }else{//Sacamos el P.U. del stock         
+            $montoafectado=abs($stock->valor_unit)*abs($this->cantreal)*$signo; 
+            $this->punit=$stock->valor_unit;
       }
       $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
         
