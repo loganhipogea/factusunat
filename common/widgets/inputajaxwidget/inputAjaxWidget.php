@@ -62,6 +62,8 @@ class inputAjaxWidget extends \yii\base\Widget
                               $.noty.setType(n.options.id, 'error');         
                                 }, 
 success: function (data) {
+
+
            $('#".$this->idGrilla."').".$operador."(data);
     }
        }); //ajax 

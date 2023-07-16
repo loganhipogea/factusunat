@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use common\widgets\prueba\pruebaWidget;
 use common\helpers\ComboHelper;
 use yii\widgets\Pjax;
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 ?>
 <div id="colector_tabular">
 <?= TabularInput::widget([
@@ -159,4 +160,32 @@ use yii\widgets\Pjax;
 });
 
 ", \yii\web\View::POS_READY);
-    ?>    
+    ?>  
+
+
+
+  <?php  
+     $this->registerJs("$('[name$=\"][codart]\"]').on( 'change', function() { 
+       var_idselect=this.id;
+       var_indice=var_idselect.substring(11,12);
+         var urli='".\yii\helpers\Url::to(['/masters/materials/ajax-html-ums'])."';
+      
+        var promesa1= $.ajax({
+           url : urli,
+          type : 'POST', 
+          data : {valorInput:this.value}, 
+          dataType: 'html', 
+         error:function(xhr, status, error){ 
+                            var n = Noty('id');                      
+                             $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-remove-sign\'></span>      '+ xhr.responseText);
+                              $.noty.setType(n.options.id, 'error');         
+                                }, 
+            success: function (data) {
+               $('#matdetvale-'+var_indice+'-um').html(data);
+                }
+       });
+    
+});
+
+", \yii\web\View::POS_READY);
+    ?>  

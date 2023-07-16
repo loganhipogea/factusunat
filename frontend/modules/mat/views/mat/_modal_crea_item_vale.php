@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 use common\helpers\ComboHelper;
 use common\widgets\selectwidget\selectWidget;
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 
 
 /* @var $this yii\web\View */
@@ -48,9 +49,9 @@ use common\widgets\selectwidget\selectWidget;
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
      <?php  
             $datos=($model->isNewRecord)?[]:$model->material->dataUms();
-            $form->field($model, 'um')->
+           echo  $form->field($model, 'um')->
             dropDownList($datos,
-                    ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
+                    [//'prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
                         ]
@@ -87,14 +88,14 @@ use common\widgets\selectwidget\selectWidget;
        
       // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
        echo inputAjaxWidget::widget([
-           // 'isHtml'=>true,//Devuelve datos Html
-            //'isDivReceptor'=>true,//Es un diov que recibe Html
+            'isHtml'=>true,//Devuelve datos Html
+            'isDivReceptor'=>true,//Es un diov que recibe Html
             'tipo'=>'POST', 
             ///'data'=>['codart'=>$model->id],
             'evento'=>'change',
-            'ruta'=>Url::to(['masters/materials/ajax-html-ums']),
-            'id_input'=>'mat-det-vale',
-            'idGrilla'=>'cabecera'
+            'ruta'=>Url::to(['/masters/materials/ajax-html-ums']),
+            'id_input'=>'matdetvale-codart',
+            'idGrilla'=>'matdetvale-um'
       ])  ?>        
           
 

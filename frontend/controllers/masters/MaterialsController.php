@@ -12,6 +12,7 @@ use common\controllers\base\baseController;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 
 /**
  * MaterialsController implements the CRUD actions for Maestrocompo model.
@@ -236,19 +237,24 @@ class MaterialsController extends baseController
    public function actionAjaxHtmlUms(){
        $req=h::request();       
       if($req->isAjax){     
-        h::response()->format = yii\web\Response::FORMAT_JSON;    
-            if($req->isPost()){
-                $codart=$req->post('codart');
-            }elseif($req->isGet()){
-                $codart=$req->get('codart'); 
+       // h::response()->format = yii\web\Response::FORMAT_JSON;    
+            if($req->isPost){
+                $codart=$req->post('valorInput');
+            }elseif($req->isGet){
+                $codart=$req->get('valorInput'); 
             }
        $model= Maestrocompo::find()->andWhere(['codart'=>$codart])->one();
             if(is_null($model)){
                 $datos=[];
+                return '';
             }else{
-                $datos=$model->dataUms(); 
+                //[''=>yii::t('base.verbs','--Seleccione un Valor--')]+$datos;
+                $datos=[''=>yii::t('base.verbs','--Seleccione un Valor--')]+$model->dataUms(); 
+               // yii::error($datos,__FUNCTION__);
+               //yii::error(Html::renderSelectOptions($model->codum, $datos),__FUNCTION__);
+                return  Html::renderSelectOptions($model->codum, $datos);
                 }       
-       return  Html::renderSelectOptions($model->codum, $datos);
+       
             
       }
    } 
