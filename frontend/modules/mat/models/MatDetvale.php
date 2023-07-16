@@ -142,7 +142,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
             
            // $this->activo=true;    
             if(!$this->vale->transaccion->afecta_precio){
-                $this->punit=$this->stock()->valor_unit;
+                $this->punit=$this->stock()->valor_unit/$this->cantreal->cant;
             }
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
             $this->codest=self::ESTADO_CREADO;
@@ -159,7 +159,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
     }
     
     public function getCantReal(){
-        if(is_null($this->_cantreal) && !$this->isNewRecord){
+        if(is_null($this->_cantreal) && !empty($this->codart) ){
           $this->cant=$this->cant*$this->material->factorConversion($this->um);
         }
         return $this;       
