@@ -658,6 +658,7 @@ public function actionAjaxDesactivaItem($id){
           //$request = Yii::$app->getRequest();
          if(Yii::$app->request->isPost){
              $arraydetalle=Yii::$app->request->post('MatDetvale');
+             yii::error($arraydetalle,__FUNCTION__);
              $arraycabecera=Yii::$app->request->post('MatVale');
              
              /*Nos aseguramos que los indices se reseteen con array_values
