@@ -9,7 +9,8 @@ $options=array_merge($opcionesBase,['prompt'=>'--'.yii::t('base.verbs','Seleccio
                       
                         ]);
 if($multiple){
-    $options['multiple']='multiple';
+    $options['multiple']=true;
+    //$options['name']=$options['name'].'[]';
     $options['data']=$datos;
 }
 

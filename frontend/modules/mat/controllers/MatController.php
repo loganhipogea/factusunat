@@ -436,7 +436,23 @@ public function actionAjaxDesactivaItem($id){
   }
   
   public function actionAjaxAnularVale($id){
-      
+       if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model= MatVale::findOne($id))){
+                    if($model->isCreado()){
+                       $model->codest=$model::ESTADO_ANULADO;
+                       if($model->save()){
+                           return ['success'=>yii::t('base.errors','Se anuló el vale con exito ')];
+                       }else{
+                           return ['error'=>yii::t('base.errors','Hubo un error '.$mode->getFirstError())];
+                       }
+                       
+                    }else{
+                        return ['error'=>yii::t('base.errors','No tiene el status adecuado')];
+                    }                   
+                  }   
+                
+            }    
   }
   
   public function actionAjaxShowMaterial(){       
@@ -1026,7 +1042,11 @@ public function actionAjaxDesactivaItem($id){
             $codtransa=h::request()->get('codtrans');
             $model=\common\models\masters\Transacciones::findOne(['codtrans'=>$codtransa]);
             $es=($model->afecta_precio)?'1':'0'; 
-            return ['success'=>$es];
+            return [
+                'success'=>
+                    $model->attributes,
+                    
+                ];
             
          }     
  }   

@@ -46,9 +46,10 @@ use common\widgets\selectwidget\selectWidget;
 
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-     <?= 
+     <?php  
+            $datos=($model->isNewRecord)?[]:$model->material->dataUms();
             $form->field($model, 'um')->
-            dropDownList(ComboHelper::getCboUms(),
+            dropDownList($datos,
                     ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
@@ -81,6 +82,21 @@ use common\widgets\selectwidget\selectWidget;
           
      
     <?php ActiveForm::end(); ?>
+          
+    <?php 
+       
+      // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
+       echo inputAjaxWidget::widget([
+           // 'isHtml'=>true,//Devuelve datos Html
+            //'isDivReceptor'=>true,//Es un diov que recibe Html
+            'tipo'=>'POST', 
+            ///'data'=>['codart'=>$model->id],
+            'evento'=>'click',
+            'ruta'=>Url::to(['masters/materials/ajax-html-ums']),
+            'id_input'=>'btn-anular',
+            'idGrilla'=>'cabecera'
+      ])  ?>        
+          
 
 </div>
     </div>

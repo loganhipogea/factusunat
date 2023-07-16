@@ -33,10 +33,15 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                <div class="btn-group">  
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
            <?php 
-            if($model->isCreado())
-           echo Html::button( '<span class="fa fa-check-circle"></span>   '.Yii::t('base.names', 'Aprobar'),
+            if($model->isCreado()){
+                echo Html::button( '<span class="fa fa-check-circle"></span>   '.Yii::t('base.names', 'Aprobar'),
                   ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
                  );
+                echo Html::button( '<span class="fa fa-trash"></span>   '.Yii::t('base.names', 'Anular'),
+                  ['class' => 'btn btn-danger','href' => '#','id'=>'btn-anular']
+                 );
+            }
+           
             if($model->isAprobado()){
             $url=Url::to(['/mat/mat/make-pdf-vale','id'=>$model->id]);
                  echo Html::a('<span class="fa fa-print" ></span> Imprimir',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"]);
@@ -140,11 +145,11 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                   
  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
      <?= $form->field($model, 'numerodoc')->textInput(['maxlength' => true,'disabled'=>(!$bloqueado)?false:true  ]) ?>
-     
+ 
  </div>   
          
       
-  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
      
  <?= $form->field($model, 'fecha')->widget(DatePicker::class, [
                             'language' => h::app()->language,
@@ -161,7 +166,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                                 ]
                             ]) ?>
  </div>
- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
      
  <?= $form->field($model, 'fechacon')->widget(DatePicker::class, [
                             'language' => h::app()->language,
@@ -178,6 +183,16 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                                 ]
                             ]) ?>
  </div>
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+     
+   <?= $form->field($model, 'codmon')->
+            dropDownList(common\helpers\ComboHelper::getCboMonedas(),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      'disabled'=>($bloqueado || !$model->isNewRecord),
+                        ]
+                    ) ?>
+    </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <?= $form->field($model, 'texto')->textArea(['disabled'=>(!$bloqueado)?false:true  ]) ?>
     
@@ -220,6 +235,19 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
       ])  ?>  
           
          
-
+<?php 
+       
+      // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
+       echo inputAjaxWidget::widget([
+           // 'isHtml'=>true,//Devuelve datos Html
+            //'isDivReceptor'=>true,//Es un diov que recibe Html
+            'tipo'=>'POST', 
+           // 'data'=>['idpet'=>$model->id],
+            'evento'=>'click',
+            'ruta'=>Url::to(['/mat/mat/ajax-anular-vale','id'=>$model->id]),
+            'id_input'=>'btn-anular',
+            'idGrilla'=>'cabecera'
+      ])  ?>  
+          
 
  </div>

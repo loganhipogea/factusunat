@@ -7,6 +7,7 @@ use yii\widgets\Pjax;
 <div id="colector_tabular">
 <?= TabularInput::widget([
     'models' => $items,
+    
      'cloneButton' => false,
     'sortable' => true,
     'enableError'=>true,
@@ -35,7 +36,7 @@ use yii\widgets\Pjax;
             'title' => 'item',
             'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
              'headerOptions' => [
-                'style' => 'width: 5%',
+                'style' => 'width: 10%',
                 //'class' => 'day-css-class'
             ],
        'enableError' => true,
@@ -47,10 +48,11 @@ use yii\widgets\Pjax;
        'enableError' => true,
             'items'=> ComboHelper::getCboUms(true),
            'headerOptions' => [
-                'style' => 'width: 10%',
+                'style' => 'width: 15%',
                 //'class' => 'day-css-class'
                        ],
           ],
+        
          [
             'name'  => 'cant',
             'title' => 'cant',
@@ -139,7 +141,7 @@ use yii\widgets\Pjax;
                      console.log(xhr.status + ': ' + xhr.responseText);
                             } //fin de funcion  error ajax 1
         }).then(function(){ 
-            if(resulta1=='0'){
+            if(resulta1['afecta_precio']=='0'){
                       $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
         	         $('#'+this.id).hide();
                        });  
@@ -149,6 +151,8 @@ use yii\widgets\Pjax;
                        
                         });  
             }
+            
+           
 
        });
     

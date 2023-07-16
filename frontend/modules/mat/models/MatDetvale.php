@@ -11,6 +11,7 @@ use common\helpers\h;
 use common\interfaces\CosteoInterface;
 use common\behaviors\CodocuBehavior;
 use frontend\modules\cc\models\CcCostos;
+use common\models\masters\Tipocambio;
 use Yii;
 
 /**
@@ -284,6 +285,9 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
        * 
        */
       if($afecta_precio){ //Sacamos el P.U. del mismo vale
+          if(!$vale->isMonedaLocal()){
+              $this->punit=$this->punit*h::tipoCambio($vale->codmon)['compra'];
+          }
           $montoafectado=abs($this->punit)*abs($this->cant)*$signo;           
       }else{//Sacamos el P.U. del stock o del vale dependiendo          
             $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;         

@@ -228,4 +228,29 @@ class MaterialsController extends baseController
             ]);  
         } 
     }
+   
+    /*
+     * Devuelve las unidades de medida de un material en 
+     * particular listas para renderizar en un combo box o o list box
+     */
+   public function actionAjaxHtmlUms(){
+       $req=h::request();       
+      if($req->isAjax){     
+        h::response()->format = yii\web\Response::FORMAT_JSON;    
+            if($req->isPost()){
+                $codart=$req->post('codart');
+            }elseif($req->isGet()){
+                $codart=$req->get('codart'); 
+            }
+       $model= Maestrocompo::find()->andWhere(['codart'=>$codart])->one();
+            if(is_null($model)){
+                $datos=[];
+            }else{
+                $datos=$model->dataUms(); 
+                }       
+       return  Html::renderSelectOptions($model->codum, $datos);
+            
+      }
+   } 
+    
 }

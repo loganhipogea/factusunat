@@ -207,5 +207,21 @@ class MatStock extends \common\models\base\modelBase
        }
    }
    
+   
+   public function createReserva(MatReserva $reserva,$cant){
+      if($cant >0 and $cant < $this->cant){
+         $model=New MatReservaDet();
+        $model->setAttributes([
+                'stock_id'=>$this->id,
+                'stock_id'=>$this->id,
+                'item'=>$reserva->nextItem(),
+                //'cant'=>$reserva->nextItem(),
+           ]); 
+        return ($model->save())?1:-1;
+      }else{
+          return -1;
+      }
+       
+   }
   
 }

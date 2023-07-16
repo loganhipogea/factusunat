@@ -68,10 +68,10 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
     public function rules()
     {
         return [
-            [[ 'codpro', 'codmov','codocu'], 'required'],
+            [[ 'codpro', 'codmov','codocu','codmon'], 'required'],
             [['texto'], 'string'],
             [['codocu','numerodoc','fechacon'], 'string'],
-             [['codocu','numerodoc','fechacon','codal','codcen'], 'safe'],
+             [['codocu','numerodoc','fechacon','codal','codcen','codmon','codest'], 'safe'],
             [['numerodoc'], 'validate_docu'],
             [['numero', 'fecha'], 'string', 'max' => 10],
             [['codpro'], 'string', 'max' => 10],
@@ -282,7 +282,9 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
       
   }
      
-     
+ public function isMonedaLocal(){
+     return ($this->codmon==\common\models\masters\Tipocambio::COD_MONEDA_BASE);
+ }    
      
        
     }

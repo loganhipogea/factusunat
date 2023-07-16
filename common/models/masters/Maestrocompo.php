@@ -159,6 +159,13 @@ class Maestrocompo extends \common\models\base\modelBase
       }
     }
     
+    public function cantReal($codum){
+        $this->cant=$this->cant*$this->factorConversion($codum);
+        return $this;
+    }
+    
+    
+    
   private function attributesStock($codal){
       return [
           'codart'=>$this->codart,
@@ -196,6 +203,34 @@ class Maestrocompo extends \common\models\base\modelBase
   public function canChangeType(){
      return  !is_null($this->find()->andWhere(['codtipo'=>$this->codtipo])->
               andWhere(['>','codart',$this->codart])->one());
+  }
+  
+  /*
+   * Array con las unidades de medidas disponibles
+   * para este material
+   */
+  public function umsDisponibles(){
+      $alternativos=$this->getConversiones()->asArray();
+      if(!empty($alternativos)){
+          $alternativos= array_column($alternativos,'codum');
+      }
+     $alternativos[]=$this->codum; //POR SUPUESTO QUE NO DEBE DE FALTAR LA UM BASE
+     return $alternativos;
+  }
+  /*
+   * Array con las unidades de medidas disponibles
+   * para este material pero en formato CLAVE VALOR
+   * sacados de la tabla UMS,
+   * Listos para un DROPdown box
+   */
+  public function dataUms(){
+      $ums=$this->umsDisponibles();
+      $ums=Ums::find()->andWhere(['in','codum',$ums])->asArray();
+     return array_combine(
+             array_column($ums,'codum'),
+             array_column($ums,'desum'),
+             );
+      
   }
   
   

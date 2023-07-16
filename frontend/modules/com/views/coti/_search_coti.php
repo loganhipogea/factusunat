@@ -88,6 +88,7 @@ use yii\widgets\ActiveForm;
             'campo'=>'codcli',
               'ordenCampo'=>2,
                 'addCampos'=>[1,2],
+                //'multiple'=>true,
         ]);  ?>
 
     <?php ActiveForm::end(); ?>
