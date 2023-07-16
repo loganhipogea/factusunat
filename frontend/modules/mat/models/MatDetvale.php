@@ -142,7 +142,12 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
             
            // $this->activo=true;    
             if(!$this->vale->transaccion->afecta_precio){
-                $this->punit=$this->stock()->valor_unit/$this->cantreal->cant;
+                 
+                $this->punit=$this->stock()->valor_unit*$this->cantreal->cant;
+                 yii::error('Recalculando el precio unitario ',__FUNCTION__); 
+                 yii::error($this->punit,__FUNCTION__); 
+                 yii::error('La nueva cantidad es ',__FUNCTION__); 
+                 yii::error($this->cant,__FUNCTION__); 
             }
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
             $this->codest=self::ESTADO_CREADO;
