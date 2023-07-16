@@ -141,7 +141,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
         if($insert){
             
            // $this->activo=true;    
-            if(!$this->vale->afecta_precio){
+            if(!$this->vale->transaccion->afecta_precio){
                 $this->punit=$this->stock()->valor_unit;
             }
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
