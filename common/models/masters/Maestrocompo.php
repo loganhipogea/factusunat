@@ -213,7 +213,7 @@ class Maestrocompo extends \common\models\base\modelBase
       
       
       
-      $alternativos=$this->getConversiones()->all()->asArray();
+      $alternativos=$this->getConversiones()->asArray()->all();
       if(!empty($alternativos)){
           $alternativos= array_column($alternativos,'codum');
       }
@@ -228,7 +228,7 @@ class Maestrocompo extends \common\models\base\modelBase
    */
   public function dataUms(){
       $ums=$this->umsDisponibles();
-      $ums=Ums::find()->andWhere(['in','codum',$ums])->all()->asArray();
+      $ums=Ums::find()->andWhere(['in','codum',$ums])->asArray()->all();
      return array_combine(
              array_column($ums,'codum'),
              array_column($ums,'desum'),
