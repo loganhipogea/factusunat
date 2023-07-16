@@ -210,7 +210,7 @@ class Maestrocompo extends \common\models\base\modelBase
    * para este material
    */
   public function umsDisponibles(){
-      $alternativos=$this->getConversiones()->asArray();
+      $alternativos=$this->getConversiones()->all()->asArray();
       if(!empty($alternativos)){
           $alternativos= array_column($alternativos,'codum');
       }

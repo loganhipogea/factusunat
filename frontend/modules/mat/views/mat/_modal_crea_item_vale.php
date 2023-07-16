@@ -91,9 +91,9 @@ use common\widgets\selectwidget\selectWidget;
             //'isDivReceptor'=>true,//Es un diov que recibe Html
             'tipo'=>'POST', 
             ///'data'=>['codart'=>$model->id],
-            'evento'=>'click',
+            'evento'=>'change',
             'ruta'=>Url::to(['masters/materials/ajax-html-ums']),
-            'id_input'=>'btn-anular',
+            'id_input'=>'mat-det-vale',
             'idGrilla'=>'cabecera'
       ])  ?>        
           
