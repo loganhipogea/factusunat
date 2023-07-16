@@ -150,7 +150,8 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
         yii::error('Otra ve el precio unitaro',__FUNCTION__);            
           yii::error($this->punit,__FUNCTION__);
         $signo=$this->vale->transaccion->signo;
-        $this->valor=$this->punit*$this->cantreal*$signo;
+        $this->cantreal->valor=$this->punit*$this->cant*$signo;
+        //$this->valor=$this->cantreal->$signo;
         yii::error('El valor ',__FUNCTION__);            
           yii::error($this->valor,__FUNCTION__);
         
