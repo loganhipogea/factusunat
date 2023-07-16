@@ -139,7 +139,8 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
     
      public function beforeSave($insert) {
         if($insert){
-            
+             yii::error('Los atributos ',__FUNCTION__);
+                   yii::error($this->attributes,__FUNCTION__);
            // $this->activo=true;    
             if(!$this->vale->transaccion->afecta_precio){
                  yii::error('Cantidad normal ',__FUNCTION__);
