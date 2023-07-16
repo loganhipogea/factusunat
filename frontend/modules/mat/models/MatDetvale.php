@@ -52,7 +52,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
     public function rules()
     {
         return [
-            [['vale_id', 'codart','cant','punit','um'], 'required'],
+            [['vale_id', 'codart','cant','um'], 'required'],
             [['vale_id'], 'integer'],
             [['detreq_id'], 'required','on'=>self::MOV_SALIDA],
             [['cant'], 'number'],
@@ -288,9 +288,9 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
           if(!$vale->isMonedaLocal()){
               $this->punit=$this->punit*h::tipoCambio($vale->codmon)['compra'];
           }
-          $montoafectado=abs($this->punit)*abs($this->cant)*$signo;           
+          $montoafectado=abs($this->punit)*abs($this->cantreal)*$signo;           
       }else{//Sacamos el P.U. del stock o del vale dependiendo          
-            $montoafectado=abs($stock->valor_unit)*abs($this->cant)*$signo;         
+            $montoafectado=abs($stock->valor_unit)*abs($this->cantreal)*$signo;         
       }
       $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
         
@@ -481,6 +481,20 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
           }
       }
        
+   }
+   
+   public function validate_punit(){
+        if($this->vale_id >0){
+           $transaccion=$this->vale->transaccion;
+       }else{
+          $envioPost=h::request()->post(); 
+          $transaccion= Transacciones::findOne(['codtrans'=>$envioPost['MatVale']['codmov']]);
+       }
+       
+       if($transaccion->afecta_precio && empty($this->punit)){
+           $this->addError('codart',yii::t('base.errors','El precio unitario es obligatorio'));  
+               
+      }
    }
      
      public function isCreado(){
