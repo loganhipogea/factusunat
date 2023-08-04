@@ -96,6 +96,12 @@ class MaterialsController extends baseController
      */
     public function actionUpdate($id)
     {
+        
+         if ($this->is_editable()){
+            h::response()->format = \yii\web\Response::FORMAT_JSON;
+            return $this->editField();
+           } 
+        
         $model = $this->findModel($id);
           
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
