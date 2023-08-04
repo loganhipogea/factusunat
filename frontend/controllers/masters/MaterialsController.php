@@ -19,6 +19,9 @@ use yii\helpers\Html;
  */
 class MaterialsController extends baseController
 {
+    
+    
+     public $nameSpaces = ['common\models\masters'];
     /**
      * {@inheritdoc}
      */
