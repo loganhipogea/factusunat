@@ -58,8 +58,7 @@ use common\models\masters\Direcciones;
        ]);
    ?>
    
-   <div class ="table table-striped table-dark "
-   
+  
    
 
    
