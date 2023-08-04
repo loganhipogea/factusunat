@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
                     // 'class'=>'probandoSelect2',
                       //'disabled'=>($model->isBlockedField('codum1'))?'disabled':null,
                         ]
-                    ) ?>
+                    )->label(yii::t('base.names','Esta unidad de medida ')); ?>
 </div>
    
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
