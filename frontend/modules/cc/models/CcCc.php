@@ -2,6 +2,7 @@
 
 namespace frontend\modules\cc\models;
 use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
+use common\behaviors\CodocuBehavior;
 use Yii;
 
 /**
@@ -19,6 +20,15 @@ class CcCc extends \common\models\base\modelBase implements DocRelacionadoValeIn
    const PREFIJO_COD='9';
    const CODIGO_COLECTOR='C';
    
+   
+   public function behaviors() {
+        return [
+            'DocuBehavior' => [
+                'class' => CodocuBehavior::className()
+            ],
+           
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -90,5 +100,11 @@ class CcCc extends \common\models\base\modelBase implements DocRelacionadoValeIn
     
     public static function buscarporNumero($numero) {
         return self::findOne(['codigo'=>$numero]);
+    }
+    
+    
+    
+    public function numerodoc() {
+        return $this->codigo;
     }
 }

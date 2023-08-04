@@ -24,7 +24,7 @@ class MatReserva extends \common\models\base\modelBase
         return '{{%mat_reserva}}';
     }
     
-    public $booleanFields=['fecha'=>self::_FDATE];
+    public $dateOrTimeFields=['fecha'=>self::_FDATE];
 
     /**
      * {@inheritdoc}

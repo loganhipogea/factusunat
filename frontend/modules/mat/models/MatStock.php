@@ -3,6 +3,7 @@
 namespace frontend\modules\mat\models;
 use frontend\modules\mat\models\MatDetreq;
 use common\models\masters\Maestrocompo;
+use frontend\modules\mat\models\MatReservaDet;
 use Yii;
 
 /**
@@ -207,21 +208,36 @@ class MatStock extends \common\models\base\modelBase
        }
    }
    
-   
-   public function createReserva(MatReserva $reserva,$cant){
-      if($cant >0 and $cant < $this->cant){
-         $model=New MatReservaDet();
+   private function prepareReserva($idreserva,$cant){
+      $model=New MatReservaDet();
         $model->setAttributes([
                 'stock_id'=>$this->id,
-                'stock_id'=>$this->id,
-                'item'=>$reserva->nextItem(),
-                //'cant'=>$reserva->nextItem(),
-           ]); 
-        return ($model->save())?1:-1;
-      }else{
-          return -1;
-      }
-       
+                'reserva_id'=>$idreserva,
+                //'item'=>$reserva->nextItem(),
+                'fecha'=>self::currentDateInFormat(true,0),
+                'activo'=>true,
+                'codestado'=>MatReservaDet::ES_RESERVADO,  //de fente pasa al estado reserva de inventario          
+               'cant'=>$cant,
+           ]);  
+        return $model;
    }
+   public function createReserva($idreserva,$cant,$verificar_cantidad=true){
+      if($verificar_cantidad){
+          if(abs($cant) <= $this->cant_disp){
+               $model=$this->prepareReserva($idreserva,$cant); 
+             return ($model->save())?1:-1;  
+           }else{
+               return -1;
+           }
+      }else{
+           $model=$this->prepareReserva($idreserva,$cant);      
+             return ($model->save())?1:-1;  
+      } 
+   }
+   
+   
+   
+   
+   
   
 }

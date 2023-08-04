@@ -60,13 +60,14 @@ class Maestrocompo extends \common\models\base\modelBase
     {
         return [
             'id' => Yii::t('base.names', 'ID'),
-              'codart' => Yii::t('base.names', 'Codart'),
-            'descripcion' => Yii::t('base.names', 'Descripcion'),
+              'codart' => Yii::t('base.names', 'Cód'),
+            'descripcion' => Yii::t('base.names', 'Descripción'),
             'marca' => Yii::t('base.names', 'Marca'),
             'modelo' => Yii::t('base.names', 'Modelo'),
-            'numeroparte' => Yii::t('base.names', 'Numeroparte'),
-            'codum' => Yii::t('base.names', 'Codum'),
-            'peso' => Yii::t('base.names', 'Peso'),
+            'numeroparte' => Yii::t('base.names', 'N. Parte'),
+            'codum' => Yii::t('base.names', 'Um'),
+            'peso' => Yii::t('base.names', 'Peso Kg'),
+            'codtipo' => Yii::t('base.names', 'Tipo'),
         ];
     }
 

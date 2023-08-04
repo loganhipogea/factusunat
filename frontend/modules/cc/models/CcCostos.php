@@ -3,6 +3,7 @@
 namespace frontend\modules\cc\models;
 use common\models\base\modelBase;
 use common\interfaces\CosteoInterface;
+use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
 use Yii;
 
 /**
@@ -98,7 +99,7 @@ class CcCostos extends modelBase
     
     public static function createRegistro( 
             CosteoInterface $docGenerador,
-            CosteoInterface $docReferencia){
+            DocRelacionadoValeInterface $docReferencia){
        $model= self::instance();
        $model->setAttributes([
            'fecha'=>self::currentDateInFormat(),

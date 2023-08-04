@@ -12,6 +12,7 @@ implements ReqInterface
     const SCE_SERVICIO='sce_servicio';
     const TIPO_MATERIALE='MAT';
     const TIPO_SERVICIO='SER';
+    
     //const SC='sce_imputado';
    public $boolean_fields=['activo'];
    private $_cantreal=null;
@@ -46,7 +47,7 @@ implements ReqInterface
     {
         return [
              [['cant'] ,'required'],
-            [['codart','tipo'] ,'safe'],
+            [['codart','tipo','codal'] ,'safe'],
              [['cant','req_id','cant','item','tipo',
                  'um','activo','descripcion','texto','os_id','detos_id','proc_id'], 'safe'],
             [['detos_id','proc_id','os_id'] ,'required', 'on'=>self::SCE_IMPUTADO],
@@ -106,6 +107,16 @@ implements ReqInterface
         return $this->hasOne(\common\models\masters\Maestrocompo::className(), ['codart' => 'codart']);
     }
 
+    
+    
+
+    
+    
+    public function getReservas()
+    {
+        return $this->hasMany(MatReservaDet::className(), ['detreq_id' => 'id']);
+           //return $this->hasMany(Examenes::className(), ['citas_id' => 'id']);
+    }
     
     /* public function getStock()
     {
@@ -198,7 +209,43 @@ implements ReqInterface
       
      }
   
-     
-     
+  public function cantBase(){
+        if(!empty($this->codart) ){
+          return $this->cant/$this->material->factorConversion($this->um);
+        }else{
+            return $this->cant;
+        }
+             
+    }   
+  
+  
+  public function cantReservada(){
+      return $this->reservas()->sum('cant'); 
+  } 
+    
+  public function isReservado(){
+      return $this->cantBase() >= $this->cantReservada();
+  }
+  
+  public function cantAReservar(){
+      $dif=$this->cantBase()-$this->cantReservada();
+      return ($dif>0)?$dif:0;
+  }
+  
+  public function creaReserva(){
+     if(!is_null($modelStock=$this->stock())){ 
+        return  $modelStock->
+           createReserva($this->req->reserva()->id,
+                 $this->cantAReservar()
+                 );         
+     }else{
+       return -1;  
+     }      
+  }
+  
+  public function stock(){
+      return MatStock::findOne(['codart'=>$this->codart,'codal'=>$this->codal]);
+  }
+  
     
 }

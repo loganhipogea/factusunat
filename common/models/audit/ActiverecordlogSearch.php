@@ -109,7 +109,8 @@ class ActiverecordlogSearch extends Activerecordlog
 
         // grid filtering conditions
         
-        $query->andFilterWhere(['model'=>$model,
+        $query->andFilterWhere([
+            //'model'=>$model,
             'model'=>$model::className(),
             'clave'=>$model->getPrimaryKey(),
             ]);

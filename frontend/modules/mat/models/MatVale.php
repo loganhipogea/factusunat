@@ -2,11 +2,14 @@
 
 namespace frontend\modules\mat\models;
 use common\models\masters\Clipro;
-use \common\models\masters\Documentos;
+use common\models\masters\Documentos;
 use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
+use common\interfaces\DocumentoInterface;
 use frontend\modules\mat\models\MatDetvale;
-use common\behaviors\CodocuBehavior;
+use frontend\modules\mat\behaviors\ReservaBehavior;
 use common\interfaces\CosteoInterface;
+use common\behaviors\CodocuBehavior;
+use yii\base\InvalidConfigException;
 use Yii;
 
 /**
@@ -23,7 +26,11 @@ use Yii;
  *
  * @property Clipro $codpro0
  */
-class MatVale extends \common\models\base\modelBase implements \frontend\modules\mat\interfaces\EstadoInterface
+class MatVale extends \common\models\base\modelBase 
+implements \frontend\modules\mat\interfaces\EstadoInterface,
+ DocumentoInterface
+
+
 {
     /**
      * {@inheritdoc}
@@ -86,8 +93,15 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
 
     public function behaviors() {
         return [
-            'DocuBehavior' => [
-                'class' => CodocuBehavior::className()
+           
+             'ReservaBehavior' => [
+                'class' => ReservaBehavior::className(),
+                
+            ],
+            
+             'CodocuBehavior' => [
+                'class' => CodocuBehavior::className(),
+                
             ],
            
         ];
@@ -274,7 +288,8 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
       
       if(!is_null($reg=Documentos::findOne(['codocu'=>$this->codocu]))){
           $clase=$reg->modelo;
-          return $clase::findOne(['numero'=>$this->numerodoc]);
+          //yii::error($clase,__FUNCTION__);
+          return $clase::findOne([$reg->campofiltro_numero=>$this->numerodoc]);
       }else{
           return null;
       }
@@ -284,7 +299,11 @@ class MatVale extends \common\models\base\modelBase implements \frontend\modules
      
  public function isMonedaLocal(){
      return ($this->codmon==\common\models\masters\Tipocambio::COD_MONEDA_BASE);
- }    
+ }  
+ 
+ public function numero() {
+     return $this->numero;
+ }
      
        
     }

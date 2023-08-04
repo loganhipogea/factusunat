@@ -88,10 +88,15 @@ use yii\widgets\ActiveForm;
             'campo'=>'codcli',
               'ordenCampo'=>2,
                 'addCampos'=>[1,2],
-                //'multiple'=>true,
+                'multiple'=>true,
         ]);  ?>
 
     <?php ActiveForm::end(); ?>
     </div>
-
+  <?php
+  
+  //var_dump(h::request()->get('ComCotizacionSearch'));die(); 
+    
+   
+  ?>
 </div>

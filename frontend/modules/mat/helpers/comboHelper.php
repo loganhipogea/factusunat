@@ -11,6 +11,7 @@ namespace frontend\modules\mat\helpers;
 use yii\helpers\ArrayHelper;
 use common\helpers\ComboHelper as Combito;
 use common\helpers\h;
+use frontend\modules\mat\models\MatDetreq;
 use yii;
 class comboHelper extends Combito
 {
@@ -76,7 +77,12 @@ class comboHelper extends Combito
         
     } 
     
-    
+    public static function getCboCalifMat($codmov){
+      return [
+          ''
+      ];
+        
+    }  
     
 }
 

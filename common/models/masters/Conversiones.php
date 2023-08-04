@@ -35,7 +35,8 @@ class Conversiones extends \common\models\base\modelBase
     {
         return [
             [['codum', 'valor1',], 'required'],
-            [['valor1'], 'number'],
+            //[['valor1'], 'number'],
+            ['valor1', 'compare', 'compareValue' => 0, 'operator' => '>', 'type' => 'number'],
             [['codum', ], 'string', 'max' => 4],
             [['codart'], 'string', 'max' => 14],
             [['codart', 'codum'], 'unique', 'targetAttribute' => ['codart', 'codum']],
@@ -84,4 +85,6 @@ class Conversiones extends \common\models\base\modelBase
     {
         return new ConversionesQuery(get_called_class());
     }
+    
+    
 }

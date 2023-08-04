@@ -10,8 +10,8 @@ interface  ReqInterface {
      */
     //public function factorProRateo();
     
-   public function getCantReal();
-   public function verify_um();
+   public function cantBase();
+   //public function verify_um();
    
     
 }

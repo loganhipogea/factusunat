@@ -21,6 +21,7 @@ use common\helpers\ComboHelper;
     <?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'tabla')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'campofiltro_numero')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'abreviatura')->textInput(['maxlength' => true]) ?>
 

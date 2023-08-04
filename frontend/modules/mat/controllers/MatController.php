@@ -658,7 +658,7 @@ public function actionAjaxDesactivaItem($id){
           //$request = Yii::$app->getRequest();
          if(Yii::$app->request->isPost){
              $arraydetalle=Yii::$app->request->post('MatDetvale');
-             yii::error($arraydetalle,__FUNCTION__);
+            // yii::error($arraydetalle,__FUNCTION__);
              $arraycabecera=Yii::$app->request->post('MatVale');
              
              /*Nos aseguramos que los indices se reseteen con array_values
@@ -771,7 +771,7 @@ public function actionAjaxDesactivaItem($id){
            
            
               $model->save();$model->refresh();
-               $items=$this->linkeaCampos($model->id, $items);
+               $items=$this->linkeaCampos($model->id, $items,'vale_id');
                      /*
               * Propagando el valor del codal en los hijos
               */
@@ -789,10 +789,10 @@ public function actionAjaxDesactivaItem($id){
                    
                   foreach($items as $item){
                         if($item->save()){ 
-                           // yii::error($item->attributes,__FUNCTION__);
+                            yii::error($item->attributes,__FUNCTION__);
                         }else{
-                           // yii::error('errores del item',__FUNCTION__);
-                            //yii::error($item->getErrors());
+                           yii::error('errores del item',__FUNCTION__);
+                            yii::error($item->getErrors());
                         }
                            }                    
                 } else{  
@@ -832,9 +832,9 @@ public function actionAjaxDesactivaItem($id){
      * @valorId: Id integer
      * @items: Array de modelos hijos
      */
-    private function linkeaCampos($valorId,&$items){
+    private function linkeaCampos($valorId,&$items,$nombrecampo){
         for($i = 0; $i < count($items); $i++) {
-                                $items[$i]->vale_id=$valorId;
+                                $items[$i]->{$nombrecampo}=$valorId;
            }
        return $items;
         
@@ -1051,5 +1051,97 @@ public function actionAjaxDesactivaItem($id){
             
          }     
  }   
-    
+   
+ public function actionCreaReq()
+    {
+        $model = new MatReq();
+       
+          //$items=[new Detdocbotellas()];
+          //$request = Yii::$app->getRequest();
+         if(Yii::$app->request->isPost){
+             $arraydetalle=Yii::$app->request->post('MatDetreq');
+            // yii::error($arraydetalle,__FUNCTION__);
+             $arraycabecera=Yii::$app->request->post('MatReq');
+             
+             /*Nos aseguramos que los indices se reseteen con array_values
+              * ya que cada vez que borramos con ajax en el form quedan 
+              * vacancias en los indices y al momento de hacer el loadMultiple
+              * no coinciden los indices; algunos modelos no cargan los atributos
+              * y arroja false 
+              */
+             
+             //Pero primero guardamos los indices del form antes de resetearlo
+             //para despues restablecerlos; esto para enviar los mensajes de error
+             // con la accion Form::ValidateMultiple()
+             $OldIndices=array_keys($arraydetalle);
+             //Ahora si reseteamos los indices para hacerl el loadMultiple
+             $arraydetalle=array_values($arraydetalle);
+             
+            
+             
+             /*Generamos los items necesarios*/           
+              $items = $this->generateItems(MatDetreq::className(),
+                      count($arraydetalle),
+                     null
+                      );
+              
+              
+                           
+         if ( h::request()->isAjax &&
+                  $model->load($arraycabecera,'')&& 
+                 Model::loadMultiple($items, $arraydetalle,'')
+                  ) {
+              
+             /*Antes de hacer Form::ValidateMultiple() , reestablecemos los 
+              * indices originales, de esta manera nos aseguramos que los
+              * mensajes de error salgan cada cual en su sitio
+              */
+             $items=array_combine($OldIndices,$items);
+                h::response()->format = Response::FORMAT_JSON;
+                 return array_merge(
+                         ActiveForm::validate($model),
+                         ActiveForm::validateMultiple($items)
+                         );
+                
+        }
+        
+        
+        if ($model->load($arraycabecera,'') &&       
+        Model::loadMultiple($items, $arraydetalle,'')&&
+         $model->validate()   ){ 
+           
+              $model->save();$model->refresh();
+               $items=$this->linkeaCampos($model->id, $items,'req_id');
+                    
+              if(Model::validateMultiple($items)){ 
+                  foreach($items as $item){
+                        if($item->save()){ 
+                            //yii::error($item->attributes,__FUNCTION__);
+                        }else{
+                           //yii::error('errores del item',__FUNCTION__);
+                            //yii::error($item->getErrors());
+                        }
+                           }                    
+                } else{  
+                    
+                }               
+              }
+              return $this->redirect(['update-req','id'=>$model->id]);
+         }
+         $items=$this->generateItems(MatDetvale::className(),
+         4, //cantidad de items por defeto al crear
+                 null);
+         foreach($items as $index=> $item){           
+             $valor=100+$index;
+             $item->item= $valor.'';
+         }
+         /*Aqui colocamos los valores por default*/
+         
+         //$model->valuesDefault();
+        return $this->render('create', [
+            'model' => $model,'items'=>$items
+        ]);
+        
+    }
+ 
 }

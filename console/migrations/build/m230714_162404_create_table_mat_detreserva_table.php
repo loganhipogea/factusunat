@@ -21,11 +21,13 @@ $this->createTable($this->table, [
             'id' => $this->primaryKey(),
             'reserva_id'=>$this->integer(),
             'stock_id'=>$this->integer(),
+    
              'item'=>$this->char(4)->append($this->collateColumn()),
              'fecha'=>$this->string(19)->append($this->collateColumn()),
             'cant'=>$this->decimal(8,3), 
               'codestado'=>$this->char(1)->append($this->collateColumn()), 
               'detalle'=>$this->string(20)->append($this->collateColumn()),  
+              'activo'=>$this->char(1)->append($this->collateColumn()), 
              
                  
         ]);

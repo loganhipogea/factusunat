@@ -9,6 +9,9 @@ namespace frontend\modules\mat\interfaces;
 
 interface  DocRelacionadoValeInterface { 
    public static function buscarporNumero($numero);
+   //public function codocu();
+   public function numerodoc();
+   
   
     
 }

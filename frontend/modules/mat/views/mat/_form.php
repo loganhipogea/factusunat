@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -220,21 +219,14 @@ use yii\grid\GridView;
        
             //'foreignskeys'=>[1,2,3],
         ]); 
-   ?>
-         
+   ?>         
     <?php Pjax::end(); ?>
-   <?php
-  
+   <?php  
       $url= Url::to(['mod-agrega-mat','id'=>$model->id,'gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
    echo  Html::button(yii::t('base.verbs','Agregar material libre'), ['href' => $url, 'title' => yii::t('base.names','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
      $url= Url::to(['mod-agrega-mat','id'=>$model->id,'imputado'=>'y','gridName'=>'grilla-materiales','idModal'=>'buscarvalor']);
    echo  Html::button(yii::t('base.verbs','Agregar material imputado'), ['href' => $url, 'title' => yii::t('base.names','Agregar Material'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
-  
-   
-   
-   }
-?>     
-          
-          
+  }
+?>       
 </div>
     </div>

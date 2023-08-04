@@ -70,7 +70,7 @@ use common\models\masters\Direcciones;
       //echo  Html::button('Add Conversion', ['href' => $url, 'title' =>yii::t('base.verbs','Create conversion'), 'class' => 'botonAbre btn btn-success']); 
 
      ?>
-    <?php Pjax::end(); ?>    
+     
         
 <?php
 $url= Url::to(['/masters/materials/creaconversion','id'=>$model->codart,'gridName'=>'pjax-con','idModal'=>'buscarvalor']);
@@ -98,3 +98,4 @@ echo ModalAjax::widget([
     // ... any other yii2 bootstrap modal option you need
 ]);*/
  ?>  
+ <?php Pjax::end(); ?>  

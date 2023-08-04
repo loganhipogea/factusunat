@@ -59,7 +59,7 @@ USE common\helpers\h;
                 'format'=>'raw',
                 'footer' => 'Total',
                 'value'=>function($model) use($formato){
-                        return $formato->asDecimal($model->valor/$model->cant,2);
+                        return $formato->asDecimal($model->punit,3);
                               } 
                 
                 ], 

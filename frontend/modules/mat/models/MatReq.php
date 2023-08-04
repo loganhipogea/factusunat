@@ -1,6 +1,8 @@
 <?php
 namespace frontend\modules\mat\models;
 use common\models\masters\Trabajadores;
+use common\behaviors\CodocuBehavior;
+use frontend\modules\mat\behaviors\ReservaBehavior;
 use Yii;
 class MatReq extends \common\models\base\modelBase
 {
@@ -27,14 +29,20 @@ class MatReq extends \common\models\base\modelBase
      public function behaviors()
          {
                 return [
-		
+                     'CodocuBehavior' => [
+                        'class' => CodocuBehavior::className(),
+                
+                        ],
+                 'reservaBehavior' => [
+                        'class' => ReservaBehavior::className(),
+                
+                        ], 
 		'fileBehavior' => [
 			'class' => '\common\behaviors\FileBehavior' 
                                ],
                     'auditoriaBehavior' => [
 			'class' => '\common\behaviors\AuditBehavior' ,
-                               ],
-		
+                               ],		
                     ];
         }
     

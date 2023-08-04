@@ -12,6 +12,7 @@ use common\interfaces\CosteoInterface;
 use common\behaviors\CodocuBehavior;
 use frontend\modules\cc\models\CcCostos;
 use common\models\masters\Tipocambio;
+use frontend\modules\mat\interfaces\DocRelacionadoValeInterface;
 use Yii;
 
 /**
@@ -139,47 +140,30 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
     
      public function beforeSave($insert) {
         if($insert){
-             yii::error('Los atributos ',__FUNCTION__);
-                   yii::error($this->attributes,__FUNCTION__);
-           // $this->activo=true;    
-            if(!$this->vale->transaccion->afecta_precio){
-                 yii::error('Cantidad normal ',__FUNCTION__);
-                   yii::error($this->cant,__FUNCTION__);
-                   
-                 yii::error('Cantidad recalculada ',__FUNCTION__);
-                   yii::error($this->cantreal->cant,__FUNCTION__);
-                   
-                    yii::error('Otra vez la cantidad recalculada, fijese si varia',__FUNCTION__);
-                   yii::error($this->cantreal->cant,__FUNCTION__);
-                
-                  yii::error('Precio unitario stock ',__FUNCTION__);
-                   yii::error($this->stock()->valor_unit,__FUNCTION__);
-                    
-                $this->punit=$this->stock()->valor_unit*$this->cant;
-                
-                 yii::error('Recalculando el precio unitario ',__FUNCTION__); 
-                 yii::error($this->punit,__FUNCTION__); 
-                 
-            }
+             
             $this->item='1'.str_pad($this->vale->getDetalles()->count()+1,3,'0',STR_PAD_LEFT);
             $this->codest=self::ESTADO_CREADO;
         }
-        yii::error('Otra ve el precio unitaro',__FUNCTION__);            
-          yii::error($this->punit,__FUNCTION__);
+        if(!$this->vale->transaccion->afecta_precio){   
+            
+            $this->punit=$this->stock()->valor_unit*$this->cantBase()/$this->cant;
+              
+            }
+       
         $signo=$this->vale->transaccion->signo;
-        $this->cantreal->valor=$this->punit*$this->cant*$signo;
+        $this->valor=$this->punit*abs($this->cant)*$signo;
         //$this->valor=$this->cantreal->$signo;
-        yii::error('El valor ',__FUNCTION__);            
-          yii::error($this->valor,__FUNCTION__);
-        
+       
         return parent::beforeSave($insert);
     }
     
-    public function getCantReal(){
-        if(is_null($this->_cantreal) && !empty($this->codart) ){
-          $this->cant=$this->cant*$this->material->factorConversion($this->um);
+    public function cantBase(){
+        if(!empty($this->codart) ){
+          return $this->cant/$this->material->factorConversion($this->um);
+        }else{
+            return $this->cant;
         }
-        return $this;       
+             
     }
     
     
@@ -275,7 +259,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
       $transaccion=$vale->transaccion;
       
        $signo=$transaccion->signo;
-      $cantidad=$this->cantreal->cant*$signo;      
+      $cantidad=$this->cantBase()*$signo;      
       $afecta_reserva=$transaccion->afecta_reserva;      
        $afecta_precio=$transaccion->afecta_precio;       
        
@@ -284,7 +268,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
        if($stock->isNewRecord){
           $stock->setAttributes([
           'codart'=>$this->codart,
-          'cant'=>$this->cant,
+          'cant'=>$cantidad,
           'cantres'=>0,
           'cant_disp'=>0,
           'codal'=>$this->codal,
@@ -296,7 +280,11 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
        * 
        */
       if($afecta_reserva){
-          $stock->cantres+=$cantidad;          
+         
+                 
+          $stock->cantres+=$cantidad;   
+         
+          $stock->createReserva($vale->reserva()->id, $cantidad,false); //FALSE: NO VALIDAR LA CANTIDAD NO ES NECESARIO PORQUE AQUI SE ESTA HACIENDO UN INGRESO DIRECTO  
       }else{
          $stock->cant_disp+=$cantidad;   
       }
@@ -309,9 +297,9 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
           if(!$vale->isMonedaLocal()){
               $this->punit=$this->punit*h::tipoCambio($vale->codmon)['compra'];
           }
-          $montoafectado=abs($this->punit)*abs($this->cantreal)*$signo;           
+          $montoafectado=abs($this->punit)*abs($this->cantBase())*$signo;           
       }else{//Sacamos el P.U. del stock         
-            $montoafectado=abs($stock->valor_unit)*abs($this->cantreal)*$signo; 
+            $montoafectado=abs($stock->valor_unit)*abs($this->cantBase())*$signo; 
             $this->punit=$stock->valor_unit;
       }
       $stock->valor=(is_null($stock->valor)?0:$stock->valor)+$montoafectado;
@@ -429,7 +417,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
            */
           $docRelacionado=$this->vale->ClaseDocRef(); //Es el documento relacionado al movimiento 
           
-          if($this instanceof CosteoInterface && $docRelacionado instanceof CosteoInterface){
+          if($this instanceof CosteoInterface && $docRelacionado instanceof DocRelacionadoValeInterface){
               $resultado=CcCostos::createRegistro($this, $this->vale->ClaseDocRef());
                     if(count($resultado)>0){
                         $exito=false;
@@ -481,12 +469,12 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
               //yii::error('Los atributos del stock',__FUNCTION__);
               //yii::error($stock->attributes,__FUNCTION__);
              if($transaccion->afecta_reserva){
-                if($this->getCantReal()->cant > $stock->cantres){
-                $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material reservado en stock',['canti'=>$stock->cant_disp]));  
+                if($this->cantBase() > $stock->cantres){
+                $this->addError('cant',yii::t('base.errors','Requiere {necesita}({umi})/ {cant}({um}), Pero Solo hay  {canti} ({umi}) Reservado',['um'=>$this->um,'cant'=>$this->cant,'canti'=>$stock->cant_disp,'umi'=>$stock->um,'necesita'=>$this->cantBase()]));  
                 }  
              }else{
-                if($this->getCantReal()->cant > $stock->cant_disp){
-                $this->addError('cant',yii::t('base.errors','No hay cantidad suficiente {canti} de material en stock',['canti'=>$stock->cant_disp]));  
+                if($this->cantBase() > $stock->cant_disp){
+                $this->addError('cant',yii::t('base.errors','Requiere {necesita}({umi})/ {cant}({um}), Pero Solo hay  {canti} ({umi}) disponible',['um'=>$this->um,'cant'=>$this->cant,'canti'=>$stock->cant_disp,'umi'=>$stock->um,'necesita'=>$this->cantBase()]));  
                 }   
              }
               
@@ -494,7 +482,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
       }else{//Que sucede sin son positivo pero exige historial
           if($transaccion->exigehistorial){
              if(is_null($stock=$this->stock())){               
-             $this->addError('codart',yii::t('base.errors','Este material no tiene registro g de stock {df}',['df'=>$this->codal]));  
+             $this->addError('codart',yii::t('base.errors','Este material no tiene registro  de stock en este almacén {df}',['df'=>$this->codal]));  
                }else{
                    if($stock->valor_unit==0)
                    $this->addError('codart',yii::t('base.errors','Este material no tiene registro x de kardex {df}',['df'=>$this->codal]));  
@@ -548,16 +536,8 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
     }
     
     public function monto() {
-        $transaccion=$this->vale->transaccion;
-         $signo=$transaccion->signo;
-          $afecta_precio=$transaccion->afecta_precio;
+         return $this->valor;
 
-        
-      if($afecta_precio){ //Sacamos el P.U. del mismo vale
-          return abs($this->punit)*abs($this->cant)*$signo;           
-      }else{//Sacamos el P.U. del stock o del vale dependiendo          
-           return abs($this->stock()->valor_unit)*abs($this->cant)*$signo;         
-      }
 
     }
 }
