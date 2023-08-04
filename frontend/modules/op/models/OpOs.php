@@ -6,6 +6,7 @@ use common\models\masters\Clipro;
 use Yii;
 use common\behaviors\CodocuBehavior;
 use common\interfaces\CosteoInterface;
+use common\models\masters\VwSociedades;
 /**
  * This is the model class for table "{{%op_os}}".
  *
@@ -144,7 +145,7 @@ implements CosteoInterface,
      public function beforeSave($insert) {
        // yii::error('funcion beforeSave  '.date('Y-m-d H:i:s'));
         if ($insert) { 
-           
+           if(is_null($this->codpro))$this->codpro= VwSociedades::codpro();
            $this->item='1'.str_pad($this->proceso->getOrdenes()->count()+1,2,'0',STR_PAD_LEFT);
             
            $this->numero =$this->proceso->numero.'-'.$this->item;  

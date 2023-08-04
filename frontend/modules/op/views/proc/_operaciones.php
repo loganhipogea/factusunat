@@ -3,16 +3,22 @@
  use yii\widgets\Pjax;
  use yii\helpers\Html;
 use yii\grid\GridView;
+?>
+<div class="btn-group"> 
+<?php
       $url= Url::to(['mod-agrega-os','id'=>$model->id,'gridName'=>'grilla-os','idModal'=>'buscarvalor']);
-   echo  Html::button(yii::t('base.verbs','Agregar orden'), 
-           ['href' => $url, 'title' => yii::t('base.names','Agregar Os'),
-               'id'=>'btn_cuentas_edi',
-               'class' => 'botonAbre btn btn-success'
-               ]); 
-  
+      echo Html::a('<span class="fa fa-plus-circle" ></span>'.Yii::t('app', 'Agregar Orden interna'),
+              $url,['class'=>"botonAbre btn btn-danger"]
+              );
+                   
+      
+   $url= Url::to(['mod-agrega-os','id'=>$model->id,'gridName'=>'grilla-os','idModal'=>'buscarvalor','ext'=>'1']);
+  echo Html::a('<span class="fa fa-plus-circle" ></span>'.Yii::t('app', 'Agregar Orden externa'),
+              $url,['class'=>"botonAbre btn btn-danger"]
+              );
  
 ?>     
-
+</div>
 <div class="box-body">
     <?php Pjax::begin(); ?>   
     <div style='overflow:auto;'>

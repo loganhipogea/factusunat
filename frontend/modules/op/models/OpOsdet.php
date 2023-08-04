@@ -1,5 +1,6 @@
 <?php
 namespace frontend\modules\op\models;
+use frontend\modules\mat\models\MatDetreq;
 use Yii;
 class OpOsdet extends \common\models\base\modelBase
 {
@@ -123,7 +124,7 @@ class OpOsdet extends \common\models\base\modelBase
     public function comprar(){
         $this->interna=false;
        $this->save();
-        $model=New \frontend\modules\mat\models\MatDetreq();
+        $model=New MatDetreq();
         $model->setScenario($model::SCE_IMPUTADO);
         $model->setAttributes([
                             'req_id'=>$model->detectaIdReq(),
@@ -132,7 +133,8 @@ class OpOsdet extends \common\models\base\modelBase
                         'descripcion'=>$this->descripcion,
                              'os_id'=>$this->os_id,
                             'detos_id'=>$this->id,
-                                'proc_id'=>$this->proc_id
+                                'proc_id'=>$this->proc_id,
+                                'tipo'=> MatDetreq::TIPO_SERVICIO,
                     ]);
        // yii::error('atributos');
         //yii::error($model->attributes);

@@ -166,6 +166,8 @@ class ProcController extends baseController
     
      public function actionModAgregaOs($id){
     $this->layout = "install";
+    $ext=h::request()->get('ext');
+    
       $model= OpProcesos::findOne($id);
       $modeldet=New \frontend\modules\op\models\OpOs();
        
@@ -187,6 +189,7 @@ class ProcController extends baseController
         }else{
            return $this->renderAjax('_modal_crea_os', [
                         'model' => $modeldet,
+                        'ext'=>$ext,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
@@ -195,7 +198,7 @@ class ProcController extends baseController
             ]);  
         } 
       }
-      
+     
       
       public function actionEditaOs($id){
            $model = OpOs::findOne($id);

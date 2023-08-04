@@ -46,7 +46,12 @@ use common\helpers\h;
     </div>
       <div class="box-body">
      
-   
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,
+         //'disabled'=>!$model->activo,
+         ]) ?>
+
+ </div> 
           
  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
       <?= $form->field($model, 'fechaprog')->widget(DatePicker::class, [
@@ -79,10 +84,11 @@ use common\helpers\h;
                                //'disabled'=>(!$aprobado)?false:true  
                                 ]
                             ]) ?>
- </div>         
+ </div> 
+          
+  <?php  if(is_null($ext)){  ?>
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
      <?php 
-  // $necesi=new Parametros;
     echo selectWidget::widget([
            // 'id'=>'mipapa',
             'model'=>$model,
@@ -94,8 +100,9 @@ use common\helpers\h;
            // 'disabled'=>!$model->activo
             ]
         ]);  ?>
-
  </div> 
+  <?php  }  ?>          
+          
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
      <?php 
   // $necesi=new Parametros;
@@ -112,12 +119,7 @@ use common\helpers\h;
         ]);  ?>
 
  </div> 
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,
-         //'disabled'=>!$model->activo,
-         ]) ?>
-
- </div>
+  
 
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
      <?= $form->field($model, 'textointerno')->textArea(['maxlength' => true,
