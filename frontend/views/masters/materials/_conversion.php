@@ -49,7 +49,10 @@ use yii\widgets\ActiveForm;
 </div>
    
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-    <?= $form->field($model, 'valor1')->textInput(['maxlength' => true]) ?>
+    <?php 
+    $etiqueta=yii::t('base.names','Equivale a '.$model->material->codum.' s');
+    echo $form->field($model, 'valor1')->textInput(['maxlength' => true])
+            ->label($etiqueta); ?>
 </div>
    
   <?= $form->field($model, 'codart')->hiddenInput(['value'=>$codigo])->label(''); ?>
