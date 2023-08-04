@@ -7,14 +7,14 @@ use yii\grid\GridView;
 <div class="btn-group"> 
 <?php
       $url= Url::to(['mod-agrega-os','id'=>$model->id,'gridName'=>'grilla-os','idModal'=>'buscarvalor']);
-      echo Html::a('<span class="fa fa-plus-circle" ></span>'.Yii::t('app', 'Agregar Orden interna'),
+      echo Html::a('<span class="fa fa-plus-circle" ></span>'.Yii::t('app', 'Orden interna'),
               $url,['class'=>"botonAbre btn btn-danger"]
               );
                    
       
    $url= Url::to(['mod-agrega-os','id'=>$model->id,'gridName'=>'grilla-os','idModal'=>'buscarvalor','ext'=>'1']);
-  echo Html::a('<span class="fa fa-plus-circle" ></span>'.Yii::t('app', 'Agregar Orden externa'),
-              $url,['class'=>"botonAbre btn btn-danger"]
+  echo Html::a('<span class="fa fa-plus-circle" ></span>'.Yii::t('app', 'Orden externa'),
+              $url,['class'=>"botonAbre btn btn-warning"]
               );
  
 ?>     
