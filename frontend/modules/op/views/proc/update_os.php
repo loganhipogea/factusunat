@@ -17,12 +17,12 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\op\models\OpProcesos */
 
-$this->title = Yii::t('app', 'Editar OT: {name}', [
+$this->title = Yii::t('app', 'Editar OS: {name}', [
     'name' => $model->numero,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ordenes'), 'url' => ['ordenes']];
-$this->params['breadcrumbs'][] = ['label' => $model->numero, 'url' => ['view-os', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Editar');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Proceso ').$model->proceso->numero, 'url' => ['update','id'=>$model->proc_id]];
+
+$this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
 ?>
 <h4><i class="fa fa-edit"></i><?= Html::encode($this->title) ?></h4>
 
