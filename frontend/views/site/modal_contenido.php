@@ -65,6 +65,7 @@ use common\widgets\selectwidget\selectWidget;
     <?PHP
      echo $form->field($model, 'cuerpo')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
+         'preset'=>'full',
         'options' => ['rows' => 2],
          'clientOptions'=>['language'=>'es',
              ],
