@@ -31,11 +31,11 @@ class ActionSelectImage extends \yii\base\Action
          //$model->fecha=$model::SwichtFormatDate($model->fecha, 'date', false);
          //echo $model->fecha;*/
          //$model->attributes=$model->getOldAttributes();
-        yii::error('is post');
+       /* yii::error('is post');
         yii::error(h::request()->isPost);
         yii::error('Save');
         yii::error($model->save());
-        yii::error($model->getErrors());
+        yii::error($model->getErrors());*/
         if (h::request()->isPost && $model->save()) {
            
              $this->controller->closeModal('buscarvalor',$grillas);

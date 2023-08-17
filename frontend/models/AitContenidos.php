@@ -21,6 +21,11 @@ use Yii;
  */
 class AitContenidos extends \common\models\base\modelBase
 {
+   
+    
+    const RUTA_IMAGENES='/../../../images/';
+    public $ruta_adjuntos=[];
+    
     /**
      * {@inheritdoc}
      */
@@ -59,6 +64,11 @@ class AitContenidos extends \common\models\base\modelBase
         return $this->hasMany(AitColumnas::className(), ['contenido_id' => 'id']);
     }
     
+    
+    public function afterFind() {
+       // $this->ruta_adjuntos=   Json::decode($this->)
+        return parent::afterFind();
+    }
     /**
      * {@inheritdoc}
      */
@@ -93,7 +103,7 @@ class AitContenidos extends \common\models\base\modelBase
              $this->activo=true;
         }
         if($this->zona=='ENLACE'){
-            $this->fixTexto();
+            //$this->fixTexto();
         }
        
         return parent::beforeSave($insert);
@@ -114,11 +124,17 @@ class AitContenidos extends \common\models\base\modelBase
     private function copyImages(){
        if($this->hasAttachments()){
            foreach($this->files as $archivo){
-               copy($archivo->path, __DIR__.'../../../images/'.$archivo->name.'.'.$archivo->type);
+              $this->copyImage($archivo);
            }
        }
         
     }
+    
+    private function copyImage($archivo){
+         copy($archivo->path, __DIR__.self::RUTA_IMAGENES.$archivo->name.'_'.$this->id.'.'.$archivo->type);
+    }
+    
+    
     
    
     
@@ -149,11 +165,12 @@ class AitContenidos extends \common\models\base\modelBase
         
     }
     
-    public function triggerUpload(){
-        
+    public function triggerUpload($fila){
+        yii::error('DISPARANDO EL EVENTO',__FUNCTION__);
+        $this->copyImage($fila);
     }
     
-    public function triggerDelete(){
+    public function triggerDelete($id){
         
     }
     

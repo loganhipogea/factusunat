@@ -184,9 +184,10 @@ CONST FIRE_METHOD_DELETE='triggerDelete';
      */
 
     public function deleteFile($id) {
+        yii::error('BORRANDO EL ARCHIVO',__FUNCTION__);
         $this->getModule()->detachFile($id);
         if($this->owner->hasMethod(self::FIRE_METHOD_DELETE)){
-            $this->owner->{self::FIRE_METHOD_DELETE}();
+            $this->owner->{self::FIRE_METHOD_DELETE}($id);
         }
     }
 
@@ -233,6 +234,7 @@ CONST FIRE_METHOD_DELETE='triggerDelete';
   *   */
     public function saveUploads($event)
     {
+         yii::error('iniciando savce uloas',__FUNCTION__);
         $files = UploadedFile::getInstancesByName('UploadForm[file]');
 
         if (!empty($files)) {
@@ -244,19 +246,25 @@ CONST FIRE_METHOD_DELETE='triggerDelete';
                 }
             }
         }
-
+      yii::error('Continuamos',__FUNCTION__);
         $userTempDir = $this->getModule()->getUserDirPath();
         foreach (FileHelper::findFiles($userTempDir) as $file) {
-            if (!$this->getModule()->attachFile($file, $this->owner)) {
+             yii::error('El foreach',__FUNCTION__);
+            $fila=$this->getModule()->attachFile($file, $this->owner);
+            if (!$fila) {
                 
                 throw new \Exception(\Yii::t('yii', 'File upload failed.'));
+            }else{
+                yii::error('EXITO AL SUBIR',__FUNCTION__);
+                    if($this->owner->hasMethod(self::FIRE_METHOD)){
+                      yii::error('ENCONTRO EL DISPARADOR',__FUNCTION__);  
+                    $this->owner->{self::FIRE_METHOD}($fila);
+                    }
             }
             @unlink($file);
         }
         @rmdir($userTempDir);
-        if($this->owner->hasMethod(self::FIRE_METHOD)){
-            $this->owner->{self::FIRE_METHOD}();
-        }
+        
     }
  
    
@@ -287,5 +295,7 @@ CONST FIRE_METHOD_DELETE='triggerDelete';
           'query'=>$this->queryDocs                 
         ]);
   }
+  
+ 
     
 }
