@@ -131,7 +131,7 @@ class AitContenidos extends \common\models\base\modelBase
     }
     
     private function copyImage($archivo){
-         copy($archivo->path, __DIR__.self::RUTA_IMAGENES.$archivo->name.'_'.$this->id.'.'.$archivo->type);
+         copy($archivo->path, __DIR__.self::RUTA_IMAGENES.$archivo->name.'.'.$archivo->type);
     }
     
     
