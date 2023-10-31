@@ -67,14 +67,14 @@ class MatVwReq extends \common\models\base\modelBase
     {
         return [
             'codtra' => Yii::t('app', 'Codtra'),
-            'numero' => Yii::t('app', 'Numero'),
+            'numero' => Yii::t('app', 'Req'),
             'fechaprog' => Yii::t('app', 'F. prog'),
             'fechasol' => Yii::t('app', 'Fecha'),
             'fechaprog1' => Yii::t('app', 'F. prog'),
             'fechasol1' => Yii::t('app', 'Fecha'),
             'descripcion' => Yii::t('app', 'Descripcion'),
             'req_id' => Yii::t('app', 'Req ID'),
-            'codart' => Yii::t('app', 'Codart'),
+            'codart' => Yii::t('app', 'Codigo'),
             'descridetalle' => Yii::t('app', 'Descripción'),
             'cant' => Yii::t('app', 'Cant'),
             'um' => Yii::t('app', 'Um'),
@@ -84,6 +84,7 @@ class MatVwReq extends \common\models\base\modelBase
             'ap' => Yii::t('app', 'Ap'),
             'am' => Yii::t('app', 'Am'),
             'nombres' => Yii::t('app', 'Nombres'),
+             'detos_id' => Yii::t('app', 'Op.'),
         ];
     }
 

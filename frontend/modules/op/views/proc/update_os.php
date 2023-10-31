@@ -2,9 +2,9 @@
 
 
 use kartik\tabs\TabsX;
- use kartik\date\DatePicker;
+use kartik\date\DatePicker;
 use yii\helpers\Html;
-
+use dosamigos\ckeditor\CKEditor;
 use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
  use yii\helpers\Url;
@@ -108,36 +108,28 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
 
  </div>
   
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'textointerno')->textArea([]) ?>
-
- </div>
+    
+ 
+  
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'textotecnico')->textArea([]) ?>
-
- </div>
- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
       <?PHP
-    /* echo $form->field($model, 'textointerno')
+     echo $form->field($model, 'textointerno')
              ->widget(\dosamigos\ckeditor\CKEditor::className(), [
-        'options' => ['rows' => 1],
+        'options' => [
+            'rows' => 2,
+               ],
+            'preset' => 'basic',
+            //'toolbWar'=>[ 'undo', 'redo', 'bold', 'italic', 'numberedList', 'bulletedList' ]
+    
+            
          'clientOptions'=>['language'=>'es',
              ],
-        ]);*/
+        ]);
       ?>
 
  </div>
- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-     <?PHP
-     /*echo $form->field($model, 'textotecnico')
-             ->widget(\dosamigos\ckeditor\CKEditor::className(), [
-        'options' => ['rows' => 1],
-         'clientOptions'=>['language'=>'es',
-             ],
-        ]);*/
-      ?>
-
- </div>
+ 
+      
 <?php
    ActiveForm::end();
  
@@ -153,12 +145,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
         
        
         [
-          'label'=>'<i class="fa fa-hammer"></i> '.yii::t('base.names','Actividades'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-puzzle-piece"></i> '.yii::t('base.names','Actividades'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_form_os',[
                 'model' => $model,
                 'form'=>$form,
                 'aprobado'=>$aprobado,
-                'dataProviderMateriales' =>$dataProviderMateriales,
+                //'dataProviderMateriales' =>$dataProviderMateriales,
+               // 'dataProviderServicios' =>$dataProviderServicios,
                     ]),
             'active' => true,
              'options' => ['id' => 'myveryownID3'],
@@ -169,12 +162,23 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
                     [ 
                 'model' => $model,
                  'searchModel' => $searchModel,
-               // 'form'=>$form,
                  'dataProviderMateriales' =>$dataProviderMateriales,
                 'aprobado'=>$aprobado
                     ]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],
+        ],
+       [
+          'label'=>'<i class="fa fa-wrench"></i> '.yii::t('base.names','Servicios'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_servicios_os',
+                    [ 
+                'model' => $model,
+                 'searchModelServ' => $searchModelServ,
+                'dataProviderServicios' =>$dataProviderServicios,
+                'aprobado'=>$aprobado
+                    ]),
+            'active' => false,
+             'options' => ['id' => 'myveryfsffownID4'],
         ], 
        
         

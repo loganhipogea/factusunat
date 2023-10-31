@@ -30,13 +30,13 @@ class m220722_125343_create_matreq_table extends baseMigration
             ],
            $this->collateTable());
        
-        $this->paramsFk=[
+        /*$this->paramsFk=[
             self::TABLE,
             'codtra',
            static::TABLE_TRABAJADORES,
             'codigotra'
                     ];
-            $this->addFk();
+            $this->addFk();*/
                     
         }
 

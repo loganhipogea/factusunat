@@ -70,4 +70,10 @@ class Ums extends \common\models\base\modelBase
     {
         return new UmsQuery(get_called_class());
     }
+    
+    
+    public static function firstUm(){
+        //var_dump(Ums::find()->select('codum')->scalar());die();
+       return  Ums::find()->select('codum')->scalar();
+    }
 }

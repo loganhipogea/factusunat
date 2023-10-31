@@ -58,13 +58,13 @@ class MatVwStockSearch extends MatVwStock
         
        
        if(empty($this->descripcion)){
-           $query->andFilterWhere(['like', 'codart', $this->codart])
+           $query->andFilterWhere(['like', 'pìc', $this->codart])
        ->andFilterWhere(['like', 'ubicacion', $this->ubicacion])
         ->andFilterWhere(['semaforo'=>$this->semaforo])
         ->andFilterWhere(['>','valor',$this->valor])
          ->andFilterWhere(['>','valor_unit',$this->valor_unit])         
          //->andWhere($likeCondition)
-        ->andFilterWhere(['codal'=>$this->codal])->indexBy('codart');
+        ->andFilterWhere(['codal'=>$this->codal]);
        }ELSE{
            $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$this->descripcion.'%');
                     $likeCondition->setEscapingReplacements(false);

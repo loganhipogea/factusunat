@@ -6,12 +6,18 @@ use yii\widgets\ActiveForm;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 use frontend\modules\op\helpers\ComboHelper;
 use common\widgets\selectwidget\selectWidget;
-
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\sigi\models\Edificios */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+
+<?php
+  $bloqueado=($model->isBloqueado() || $model->isCreatedFromOrder());
+  //var_dump($model->isBloqueado(),$model->isCreatedFromOrder(),$bloqueado);die();
+?>
+
 
 <div class="edificios-form">
     <br>
@@ -25,19 +31,13 @@ use common\widgets\selectwidget\selectWidget;
            <?PHP 
            $operacion=($model->isNewRecord)?'mod-agrega-mat':'mod-edit-mat';
              IF($model->isNewRecord){
-               if($imputado=='y'){
-                   $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id,'imputado'=>$imputado]);
-               }else{
+               
                  $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id,]);  
-               }
-                
+               
                
              }else{
-                 if($imputado=='y'){
-                   $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id,'imputado'=>$imputado]);
-               }else{
+                
                  $url=\yii\helpers\Url::to(['/mat/mat/'.$operacion,'id'=>$id]);    
-               }
                
              }
            ?>
@@ -55,7 +55,7 @@ use common\widgets\selectwidget\selectWidget;
      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <?= $form->field($model, 'cant')->textInput([
                 
-                'maxlength' => true,'disabled'=>!$model->activo,
+                'maxlength' => true,'disabled'=>$bloqueado,
                 ]) ?>
 
     </div>
@@ -65,7 +65,7 @@ use common\widgets\selectwidget\selectWidget;
             dropDownList(ComboHelper::getCboUms(),
                     ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
                     // 'class'=>'probandoSelect2',
-                      'disabled'=>!$model->activo,
+                      'disabled'=>$bloqueado,
                         ]
                     )  ?>
      </div>
@@ -79,20 +79,22 @@ use common\widgets\selectwidget\selectWidget;
             'campo'=>'codart',
          'ordenCampo'=>2,
          'addCampos'=>[2,],
-        'options'=>['disabled'=>!$model->activo]
+        'options'=>['disabled'=>$bloqueado,]
         ]);  ?>
 
  </div> 
  
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,'disabled'=>!$model->activo,]) ?>
+     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,'disabled'=>$bloqueado,]) ?>
 
  </div>
 
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'texto')->textArea(['maxlength' => true,'disabled'=>!$model->activo,]) ?>
+     <?= $form->field($model, 'texto')->textArea(['maxlength' => true,'disabled'=>$bloqueado,]) ?>
  </div>        
           
+          
+   <?php if($model->isCreatedFromOrder()){   ?>       
             
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
     <?= ComboDep::widget([
@@ -127,7 +129,8 @@ use common\widgets\selectwidget\selectWidget;
                                         'campofiltro'=>'proc_id'  
                                 ]
                                 ],
-                            ]
+                    'inputOptions'=>['disabled'=>$bloqueado,]
+                            ],
                
                
         )  ?>
@@ -167,6 +170,7 @@ use common\widgets\selectwidget\selectWidget;
                                         'campofiltro'=>'os_id'  
                                 ]
                                 ],
+                    'inputOptions'=>['disabled'=>$bloqueado,]
                             ]
                 
                
@@ -179,57 +183,47 @@ use common\widgets\selectwidget\selectWidget;
             dropDownList(($model->isNewRecord)?[]:ComboHelper::actividadesOs($model->os_id),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
                     // 'class'=>'probandoSelect2',
-                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                     'disabled'=>$bloqueado,
                         ]
                     ) ?>
  </div> 
   
-      
+   <?php }  ?>  
           
-     
+ <?php if($model->isCreatedFromCeco()){   ?>          
+       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <?php 
+  // $necesi=new Parametros;
+    echo selectWidget::widget([
+           // 'id'=>'mipapa',
+            'model'=>$model,
+            'form'=>$form,
+            'campo'=>'ceco_id',
+         'ordenCampo'=>1,
+         'addCampos'=>[3,],
+        'options'=>['disabled'=>$bloqueado,]
+        ]);  ?>
+
+        </div>   
+ <?php }  ?>   
+          
     <?php ActiveForm::end(); ?>
+     <?php 
+       
+      // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
+       echo inputAjaxWidget::widget([
+            'isHtml'=>true,//Devuelve datos Html
+            'isDivReceptor'=>true,//Es un diov que recibe Html
+            'tipo'=>'POST', 
+            ///'data'=>['codart'=>$model->id],
+            'evento'=>'change',
+            'ruta'=>Url::to(['/masters/materials/ajax-html-ums']),
+            'id_input'=>'matdetreq-codart',
+            'idGrilla'=>'matdetreq-um'
+      ])  ?>        
+          
 
 </div>
     </div>
- <?php 
- if(!$model->isNewRecord){
-  $string="$('#btn-add-usuarios').on( 'click', function(){ 
-     
-       $.ajax({
-              url: '".Url::to(['/sigi/edificios/generate-usuarios','id'=>$model->id])."', 
-              type: 'get',
-              data:{id:".$model->id."  },
-              dataType: 'json', 
-              error:  function(xhr, textStatus, error){               
-                            var n = Noty('id');                      
-                              $.noty.setText(n.options.id, error);
-                              $.noty.setType(n.options.id, 'error');       
-                                }, 
-              success: function(json) {
-              var n = Noty('id');
-                      
-                       if ( !(typeof json['error']==='undefined') ) {
-                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['error']);
-                              $.noty.setType(n.options.id, 'error');  
-                          }    
-
-                             if ( !(typeof json['warning']==='undefined' )) {
-                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['warning']);
-                              $.noty.setType(n.options.id, 'warning');  
-                             } 
-                          if ( !(typeof json['success']==='undefined' )) {
-                        $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-trash\'></span>      '+ json['success']);
-                              $.noty.setType(n.options.id, 'success');  
-                             }      
-                   
-                        }
-                        });
-
-
-             })";
-  
-   $this->registerJs($string, \yii\web\View::POS_END);
- }
-  ?>
-
+ 
 

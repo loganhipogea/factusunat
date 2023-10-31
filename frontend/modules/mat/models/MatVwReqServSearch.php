@@ -10,7 +10,7 @@ use frontend\modules\mat\models\MatDetreq;
 /**
  * MatReqSearch represents the model behind the search form of `frontend\modules\mat\models\MatReq`.
  */
-class MatVwReqSearch extends MatVwReq
+class MatVwReqServSearch extends MatVwReqServ
 {
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class MatVwReqSearch extends MatVwReq
      */
     public function search($params)
     {
-        $query = MatVwReq::find();
+        $query = MatVwReqServ::find();
 
         // add conditions that should always apply here
 
@@ -89,7 +89,7 @@ class MatVwReqSearch extends MatVwReq
     }
     
     public function search_by_os($id_os,$tipo,$params){
-         $query = MatVwReq::find();
+         $query = MatVwReqServ::find();
          $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -103,7 +103,7 @@ class MatVwReqSearch extends MatVwReq
         ->andFilterWhere(['detos_id'=> $this->detos_id])
         ->andFilterWhere(['like', 'descridetalle', explode('%',$this->descridetalle)])
              ;
-         //echo  $query->createCommand()->rawSql;
+        // \yii::error( $query->createCommand()->rawSql,__FUNCTION__);
         return $dataProvider;
     }
     

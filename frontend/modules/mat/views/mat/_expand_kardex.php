@@ -28,7 +28,12 @@ use yii\widgets\Pjax;
   ?>
     </div>
 
-    <?php ECHO GridView::widget([
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    ghgh
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+     <?php ECHO GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         // 'summary' => '',
@@ -71,4 +76,7 @@ use yii\widgets\Pjax;
     ?>
     <?php Pjax::end(); ?>
 </div>
+</div>
+   
+
     

@@ -94,6 +94,11 @@ class OpOsdet extends \common\models\base\modelBase
     {
         return $this->hasOne(\common\models\masters\Trabajadores::className(), ['codigotra' => 'codtra']);
     }
+    
+     public function getRequisiciones()
+    {
+        return $this->hasMany(MatDetreq::className(), ['detos_id' => 'id']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -148,5 +153,8 @@ class OpOsdet extends \common\models\base\modelBase
     private function hasReqActive(){
        
     }
+    /*
+     * Verifica si tiene uan solicitud de compra activa
+     */
     
 }

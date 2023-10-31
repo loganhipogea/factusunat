@@ -60,7 +60,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
             [['cant'], 'validate_cant_stock'],
             [['um'], 'verify_um'],
            // [['codart'], 'validate_stock'],
-             [['valor','cant','punit','codal'], 'safe'],
+             [['valor','cant','punit','codal','detres_id','detreq_id'], 'safe'],
             [['item', 'um'], 'string', 'max' => 4], 
             [['codart'], 'string', 'max' => 14],
             [['codest'], 'string', 'max' => 2],
@@ -99,7 +99,10 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
     {
         return $this->hasOne(Maestrocompo::className(), ['codart' => 'codart']);
     }
-    
+    public function getReserva()
+    {
+        return $this->hasOne(MatReservaDet::className(), ['id' => 'detres_id']);
+    }
    
     
      public function getKardex()
@@ -347,6 +350,12 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
   }
   
   
+  public function actualizaReserva(){
+      $reserva=$this->reserva;
+      $reserva->valor_soles=$this->stock()->valor_unit;
+      $reserva->setAtendido()->save();
+  }
+  
   /*
    * Ejecuta todas las acciones cuando se 
    * aprueba el item
@@ -402,7 +411,15 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
            
            if(!$exito)return $exito;
         
-         
+         /*
+          * Ahora cambiamos el status de las reservas
+          * si es que las hubiera 
+          */
+           if($this->detres_id>0){
+               $this->actualizaReserva();
+           }
+           
+           
         
       //$transaccion->commit();
       
@@ -415,7 +432,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
           /*
            * Verificando que los modelos sean de la interfaz
            */
-          $docRelacionado=$this->vale->ClaseDocRef(); //Es el documento relacionado al movimiento 
+          /*$docRelacionado=$this->vale->ClaseDocRef(); //Es el documento relacionado al movimiento 
           
           if($this instanceof CosteoInterface && $docRelacionado instanceof DocRelacionadoValeInterface){
               $resultado=CcCostos::createRegistro($this, $this->vale->ClaseDocRef());
@@ -437,7 +454,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
                         $errores['Item']=$this->codart.'-'.yii::t('base.errors','Una de las clases pasadas al registro de Costos no pertenece a CosteoInterface, revise por favor');
                         $sesion->set($key,$errores); 
           }
-          
+          */
       }
       return $exito;
   } 

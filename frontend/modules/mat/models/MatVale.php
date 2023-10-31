@@ -304,7 +304,24 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
  public function numero() {
      return $this->numero;
  }
+ 
+ /*
+  * Extrae las reservas pendientes desde
+  * un id de solicitud
+  */
+ public function idsReservasPendientes($idReq){
      
+ }
+ 
+ /*
+  * Obtiene la transaccion a partir
+  * del codocu
+  * Vale solo cuando encuentra
+  * un solo registro en TransaDocs
+  */
+ public function transaByDoc($codocu){
+    return \common\models\masters\Transadocs::find()->andWhere(['codocu'=>$codocu])->one()->codtrans;
+ }  
        
     }
     

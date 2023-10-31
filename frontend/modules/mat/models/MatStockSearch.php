@@ -5,22 +5,20 @@ namespace frontend\modules\mat\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use frontend\modules\mat\models\MatStock;
-
+use codiverum\relationSF\RelationSFTrait;
 /**
  * MatReqSearch represents the model behind the search form of `frontend\modules\mat\models\MatReq`.
  */
 class MatStockSearch extends MatStock
 {
+    
+    public $material;
+    use RelationSFTrait;
     /**
      * {@inheritdoc}
      */
    
-    public function attributes()
-        {
-         // add related fields to searchable attributes
-            return array_merge(parent::attributes(), ['material.descripcion']);
-        }
-
+    
     
     
     
@@ -28,8 +26,8 @@ class MatStockSearch extends MatStock
     {
         return [
             [['id'], 'integer'],
-            [['codart', 'fechaprog', 'fechasol', 'codtra', 'descripcion', 'texto', 'codest'], 'safe'],
-            ['material.descripcion', 'safe'],
+            [['codart', 'material','fechaprog', 'fechasol', 'codtra', 'material.descripcion', 'texto', 'codest','semaforo'], 'safe'],
+            //['material.descripcion', 'safe'],
         ];
     }
 
@@ -52,13 +50,13 @@ class MatStockSearch extends MatStock
     public function search($params)
     {
         $query = MatStock::find();
-
+        $this->joinWithRelation($query, 'material');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        $this->addRelationSort($dataProvider, 'material', 'descripcion','maestrocompo');
         $this->load($params);
 
         if (!$this->validate()) {
@@ -72,11 +70,9 @@ class MatStockSearch extends MatStock
             'id' => $this->id,
         ]);
 
-        $query
-            ->andFilterWhere(['LIKE', 'material.descripcion', $this->getAttribute('material.descripcion')])
-            ->andFilterWhere(['like', 'codart', $this->codart])
-             ;
-
+        $query->andFilterWhere(['like', $this->tableName().'.codart', $this->codart]);
+        $query->andFilterWhere(['semaforo'=>$this->semaforo]);
+         $this->addRelationFilter($query, 'material', 'descripcion','maestrocompo');
         return $dataProvider;
     }
 }

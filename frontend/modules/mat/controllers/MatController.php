@@ -73,6 +73,30 @@ class MatController extends baseController
             'model' => $this->findModel($id),
         ]);
     }
+    
+    
+    public function actionCreaValeReq()
+    {
+        $model=New \frontend\modules\mat\models\FormValeReq();
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post())) {
+            if(h::session()->has('nReq'.h::userId())){
+                h::session()->remove('nReq'.h::userId());
+            }
+            h::session()->set('nReq'.h::userId(), [
+                'numero'=>$model->numerodoc,
+                'codal'=>$model->codal,
+                    ]);
+            return $this->redirect(['crea-vale-req-all']);
+        }
+        return $this->render('_form_vale_req', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Creates a new MatReq model.
@@ -163,7 +187,8 @@ class MatController extends baseController
       if($imputado=='y')
             $modeldet->setScenario($modeldet::SCE_IMPUTADO);       
             $modeldet->req_id=$id;
-            $modeldet->activo=true;
+            $modeldet->tipo= MatDetreq::TIPO_MATERIALE;
+            $modeldet->tipim= MatDetreq::TIPO_IMPU_CECO;
        $datos=[];
         if(h::request()->isPost){            
             $modeldet->load(h::request()->post());
@@ -192,10 +217,8 @@ class MatController extends baseController
      public function actionModEditMat($id){
     $this->layout = "install";
       $modeldet= \frontend\modules\mat\models\MatDetreq::findOne($id);
-      $imputado=h::request()->get('imputado');
-      if($imputado=='y')
-            $modeldet->setScenario($modeldet::SCE_IMPUTADO); 
-        $modeldet->setScenario($modeldet::SCE_IMPUTADO);         
+      //$imputado=h::request()->get('imputado');
+            
        $datos=[];
         if(h::request()->isPost){
             
@@ -213,7 +236,7 @@ class MatController extends baseController
            return $this->renderAjax('_modal_crea_item_req', [
                         'model' => $modeldet,
                         'id' => $modeldet->id,
-                        'imputado'=>$imputado,
+                       // 'imputado'=>$imputado,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
                         //'cantidadLibres'=>$cantidadLibres,
@@ -227,14 +250,83 @@ public function actionAjaxDesactivaItem($id){
       h::response()->format = \yii\web\Response::FORMAT_JSON;
        $model= \frontend\modules\mat\models\MatDetreq::findOne($id);
       if(!is_null($model)){
-           $model->desactiva();
-          return ['success'=>yii::t('app','Se anuló el item')];
+           if($model->anula()){
+               return ['success'=>yii::t('app','Se anuló el item')]; 
+           }else{
+               return ['error'=>yii::t('app',$model->getFirstError())]; 
+           }
+         
       } 
     }
     
    }
-
    
+   
+   /*
+    * Verifica si el documento ingresado es un 
+    * REQUISICION OSEA UN MatReq
+    */
+ public function actionAjaxVerificaReq(){
+    if(h::request()->isAjax){
+      h::response()->format = \yii\web\Response::FORMAT_JSON;
+       $val=h::request()->post('numeroreq');///
+       //yii::error(MatReq::find()->andWhere(['numero'=>$val])->createCommand()->rawSql,__FUNCTION__);
+            // return  ['success'=>$modelo->getDetalles()->count()];
+        $modelo= MatReq::find()->andWhere(['numero'=>$val])->one();
+      
+       if(!is_null($modelo)){
+           
+            return  ['success'=>$modelo->getDetalles()->count()];
+        }else{
+            return  ['success'=>'nada'];
+        }
+       
+      }
+   }  
+   
+   
+
+ public function actionAjaxAprobarReq($id){
+    if(h::request()->isAjax){
+      h::response()->format = \yii\web\Response::FORMAT_JSON;
+       $model= \frontend\modules\mat\models\MatReq::findOne($id);
+      if(!is_null($model)){
+          
+          yii::error('detectando',__FUNCTION__);
+           
+           $tx=$model->getDb()->beginTransaction();           
+            $exito=$model->aprobar();
+            if(!$exito){
+                 $tx->rollBack();
+              return ['error'=>yii::t('app','Error-H '.$model->getFirstError())];
+             
+            }else{
+                yii::error('pasando al detalle',__FUNCTION__);
+                $error_detalle=null;
+                foreach($model->detalles as $detalle){
+                    yii::error('Entro al bucle detalle',__FUNCTION__);
+                   $exito=$detalle->aprobar();
+                   
+                   if(!$exito){
+                       $error_detalle=$detalle->item.' '.$detalle->getFirstError();
+                       break;
+                   }
+                 } 
+                 if(!is_null($error_detalle)){
+                     $tx->rollBack();
+                    return ['error'=>yii::t('app','Error '.$error_detalle)];
+                      
+                 }else{
+                     $tx->commit();
+                    return ['success'=>yii::t('app','Se aprobó el documento')];
+                       
+                 } 
+            }
+      } 
+    }
+    
+   }
+  
    
     
      public function actionUpdateVale($id)
@@ -348,8 +440,8 @@ public function actionAjaxDesactivaItem($id){
             h::response()->format = \yii\web\Response::FORMAT_JSON;
             return $this->editField();
            } 
-        $searchModel = new MatVwStockSearch();
-       //  $searchModel = new MatStockSearch();  
+        //$searchModel = new MatVwStockSearch();
+         $searchModel = new MatStockSearch();  
            
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -372,6 +464,32 @@ public function actionAjaxDesactivaItem($id){
             }         
          
        }
+       
+   public function  actionAjaxReservarDetalle($id){
+          if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model=MatDetreq::findOne($id))){
+                    $model->reservar();                                       
+                  }   
+                return ['success'=>yii::t('sta.errors','Se han actualizado la reservas')];
+            }         
+         
+       }    
+       
+   public function  actionAjaxReservarAll($id){
+          if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model= MatReq::findOne($id))){
+                    foreach($model->detalles as $detalle){
+                        $detalle->reservar();
+                    }                                      
+                  }   
+                return ['success'=>yii::t('base.errors','Se han actualizado la reservas')];
+            }         
+         
+       }    
+       
+   
     
     public function  actionAjaxBorraIdReqSesion($id){
         if(!is_null($model=MatDetreq::findOne($id))){
@@ -622,6 +740,136 @@ public function actionAjaxDesactivaItem($id){
             
         }       
         return $this->render('create_vale', ['model' => $model,'items' => $models]);
+    }
+    
+      public function actionCreaValeReqAll()
+    {
+        $model = new MatVale();
+        $valores=h::session()->get('nReq'.h::userId());
+        $modelReq= MatReq::find()->andWhere(['numero'=>$valores['numero']])->one();
+        
+         $registros=$modelReq->arrayReservas($valores['codal']);
+         
+         $model->setAttributes([
+             'numerodoc'=>$modelReq->numero,
+             'codal'=>$valores['codal'],
+             'codocu'=>$modelReq->codocu(),
+             'codmov'=>$model->transaByDoc($modelReq->codocu()),
+         ]);
+        
+         if(Yii::$app->request->isPost){
+             
+             $arraydetalle=Yii::$app->request->post('MatDetvale');
+            // yii::error($arraydetalle,__FUNCTION__);
+             $arraycabecera=Yii::$app->request->post('MatVale');
+             
+             /*Nos aseguramos que los indices se reseteen con array_values
+              * ya que cada vez que borramos con ajax en el form quedan 
+              * vacancias en los indices y al momento de hacer el loadMultiple
+              * no coinciden los indices; algunos modelos no cargan los atributos
+              * y arroja false 
+              */
+             
+             //Pero primero guardamos los indices del form antes de resetearlo
+             //para despues restablecerlos; esto para enviar los mensajes de error
+             // con la accion Form::ValidateMultiple()
+             $OldIndices=array_keys($arraydetalle);
+             //Ahora si reseteamos los indices para hacerl el loadMultiple
+             $arraydetalle=array_values($arraydetalle);
+             
+            
+             
+             /*Generamos los items necesarios*/           
+              $items = $this->generateItems(MatDetvale::className(),
+                      count($arraydetalle),
+                     null
+                      ); 
+         if ( h::request()->isAjax &&
+                  $model->load($arraycabecera,'')&& 
+                 Model::loadMultiple($items, $arraydetalle,'')
+                  ) {
+            
+             /*
+              * Propagando el valor del codal en los hijos
+              */
+             foreach($items as $item){
+                 $item->codal=$arraycabecera['codal'];
+             }
+             
+             /*Antes de hacer Form::ValidateMultiple() , reestablecemos los 
+              * indices originales, de esta manera nos aseguramos que los
+              * mensajes de error salgan cada cual en su sitio
+              */
+             $items=array_combine($OldIndices,$items);
+                h::response()->format = Response::FORMAT_JSON;
+                 return array_merge(
+                         ActiveForm::validate($model),
+                         ActiveForm::validateMultiple($items)
+                         );
+                
+        }
+            
+        if ($model->load($arraycabecera,'') &&       
+        Model::loadMultiple($items, $arraydetalle,'')&&
+         $model->validate()   ){
+             
+           
+             h::session()->remove('nReq'.h::userId());
+              $model->save();$model->refresh();
+               $items=$this->linkeaCampos($model->id, $items,'vale_id');
+                     /*
+              * Propagando el valor del codal en los hijos
+              */
+             foreach($items as $item){
+                 $item->codal=$arraycabecera['codal'];
+             }
+               
+               
+               
+              if(Model::validateMultiple($items)){
+                  foreach($items as $item){
+                        if($item->save()){ 
+                            yii::error($item->attributes,__FUNCTION__);
+                        }else{
+                           yii::error('errores del item',__FUNCTION__);
+                            yii::error($item->getErrors());
+                        }
+                           }                    
+                } else{  
+                    
+                }               
+              }
+              return $this->redirect(['update-vale','id'=>$model->id]);
+         }
+      
+         $items=$this->generateItemsFromArray($registros);
+         foreach($items as $index=> $item){           
+             $valor=100+$index;
+             $item->item= $valor.'';
+         }
+         /*Aqui colocamos los valores por default*/
+           return $this->render('create_vale', [
+            'model' => $model,'items'=>$items
+        ]);
+        
+    }
+  
+    private function generateItemsFromArray($registros){
+         //print_r($registros[0]);die();
+         $itemsp=[];
+        foreach($registros as $registro){
+            $filita=new MatDetvale();
+            $filita->setAttributes([
+                'detreq_id'=>$registro['detreq_id'],
+                'cant'=>$registro['cant'],
+                'codart'=>$registro['codart'],
+                'um'=>$registro['um'],
+                'detres_id'=>$registro['detres_id'],
+            ]);
+             $itemsp[]=$filita; 
+            
+        }
+       return $itemsp;
     }
     
      public function actionCreaVale()
@@ -915,7 +1163,7 @@ public function actionAjaxDesactivaItem($id){
            
             $id = h::request()->post('expandRowKey');
             //h::response()->format = \yii\web\Response::FORMAT_JSON;
-            var_dump($id);die();
+            
             $model= \frontend\modules\mat\models\MatStock::findOne($id);
             return $this->renderPartial("_expand_kardex", ['model' => $model]);
         }

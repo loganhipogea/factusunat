@@ -6,6 +6,8 @@ USE yii\widgets\Pjax;
 use common\helpers\h;
 use kartik\export\ExportMenu;
 use kartik\grid\GridView as GridView;
+use yii\data\ActiveDataProvider;
+use frontend\modules\mat\models\MatVwStock;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\logi\models\StockSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -24,18 +26,16 @@ $formato=h::formato();
    
     <?php Pjax::begin(['id'=>'stock-index']); ?>
     <div style='overflow:auto;'>
-    <?php echo ExportMenu::widget([
-    'dataProvider' => $dataProvider,    
-   
-    'dropdownOptions' => [
-        'label' => yii::t('base.names','Exportar'),
-        'class' => 'btn btn-primary'
-    ]
-]).''. GridView::widget([
+    <?php 
+    $dataProvider=New ActiveDataProvider([
+        'query'=> MatVwStock::find()->andWhere(['codart'=>$codart])
+    ]);
+    
+    echo  GridView::widget([
         'dataProvider' => $dataProvider,
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
-        'filterModel' => $searchModel,
+       // 'filterModel' => $searchModel,
         'columns' => [
             
          
@@ -65,40 +65,10 @@ $formato=h::formato();
                     ]
                 ],*/
         
-         [
-                'class' => 'kartik\grid\ExpandRowColumn',
-                'width' => '50px',
-                 'expandIcon'=>'<i style="color:#F86E35"><span class="fa fa-plus-square-o"></span></i>',
-                 'collapseIcon'=>'<i style="color:#F60101"><span class="fa fa-minus-square-o"></span></i>',
-                
-             
-             
-             'value' => function ($model, $key, $index, $column) {
-                            return GridView::ROW_COLLAPSED;
-                                },
-                 /*'detail'=> function($model)  {          
-                                        
-                          return  $this->render('_expand_kardex',[
-                               'model'=>$model,
-                               //'key'=>$key,
-                           ]);
-                            },*/
-                     'detailUrl' =>Url::toRoute(['/mat/mat/ajax-show-kardex']),
-                    //'headerOptions' => ['class' => 'kartik-sheet-style'], 
-                    'expandOneOnly' => true
-                ],
+        
          
          
-              ['attribute'=>'semaforo',
-                  'format'=>'html',
-                  'filter'=> \frontend\modules\mat\models\MatVwStock::listaSemaforo(),
-               // 'headerOptions' => ['style' => 'width:50%'],
-                  //'filter'=> \common\helpers\ComboHelper::getCboCentros(),
-                  'value'=>function ($model){
-                    if(is_null($model->semaforo))return '';
-                    return '<i style="color:'. \frontend\modules\mat\models\MatVwStockSearch::colorSemaforo($model->semaforo).'"><span class="fa fa-circle"></span></i>';
-                  }
-                ],
+              
             
             ['attribute'=>'codart',
                 //'headerOptions' => ['style' => 'width:20%'],
@@ -113,9 +83,9 @@ $formato=h::formato();
                   }
                 ],*/
              [
-                    'attribute' => 'material',
+                    'attribute' => 'descripcion',
                  'headerOptions' => ['style' => 'width:50%'],
-                    'value' => 'material.descripcion',
+                    //'value' => 'mdescripcion',
             ],
          ['attribute'=>'codal',
                // 'headerOptions' => ['style' => 'width:50%'],
@@ -125,21 +95,7 @@ $formato=h::formato();
                   }
                 ],
             'um',
-            ['attribute'=>'ubicacion',
-               'headerOptions' => ['style' => 'width:20%'],
-                'format'=>'html',
-                 'contentOptions'=>['style' => 'font-weight:800;color:#D35A00;text-align:right;'],
-                //'filter'=> frontend\modules\mat\helpers\ComboHelper::getCboAlmacenes(),
-                  'value'=>function ($model) use($formato){
-                    if($model->ubicacion===null){
-                       $contenido='<span class="fa fa-circle"></span>----<span class="fa fa-circle"></span>' ;
-                    }else{
-                       $contenido=$model->ubicacion; 
-                    }
-                    return Html::a($contenido,Url::to(['/mat/mat/modal-editar-ubicacion','id'=>$model->id,'gridName'=>'stock-index','idModal'=>'buscarvalor']),['style'=>'color:#F86E35','class'=>'botonAbre']);
-                    
-                  }
-                ], 
+           
           ['attribute'=>'cant',
                // 'headerOptions' => ['style' => 'width:50%'],
                  'contentOptions'=>['style' => 'font-weight:800;color:#283E6A;text-align:right;'],

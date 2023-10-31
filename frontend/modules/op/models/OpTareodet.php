@@ -182,7 +182,7 @@ public function behaviors() {
             $this->estado=self::ESTADO_CREADO;
             $this->tarifa_id=$this->trabajador->tarifaId();
             $this->semana=$this->tareo->semana;
-            $this->anio=date('Y',$this->tareo->swichtDate('fecha',false));
+            //$this->anio=date('Y',$this->tareo->swichtDate('fecha',false));
             $this->esferiado=$this->tareo->esferiado;
             
         }

@@ -42,6 +42,7 @@ use kartik\grid\GridView;
           [
                     
                 'class' => 'yii\grid\ActionColumn',
+               'contentOptions'=>['style'=>'width:25%;'],
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}{attach}{change}{image}',
                'buttons' => [
@@ -85,32 +86,30 @@ use kartik\grid\GridView;
                                 
                                 'edit' => function ($url,$model) {
 			    $url= Url::to(['/op/proc/mod-edit-osdet','id'=>$model->id,'gridName'=>'pjax-detserv','idModal'=>'buscarvalor']);
-                              return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
+                              return \yii\helpers\Html::a('<span class="btn btn-warning glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {
                               
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);                              
-                                    return \yii\helpers\Html::a('<span class="btn btn-primary glyphicon glyphicon-trash"></span>', 'javascript:void(0)', [
-                                                'title'=>$url,
+                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', 'javascript:void(0)', [
+                                                'rel'=>$url,
                                         /*'id'=>$model->codparam,*/
-                                        'family'=>'holas',
+                                        'family'=>'pigmalion',
                                         'id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/
                                         ]);
                              
                               
 			    },
                         
-                       'change' => function($url, $model) {  
-                         $url=\yii\helpers\Url::toRoute(['/op/proc/ajax-compra-det-os','id'=>$model->id]);
-                        
-                                   return \yii\helpers\Html::a('<span class="btn btn-primary fa fa-money"></span>', '#', ['rel'=>$url,'id'=>$model->id,'family'=>'pigmalion',]);
-                        
-                        },
+                       
                     ]
                 ],
         [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
+              'expandIcon'=>'<i style="color:#fcc400"><span class="fa fa-plus-square-o"></span></i>',
+                 'collapseIcon'=>'<i style="color:#fcc400"><span class="fa fa-minus-square-o"></span></i>',
+                
                 'value' => function ($model, $key, $index, $column) {
                             return GridView::ROW_COLLAPSED;
                                 },
@@ -143,15 +142,7 @@ use kartik\grid\GridView;
                              } 
                 
                 ],
-                ['attribute' => 'codtra',
-                'format'=>'raw',
-                'value'=>function($model){
-                    
-                        //return 'hola';
-                        return (is_null($model->codtra))?'':$model->trabajador->fullName();                        
-                             } 
                 
-                ],
                ['attribute' => 'emplazamiento',
                 'format'=>'raw',
                 'header'=>'Empl.',
@@ -160,14 +151,13 @@ use kartik\grid\GridView;
                             } 
                 
                 ],
-            'finicio',
-            'termino',
+            
           
         ],
     ]); ?>
     <?php
       $url= Url::to(['mod-agrega-det-os','id'=>$model->id,'gridName'=>'pjax-detserv','idModal'=>'buscarvalor']);
-   echo  Html::button(yii::t('base.verbs','Agregar operación'), 
+   echo  Html::button('</span><span class="fa fa-plus"></span>   '.yii::t('base.verbs','Agregar actividad').'<span class="fa fa-wrench">', 
            ['href' => $url, 'title' => yii::t('base.names','Agregar Op'),
                'id'=>'btn_cuentas_edi',
                'class' => 'botonAbre btn btn-primary'

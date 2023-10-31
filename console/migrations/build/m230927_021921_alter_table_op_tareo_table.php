@@ -1,9 +1,13 @@
 <?php
+use console\migrations\baseMigration;
 
-class m230730_163924_alter_table_matdetreq extends \console\migrations\baseMigration
-{
-    public $table='{{%mat_detreq}}';
-    public $campo='codal';
+/**
+ * Class m230927_021921_alter_table_op_tareo_table
+ */
+class m230927_021921_alter_table_op_tareo_table extends baseMigration
+{ 
+    public $table='{{%op_tareo}}';
+    public $campo='os_id';
     /**
      * {@inheritdoc}
      */
@@ -12,6 +16,9 @@ class m230730_163924_alter_table_matdetreq extends \console\migrations\baseMigra
         if(!$this->existsColumn($this->table,$this->campo)){  
             $this->addColumn($this->table,$this->campo,$this->integer(11)); 
         }
+        
+        
+       
     }
 
     /**
@@ -22,20 +29,6 @@ class m230730_163924_alter_table_matdetreq extends \console\migrations\baseMigra
           if($this->existsColumn($this->table,$this->campo)){  
             $this->dropColumn($this->table,$this->campo);
        }
+       
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230717_035208_alter_table_documentos cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

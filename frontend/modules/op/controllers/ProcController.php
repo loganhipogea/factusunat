@@ -13,6 +13,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\h;
 use yii\helpers\Url;
+use frontend\modules\mat\models\MatVwReqSearch;
+use frontend\modules\mat\models\MatDetreq;
+use frontend\modules\mat\models\MatVwReqServSearch;
 
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -204,8 +207,10 @@ class ProcController extends baseController
            $model = OpOs::findOne($id);
            if(is_null($model))
            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-           $searchModel = new \frontend\modules\mat\models\MatVwReqSearch();
-        $dataProviderMateriales = $searchModel->search_by_os($model->id,Yii::$app->request->queryParams);
+           $searchModel = new MatVwReqSearch();
+           $searchModelServ = new MatVwReqServSearch();
+           $dataProviderMateriales = $searchModel->search_by_os($model->id, MatDetreq::TIPO_MATERIALE, Yii::$app->request->queryParams);
+           $dataProviderServicios = $searchModelServ->search_by_os($model->id, MatDetreq::TIPO_SERVICIO, Yii::$app->request->queryParams);
           
            
            
@@ -222,8 +227,10 @@ class ProcController extends baseController
 
         return $this->render('update_os', [
             'model' => $model,
-            'searchModel' => $searchModel,
+            'searchModelServ' => $searchModelServ,
+             'searchModel' => $searchModel,
             'dataProviderMateriales' =>$dataProviderMateriales,
+            'dataProviderServicios' =>$dataProviderServicios,
            // 'dataProviderOs'=>$dataProviderOs
         ]);
       }
@@ -261,8 +268,8 @@ class ProcController extends baseController
       }
       
        public function actionModEditOsdet($id){
-    $this->layout = "install";
-      $model= \frontend\modules\op\models\OpOsdet::findOne($id);
+        $this->layout = "install";
+         $model= \frontend\modules\op\models\OpOsdet::findOne($id);
       
        $datos=[];
         if(h::request()->isPost){
@@ -301,6 +308,7 @@ class ProcController extends baseController
               'os_id'=>$modelPadre->os_id,
               'detos_id'=>$modelPadre->id,  
               'tipo'=>$model::TIPO_MATERIALE,
+              'timpim'=> MatDetreq::TIPO_IMPU_ORDEN,
           ]);
            $datos=[];
         if(h::request()->isPost){
@@ -327,6 +335,11 @@ class ProcController extends baseController
         } 
           
       }
+     
+      
+      
+      
+      
       
       
        public function actionModalEditaDetReq($id){
@@ -346,7 +359,7 @@ class ProcController extends baseController
                   return ['success'=>1,'id'=>$model->id];
             }
         }else{
-           return $this->renderAjax('_modal_crea_detreq_os', [
+           return $this->renderAjax('_modal_crea_detreq_os_libre', [
                         'model' => $model,
                         'id' => $id,
                         'gridName'=>h::request()->get('gridName'),
@@ -357,6 +370,76 @@ class ProcController extends baseController
         } 
      }
         
+       public function actionModalAgregaDetReqServ($id){
+          $this->layout = "install";
+          $modelPadre= \frontend\modules\op\models\OpOs::findOne($id);
+          $model= \frontend\modules\mat\models\MatDetreq::instance();
+          $model->setAttributes([
+               'req_id'=>$model->detectaIdReq(),
+               'proc_id'=>$modelPadre->proc_id,
+              'os_id'=>$modelPadre->id,
+              'detos_id'=>$modelPadre->id, 
+              'tipo'=>$model::TIPO_SERVICIO,
+              'cant'=>1,
+              //'um'=> \common\models\masters\Ums::firstUm(),
+              'activo'=>true
+          ]);
+           $datos=[];
+        if(h::request()->isPost){
+            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                $model->save(); 
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_crea_detreq_serv_os', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+          
+      }
+    
+     public function actionModalEditDetReqServ($id){
+          $this->layout = "install";
+          //$model= \frontend\modules\op\models\OpOsdet::findOne($id);
+          $model= \frontend\modules\mat\models\MatDetreq::findOne($id);          
+           $datos=[];
+        if(h::request()->isPost){
+            
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                $model->save(); 
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_crea_detreq_serv_os', [
+                        'model' => $model,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+          
+      }
+     
         public function actionModalAgregaDetReqLibre($id){
           $this->layout = "install";
           $modelPadre= \frontend\modules\op\models\OpOs::findOne($id);
@@ -484,18 +567,7 @@ class ProcController extends baseController
             }
       }
       
-   public function actionAjaxCompraDetOs($id){
-       if(h::request()->isAjax){
-                h::response()->format = \yii\web\Response::FORMAT_JSON;
-                if(!is_null($model= \frontend\modules\op\models\OpOsdet::findOne($id))){
-                     yii::error('Encontro');
-                     $model->comprar();                                     
-                  } else{
-                      yii::error('NO encontro');
-                  }  
-                return ['success'=>yii::t('base.errors','Se creó una solicitud de compra')];
-            }   
-   }
+   
    
     public function actionAjaxRenderImages($id){
        if(h::request()->isAjax){
@@ -536,4 +608,26 @@ class ProcController extends baseController
           'dataProvider'=>$dataProvider
               ]);
   }
+  
+  
+   public function actionAjaxDeleteMaterial($iddet){
+       if(h::request()->isAjax){
+                h::response()->format = \yii\web\Response::FORMAT_JSON;
+                if(!is_null($model= MatDetreq::findOne($iddet))){
+                     if($model->canDelete()){
+                         $model->delete();
+                          return ['success'=>yii::t('base.errors','Se borró el registro sin problemas')];                                 
+               
+                     }elseif($model->isBloqueado()){
+                         if($model->anula())
+                          return ['success'=>yii::t('base.errors','Se anuló el item')];
+                          return ['error'=>yii::t('base.errors','Error -'.$model->getFirstError())];
+                     }else{
+                         return ['error'=>yii::t('base.errors','El estado del registro no permite anular')]; 
+                     }
+                       } else{
+                    return ['error'=>yii::t('base.errors','No se encontró un registro')]; 
+                  }  
+                  }  
+   }
 }

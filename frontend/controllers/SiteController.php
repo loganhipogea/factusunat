@@ -98,6 +98,10 @@ class SiteController extends Controller
     }
     
     public function actionPio(){
+       $model= \frontend\modules\mat\models\MatReq::findOne(50);
+        var_dump($model->codest,$model->aprobar(),$model->codest);
+        die();
+        
         echo date('Y').date('m').date('d');
     }
     /**

@@ -85,9 +85,9 @@ class MatVwStock extends \common\models\base\modelBase
         return new MatVwStockQuery(get_called_class());
     }
     
-     public function colorSemaforo(){
+     public static function colorSemaforo($semaforo){
         
-       switch ($this->semaforo) {
+       switch ($semaforo) {
     case self::SEMAFORO_OK:
         return '#67E41E';
         break;

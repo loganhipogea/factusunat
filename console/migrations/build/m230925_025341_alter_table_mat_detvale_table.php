@@ -1,9 +1,14 @@
 <?php
 
-class m230730_163924_alter_table_matdetreq extends \console\migrations\baseMigration
+use console\migrations\baseMigration;
+
+/**
+ * Class m230925_025341_alter_table_mat_detvale_table
+ */
+class m230925_025341_alter_table_mat_detvale_table extends baseMigration
 {
-    public $table='{{%mat_detreq}}';
-    public $campo='codal';
+    public $table='{{%mat_detvale}}';
+    public $campo='detres_id';
     /**
      * {@inheritdoc}
      */
@@ -12,6 +17,9 @@ class m230730_163924_alter_table_matdetreq extends \console\migrations\baseMigra
         if(!$this->existsColumn($this->table,$this->campo)){  
             $this->addColumn($this->table,$this->campo,$this->integer(11)); 
         }
+        
+        
+       
     }
 
     /**
@@ -22,20 +30,6 @@ class m230730_163924_alter_table_matdetreq extends \console\migrations\baseMigra
           if($this->existsColumn($this->table,$this->campo)){  
             $this->dropColumn($this->table,$this->campo);
        }
+       
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230717_035208_alter_table_documentos cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

@@ -74,13 +74,6 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
      <?= $form->field($model, 'punit')->textInput(['maxlength' => true]) ?>
 
  </div>
-  
-       
-          
-  
-  
-      
-          
      
     <?php ActiveForm::end(); ?>
           

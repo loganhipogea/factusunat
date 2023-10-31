@@ -3,6 +3,7 @@ namespace frontend\modules\import;
 use common\filters\FilterAccess;
 use common\helpers\h;
 USE yii2mod\settings\models\enumerables\SettingType;
+use common\helpers\FileHelper;
 use yii;
 /**
  * import module definition class
@@ -37,15 +38,17 @@ class ModuleImport extends \yii\base\Module
     }
     
     private static function putSettingsModule(){
-         h::getIfNotPutSetting('import','pathToCsvExamples',"/impoexamples", SettingType::STRING_TYPE);
+        h::getIfNotPutSetting('import','pathToCsvExamples',"/impoexamples", SettingType::STRING_TYPE);
         h::getIfNotPutSetting('import','delimiterCsv',',', SettingType::STRING_TYPE);
         h::getIfNotPutSetting('import','encapsulatorCsv','', SettingType::STRING_TYPE);
          ///h::getIfNotPutSetting('import','prefiximagesalu','0060', SettingType::STRING_TYPE);
     }
     private static function pustCsvDirectory(){
-       $path=yii::getAlias('@app').h::gsetting('import','pathToCsvExamples');
+       $path=self::getPathCsv();
        if(!is_dir($path)){
-           \common\helpers\FileHelper::createDirectory ($path);
+           if(FileHelper::createDirectory ($path))
+              chmod($path, 0750);
+           
     }}
     
     public static function getPathCsv(){

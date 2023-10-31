@@ -10,7 +10,7 @@ class CodocuBehavior extends Behavior
     
     public function codocu($clase=null){
       $rutaClase=(is_null($clase))?$this->owner->className():$clase;
-      yii::error($rutaClase,__FUNCTION__);
+      //yii::error($rutaClase,__FUNCTION__);
       if(!is_null($registro= Documentos::findOne(['modelo'=>'\\'.$rutaClase]))){
           return $registro->codocu;
       }else{

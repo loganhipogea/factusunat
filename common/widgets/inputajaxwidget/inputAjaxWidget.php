@@ -46,7 +46,7 @@ class inputAjaxWidget extends \yii\base\Widget
  private function makeJsHtml(){
      $operador=($this->isDivReceptor)?'html':'val'; 
    $this->getView()->registerJs("$(document).ready(function() {
-    $('#".$this->id_input."').on('".$this->evento."',function(){
+    $('#".$this->id_input."').one('".$this->evento."',function(){
     var_input=$('#".$this->id_input."').val(); 
     var_datos=".Json::encode($this->data).";
     var_datos['valorInput']=var_input;
@@ -83,7 +83,7 @@ success: function (data) {
            $cadUx="";  
          }
     $cadena="$(document).ready(function() {
-    $('#".$this->id_input."').on('".$this->evento."',function(){
+    $('#".$this->id_input."').one('".$this->evento."',function(){
       
   $.ajax({ 
    url:'".$this->ruta."',

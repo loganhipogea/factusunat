@@ -45,9 +45,9 @@ class MatReservaDet extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['reserva_id', 'stock_id'], 'integer'],
+            [['reserva_id', 'stock_id','detreq_id'], 'integer'],
             [['cant'], 'number'],
-            [['activo','detreq_id'], 'safe'],
+            [['activo','detreq_id','valor_soles'], 'safe'],
             
             [['item'], 'string', 'max' => 4],
             [['fecha'], 'string', 'max' => 19],
@@ -114,6 +114,24 @@ class MatReservaDet extends \common\models\base\modelBase
         return $this; 
     }
     
+    public function getDetReq(){
+     
+        return $this->hasOne(MatDetreq::className(), ['id' => 'detreq_id']);
+    
+    }
+    
+    /*
+     * Estados que permiten
+     * atender o anular la reserva
+     *(  CREADO o  APROBADO) ademas activo=true
+     */
+    public function isOpen(){
+        return $this->activo &&($this->codestado==self::ES_CREADO or $this->codestado==self::ES_APROBADO);
+    }
+    
+    public static function statusImputables(){
+        return [self::ES_CREADO,self::ES_APROBADO];
+    }
     
     
 }

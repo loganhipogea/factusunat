@@ -37,6 +37,28 @@ class MatStock extends \common\models\base\modelBase
         return '{{%mat_stock}}';
     }
 
+     /*
+   * Crea un registro de invetario si este no existe
+   */
+  
+    public static function createBasico($codart,$codal,$um){
+       $model= self::instance();
+       $model->setAttributes([
+           'codal'=>$codal,
+           'codart'=>$codart,
+           'cant'=>0,
+           'um'=>$um
+           ]);
+       if($model->save()){
+           return $model;
+       }else{
+           yii::error($model->getErrors(),__FUNCTION__);
+           return null;
+       }
+    }
+    
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -140,10 +162,13 @@ class MatStock extends \common\models\base\modelBase
      * con contrl de reorden
      */
      private function resolveSemaforo(){
-        if(!is_null($this->semaforo)){
+        if($this->isMaterialSensible()){
             $this->semaforo=$this->calificaSemaforo();
         }
     }
+    
+    
+    
     
     
     private function calificaSemaforo(){
@@ -208,34 +233,56 @@ class MatStock extends \common\models\base\modelBase
        }
    }
    
-   private function prepareReserva($idreserva,$cant){
+   private function prepareReserva($detreq_id,$cant){
       $model=New MatReservaDet();
         $model->setAttributes([
                 'stock_id'=>$this->id,
-                'reserva_id'=>$idreserva,
+                'detreq_id'=>$detreq_id,
                 //'item'=>$reserva->nextItem(),
                 'fecha'=>self::currentDateInFormat(true,0),
                 'activo'=>true,
-                'codestado'=>MatReservaDet::ES_RESERVADO,  //de fente pasa al estado reserva de inventario          
+                'codestado'=>MatReservaDet::ES_CREADO,  //de fente pasa al estado reserva de inventario          
                'cant'=>$cant,
+                //'valor_soles'=>$cant*$this->valor_unit,
            ]);  
         return $model;
    }
-   public function createReserva($idreserva,$cant,$verificar_cantidad=true){
-      if($verificar_cantidad){
-          if(abs($cant) <= $this->cant_disp){
-               $model=$this->prepareReserva($idreserva,$cant); 
-             return ($model->save())?1:-1;  
-           }else{
-               return -1;
-           }
-      }else{
-           $model=$this->prepareReserva($idreserva,$cant);      
-             return ($model->save())?1:-1;  
-      } 
+   public function afterFind() {
+       $this->cant_disp=empty($this->cant_disp)?0:$this->cant_disp;
+       $this->cantres=empty($this->cantres)?0:$this->cantres;
+       return parent::afterFind();
    }
    
-   
+   public function createReserva($detreq_id,$cant){ 
+          
+          if(abs($cant) <= $this->cant_disp){
+               $model=$this->prepareReserva($detreq_id,$cant); 
+               /*Comenzamos a grabar*/
+                $this->cant_disp=$cant;
+                $this->cantres+=$cant;
+              // $transac=$this->getDb()->beginTransaction();
+              // $transac->setIsolationLevel($transac::SERIALIZABLE);
+                $exito= $model->save();
+                $exito2=$this->save();
+                $exitotal=$exito && $exito2;
+                if($exitotal){
+                    //$transac->commit();
+                }else{
+                     //$transac->rollBack();
+                }
+               return $exitotal;
+           }else{
+               return false;
+            }
+      
+   }
+   /*
+    * Si es un material que se desea 
+    * controlar con puntos de reorden
+    */
+   public function isMaterialSensible(){
+       return $this->getMatalmacen()->count() >0;
+   }
    
    
    

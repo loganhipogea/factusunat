@@ -1,10 +1,9 @@
 <?php
 use yii\helpers\Html;
 use common\helpers\h;
- use yii\helpers\Url;
- use yii\widgets\Pjax;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 use yii\grid\GridView;
-use frontend\modules\mat\models\MatDetreq;
 use frontend\modules\op\helpers\ComboHelper;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 ?>
@@ -13,17 +12,20 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
    
  
         
-    <?php Pjax::begin(['id'=>'pjax-detmat','timeout'=>false]); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php Pjax::begin(['id'=>'pjax-detservicios','timeout'=>false]); ?>
+    <?php 
+    $formato=h::formato();
+// echo $this->render('_search', ['model' => $searchModel]);
+    ?>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
     <div style='overflow:auto;'>
     <?php 
-    //echo $dataProviderMateriales->query->createCommand()->rawSql;
-    echo GridView::widget([
-        'id'=>'grilla-materiales',
-         'dataProvider' =>$dataProviderMateriales,
-         'filterModel' => $searchModel,
+   echo GridView::widget([
+        'id'=>'grilla-serviciosx',
+         'dataProvider' =>$dataProviderServicios,
+        
+         'filterModel' => $searchModelServ,
          'summary' => '',
          'tableOptions'=>['class'=>'table table-condensed table-hover table-bordered table-striped'],
         //'filterModel' => New \frontend\modules\op\models\OpOsSearch(),
@@ -32,7 +34,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
           [
                     
                 'class' => 'yii\grid\ActionColumn',
-               'contentOptions'=>['style'=>'width:19%;'],
+               'contentOptions'=>['style'=>'width:15%;'],
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
             'template' => '{edit}{delete}{change}',
                'buttons' => [
@@ -51,14 +53,14 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                         
                         },
                                 
-                        'edit' => function ($url,$model) {
-			    $url= Url::to(['/op/proc/modal-edita-det-req','id'=>$model->iddet,'gridName'=>'pjax-detmat','idModal'=>'buscarvalor']);
+                                'edit' => function ($url,$model) {
+			    $url= Url::to(['/op/proc/modal-edit-det-req-serv','id'=>$model->iddet,'gridName'=>'pjax-detservicios','idModal'=>'buscarvalor']);
                               return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                         'delete' => function ($url,$model) {
                               
-                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-delete-material','iddet'=>$model->iddet]);                              
-                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'pigmalion1','id'=>\yii\helpers\Json::encode(['id'=>$model->iddet,'modelito'=> str_replace('@','\\', MatDetreq::className())]),/*'title' => 'Borrar'*/]);
+                                $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);                              
+                                    return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'pigmalion2','id'=>\yii\helpers\Json::encode(['id'=>$model->iddet,'modelito'=> str_replace('@','\\',\frontend\modules\mat\models\MatDetreq::className())]),/*'title' => 'Borrar'*/]);
                              
                               
 			    },
@@ -75,14 +77,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                              } 
                 
                 ],
-        ['attribute' => 'numero',
-                'format'=>'raw',
-                'contentOptions'=>['style'=>'width:10%;'],
-                'value'=>function($model){
-                        return Html::a($model->numero,Url::to(['/mat/mat/update/','id'=>$model->req_id]),['data-pjax'=>'0']);                        
-                             } 
-                
-                ],
+        
          ['attribute' => 'item',
                 'format'=>'raw',
                 'value'=>function($model){
@@ -90,18 +85,37 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                              } 
                 
                 ],
-         'cant',
-            'codart',
-            'um',
+          ['attribute' => 'cant',
+                'format'=>'raw',
+                'value'=>function($model)use($formato){
+                        return $formato->asDecimal($model->cant,0);                        
+                             } 
+                
+                ],
              ['attribute' => 'descridetalle',
                 'format'=>'raw',
-                'contentOptions'=>['style'=>'width:80%;'],
+                'contentOptions'=>['style'=>'width:40%;'],
                 'value'=>function($model){
                         return $model->descridetalle;                        
                              } 
                 
                 ],
-         'codal'
+              ['attribute' => 'despro',
+                'format'=>'raw',
+                'contentOptions'=>['style'=>'width:40%;'],
+                'value'=>function($model){
+                        return $model->despro;                        
+                             } 
+                
+                ],
+         ['attribute' => 'numero',
+                'format'=>'raw',
+                'contentOptions'=>['style'=>'width:10%;'],
+                'value'=>function($model){
+                        return Html::a($model->numero,Url::to(['/mat/mat/update/','id'=>$model->req_id]),['data-pjax'=>'0']);                        
+                             } 
+                
+                ],
                 /*['attribute' => 'codtra',
                 'format'=>'raw',
                 'value'=>function($model){
@@ -116,10 +130,10 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
         ],
     ]); ?>
     <?php
-      $url= Url::to(['modal-agrega-det-req-libre','id'=>$model->id,'gridName'=>'pjax-detmat','idModal'=>'buscarvalor']);
-   echo  Html::button('</span><span class="fa fa-plus"></span>'.yii::t('base.verbs','Agregar material').'<span class="fa fa-cube">', 
+      $url= Url::to(['modal-agrega-det-req-serv','id'=>$model->id,'gridName'=>'pjax-detservicios','idModal'=>'buscarvalor']);
+   echo  Html::button('<span class="fa fa-plus"></span>'.yii::t('base.verbs','Solicitar servicio'), 
            ['href' => $url, 'title' => yii::t('base.names','Agregar Op'),
-               'id'=>'btn_cuentas_edi',
+               'id'=>'btn_cuentrras_edi',
                'class' => 'botonAbre btn btn-primary'
                ]); 
     ?>
@@ -132,9 +146,9 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     
     <?php 
    echo linkAjaxGridWidget::widget([
-           'id'=>'widgetgruiw56786dBancosss',
-            'idGrilla'=>'pjax-detmat',
-            'family'=>'pigmalion1',
+           'id'=>'widgetgruidWEWBancosss',
+            'idGrilla'=>'pjax-detservicios',
+            'family'=>'pigmalion2',
           'type'=>'POST',
            'evento'=>'click',
            //'refrescar'=>false,

@@ -4,6 +4,9 @@ use common\widgets\prueba\pruebaWidget;
 use common\helpers\ComboHelper;
 use yii\widgets\Pjax;
 use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
+
+$modelReq= frontend\modules\mat\models\MatReq::instance();
+$codocuReq=$modelReq->codocu();
 ?>
 <div id="colector_tabular">
 <?= TabularInput::widget([
@@ -103,7 +106,18 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             ],
             //'items'=> ComboHelper::getCboUms(),
             ],
-        
+         [
+            'name'  => 'detres_id',
+            //'title' => 'punit',
+            'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_HIDDEN_INPUT,
+       
+            ],
+        [
+            'name'  => 'detreq_id',
+            //'title' => 'punit',
+            'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_HIDDEN_INPUT,
+       
+            ],
             /*['name'  => 'codart',
             'title' => 'codart',
             //'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT, 
@@ -124,7 +138,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 </div>
 
   <?php  
-     $this->registerJs("$('#matvale-codmov').on( 'change', function() { 
+     $this->registerJs("$('#matvale-codmov').one( 'change', function() { 
         var resulta;
         var identi=this.id;  
         var urli='".\yii\helpers\Url::to(['mat/ajax-verif-transa'])."';
@@ -165,7 +179,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 
 
   <?php  
-     $this->registerJs("$('[name$=\"][codart]\"]').on( 'change', function() { 
+     $this->registerJs("$('[name$=\"][codart]\"]').one( 'change', function() { 
        var_idselect=this.id;
        var_indice=var_idselect.substring(11,12);
          var urli='".\yii\helpers\Url::to(['/masters/materials/ajax-html-ums'])."';
@@ -184,6 +198,55 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
                $('#matdetvale-'+var_indice+'-um').html(data);
                 }
        });
+    
+});
+
+", \yii\web\View::POS_READY);
+    ?>  
+
+
+
+ <?php  
+     
+     $this->registerJs("$('#matvale-numerodoc').on('change', function() { 
+        var urli='".\yii\helpers\Url::to(['mat/ajax-verifica-req'])."';
+        var var_cod='".$codocuReq."';
+        var var_codocu=$('#matvale-codocu').val();
+        
+        if(var_cod==var_codocu){//Si se trata de una requisicion
+            var_numreq=$('#matvale-numerodoc').val();
+
+            alert( var_numreq);
+          var promesa1= $.ajax({
+          url : urli,
+          type : 'POST', 
+          data : {numeroreq:var_numreq}, 
+          dataType: 'json', 
+          success : function(json) {
+                             
+                            resulta1=json['success'];
+                                               
+                     }, //fin funcion success ajax 1
+                    error : function(xhr,errmsg,err) {
+                     console.log(xhr.status + ': ' + xhr.responseText);
+                            } //fin de funcion  error ajax 1
+        }).then(function(){ 
+            
+            if(resulta1>0){//Se trata de una requisicion
+            $('#matdetvale-0-codart').select2('data', { id:'100568', text: 'HOLA-100568'});
+        
+                     $('div[class*=\"js-input-plus\"]').trigger('click');
+            }else{
+                alert('naa'); 
+                      
+            }
+       });
+
+
+
+
+        }//Fin de if(var_cod==var_codocu)
+        
     
 });
 
