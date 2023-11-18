@@ -29,11 +29,15 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     <link href="<?=yii::getAlias(Yii::$app->params['ico'])?>" rel="icon">
     <?php $this->head() ?>
     <?php
-    $this->registerCssFile('@web/css/gentelella_ajustes.css', 
+    /*
+     * 'estilo_ajustes'=>'@web/css/gentellela_ajustes_atpumps.css',
+      'estilo_adminlte_ajustes'=>'@web/css/Adminlte_personalizado.css', 
+     */
+    $this->registerCssFile(Yii::$app->params['estilo_ajustes'], 
            ['depends' => [yiister\gentelella\assets\Asset::className()]]);
     ?>
     <?php
-    $this->registerCssFile('@web/css/Adminlte_personalizado.css', 
+    $this->registerCssFile(Yii::$app->params['estilo_ajustes'],
            ['depends' => [yiister\gentelella\assets\Asset::className()]]
             );
     $cache=h::cache();

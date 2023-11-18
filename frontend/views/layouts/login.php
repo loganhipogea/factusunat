@@ -18,12 +18,12 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title>ahu<?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-   
+    <link href="<?=yii::getAlias(Yii::$app->params['ico'])?>" rel="icon">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
-    <?php $this->registerCssFile("@web/css/login.css", [], 'css-install2'); ?>
+    <?php $this->registerCssFile(Yii::$app->params['estilo_login'], [], 'css-install2'); ?>
     
     
 </head>
