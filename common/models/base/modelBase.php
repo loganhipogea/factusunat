@@ -956,6 +956,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
             yii::error('el sql',__FUNCTION__);
             yii::error(self::find()->where($criteria)->createCommand()->rawSql,__FUNCTION__);
              yii::error('El maximo valor',__FUNCTION__);
+             //yii::error(self::find()->where($criteria)->max($field)->rawSql,__FUNCTION__);
             yii::error($maximoValor,__FUNCTION__);
           
             if(is_null($maximoValor)){

@@ -28,7 +28,7 @@ use Yii;
  */
 class MatVale extends \common\models\base\modelBase 
 implements \frontend\modules\mat\interfaces\EstadoInterface,
- DocumentoInterface
+ DocumentoInterface, DocRelacionadoValeInterface
 
 
 {
@@ -75,11 +75,13 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
     public function rules()
     {
         return [
-            [[ 'codpro', 'codmov','codocu','codmon'], 'required'],
+            [[  'codmov','codocu','codal','fecha',], 'required'],
             [['texto'], 'string'],
             [['codocu','numerodoc','fechacon'], 'string'],
              [['codocu','numerodoc','fechacon','codal','codcen','codmon','codest'], 'safe'],
             [['numerodoc'], 'validate_docu'],
+            [['codmon'], 'validate_moneda','skipOnEmpty' => false,],
+            [['codpro'], 'validate_codpro','skipOnEmpty' => false,],
             [['numero', 'fecha'], 'string', 'max' => 10],
             [['codpro'], 'string', 'max' => 10],
             [['codmov', 'codest'], 'string', 'max' => 3],
@@ -120,7 +122,10 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
             'fecha' => Yii::t('app', 'Fecha'),
             'fechacon' => Yii::t('app', 'F Cont'),
             'codpro' => Yii::t('app', 'Proveedor'),
+            'codal' => Yii::t('app', 'Almacén'),
             'codmov' => Yii::t('app', 'Movimiento'),
+            'codmon' => Yii::t('app', 'Moneda'),
+             'codpro' => Yii::t('app', 'Proveedor'),
              'codocu' => Yii::t('app', 'Doc. rel.'),
              'numerodoc' => Yii::t('app', 'Número doc.'),
             'descripcion' => Yii::t('app', 'Descripcion'),
@@ -163,6 +168,7 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
     
     public function beforeSave($insert) {
         IF($insert){
+            $this->codpro=(empty($this->codpro))?\common\models\masters\VwSociedades::codpro():$this->codpro;
             $this->numero=$this->correlativo('numero',10);
             $this->codest=self::ESTADO_CREADO;
         } 
@@ -218,7 +224,9 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
     }
     
  public function validate_docu($attribute,$params){
+     
        if($this->transaccion->exigirvalidacion){
+           
            yii::error('si exige validacion',__FUNCTION__);
            $obj=$this->modelTransa();
            if(is_object($obj)){
@@ -241,11 +249,32 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
              yii::error('El objeto e null',__FUNCTION__);  
            }
        }else{
+          
            yii::error('anda',__FUNCTION__);
        }
     }
     
+  public function validate_moneda($attribute,$params){
+     
+       if($this->transaccion->afecta_precio && empty($this->codmon)){
+          $this->addError('codmon',yii::t('base.errors','En este mov la moneda es obligatoria')); 
+          
+       }else{
+          
+           
+       }
+    }  
     
+   public function validate_codpro($attribute,$params){
+     
+       if($this->transaccion->compromete_proveedor && empty($this->codpro)){
+          $this->addError('codpro',yii::t('base.errors','En este mov consignar el proveedor es obligatorio')); 
+          
+       }else{
+          
+           
+       }
+    }  
     
     /*
      * Funcion que obtiene el modelo del documento relacionado
@@ -322,6 +351,16 @@ implements \frontend\modules\mat\interfaces\EstadoInterface,
  public function transaByDoc($codocu){
     return \common\models\masters\Transadocs::find()->andWhere(['codocu'=>$codocu])->one()->codtrans;
  }  
+ 
+ 
+ public static function buscarporNumero($numero) {
+     return;
+ }
+ 
+ public function numerodoc(){
+    return; 
+ }
+ 
        
     }
     

@@ -137,46 +137,9 @@ $codocuReq=$modelReq->codocu();
 ]) ?>
 </div>
 
-  <?php  
-     $this->registerJs("$('#matvale-codmov').one( 'change', function() { 
-        var resulta;
-        var identi=this.id;  
-        var urli='".\yii\helpers\Url::to(['mat/ajax-verif-transa'])."';
-        var cod=$('#matvale-codmov').val();
-        var promesa1= $.ajax({
-           url : urli,
-          type : 'GET', 
-          data : {codtrans:cod}, 
-          dataType: 'json', 
-          success : function(json) {
-                            resulta1=json['success'];
-                                                  
-                     }, //fin funcion success ajax 1
-                    error : function(xhr,errmsg,err) {
-                     console.log(xhr.status + ': ' + xhr.responseText);
-                            } //fin de funcion  error ajax 1
-        }).then(function(){ 
-            if(resulta1['afecta_precio']=='0'){
-                      $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
-        	         $('#'+this.id).hide();
-                       });  
-            } else{
-                $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
-        	        $('#'+this.id).show();
-                       
-                        });  
-            }
-            
-           
+  
 
-       });
-    
-});
-
-", \yii\web\View::POS_READY);
-    ?>  
-
-
+<?php Pjax::begin(['id'=>'zona-scripts-tabular']);?>
 
   <?php  
      $this->registerJs("$('[name$=\"][codart]\"]').one( 'change', function() { 
@@ -198,7 +161,7 @@ $codocuReq=$modelReq->codocu();
                $('#matdetvale-'+var_indice+'-um').html(data);
                 }
        });
-    
+   //$.pjax.reload({container: '#zona-scripts-tabular', async: false});      
 });
 
 ", \yii\web\View::POS_READY);
@@ -246,9 +209,11 @@ $codocuReq=$modelReq->codocu();
 
 
         }//Fin de if(var_cod==var_codocu)
-        
+    //$.pjax.reload({container: '#zona-scripts-tabular', async: false});    
     
 });
 
 ", \yii\web\View::POS_READY);
     ?>  
+
+<?php Pjax::end();?>   

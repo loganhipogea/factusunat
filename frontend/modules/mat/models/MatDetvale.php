@@ -34,7 +34,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
         const ESTADO_CREADO='10';
         const ESTADO_APROBADO='20';
         const ESTADO_ANULADO='99';
-        CONST MOV_SALIDA='scenario_i';
+        CONST MOV_SALIDA='scenario_s';
         CONSt MOV_INGRESO='scenario_i';
         CONST FLAG_SERVICIO='S';
         CONSt FLAG_MATERIALES='M';
@@ -58,6 +58,7 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
             [['detreq_id'], 'required','on'=>self::MOV_SALIDA],
             [['cant'], 'number'],
             [['cant'], 'validate_cant_stock'],
+             [['punit'], 'validate_punit','skipOnEmpty' => false,],
             [['um'], 'verify_um'],
            // [['codart'], 'validate_stock'],
              [['valor','cant','punit','codal','detres_id','detreq_id'], 'safe'],
@@ -511,16 +512,24 @@ implements ReqInterface,EstadoInterface, CosteoInterface {
    }
    
    public function validate_punit(){
+       
+       
         if($this->vale_id >0){
            $transaccion=$this->vale->transaccion;
+           //var_dump($transaccion->attributes); die();
        }else{
           $envioPost=h::request()->post(); 
           $transaccion= Transacciones::findOne(['codtrans'=>$envioPost['MatVale']['codmov']]);
+       //var_dump('cara',$transaccion->attributes); die();
+          
        }
        
        if($transaccion->afecta_precio && empty($this->punit)){
-           $this->addError('codart',yii::t('base.errors','El precio unitario es obligatorio'));  
+           //var_dump('afecta_precio'); die();
+           $this->addError('punit',yii::t('base.errors','El precio unitario es obligatorio'));  
                
+      }else{
+           //var_dump($transaccion->attributes,'NO afecta_precio'); die();
       }
    }
      

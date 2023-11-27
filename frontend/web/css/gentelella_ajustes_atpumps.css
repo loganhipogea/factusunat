@@ -31,7 +31,7 @@ y tambien los links d elos tabs
     text-decoration: none;
  }
  /*
-Aumentar el tamaño de la letra del menu
+Aumentar el tamaÃ±o de la letra del menu
  lateral
 */
  .nav-sm .nav.side-menu li a {
@@ -49,7 +49,7 @@ al pasar el mouse a:hover,a:active,a:focus,
 
 .nav-sm ul.nav.child_menu a:hover, .nav-sm ul.nav.child_menu a:active, .nav-sm ul.nav.child_menu a:focus, .nav.child_menu>li>a:hover, .nav.child_menu>li>a:active, .nav.child_menu>li>a:focus, .nav.side-menu>li.active>a {
     color: #fffbfb !important;
-    background: #0f5896 !important;
+    background: #337ab7 !important;
 }
 
 div.box {
@@ -428,4 +428,31 @@ table.text-center,table.text-center td,table.text-center th {
 
 .table.align td {
     text-align: right
+}
+
+/*
+CORRIGIENDO LOS IMPUTS FORM
+*/
+.form-control{    
+    height: 30px;
+    padding: 6px 6px;
+    /*font-size: 13px !important;*/
+ }
+ 
+ 
+ /*
+ Corigendo el color de los links de iconos 
+ del menu desplegable
+ */
+ .nav-md ul.nav.child_menu li:before {
+    background: #f6fbff !important;
+    
+}
+/*
+ Corigendo 
+ Las rayitas del item desplegable de meni
+ */
+.nav-md ul.nav.child_menu li:after {
+    border-left: 1px solid #f6fbff !important;
+    
 }

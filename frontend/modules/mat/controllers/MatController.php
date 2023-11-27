@@ -939,9 +939,10 @@ public function actionAjaxDesactivaItem($id){
                   ) {
                 // var_dump( $model->load($arraycabecera,''));
                // VAR_DUMP($model->attributes);DIE();
-              //VAR_DUMP($arraycabecera);DIE();
              
              
+              h::response()->format = Response::FORMAT_JSON;
+              // VAR_DUMP($arraycabecera);DIE();
              /*
               * Propagando el valor del codal en los hijos
               */
@@ -953,8 +954,12 @@ public function actionAjaxDesactivaItem($id){
               * indices originales, de esta manera nos aseguramos que los
               * mensajes de error salgan cada cual en su sitio
               */
+             
+             
+             
              $items=array_combine($OldIndices,$items);
-                h::response()->format = Response::FORMAT_JSON;
+               //return ActiveForm::validate($model);
+                  
                  return array_merge(
                          ActiveForm::validate($model),
                          ActiveForm::validateMultiple($items)
@@ -1027,14 +1032,7 @@ public function actionAjaxDesactivaItem($id){
                  $item->codal=$arraycabecera['codal'];
              }
                
-               
-               
               if(Model::validateMultiple($items)){
-                 
-                  
-             
-             
-                   
                   foreach($items as $item){
                         if($item->save()){ 
                             yii::error($item->attributes,__FUNCTION__);

@@ -67,6 +67,10 @@ use yii\helpers\Url;
 
  </div>
  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+     <?= $form->field($model, 'compromete_proveedor')->checkbox() ?>
+
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
      <?= $form->field($model, 'inversa_id')->dropDownList(
  frontend\modules\mat\helpers\comboHelper::getCboTransaccionesAlmacen(),
                   ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
@@ -80,10 +84,10 @@ use yii\helpers\Url;
      <?= $form->field($model, 'detalles')->textarea(['rows' => 6]) ?>
 
  </div>
-     
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?php ActiveForm::end(); ?>
    <?php \yii\widgets\Pjax::begin(['id'=>'grilla-documentos']);   ?>
-   <?= GridView::widget([
+   <?='.'. GridView::widget([
         'dataProvider' =>new yii\data\ActiveDataProvider([
             'query'=> common\models\masters\Transadocs::find()->andWhere(
                     [
@@ -135,5 +139,6 @@ use yii\helpers\Url;
 
    echo  Html::button(yii::t('base.verbs','Agregar documento'), ['href' => $url, 'title' => yii::t('base.names','Agregar documento'),'id'=>'btn_cuentas_edi', 'class' => 'botonAbre btn btn-success']); 
        ?> 
+</div>
 </div>
     </div>

@@ -19,14 +19,16 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
 <div class="mat-req-form">
     <br>
   <div class="box-body">
+ <?php Pjax::begin(['id'=>'cabecera']);?>
     <?php $form = ActiveForm::begin([
-    'fieldClass'=>'\common\components\MyActiveField',
+        'id'=>'my-form-vale',
+         'fieldClass'=>'\common\components\MyActiveField',
         'enableAjaxValidation'=>true,
     ]); 
     $bloqueado=$model->isBloqueado();
    
     ?>
-     <?php Pjax::begin(['id'=>'cabecera']);?>
+    
       <div class="box-header">
         <div class="col-md-12">
             <div class="form-group no-margin">
@@ -67,7 +69,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      <?= $form->field($model, 'codest')->textInput(['style'=>'color:#F84E35; font-weight:700; font-size:1.2em','value'=>$model->comboValueText('codest'),'maxlength' => true,'disabled'=>true  ]) ?>
      
  </div>
-  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+  <div id="id_proveedor" class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
      <?php 
   // $necesi=new Parametros;
     echo selectWidget::widget([
@@ -183,7 +185,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                                 ]
                             ]) ?>
  </div>
- <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+ <div id="id_codmon" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
      
    <?= $form->field($model, 'codmon')->
             dropDownList(common\helpers\ComboHelper::getCboMonedas(),
@@ -217,9 +219,12 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      }
     ?>
    </div>        
-     <?php Pjax::end();?>        
+    
   <?php ActiveForm::end(); ?>      
-   </div>     
+   <?php Pjax::end();?>   
+      
+      
+   <?php Pjax::begin(['id'=>'zona-scripts']);?>
     <?php 
        
       // var_dump(h::sunat()->gRaw('s.01.tdoc')->data,h::sunat()->gRaw('s.01.tdoc')->g('FAC'));
@@ -251,3 +256,56 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
           
 
  </div>
+ <?php  
+     $this->registerJs("$('#matvale-codmov').one( 'change', function() { 
+        var resulta;
+        //var identi=this.id;  
+        
+        var urli='".\yii\helpers\Url::to(['mat/ajax-verif-transa'])."';
+        var cod=$('#matvale-codmov').val();
+        var promesa1= $.ajax({
+           url : urli,
+          type : 'GET', 
+          data : {codtrans:cod}, 
+          dataType: 'json', 
+          success : function(json) {
+                            resulta1=json['success'];
+                                                  
+                     }, //fin funcion success ajax 1
+                    error : function(xhr,errmsg,err) {
+                     console.log(xhr.status + ': ' + xhr.responseText);
+                            } //fin de funcion  error ajax 1
+        }).then(function(){ 
+           
+            if(resulta1['compromete_proveedor']=='0'){
+               $('#id_proveedor').hide(); 
+            }else{
+               $('#id_proveedor').show(); 
+            }
+            
+            if(resulta1['afecta_precio']=='0'){
+                   $('#id_codmon').hide();    
+                      $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
+        	         $('#'+this.id).hide();
+                       });  
+            } else{
+                  $('#id_codmon').show(); 
+                $('#colector_tabular').find('input[name$=\"][punit]\"]').each(function(){
+        	        $('#'+this.id).show();
+                        });  
+            }
+            
+             
+           
+
+       });
+     $.pjax.reload({container: '#zona-scripts', async: false});
+});
+
+", \yii\web\View::POS_LOAD);
+    ?> 
+
+<?php Pjax::end();?>   
+ 
+    
+    </div>

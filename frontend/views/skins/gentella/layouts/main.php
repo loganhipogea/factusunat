@@ -33,13 +33,14 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
      * 'estilo_ajustes'=>'@web/css/gentellela_ajustes_atpumps.css',
       'estilo_adminlte_ajustes'=>'@web/css/Adminlte_personalizado.css', 
      */
+   $this->registerCssFile(Yii::$app->params['estilo_adminlte_ajustes'],
+           ['depends' => [yiister\gentelella\assets\Asset::className()]]
+            );
     $this->registerCssFile(Yii::$app->params['estilo_ajustes'], 
            ['depends' => [yiister\gentelella\assets\Asset::className()]]);
     ?>
     <?php
-    $this->registerCssFile(Yii::$app->params['estilo_ajustes'],
-           ['depends' => [yiister\gentelella\assets\Asset::className()]]
-            );
+    
     $cache=h::cache();
     ?>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

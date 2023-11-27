@@ -29,6 +29,7 @@ class Cargos extends \common\models\base\modelBase
     {
         return [
             [['hh'], 'number'],
+            [['descricargo','codcargo'], 'required'],
             [['descricargo'], 'string', 'max' => 40],
             [['codcargo'], 'string', 'max' => 6],
         ];

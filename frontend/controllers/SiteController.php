@@ -340,6 +340,29 @@ class SiteController extends Controller
   public function actionRutas()
     {
       $model=New \frontend\modules\mat\models\MatDetvale();
+      $model->setAttributes([
+          'vale_id'=>1,
+          'um'=>'UN',
+          'cant'=>575,
+          'codart'=>'100206',
+          'punit'=>null,
+      ]);
+      //PRINT_R($model->activeAttributes()); DIE();
+      /*foreach($model->getActiveValidators() as $validator){
+         echo  $validator->className()."<br>";
+          foreach($validator->attributeNames as $name){
+             echo "--->". $name."<br>"; 
+          }
+          echo "--FIN<br><br>--";
+      }*/
+     
+      VAR_DUMP($model->validate());
+   // PRINT_R($model->getErrors());
+      DIE();
+     
+      
+      
+      
       var_dump($model instanceof \common\interfaces\CosteoInterface); 
       die();
       

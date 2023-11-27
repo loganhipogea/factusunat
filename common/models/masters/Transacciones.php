@@ -14,6 +14,10 @@ use Yii;
  *
  * @property Transadocs[] $transadocs
  */
+
+
+
+
 class Transacciones extends \common\models\base\modelBase
 {
     /**
@@ -24,9 +28,32 @@ class Transacciones extends \common\models\base\modelBase
         return '{{%transacciones}}';
     }
    public $booleanFields=[
-       'exigirvalidacion',
-       'afecta_reserva','es_servicio',
-       'exigehistorial'];
+       'exigirvalidacion',/*True Si exige validar el  
+        * numero documento refereciaque respalda 
+        * la transaccion, por ejemplo: Si se coloca un
+        * numero de guia rem, este numero debe de
+        * existir como registro MOdelo en la base de datos
+        * del sistema
+        * 
+        */
+       'afecta_precio',//Si el movimiento afectara la valorizacion del inventario
+       'afecta_reserva',/*Si el movimiento implica modificar cantidades
+        * reservadas
+        * por ejemplo una salida para atender un requeremiento
+        * debe de jalar de una reserva
+        * debe de 
+        */
+       'es_servicio',//Para servicios
+       'compromete_proveedor',/*Si el movimiento compromete a un proveedor
+        * pore ejemplo ingreso por compra o consignacion
+        */
+       'exigehistorial'/*
+        * Si el movimiento exige un registro de stock 
+        * osea debe de haber un registro de stock para este
+        * material,por ejemplo cuando sacas 
+        * un material 
+        */
+       ];
     /**
      * {@inheritdoc}
      */
@@ -36,7 +63,7 @@ class Transacciones extends \common\models\base\modelBase
             [['codtrans', 'descripcion', 'signo'], 'required'],
             [['signo'], 'integer'],
             [['detalles'], 'string'],
-            [['exigirvalidacion','afecta_reserva','es_servicio','exigehistorial','afecta_precio','inversa_id'], 'safe'],
+            [['exigirvalidacion','afecta_reserva','es_servicio','exigehistorial','afecta_precio','inversa_id','compromete_proveedor'], 'safe'],
             [ ['codtrans'],
                 'match', 
                 'pattern' => '/[1-9]{1}[0-9]{2}/',

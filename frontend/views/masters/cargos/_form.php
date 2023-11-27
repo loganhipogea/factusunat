@@ -11,7 +11,10 @@ use yii\widgets\ActiveForm;
 <div class="cargos-form">
     <br>
     <?php $form = ActiveForm::begin([
-    'fieldClass'=>'\common\components\MyActiveField'
+          'id'=>'my-form-cargo',
+         'fieldClass'=>'\common\components\MyActiveField',
+        'enableAjaxValidation'=>true,
+     
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">

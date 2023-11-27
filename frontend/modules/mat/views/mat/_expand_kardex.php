@@ -23,22 +23,34 @@ use yii\widgets\Pjax;
    
     <?php
     $dataProvider=new \yii\data\ActiveDataProvider([
-                'query'=> \frontend\modules\mat\models\MatVwKardex::find()->andWhere(['codart'=>$model->codart,'codal'=>$model->codal]),
+                'query'=> \frontend\modules\mat\models\MatVwKardex::find()
+            ->andWhere(['codart'=>$model->codart,'codal'=>$model->codal])
+            ->orderBy(['fecha'=>SORT_DESC]),
             ]);
   ?>
     </div>
 
 <div class="row">
-<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
     ghgh
 </div>
-<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
      <?php ECHO GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         // 'summary' => '',
         //'tableOptions'=>['class'=>".thead-dark table table-condensed table-hover table-bordered table-striped"],
         'columns' => [
+            ['attribute'=>'signo',
+                 'header'=>'...',
+                 'format'=>'html',
+                //'headerOptions' => ['style' => 'width:20%'],
+                  'value'=>function ($model){
+                    $flecha=($model->signo>0)?'fa fa-arrow-down':'fa fa-arrow-up';
+                    $color=($model->signo>0)?'red':'green';
+                    return '<i style="font-size:1.5em;color:'.$color.';"><span class="'.$flecha.'"></span></i>';
+                     }
+                ],
             'cant',
             'fecha',
             'despro',
