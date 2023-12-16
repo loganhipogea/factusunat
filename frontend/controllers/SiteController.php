@@ -339,6 +339,17 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      
+      \frontend\modules\mat\models\MatDetNe::findOne(17)->createOp();DIE();
+      
+      
+      
+      echo \common\models\masters\MaestrocompoSol::generateCode('130117');
+      die();
+      
+      echo SUBSTR('T'.\common\helpers\h::userId(). microtime().'',0,9); die();
+      
+      
       $model=New \frontend\modules\mat\models\MatDetvale();
       $model->setAttributes([
           'vale_id'=>1,

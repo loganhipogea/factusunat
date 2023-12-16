@@ -60,12 +60,14 @@ class ImageWidget extends \yii\widgets\InputWidget
           throw new \yii\base\Exception(Yii::t('base.errors', 'This model doesn\'t have file Attachment behavior '));
      }
    if(count($files)==0){
+       
        if($this->isImage)
        return FileHelper::UrlEmptyImage();
        return FileHelper::UrlEmptyFile();
    }else{
+       
        if($this->isImage)
-      return $this->model->getPathFirstImage();
+       return $this->model->getPathFirstImage();
         return FileHelper::UrlSomeFile();
    }
 

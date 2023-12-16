@@ -7,6 +7,7 @@ use Yii;
 use common\behaviors\CodocuBehavior;
 use common\interfaces\CosteoInterface;
 use common\models\masters\VwSociedades;
+use frontend\modules\mat\models\MatDetNe;
 /**
  * This is the model class for table "{{%op_os}}".
  *
@@ -54,7 +55,7 @@ implements CosteoInterface,
     {
         return [
             [['proc_id'], 'required'],
-             [['item','codcen'], 'safe'],
+             [['item','codcen','detgui_id','codart','orden','ot','finprog','fin','codest','avance'], 'safe'],
             [['proc_id'], 'integer'],
             [['textocomercial', 'textointerno', 'textotecnico'], 'string'],
             [['numero'], 'string', 'max' => 10],
@@ -110,6 +111,12 @@ implements CosteoInterface,
      public function getProceso()
     {
         return $this->hasOne(OpProcesos::className(), ['id' => 'proc_id']);
+    }
+    
+    
+      public function getIngreso()
+    {
+        return $this->hasOne(MatDetNe::className(), ['id' => 'detgui_id']);
     }
      public function getDetalles()
     {
@@ -181,5 +188,9 @@ implements CosteoInterface,
     public static function buscarporNumero($numero){
         return self::findOne(['numero'=>$numero]);
     } 
+    
+    public function hasIngreso(){
+        return $this->detgui_id>0;
+    }
      
 }

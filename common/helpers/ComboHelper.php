@@ -263,6 +263,24 @@ class ComboHelper  {
         return \common\models\masters\VwSociedades::companiesList($except);
     }
     
+     public static function getCboSucursales($codpro=null){
+        $query= \common\models\masters\Centros::find();        
+        if(!is_null($codpro)){
+            return ArrayHelper::map(
+                $query->
+                 andWhere(['codpro'=>$codpro])->
+                all(),
+                'codcen','nomcen');
+        }else{
+            return ArrayHelper::map(
+                $query->all(),
+                'codcen','nomcen'); 
+        }
+         
+    }
+    
+    
+    
     public static function awesomeList(){
         return [
 'fa-500px'=>"<span class='fa fa-500px'>",
@@ -1094,5 +1112,13 @@ class ComboHelper  {
         \common\models\masters\Combovalores::find()->distinct('nombretabla')->all(),
                 'nombretabla','nombretabla');
     }  
+    
+    
+     public static function getCboFamilias(){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\Familia::find()->all(),
+                'id','descrifam');
+}
     
 }

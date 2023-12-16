@@ -1,11 +1,11 @@
 <?php
 
 namespace frontend\modules\mat\models;
-use common\helpers\h;
+
 use Yii;
 
 /**
- * This is the model class for table "{{%mat_activos}}".
+ * This is the model class for table "mat_activos".
  *
  * @property int $id
  * @property string|null $codigo
@@ -17,18 +17,38 @@ use Yii;
  * @property int|null $vida_util
  * @property float|null $v_rescate
  * @property int|null $parent_id
+ * @property string|null $codart
+ * @property string|null $tipo
+ * @property string|null $codsoc
+ * @property string|null $codocu
+ * @property string|null $codestado
+ * @property string|null $modalidad
  */
 class MatActivos extends \common\models\base\modelBase
 {
     /**
      * {@inheritdoc}
      */
-    public $prefijo='98';
     public static function tableName()
     {
-        return '{{%mat_activos}}';
+        return 'mat_activos';
     }
 
+     public function behaviors()
+         {
+                return [
+		
+		'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' 
+                               ],
+                    'auditoriaBehavior' => [
+			'class' => '\common\behaviors\AuditBehavior' ,
+                               ],
+		
+                    ];
+        }
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -37,7 +57,13 @@ class MatActivos extends \common\models\base\modelBase
         return [
             [['v_adquisicion', 'v_rescate'], 'number'],
             [['vida_util', 'parent_id'], 'integer'],
-            [['codigo', 'descripcion', 'marca', 'modelo', 'serie'], 'string', 'max' => 50],
+            [['codigo'], 'string', 'max' => 10],
+            [['descripcion'], 'string', 'max' => 60],
+            [['marca', 'modelo', 'serie'], 'string', 'max' => 50],
+            [['codart'], 'string', 'max' => 14],
+            [['tipo', 'codsoc', 'modalidad'], 'string', 'max' => 1],
+            [['codocu'], 'string', 'max' => 3],
+            [['codestado'], 'string', 'max' => 2],
         ];
     }
 
@@ -57,6 +83,12 @@ class MatActivos extends \common\models\base\modelBase
             'vida_util' => Yii::t('app', 'Vida Util'),
             'v_rescate' => Yii::t('app', 'V Rescate'),
             'parent_id' => Yii::t('app', 'Parent ID'),
+            'codart' => Yii::t('app', 'Codart'),
+            'tipo' => Yii::t('app', 'Tipo'),
+            'codsoc' => Yii::t('app', 'Codsoc'),
+            'codocu' => Yii::t('app', 'Codocu'),
+            'codestado' => Yii::t('app', 'Codestado'),
+            'modalidad' => Yii::t('app', 'Modalidad'),
         ];
     }
 
@@ -68,32 +100,4 @@ class MatActivos extends \common\models\base\modelBase
     {
         return new MatActivosQuery(get_called_class());
     }
-    
-    public function beforeSave($insert) {
-        if($insert){
-            $this->codigo=$this->correlativo('codigo');
-        }
-            
-        return parent::beforeSave($insert);
-    }
-    
-    
-     public function getCostosHora()
-    {
-        return $this->hasMany(MatActivoscecos::className(), ['activo_id' => 'id']);
-    }
-    
-    
-    public function costoHora($codmon = \common\models\masters\Tipocambio::COD_MONEDA_BASE){
-      $valor=  $this->getCostosHora()->select(['sum(valor)'])->scalar();
-      if($valor > 0 and h::tipoCambio($codmon)['compra']>0){
-          return $valor/h::tipoCambio($codmon)['compra'];
-      }else{
-          return 0;
-      }
-          
-    }
-    
-    
-    
 }

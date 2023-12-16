@@ -11,6 +11,7 @@ use common\models\masters\Combovalores;
  */
 class baseMigration extends Migration
 {
+    //use \yii\db\SchemaBuilderTrait;
     private $_tabla='{{%fks}}';
     public $paramsFk=[];
     
@@ -136,10 +137,11 @@ class baseMigration extends Migration
               if($valor=='Z'){
                   return false;
               }else {
-                  $code=self::selectLetter($key); 
+                  
                   Combovalores::firstOrCreateStatic([
             'nombretabla'=>$realNameTable.'.'.$namefield,
-            'codigo'=>$code,
+            'codigo'=>$key.'',
+                      
              'valor'=>$valor,
             ]);
                   return true;                  
@@ -258,7 +260,15 @@ class baseMigration extends Migration
                    );
            $this->deleteLogFk(); 
        }           
-    } 
+    }
+    
+    
+    public function getColumnSize($table,$field){
+        $this->getDb()->
+                schema->getTableSchema($table)->
+                getColumn($field)->size;
+    }
+    
        
    }
             

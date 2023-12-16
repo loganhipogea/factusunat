@@ -53,7 +53,10 @@
       "longman/telegram-bot": "^0.78.0",
       "aki/yii2-bot-telegram": "*",
       "yiisoft/yii2-imagine": "^2.3",
-      "codiverum/yii2-relation-search-filter": "*"
+      "codiverum/yii2-relation-search-filter": "*",
+      "kartik-v/yii2-slider": "*",
+      "wbraganca/yii2-fancytree-widget": "*",
+      "yii2mod/yii2-tree": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

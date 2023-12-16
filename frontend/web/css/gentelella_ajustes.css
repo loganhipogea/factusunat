@@ -10,9 +10,21 @@ AJUSTES PARA EL MENU LATERAL EL BODY DEBE DE COIDIR CO EL COLOR
 */
 body {
     
-    background: #671a60 !important;
+    background: #11105a !important;
     
 }
+
+
+/*
+corregir el color del nav bar
+*/.nav_menu {
+    border-bottom: 1px solid #f3dcc9 !important;
+    background: #fff9d5 !important;
+}
+
+
+
+
 
 
 /*
@@ -22,7 +34,7 @@ y tambien los links d elos tabs
 */
  .nav>a,
 .nav-tabs > li > a {
-    color: #90be49 !important;
+    color: #ffcfaa !important;
     text-decoration: none;
  }
  .nav>a:over,
@@ -49,7 +61,7 @@ al pasar el mouse a:hover,a:active,a:focus,
 
 .nav-sm ul.nav.child_menu a:hover, .nav-sm ul.nav.child_menu a:active, .nav-sm ul.nav.child_menu a:focus, .nav.child_menu>li>a:hover, .nav.child_menu>li>a:active, .nav.child_menu>li>a:focus, .nav.side-menu>li.active>a {
     color: #fffbfb !important;
-    background: #581a4b !important;
+    background: #081275 !important;
 }
 
 div.box {
@@ -101,7 +113,7 @@ Corregir el color del boton verde del success
 EL color del link
 */
 th a {
-    color: #52c0ff!important;    
+    color: #a1751c!important;    
 }
 
 /*
@@ -168,11 +180,11 @@ input:-internal-autofill-selected {
 /*Selccion del meni
 */
 .nav.side-menu>li.current-page, .nav.side-menu>li.active {
-    border-right: 5px solid #90be49 !important;
+    border-right: 5px solid #fb7340 !important;
 }
 
 .nav-sm .nav.child_menu li.active, .nav-sm .nav.side-menu li.active-sm {
-    border-right: 5px solid #c7db3d !important;
+    border-right: 5px solid #f38959 !important;
 };
 
 .table > thead > tr > td.info, .table > tbody > tr > td.info, .table > tfoot > tr > td.info, .table > thead > tr > th.info, .table > tbody > tr > th.info, .table > tfoot > tr > th.info, .table > thead > tr.info > td, .table > tbody > tr.info > td, .table > tfoot > tr.info > td, .table > thead > tr.info > th, .table > tbody > tr.info > th, .table > tfoot > tr.info > th {
@@ -203,12 +215,11 @@ input:-internal-autofill-selected {
 AJUSTES PARA EL PANEL IZQUIERDO DEL MENU
 */
 .left_col {
-    background: #671a60;
+    background: #11105a;
 }
 .nav_title {
    
-    background: #4b2a54 !important;
-
+background: #081275 !important;
 }
 .sidebar-footer a:hover {
     background: #3c084d !important;
@@ -270,3 +281,19 @@ div.required .control-label:not(span):after, td.required:after {
     font-weight: bold;
 }
 
+
+th a:hover {
+  color: #fb5303 !important;
+}
+
+th a {
+    color: #d17455!important;
+}
+
+hr {
+    border-top: 1px dashed #8685e9 !important;
+}
+
+.kv-grid-table {
+    color: #767272 !important;
+}

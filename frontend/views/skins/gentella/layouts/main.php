@@ -59,7 +59,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/" class="site_title"><?=Html::img(Yii::$app->params['logo'], ['alt' => 'Logo','width'=>20,'height'=>20]); ?>  <span><?=Yii::$app->params['name']?></span></a>
+                    <a href="/" class="site_title"><?=Html::img(Yii::$app->params['logo'], ['alt' => '','width'=>20,'height'=>20]); ?>  <span><?=Yii::$app->params['name']?></span></a>
                 </div>
                 <div class="clearfix"></div>
 
@@ -74,7 +74,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     <div class="form-group field-clipro-codpro">
                     <?= \yii\helpers\Html::dropDownList(
                     'cboFavorites',null,\common\helpers\h::getCboFavorites(),
-                    ['prompt'=>'--'.yii::t('base.names','Escoja dirección').'--','id'=>'cboFavorites','class'=>'form-control btn btn-success ']) ?>
+                    ['prompt'=>'--'.yii::t('base.names','Escoja dirección').'--','id'=>'cboFavorites','class'=>'form-control btn btn-warning ']) ?>
                 </div>
                     
                     <div class="menu_section">
@@ -289,10 +289,10 @@ echo ModalAjax::widget([
                            
                                     <?php 
                                 if($cache->exists(VwSociedades::keyCache())){
-                                    yii::error('en el layourt main, emcomntro la sesion SOCIEDADES');
-                                     echo substr(VwSociedades::despro(),0,10); 
+                                    //yii::error('en el layourt main, emcomntro la sesion SOCIEDADES');
+                                     //echo substr(VwSociedades::despro(),0,10); 
                                 }else{
-                                    yii::error('en el layourt main, NO emcomntro la sesion SCIEDADE');
+                                   // yii::error('en el layourt main, NO emcomntro la sesion SCIEDADE');
                                 }
                                
                                 if(\yii::$app->session->has(Centros::keyCache())){
@@ -320,8 +320,8 @@ echo ModalAjax::widget([
                         
                          <li role="presentation" class="dropdown">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-money" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i>
-                                <?php echo \common\helpers\h::tipoCambio('USD')['compra'] ?>/<?php echo \common\helpers\h::tipoCambio('USD')['venta'] ?>
+                                <!--<i class="fa fa-money" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i> -->
+                                <?php //echo \common\helpers\h::tipoCambio('USD')['compra'] ?>/<?php //echo \common\helpers\h::tipoCambio('USD')['venta'] ?>
                             </a>
                             
                         </li>

@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Costos asociados'), //$this->context->countDetail() obtiene el contador del detalle
-            'content'=> $this->render('_costos',[ 'model' => $model]),
+          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Tutores'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_segunda',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],
         ],

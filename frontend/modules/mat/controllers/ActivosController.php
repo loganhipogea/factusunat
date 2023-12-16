@@ -5,7 +5,7 @@ namespace frontend\modules\mat\controllers;
 use Yii;
 use frontend\modules\mat\models\MatActivos;
 use frontend\modules\mat\models\MatActivosSearch;
-use common\controllers\base\baseController;
+use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\h;

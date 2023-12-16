@@ -76,5 +76,42 @@ class MaestrocompoSearch extends Maestrocompo
         return $dataProvider;
     }
     
-   
+    public function search_by_grupo($params)
+    {
+        $query = Maestrocompo::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+                   
+                    
+         if(empty($this->descripcion)){
+          $query->andFilterWhere(['like', 'codart', $this->codart])
+            ->andFilterWhere(['like', 'marca', $this->marca])
+            ->andFilterWhere(['codtipo'=> $this->codtipo])
+            ->andFilterWhere(['like', 'numeroparte', $this->numeroparte])     
+            ->andFilterWhere(['like', 'modelo',$this->modelo]);     
+         }else{
+                    $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$this->descripcion.'%');
+                    $likeCondition->setEscapingReplacements(false);
+                $query->andWhere($likeCondition);
+         }
+        
+        
+           
+
+        return $dataProvider;
+    }
 }

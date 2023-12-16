@@ -630,4 +630,21 @@ class ProcController extends baseController
                   }  
                   }  
    }
+   
+   
+   
+    /**
+     * Lists all OpProcesos models.
+     * @return mixed
+     */
+    public function actionIndexOs()
+    {
+        $searchModel = new OpOsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_os', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 }

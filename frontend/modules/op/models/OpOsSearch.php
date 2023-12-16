@@ -18,7 +18,7 @@ class OpOsSearch extends OpOs
     {
         return [
             [['id'], 'integer'],
-            [['descripcion','numero', 'textotecnico', 'textointerno'], 'safe'],
+            [['descripcion','numero', 'textotecnico', 'textointerno','orden','ot'], 'safe'],
         ];
     }
 
@@ -38,7 +38,7 @@ class OpOsSearch extends OpOs
      *
      * @return ActiveDataProvider
      */
-    public function searchByProc($params,$id)
+    public function search($params)
     {
         $query = OpOs::find();
 
@@ -56,19 +56,17 @@ class OpOsSearch extends OpOs
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'proc_id' => $id,
-           
-        ]);
+       
        
         $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
-       ->andFilterWhere(['like', 'textointerno', $this->textointerno])
-        ->andFilterWhere(['like', 'numero', $this->numero])
-          ->andFilterWhere(['like', 'textotecnico', $this->textotecnico]);      
+       //->andFilterWhere(['like', 'textointerno', $this->textointerno])
+        ->andFilterWhere(['like', 'orden', $this->orden])
+          ->andFilterWhere(['like', 'ot', $this->ot])
+                //
+                ;      
             //->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])
                 
-                ;
+               // ;
         
 //echo $query->createCommand()->rawSql;die();
         return $dataProvider;

@@ -8,7 +8,7 @@ use dosamigos\ckeditor\CKEditor;
 use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
  use yii\helpers\Url;
-
+use kartik\slider\Slider;
 
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
    </div>
-   <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
       <?= $form->field($model, 'fechaprog')->widget(DatePicker::class, [
                             'language' => h::app()->language,
                            'pluginOptions'=>[
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
                                 ]
                             ]) ?>
  </div>
-   <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
       <?= $form->field($model, 'fechaini')->widget(DatePicker::class, [
                             'language' => h::app()->language,
                            'pluginOptions'=>[
@@ -88,7 +88,38 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
                                 ]
                             ]) ?>
  </div>
-  
+   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <?= $form->field($model, 'finprog')->widget(DatePicker::class, [
+                            'language' => h::app()->language,
+                           'pluginOptions'=>[
+                                     'format' => h::gsetting('timeUser', 'date')  , 
+                                   'changeMonth'=>true,
+                                  'changeYear'=>true,
+                                 'yearRange'=>'2014:'.date('Y'),
+                               ],
+                          
+                            //'dateFormat' => h::getFormatShowDate(),
+                            'options'=>['class'=>'form-control',
+                               //'disabled'=>(!$aprobado)?false:true  
+                                ]
+                            ]) ?>
+ </div>
+   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <?= $form->field($model, 'fin')->widget(DatePicker::class, [
+                            'language' => h::app()->language,
+                           'pluginOptions'=>[
+                                     'format' => h::gsetting('timeUser', 'date')  , 
+                                   'changeMonth'=>true,
+                                  'changeYear'=>true,
+                                 'yearRange'=>'2014:'.date('Y'),
+                               ],
+                          
+                            //'dateFormat' => h::getFormatShowDate(),
+                            'options'=>['class'=>'form-control',
+                              // 'disabled'=>(!$aprobado)?false:true  
+                                ]
+                            ]) ?>
+ </div>
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
      <?php 
   // $necesi=new Parametros;
@@ -107,10 +138,34 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Volver a Proceso');
      <?= $form->field($model, 'codpro')->textInput(['maxlength' => true,'value'=>$model->cliente->despro]) ?>
 
  </div>
-  
-    
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'orden')->textInput(['maxlength' => true]) ?>
+
+ </div>
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'ot')->textInput(['maxlength' => true]) ?>
+
+       
+     
+ </div> 
  
   
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">        
+   <?php  echo Slider::widget([
+    'sliderColor' => Slider::TYPE_DANGER,
+    'handleColor' => Slider::TYPE_DANGER,
+    'model'=>$model,
+       'attribute'=>'avance',
+    'pluginOptions' => [
+        'orientation' => 'horizontal',
+        'handle' => 'round',
+        'min' => 0,
+        'max' => 100,
+        'step' => 1
+    ],
+]);
+   ?>
+   </div>         
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <?PHP
      echo $form->field($model, 'textointerno')

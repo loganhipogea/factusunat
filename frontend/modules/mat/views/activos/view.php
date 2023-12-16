@@ -39,6 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'vida_util',
             'v_rescate',
             'parent_id',
+            'codart',
+            'tipo',
+            'codsoc',
+            'codocu',
+            'codestado',
+            'modalidad',
         ],
     ]) ?>
 

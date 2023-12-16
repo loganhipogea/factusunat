@@ -18,7 +18,7 @@ class MatActivosSearch extends MatActivos
     {
         return [
             [['id', 'vida_util', 'parent_id'], 'integer'],
-            [['codigo', 'descripcion', 'marca', 'modelo', 'serie'], 'safe'],
+            [['codigo', 'descripcion', 'marca', 'modelo', 'serie', 'codart', 'tipo', 'codsoc', 'codocu', 'codestado', 'modalidad'], 'safe'],
             [['v_adquisicion', 'v_rescate'], 'number'],
         ];
     }
@@ -70,7 +70,13 @@ class MatActivosSearch extends MatActivos
             ->andFilterWhere(['like', 'descripcion', $this->descripcion])
             ->andFilterWhere(['like', 'marca', $this->marca])
             ->andFilterWhere(['like', 'modelo', $this->modelo])
-            ->andFilterWhere(['like', 'serie', $this->serie]);
+            ->andFilterWhere(['like', 'serie', $this->serie])
+            ->andFilterWhere(['like', 'codart', $this->codart])
+            ->andFilterWhere(['like', 'tipo', $this->tipo])
+            ->andFilterWhere(['like', 'codsoc', $this->codsoc])
+            ->andFilterWhere(['like', 'codocu', $this->codocu])
+            ->andFilterWhere(['like', 'codestado', $this->codestado])
+            ->andFilterWhere(['like', 'modalidad', $this->modalidad]);
 
         return $dataProvider;
     }

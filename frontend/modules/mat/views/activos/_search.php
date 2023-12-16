@@ -38,6 +38,18 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'parent_id') ?>
 
+    <?php // echo $form->field($model, 'codart') ?>
+
+    <?php // echo $form->field($model, 'tipo') ?>
+
+    <?php // echo $form->field($model, 'codsoc') ?>
+
+    <?php // echo $form->field($model, 'codocu') ?>
+
+    <?php // echo $form->field($model, 'codestado') ?>
+
+    <?php // echo $form->field($model, 'modalidad') ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
