@@ -4,13 +4,14 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 USE common\helpers\h;
 use yii\widgets\ActiveForm;
-use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
-use  common\widgets\selectwidget\selectWidget;
+//use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
+//use  common\widgets\selectwidget\selectWidget;
 use frontend\modules\mat\helpers\comboHelper;
 use yii\widgets\Pjax;
-use yii\grid\GridView;
+//use yii\grid\GridView;
 use common\widgets\inputajaxwidget\inputAjaxWidget;
-use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
+//use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
+  USE common\helpers\FileHelper as Fl;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\mat\models\MatReq */
 /* @var $form yii\widgets\ActiveForm */
@@ -33,7 +34,7 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                <div class="btn-group">  
         <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
            <?php 
-           
+            $ext= json_encode(array_merge(Fl::extImages(),Fl::extDocs()));
                 /*echo Html::button( '<span class="fa fa-check-circle"></span>   '.Yii::t('base.names', 'Aprobar'),
                   ['class' => 'btn btn-success','href' => '#','id'=>'btn-aprobar']
                  );
@@ -41,12 +42,31 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                   ['class' => 'btn btn-danger','href' => '#','id'=>'btn-anular']
                  );
             
+           */
            
-           
-            $url=Url::to(['/mat/mat/make-pdf-vale','id'=>$model->id]);
+                $url=Url::to(['/mat/mov/make-pdf-ne','id'=>$model->id]);
                  echo Html::a('<span class="fa fa-print" ></span> Imprimir',$url,['target'=>'_blank','data-pjax'=>'0','class'=>"btn btn-danger"]);
                 
-            */
+                  $url=\yii\helpers\Url::toRoute(['/finder/audit','isImage'=>false,'idModal'=>'imagemodal','modelid'=>$model->id,'nombreclase'=> str_replace('\\','_',$model::className())]);
+                        $options = [
+                            'title' => Yii::t('app', 'C. cambios'),
+                            //'aria-label' => Yii::t('rbac-admin', 'Activate'),
+                            //'data-confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
+                            'data-method' => 'get',
+                            //'data-pjax' => '0',
+                        ];
+                        echo Html::button('<span class="fa fa-bars"></span>'.Yii::t('app', 'C. cambios'), ['href' => $url, 'title' => 'Auditoría', 'class' => 'botonAbre btn btn-warning']);
+                        //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
+                     
+                  $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
+                             'idModal'=>'imagemodal',
+                             'extension'=>$ext,
+                             'grillas'=>'cabecera',
+                             'modelid'=>$model->id,
+                             'nombreclase'=> str_replace('\\','_',get_class($model))]);
+                       
+                        echo Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-success']);
+                       
                ?> 
                 </div>
             </div>
@@ -126,7 +146,19 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
                                 ]
                             ]) ?>
  </div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+     <?= $form->field($model, 'numdocref')->textInput(['maxlength' => true,]) ?>
  
+ </div>  
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">    
+ <?= $form->field($model, 'codocuref')->
+            dropDownList(comboHelper::getCboDocuments(),
+                  ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>$bloqueado,
+                        ]
+                    ) ?>
+ </div> 
 
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <?= $form->field($model, 'detalle')->textArea(['disabled'=>(!$bloqueado)?false:true  ]) ?>

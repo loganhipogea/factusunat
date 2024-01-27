@@ -21,7 +21,7 @@ class columnGridAudit extends DataColumn
                             'data-method' => 'get',
                             //'data-pjax' => '0',
                         ];
-                        return Html::button('<span class="fa fa-route"></span>', ['href' => $url, 'title' => 'Auditoría', 'class' => 'botonAbre btn btn-success']);
+                        return Html::button('<span class="fa fa-list"></span>', ['href' => $url, 'title' => 'Auditoría', 'class' => 'botonAbre btn btn-warning']);
                         //return Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', Url::toRoute(['view-profile','iduser'=>$model->id]), []/*$options*/);
                      
                         

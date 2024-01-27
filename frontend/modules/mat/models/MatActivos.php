@@ -59,6 +59,7 @@ class MatActivos extends \common\models\base\modelBase
             [['vida_util', 'parent_id'], 'integer'],
             [['codigo'], 'string', 'max' => 10],
             [['descripcion'], 'string', 'max' => 60],
+             [['texto_interno','texto_comercial','cod_altern'], 'safe'],
             [['marca', 'modelo', 'serie'], 'string', 'max' => 50],
             [['codart'], 'string', 'max' => 14],
             [['tipo', 'codsoc', 'modalidad'], 'string', 'max' => 1],
@@ -99,5 +100,24 @@ class MatActivos extends \common\models\base\modelBase
     public static function find()
     {
         return new MatActivosQuery(get_called_class());
+    }
+    
+    
+     public function getMaterial()
+    {
+        return $this->hasOne(\common\models\masters\Maestrocompo::className(), ['codart' => 'codart']);
+    }
+    
+    public function getPartes()
+    {
+        return $this->hasOne(MatDespiece::className(), ['activo_id' => 'id']);
+    }
+    
+    public function hasPartes(){
+        return $this->getPartes()->count() >0;
+    }
+    
+    public function getChilds($as_array=true){
+        
     }
 }

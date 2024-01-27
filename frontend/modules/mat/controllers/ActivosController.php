@@ -107,8 +107,21 @@ class ActivosController extends baseController
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        if($model->hasPartes()){
+           
+        }else{
+           $arr_arbol=[[              
+            'icon'=>'fa fa-dropbox',
+            'key'=>'_'.$model->id,
+            'title'=>$model->descripcion,
+             'children'=> \frontend\modules\mat\models\MatDespiece::findOne(1)->childsTreeRecursive() ,   
+           ]]; 
+        }
+        
+        
         return $this->render('update', [
             'model' => $model,
+            'arr_arbol'=> $arr_arbol,
         ]);
     }
 
@@ -141,4 +154,7 @@ class ActivosController extends baseController
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+    
+    
+    
 }

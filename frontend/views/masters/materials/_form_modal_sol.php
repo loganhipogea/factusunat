@@ -2,7 +2,7 @@
  
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\helpers\ComboHelper;
+use frontend\modules\mat\helpers\comboHelper;
 use yii\widgets\ActiveForm;
 use common\behaviors\FileBehavior;
 
@@ -46,11 +46,11 @@ use common\behaviors\FileBehavior;
 </div>  
 
     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-    <?= $form->field($model, 'descrimanual')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'descrimanual')->textInput(['maxlength' => true,'disabled'=>$model->subido]) ?>
 </div>
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true,'disabled'=>$model->subido]) ?>
 </div>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?= $form->field($model, 'caracteristicas')->textInput(['maxlength' => true]) ?>
@@ -58,9 +58,21 @@ use common\behaviors\FileBehavior;
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?= $form->field($model, 'infotecnica')->textArea([]) ?>
 </div>
-   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
     <?= $form->field($model, 'subido')->checkbox([]) ?>
 </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <?= $form->field($model, 'activo')->checkbox([]) ?>
+</div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <?= $form->field($model, 'proyecto')->
+            dropDownList(comboHelper::getCboProyectosAbiertos() ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                        ]
+                    ) ?>
+    </div>    
+    
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <?= $form->field($model, 'obs')->textArea([]) ?>
 </div>

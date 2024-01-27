@@ -44,7 +44,7 @@ class MovController extends baseController
      */
     public function actionIndexNe()
     {
-         //$this->layout="install";
+         //$this->layout="/install";
         $searchModel = new MatVwIngresosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -400,7 +400,7 @@ class MovController extends baseController
         }else{
            return $this->renderAjax('_modal_crea_item_ne', [
                         'model' => $modeldet,
-                        'id' => $modeldet->id,
+                        'id' => $modeldet->guia_id,
                         'gridName'=>h::request()->get('gridName'),
                         'idModal'=>h::request()->get('idModal'),
                         //'cantidadLibres'=>$cantidadLibres,
@@ -425,5 +425,90 @@ public function actionAjaxAnulaDetalleItem($id){
             
          }     
    }
+   
+ public function actionMakePdfNe($id){
+        $this->layout="reportes";
+        $rutaTemporal = \yii::getAlias('@temp');
+        $nombre= uniqid().'.pdf';
+        $model= MatNe::findOne($id);
+        $contenido=$this->render('reporte_ne',['model'=>$model]); 
+        /*return Yii::$app->html2pdf
+    ->convert($contenido)    
+    ->send();*/
+        
+       // echo $contenido; die();
+        $pdf=$this->preparePdf($contenido);
+      //  $pdf->WriteHTML($contenido);
+        $pdf->Output($rutaTemporal .'/'. $nombre, \Mpdf\Output\Destination::INLINE);
+        
+    }
+    public static function  getPdf(){
+               $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+            $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+  $mpdf= new \Mpdf\Mpdf();
+            $mpdf = new \Mpdf\Mpdf([
+                'fontDir' => array_merge($fontDirs,[
+                Yii::getAlias('@fonts')
+                    ]),
+    'fontdata' => $fontData + [
+        'cour' => [
+            'R' => 'Courier.ttf',
+            
+        ],
+       'helvetica' => [
+            'R' => 'Helvetica.ttf',
+            'I' => 'VerdanaBOLD.ttf',
+        ],
+        'verdana' => [
+            'R' => 'Verdana.ttf',
+            'B' => 'VerdanaBOLD.ttf',
+        ],
+        
+    ],
+    'default_font' => 'cour'
+]);
+//print_r($mpdf->fontdata);die();
+          
+          //$mpdf=new \Mpdf\Mpdf();
+          //echo get_class($mpdf);die();
+          /* $pdf->methods=[ 
+           'SetHeader'=>[($model->tienecabecera)?$header:''], 
+            'SetFooter'=>[($model->tienepie)?'{PAGENO}':''],
+        ];*/
+           
+                  
+           $mpdf->simpleTables = false;
+            $mpdf->packTableData = true;
+           //$mpdf->showImageErrors = true;
+           //$mpdf->curlAllowUnsafeSslRequests = true; //Permite imagenes de url externas
+         return $mpdf;
+    }  
+  private function preparePdf($contenidoHtml) {
+        //  $contenidoHtml = \Pelago\Emogrifier\CssInlinerCssInliner::fromHtml($contenidoHtml)->inlineCss()->render();
+        //->renderBodyContent(); 
+        $mpdf = self::getPdf();
+        // $mpdf->SetHeader(['{PAGENO}']);
+        $mpdf->margin_header = 1;
+        $mpdf->margin_footer = 1;
+        $mpdf->setAutoTopMargin = 'stretch';
+        $mpdf->setAutoBottomMargin = 'stretch';
+
+        /*$stylesheet = file_get_contents(\yii::getAlias("@frontend/web/css/bootstrap.min.css")); // external css
+        $stylesheet2 = file_get_contents(\yii::getAlias("@frontend/web/css/reporte.css")); // external css
+        $mpdf->WriteHTML($stylesheet, 1);
+        $mpdf->WriteHTML($stylesheet2,1);*/
+
+        /*$mpdf->DefHTMLHeaderByName(
+                'Chapter2Header', $this->render("/citas/reportes/cabecera")
+        );*/
+        //$mpdf->DefHTMLFooterByName('pie',$this->render("/citas/reportes/footer"));
+        //$mpdf->SetHTMLHeaderByName('Chapter2Header');
+        // $contenidoHtml = \Pelago\Emogrifier\CssInliner::fromHtml($contenidoHtml)->inlineCss($stylesheet)->render();
+        $mpdf->WriteHTML($contenidoHtml);
+        return $mpdf;
+    }    
+   
     
 }

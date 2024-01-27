@@ -80,7 +80,7 @@ use common\helpers\ComboHelper;
             'form'=>$form,
             'campo'=>'codpro',
          'ordenCampo'=>1,
-         'addCampos'=>[2,3],
+         'addCampos'=>[1,2],
         ]);  ?>
 
  </div> 

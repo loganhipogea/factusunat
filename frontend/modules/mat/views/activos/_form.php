@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\masters\VwSociedades;
 USE common\widgets\imagewidget\ImageWidget;
+use  common\widgets\selectwidget\selectWidget;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\mat\models\MatActivos */
 /* @var $form yii\widgets\ActiveForm */
@@ -60,6 +61,23 @@ USE common\widgets\imagewidget\ImageWidget;
      <?= $form->field($model, 'v_rescate')->textInput(['maxlength' => true]) ?>
 
  </div>
+ <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'cod_altern')->textInput(['maxlength' => true]) ?>
+
+ </div>
+  <div id="id_proveedor" class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
+     <?php 
+  // $necesi=new Parametros;
+    echo selectWidget::widget([
+           // 'id'=>'mipapa',
+            'model'=>$model,
+            'form'=>$form,
+            'campo'=>'codart',
+         'ordenCampo'=>1,
+         'addCampos'=>[2,5],
+        ]);  ?>
+
+ </div> 
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'parent_id')->textInput() ?>
 
@@ -119,7 +137,14 @@ USE common\widgets\imagewidget\ImageWidget;
         ])?>
     <?php } ?> 
   </div>    
-      
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'texto_interno')->textArea() ?>
+
+ </div> 
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <?= $form->field($model, 'texto_comercial')->textArea() ?>
+
+ </div> 
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
   </div>
   <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">

@@ -56,7 +56,10 @@
       "codiverum/yii2-relation-search-filter": "*",
       "kartik-v/yii2-slider": "*",
       "wbraganca/yii2-fancytree-widget": "*",
-      "yii2mod/yii2-tree": "*"
+      "yii2mod/yii2-tree": "*",
+      "sjaakp/yii2-timeline": "*",
+      "sjaakp/yii2-dateline": "*",
+      "practically/yii2-chartjs": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

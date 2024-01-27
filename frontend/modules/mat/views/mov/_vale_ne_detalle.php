@@ -84,7 +84,8 @@ USE common\helpers\h;
                 
                 ], 
                         
-                 'cant',          
+                 'cant',  
+                 'serie',
                         
               /*['attribute' => 'valor',
                 'format'=>'raw',
@@ -103,6 +104,9 @@ USE common\helpers\h;
                                                  
                               } 
                 
+                ], 
+             [
+                'class'=>'\common\components\columnGridAudit'
                 ], 
         ],
     ]); ?>

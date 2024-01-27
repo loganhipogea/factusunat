@@ -46,13 +46,13 @@ $this->params['breadcrumbs'][] = <?= $generator->generateString('Update') ?>;
       'encodeLabels'=>false,
     'items' => [
         [
-          'label'=>'<i class="fa fa-home"></i> '.yii::t('sta.labels','Principal'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-home"></i> '.yii::t('app','Principal'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_form',['model' => $model]),
             'active' => true,
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('sta.labels','Tutores'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-users"></i> '.yii::t('app','Tutores'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_segunda',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],

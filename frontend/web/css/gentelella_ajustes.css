@@ -297,3 +297,9 @@ hr {
 .kv-grid-table {
     color: #767272 !important;
 }
+
+ .tachado {
+        text-decoration: line-through;
+        text-decoration-thickness: 2px;
+        color:red;
+      }

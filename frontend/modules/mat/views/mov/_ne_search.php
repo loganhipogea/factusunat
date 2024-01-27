@@ -33,6 +33,12 @@ use yii\widgets\ActiveForm;
      <?= $form->field($model, 'descri')->textInput(['maxlength' => true,  ]) ?>
      
  </div>
+    
+    
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+     <?= $form->field($model, 'serie')->textInput(['maxlength' => true,  ]) ?>
+     
+ </div>
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">    
  <?= $form->field($model, 'rotativo')->
             dropDownList(['1'=>'ROTATIVO','0'=>'CONVENCIONAL'],

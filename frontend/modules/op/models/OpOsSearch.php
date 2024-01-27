@@ -63,7 +63,9 @@ class OpOsSearch extends OpOs
         ->andFilterWhere(['like', 'orden', $this->orden])
           ->andFilterWhere(['like', 'ot', $this->ot])
                 //
-                ;      
+                ;     
+        
+        $query->orderBy(['id'=>SORT_DESC]);
             //->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])
                 
                // ;
@@ -71,4 +73,41 @@ class OpOsSearch extends OpOs
 //echo $query->createCommand()->rawSql;die();
         return $dataProvider;
     }
+    
+     public function searchByProc($params,$id)
+    {
+        $query = OpOs::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'proc_id' => $id,
+           
+        ]);
+       
+        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
+       ->andFilterWhere(['like', 'textointerno', $this->textointerno])
+        ->andFilterWhere(['like', 'numero', $this->numero])
+          ->andFilterWhere(['like', 'textotecnico', $this->textotecnico]);      
+            //->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])
+                
+                ;
+        
+//echo $query->createCommand()->rawSql;die();
+        return $dataProvider;
+    }
+    
 }

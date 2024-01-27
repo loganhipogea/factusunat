@@ -83,7 +83,16 @@ class comboHelper extends Combito
       ];
         
     }  
-    
+    public static function getCboProyectosAbiertos(){
+        $equipos=[
+            'EQ ANFO LOADER #3',
+            'EQ ANFO LOADER #2',
+            'EQ ROCK BREAKER #1',
+            'EQ TRITON DFDF20 2 BRAZOS',
+            'EQ NAUTILUS 2R LITTLE',
+            'EQ TRITON DD311',
+            ];
+      return array_combine($equipos,$equipos);
+    }
 }
-
 

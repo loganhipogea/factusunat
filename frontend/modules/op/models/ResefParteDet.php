@@ -19,6 +19,9 @@ use Yii;
 
 class ResefParteDet extends \common\models\base\modelBase
 {
+    
+    public $codtra=null;
+    
     const SCE_NORMAL='normal';
     
      public $dateorTimeFields = [
@@ -97,4 +100,15 @@ class ResefParteDet extends \common\models\base\modelBase
        return $this->area->nombre;
    } 
     
+   
+   public function idParte($codtra, \Carbon\Carbon $fecha){
+       
+       $existe=ResefPartes::find()->andWhere(['codtra'=>$codtra,'fecha'=>$fecha->format('Y-m-d')])->one();
+       if(is_null($existe)){
+           $existe=ResefPartes::creaParteDay($codtra,$fecha);
+       }else{
+           return $existe->id;
+       }
+   }
+   
 }

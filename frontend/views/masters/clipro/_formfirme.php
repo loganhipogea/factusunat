@@ -5,8 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 use kartik\tabs\TabsX;
-
-  use common\models\masters\Clipro;
+use common\models\masters\Clipro;
 use common\models\masters\Direcciones;
 
 /* @var $this yii\web\View */
@@ -90,25 +89,5 @@ echo TabsX::widget([
 ]);    
 pjax::end();    
     ?>
-    
-    
-    
-    
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 </div>

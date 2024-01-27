@@ -647,4 +647,44 @@ class ProcController extends baseController
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    
+     public function actionViewOs($id)
+    {
+        return $this->render('view_os', [
+            'model' => OpOs::findOne($id),
+        ]);
+    }
+    
+    /*
+     * Crea una orden de servicio
+     */
+    public function actionCreaOs()
+    {
+        $model = new OpOs();
+        $model->proc_id= OpProcesos::find()->one()->id;
+        
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->refresh();
+            return $this->redirect(['edita-os', 'id' => $model->id]);
+        }else{
+            //print_r($model->getErrors());die();
+        }
+
+        return $this->render('create_os', [
+            'model' => $model,
+        ]);
+    }
+    
+    
+   
+  
+    
 }

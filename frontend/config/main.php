@@ -48,6 +48,11 @@ return [
         'bigitems' => [
             'class' => 'frontend\modules\bigitems\Module',
         ],
+        
+         
+        'prd' => [
+            'class' => 'frontend\modules\prd\Module',
+        ]
     ],
     'components' => [       
         
@@ -114,7 +119,7 @@ return [
            'site/logout',
            'site/mantenimiento',  
            'site/correolibre',  
-            
+           // 'mat/mov/index-ne',
         ]
     ],
     'params' => $params,

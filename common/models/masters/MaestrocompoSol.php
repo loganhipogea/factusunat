@@ -34,13 +34,15 @@ class MaestrocompoSol extends \common\models\base\modelBase
         'fecha_cre' => self::_FDATETIME,  
          
     ];
+    
+   
      public function behaviors()
          {
                 return [
 		
-		/*'fileBehavior' => [
+		'fileBehavior' => [
 			'class' => '\common\behaviors\FileBehavior' 
-                               ],*/
+                               ],
                     'auditoriaBehavior' => [
 			'class' => '\common\behaviors\AuditBehavior' ,
                                ],
@@ -50,18 +52,20 @@ class MaestrocompoSol extends \common\models\base\modelBase
     
     
     
-     public $booleanFields=['subido'];
+     public $booleanFields=['subido','activo'];
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [['descrimanual','proyecto'], 'required'],   
+             [['subido','activo'], 'validate_estado'],   
             [['nivel'], 'integer'],
             [['infotecnica'], 'string'],
             [['codart'], 'string', 'max' => 14],
             [['user_name'], 'string', 'max' => 50],
-            [['user_name','subido','descrimanual','obs'], 'safe'],            
+            [['user_name','subido','descrimanual','obs','proyecto','activo','user_name'], 'safe'],            
             [['codum'], 'string', 'max' => 4],
             [['descripcion', 'caracteristicas'], 'string', 'max' => 80],
             [['codfam', 'codsubfam',], 'string', 'max' => 2],
@@ -87,6 +91,7 @@ class MaestrocompoSol extends \common\models\base\modelBase
             'codsubsubfam' => Yii::t('app', 'Codsubsubfam'),
             'caracteristicas' => Yii::t('app', 'Caracteristicas'),
             'nivel' => Yii::t('app', 'Nivel'),
+            'proyecto' => Yii::t('app', 'Primer uso'),
             'npeq' => Yii::t('app', 'Npeq'),
             'infotecnica' => Yii::t('app', 'Inf técnica'),
             'user_name' => Yii::t('app', 'Creado por'),
@@ -111,7 +116,8 @@ class MaestrocompoSol extends \common\models\base\modelBase
            '11'=>'MODULOS PARA EQUIPOS',
            '12'=>'ENSAMBLE DISEÑO PROPIO',
            '13'=>'PARTES DISEÑO PROPIO',
-           '14'=>'MERCADERIAS',          
+           '14'=>'MERCADERIAS',   
+            '15'=>'MATERIA PRIMA',
            ];
        return $datos;
     }
@@ -147,6 +153,20 @@ class MaestrocompoSol extends \common\models\base\modelBase
                     $codfam.'02'=>'PARTES GENERALES',
                     ],
            '14'=>  [$codfam.'01'=>'SIST HIDRAULICO',],
+            '15'=>[
+                $codfam.'01'=>'PLANCHAS',
+                $codfam.'02'=>'PERFILES',
+                $codfam.'03'=>'ACEROS',
+                $codfam.'04'=>'BRONCES',
+                $codfam.'05'=>'ALUMINIOS',
+                $codfam.'06'=>'POLIMEROS',
+                $codfam.'07'=>'INOXIDABLES',
+                $codfam.'08'=>'FIERRO CONSTRUCCION',
+                $codfam.'09'=>'FUNDICIONES',
+                 $codfam.'10'=>'PIEZAS MECANIZADAS',
+            ],
+            
+            
             
         ];
         //var_dump(in_array($codfam, $datos),$codfam);die();
@@ -161,8 +181,11 @@ class MaestrocompoSol extends \common\models\base\modelBase
                                 $codsubfam.'02'=>'PERFORACION DE PRODUCCION (NAUTILUS)]'
                                 ],
                         '1002'=>[
-                                $codsubfam.'01'=>'CARGADOR DIESEL',
-                                $codsubfam.'02'=>'CAMION DIESEL'
+                                $codsubfam.'01'=>'SOSTENIMIENTO CON PERNO',
+                                $codsubfam.'02'=>'SOSTENIMINETO CON CABLE',
+                                $codsubfam.'03'=>'PULVERIZADOR HORMIGON',
+                                $codsubfam.'04'=>'DESATADOR SCALER',
+                                 $codsubfam.'05'=>'TRANSPORTADOR CONCRETO',
                                 ],
                         '1003'=>[
                                $codsubfam.'01'=> 'EQUIPO PLATAFORMA LEVADIZA',
@@ -342,6 +365,33 @@ class MaestrocompoSol extends \common\models\base\modelBase
                                     $codsubfam.'04'=> 'EQUIPO UTILITARIO',
                                     $codsubfam.'05'=> 'EQUIPO FRONTONERO II',*/
                          ],
+            
+            '1401'=>[
+                                        
+                                    $codsubfam.'01'=> 'SELLOS HIDRAULICOS',
+                                    $codsubfam.'02'=> 'CILINDROS HIDRAULICOS',
+                                    $codsubfam.'14'=> 'ACCESORIOS DE CILINDRO',
+                                    /*$codsubfam.'04'=> 'EQUIPO UTILITARIO',
+                                    $codsubfam.'05'=> 'EQUIPO FRONTONERO II',*/
+                         ],
+            
+             '1503'=>[
+                                        
+                                    $codsubfam.'01'=> 'AISI 1045',
+                                    $codsubfam.'02'=> 'AISI 4140 (VCL)',
+                                    $codsubfam.'03'=> 'AISI 4340 (VCN)',
+                                    $codsubfam.'04'=> 'AISI 3215 (ECN)',
+                                    $codsubfam.'05'=> 'AM-BP',
+                                    $codsubfam.'06'=> 'AISI 7210',
+                                   // $codsubfam.'07'=> 'AISI 3215',
+                         ],
+            
+            '1510'=>[
+                                        
+                                    $codsubfam.'01'=> 'PIEZAS BASICAS ACERO A36',
+                                    $codsubfam.'02'=> 'PIEZAS BASICAS INOX C-304',
+                                  
+                         ],
         ];
        return in_array($codsubfam,array_keys($datos))?$datos[$codsubfam]:[];
     }
@@ -449,13 +499,25 @@ class MaestrocompoSol extends \common\models\base\modelBase
        return $ramas;
   }
     
+ public function validate_estado($attribute,$params){
+     if($this->subido && !$this->activo)
+      $this->adderror('activo',yii::t('base.errors','No puede anular un item que ya está cargado'));
+     if(!$this->subido && $this->existsMaterial() )
+      $this->adderror('subido',yii::t('base.errors','No puede cambiar este estado porque ya existe un material subido')); 
+ } 
+ 
+ public function existsMaterial(){
+    return !is_null(Maestrocompo::find()->andWhere(['codart'=>$this->codart])->one());
+ }
+  
+  
+  
  public static function generateCode($codsubsubfam){
     $codmax=  self::find()->select('max(codart)')->where(self::criteriaFam($codsubsubfam))->scalar();
     if($codmax===false or $codmax===null)return $codsubsubfam.'001';
     return ''.($codmax+1);
  }
-  public function beforeSave($insert) {
-       
+  public function beforeSave($insert) {       
         
         if($insert){
             if(empty($this->codart))
@@ -466,6 +528,7 @@ class MaestrocompoSol extends \common\models\base\modelBase
             $this->codfam= substr($this->codart,0,2);
             $this->codsubfam= substr($this->codart,2,2);
             $this->codsubsubfam= substr($this->codart,4,2);
+            $this->activo=true;
             
         }
         return parent::beforeSave($insert);
@@ -477,5 +540,40 @@ class MaestrocompoSol extends \common\models\base\modelBase
      if(!(strlen($this->codart)==9))
        $this->addError ('codart','Longitud de  código asignado incorrecta, revise');
  } 
-  
+ 
+ 
+ public function afterSave($insert, $changedAttributes) {  
+     if($this->activo){
+     if($insert){
+         if($this->subido){
+            $this->createMaterial();
+         }
+     }else{
+         if(in_array('subido',array_keys($changedAttributes))){
+             if($this->subido){
+                $this->createMaterial(); 
+             }
+         }
+     }
+     }
+     return parent::afterSave($insert, $changedAttributes);
+ }
+ 
+ private function createMaterial(){
+    if(is_null($modelo=Maestrocompo::find()->andWhere(['codart'=>$this->codart])->one())){
+    $modelo= Maestrocompo::instance();
+    $modelo->setAttributes([
+                'codart'=>$this->codart,
+               'codfam'=> substr($this->codart,0,2),
+            'codsubfam'=> substr($this->codart,2,2),
+            'codsubsubfam'=> substr($this->codart,4,2),
+            'descripcion'=>$this->descripcion, 
+            'codtipo'=>'100',
+            'codum'=>'UND',
+            'numeroparte'=>'',
+        ]);
+        //var_dump($modelo->save(),$modelo->getErrors());die();
+         $modelo->save();
+      }
+   }
 }

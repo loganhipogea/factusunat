@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Editar');
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Adicional'), //$this->context->countDetail() obtiene el contador del detalle
+          'label'=>'<i class="fa fa-paperclip"></i> '.yii::t('base.names','Adjuntos'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_segunda_ne',[ 'model' => $model]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],

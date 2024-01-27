@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
              'options' => ['id' => 'myveryownID3'],
         ],
         [
-          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Tutores'), //$this->context->countDetail() obtiene el contador del detalle
-            'content'=> $this->render('_segunda',[ 'model' => $model]),
+          'label'=>'<i class="fa fa-users"></i> '.yii::t('base.names','Estructura'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_estructura',[ 'model' => $model,'arr_arbol'=>$arr_arbol]),
             'active' => false,
              'options' => ['id' => 'myveryownID4'],
         ],

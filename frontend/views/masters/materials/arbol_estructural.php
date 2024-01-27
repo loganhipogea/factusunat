@@ -65,4 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 '),
             ],
         ]); ?>
+    <?php    
+    $js='$(".fancytree-container").addClass("fancytree-connectors");';
+     $this->registerJs($js, \yii\web\View::POS_END);
+     ?>   
+        
             </div>

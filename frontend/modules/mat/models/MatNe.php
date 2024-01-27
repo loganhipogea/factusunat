@@ -40,6 +40,23 @@ class MatNe extends \common\models\base\modelBase
         return '{{%mat_guia}}';
     }
 
+    
+    
+     public function behaviors()
+         {
+                return [
+		
+		'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' 
+                               ],
+                    'auditoriaBehavior' => [
+			'class' => '\common\behaviors\AuditBehavior' ,
+                               ],
+                  
+                    ];
+        }
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -48,6 +65,7 @@ class MatNe extends \common\models\base\modelBase
         return [
             [['detalle'], 'string'],
             [['codcen','codcencli','fecha'], 'required'],
+            [['codocuref','numdocref'], 'safe'],
             [['codpro', 'codtra', 'fecha', 'fectra'], 'string', 'max' => 10],
             [['numero'], 'string', 'max' => 14],
             [['codcen'], 'string', 'max' => 5],
@@ -90,11 +108,26 @@ class MatNe extends \common\models\base\modelBase
         return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
     }
     
+     public function getDocumentoRef()
+    {
+        return $this->hasOne(\common\models\masters\Documentos::className(), ['codocu' => 'codocuref']);
+    }
+    
     public function getCentroOrigen()
+    {
+        return $this->hasOne(\common\models\masters\Centros::className(), ['codcen' => 'codcencli']);
+    }
+    
+     public function getCentroDestino()
     {
         return $this->hasOne(\common\models\masters\Centros::className(), ['codcen' => 'codcen']);
     }
     
+     public function getDetalles()
+    {
+        return $this->hasMany(MatDetNe::className(), ['guia_id' => 'id']);
+           //return $this->hasMany(Examenes::className(), ['citas_id' => 'id']);
+    }
      public function beforeSave($insert) {
         if($insert){
             $this->numero=$this->correlativo('numero',8);

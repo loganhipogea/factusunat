@@ -61,12 +61,12 @@ $this->params['breadcrumbs'][] = $this->title;
          
          
 
-            'id',
+           
             'codigo',
             'descripcion',
             'marca',
             'modelo',
-            //'serie',
+            'serie',
             //'v_adquisicion',
             //'vida_util',
             //'v_rescate',

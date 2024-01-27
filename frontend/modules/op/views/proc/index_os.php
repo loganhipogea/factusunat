@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search_os', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('base.names', 'Crear proceso'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('base.names', 'Crear orden de reparación'), ['crea-os'], ['class' => 'btn btn-success']) ?>
     </p>
     
     <div style='overflow:auto;'>
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $options = [
                             'title' => Yii::t('base.verbs', 'Update'),                            
                         ];
-                        return Html::a('<span class="btn btn-info btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
+                        return Html::a('<span class="btn btn-warning btn-sm glyphicon glyphicon-pencil"></span>', $url, $options/*$options*/);
                          },
                           'view' => function($url, $model) {                        
                         $options = [
@@ -72,14 +72,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
          
-         
+         [
+                'attribute'=>'imagen',
+                'format'=>'raw',
+                'value'=>function ($model){
+                        if(!is_null($imagen=$model->getFirstImage())){
+                           return Html::img($imagen->url,['width'=>180,'height'=>150]);
+                        }
+                        return '';
+                }
+            ],
          
 
            // 'id',
-             'ot',
+           //  'ot',
              'orden',  
               'fechaini',
             'descripcion',
+                  'serie',
             /*[
                 'attribute'=>'Cliente',
                 'value'=>function ($model){
@@ -90,19 +100,20 @@ $this->params['breadcrumbs'][] = $this->title;
            // 'fechaini',
            
             'avance',
-             [
+             /*[
                 'attribute'=>'avance',
                 'format'=>'raw',
                 'contentOptions'=>['width'=>'50px;'],
                 'value'=>function ($model){
                         if($model->avance>0){
                            echo Slider::widget([
+                                'id'=>$model->id,
                                 'sliderColor' => Slider::TYPE_DANGER,
                                 'handleColor' => Slider::TYPE_WARNING,
                                 'model'=>$model,
                                 'attribute'=>'avance',
                                      'pluginOptions' => [
-                                                'name'=>$model->id,
+                                               
                                                 'orientation' => 'horizontal',
                                                 'handle' => 'round',
                                                 'min' => 0,
@@ -113,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             }
                                  return '';
                         }
-                                ],       
+                                ],  */     
                     
             //'codpro',
             //'descripcion',

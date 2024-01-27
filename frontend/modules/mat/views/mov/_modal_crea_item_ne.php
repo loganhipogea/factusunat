@@ -80,10 +80,21 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
 
     </div>
     
- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+ <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
      <?= $form->field($model, 'serie')->textInput(['maxlength' => true]) ?>
 
  </div>
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+     <?php  
+           
+           echo  $form->field($model, 'estadomaterial')->
+            dropDownList($model->comboDataField('estadomaterial'),
+                    [//'prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
+                    // 'class'=>'probandoSelect2',
+                      //'disabled'=>($model->isBlockedField('codpuesto'))?'disabled':null,
+                        ]
+                    )  ?>
+     </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
      <?= $form->field($model, 'detalle')->textArea([]) ?>
 
@@ -116,7 +127,51 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
     </div>
  <?php 
 
+     $this->registerJs("$('#matdetne-codart').on( 'change', function() { 
+       var_idselect=this.id;
+       var_indice=var_idselect.substring(9,10);
+         var urli='".\yii\helpers\Url::to(['/masters/materials/ajax-html-ums'])."';
+      var_codigo=this.value;
+     
+        var promesa1= $.ajax({
+           url : urli,
+          type : 'POST', 
+          data : {valorInput:this.value}, 
+          dataType: 'html', 
+         error:function(xhr, status, error){ 
+                            var n = Noty('id');                      
+                             $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-remove-sign\'></span>      '+ xhr.responseText);
+                              $.noty.setType(n.options.id, 'error');         
+                                }, 
+            success: function (data) {
+               $('#matdetne-codum').html(data);
+                }
+       }).then(function(){ 
+       
+              $.ajax({
+           url : '".\yii\helpers\Url::to(['/masters/materials/ajax-descri-mat'])."',
+          type : 'POST', 
+          data : {codart:var_codigo}, 
+          dataType: 'json', 
+         error:function(xhr, status, error){ 
+                            var n = Noty('id');                      
+                             $.noty.setText(n.options.id,'<span class=\'glyphicon glyphicon-remove-sign\'></span>      '+ xhr.responseText);
+                              $.noty.setType(n.options.id, 'error');         
+                                }, 
+            success: function (data) {
+             
+               $('#matdetne-descripcion').val(data['success']);
+                }
+       });
+
+       });
+    
+});
+
+", \yii\web\View::POS_READY);
+    ?>  
+
  
-  ?>
+ 
 
 

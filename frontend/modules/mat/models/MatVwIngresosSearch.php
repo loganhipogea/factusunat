@@ -19,7 +19,7 @@ class MatVwIngresosSearch extends MatVwIngresos
     {
         return [
            
-            [['descri','numero', 'codcen', 'fecha','fecha1', 'codart','rotativo'], 'safe'],
+            [['descri','numero', 'codcen', 'fecha','fecha1', 'codart','rotativo','codcen','codcencli','serie'], 'safe'],
         ];
     }
 
@@ -63,12 +63,14 @@ class MatVwIngresosSearch extends MatVwIngresos
        ->andFilterWhere(['like', 'descri', explode('%',$this->descri)])   
        ->andFilterWhere(['rotativo'=>$this->rotativo])   
         ->andFilterWhere(['like', 'numero', $this->numero])
+                ->andFilterWhere(['like', 'serie', $this->serie])
         ->andFilterWhere(['codcen'=>$this->codcen])
+        ->andFilterWhere(['codcencli'=>$this->codcencli])
                  ->andFilterWhere(['codcencli'=>$this->codcencli])
             //->andFilterWhere(['like', 'descripcion', explode('%',$this->descripcion)])                  
                 ;
-        
-         if(!empty($this->fechal) && !empty($this->fecha)){
+        //var_dump($this->fecha1,$this->fecha,!empty($this->fecha1),!empty($this->fecha));die();
+         if(!empty($this->fecha1) && !empty($this->fecha)){
          $query->andFilterWhere([
              'between',
              'fecha',
@@ -76,7 +78,7 @@ class MatVwIngresosSearch extends MatVwIngresos
              $this->openBorder('fecha1',true)
                         ]);   
         }
-        
+        $query->orderBy(['fecha'=>SORT_DESC]);
          
        // echo  $query->createCommand()->rawSql;DIE();
         return $dataProvider;

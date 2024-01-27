@@ -30,6 +30,8 @@ class MaterialsController extends baseController
      * {@inheritdoc}
      */
     public function behaviors()
+    
+    
     {
         return [
             'verbs' => [
@@ -100,14 +102,26 @@ class MaterialsController extends baseController
      */
     public function actionUpdate($id)
     {
+       
         
-         if ($this->is_editable()){
+        
+        
+        
+        
+        
+        
+        /* if ($this->is_editable()){
             h::response()->format = \yii\web\Response::FORMAT_JSON;
             return $this->editField();
            } 
-        
+        */
+           
+           
         $model = $this->findModel($id);
-          
+        
+        
+        
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -116,11 +130,13 @@ class MaterialsController extends baseController
         
          $searchModel = New ConversionesSearch();
        $probConversiones= $searchModel->searchByMaterial($model->codart);
-
+       $searchEstructura = New \frontend\modules\mat\models\MatEstructuracompoSearch();
+       $provEstructura=$searchEstructura->search();
         
         return $this->render('update', [
             'model' => $model,
-            'probConversiones'=>$probConversiones
+            'probConversiones'=>$probConversiones,
+            'provEstructura'=>$provEstructura
         ]);
     }
 
@@ -547,6 +563,7 @@ class MaterialsController extends baseController
           $this->layout = "install";
          $model = new MaestrocompoSol();
          $model->codsubsubfam_=$id;
+         $model->activo=true;
         if(h::request()->isPost){ 
             $model->load(h::request()->post());
              h::response()->format = \yii\web\Response::FORMAT_JSON;
@@ -634,5 +651,93 @@ class MaterialsController extends baseController
             
       }
     }
+ 
+    
+    public function actionCreaEstructura($id){
+          $this->layout = "install";
+        $modelMaterial = Maestrocompo::findOne(['codart'=>$id]);
+        $model = new \frontend\modules\mat\models\MatEstructuracompo();
+        $model->codart=$modelMaterial->codart;
+        $model->maestro_id=$modelMaterial->id;
+        if(h::request()->isPost){   
+             //yii::error('Es post');
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+                //yii::error('Hay errores t');
+              // var_dump($datos);die();
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+                //yii::error('va grabando');
+                /*print_r(h::request()->post());
+               print_r($model->attributes);die();*/
+               if(!$model->save()) print_r($model->getErrors()); 
+               // yii::error('creoq uer grabo');
+                //$model->assignStudentsByRandom();
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_estructura', [
+                        'model' => $model,
+                        'codigo'=>$modelMaterial->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+    } 
    
+    
+    public function actionEditaEstructura($id){
+          $this->layout = "install";
+         $model = \frontend\modules\mat\models\MatEstructuracompo::find()->where(['id'=>$id])->one();
+         //$model->codsubsubfam_=substr($id,0,6);
+        if(h::request()->isPost){ 
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+              $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+                
+              return ['success'=>2,'msg'=>$datos];  
+            }else{
+                if(!$model->save()){
+                    print_r($model->getErrors()); 
+                }else{ 
+                return ['success'=>1,'id'=>$model->codart];                  
+                }
+                
+            }
+        }else{
+           return $this->renderAjax('_modal_estructura', [
+                        'model' => $model,
+                       // 'codigo'=>$model->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+                        //'cantidadLibres'=>$cantidadLibres,
+          
+            ]);  
+        } 
+    }
+    
+    public function actionAjaxAnulaMaterialSolicitado($id){
+        $req=h::request();       
+      if($req->isAjax){     
+      h::response()->format = \yii\web\Response::FORMAT_JSON;
+       $model= MaestrocompoSol::find()->andWhere(['id'=>$id])->one();
+            if(!is_null($model) && !$model->subido){
+                MaestrocompoSol::updateAll(['activo'=>null], ['id'=>$id]);
+            
+                  return ['success'=>yii::t('base.errors','Se invalidó el registro')];
+             
+            }else{
+                return ['error'=>yii::t('base.errors','No se pudo anular, puede que este registro ya este subido al sistema')];  
+            }
+              
+            
+      }
+    }
 }

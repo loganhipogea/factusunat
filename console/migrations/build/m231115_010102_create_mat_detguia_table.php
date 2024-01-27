@@ -15,6 +15,8 @@ class m231115_010102_create_mat_detguia_table extends baseMigration
     
     public function safeUp()
     {
+        
+        if(!$this->existsTable($this->table)) {
         $this->createTable($this->table, [
             'id' => $this->primaryKey(),
               'guia_id'=>$this->integer(11)->notNull(),
@@ -30,7 +32,7 @@ class m231115_010102_create_mat_detguia_table extends baseMigration
             ],
            $this->collateTable()
 		   );
-        
+        }
     }
 
     /**
@@ -38,6 +40,8 @@ class m231115_010102_create_mat_detguia_table extends baseMigration
      */
     public function safeDown()
     {
+        if($this->existsTable($this->table)) {
         $this->dropTable($this->table);
+        }
     }
 }

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 ///se yii\widgets\Pjax;
 use kartik\tabs\TabsX;
-
+//use yii\bootstrap\Tabs;
   //use common\models\masters\Clipro;
 //use common\models\masters\Direcciones;
 
@@ -22,12 +22,13 @@ use kartik\tabs\TabsX;
 <?php
 
 echo TabsX::widget([
-    'position' => TabsX::POS_ABOVE,
-    'align' => TabsX::ALIGN_LEFT,
+   // 'position' => TabsX::POS_ABOVE,
+   // 'align' => TabsX::ALIGN_LEFT,
     'items' => [
         [
             'label' => yii::t('base.names','General'),
             'content' => $this->render('_form',['model'=>$model]),
+             'options' => ['id' => 'myvefdf34ownID1'],
             'active' => true
         ],
         [
@@ -37,28 +38,20 @@ echo TabsX::widget([
             'options' => ['id' => 'myveryownID1'],
             'active' => false
         ],
-        
+        [
+            'label' => yii::t('base.names','Estructura'),
+         'content' => $this->render('_tab_estructura',[
+             'model'=>$model,
+              'provEstructura'=>$provEstructura
+             ]),
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'options' => ['id' => 'myvetrtrryownID1'],
+            'active' => false
+        ],
         
     ],
 ]);    
     
     ?>
-    
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 </div>

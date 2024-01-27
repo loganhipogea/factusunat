@@ -1120,5 +1120,19 @@ class ComboHelper  {
                         \common\models\masters\Familia::find()->all(),
                 'id','descrifam');
 }
-    
+    public static function getCboAreas(){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\Areas::find()->all(),
+                'codarea','desarea');
+    }
+
+ public static function getCboGruposTrabajo(){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\Grupostrabajo::find()->all(),
+                'codgrupo','desgrupo');
+    }
+
+
 }

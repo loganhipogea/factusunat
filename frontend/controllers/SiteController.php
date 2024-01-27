@@ -339,6 +339,119 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+     echo \frontend\modules\prd\models\PrdOpDespiece::findOne(8)->pathRoute(false);die();
+      
+      
+      
+    
+    $model=  \frontend\modules\mat\models\MatDespiece::findOne(1);
+    ECHO \yii\helpers\Json::encode($model->childsTreeRecursive());DIE();
+      
+      
+      
+      $grupo=[
+      '01' => '01 ENS. CHASIS INTERMEDIO',
+'02' => '02 ENS. UNIDAD DE POTENCIA (SOPORTE)',
+'03' => '03 ENS. TANQUE HIDRAULICO',
+'04' => '04 SOPORTES DE TECHO',
+'05' => '05 ENS.  MOTOR DIESEL QSB 4.5',
+'06' => '06 ENS. TECHO MOTOR DIESEL E INTERMEDIO',
+'07' => '07 ENS. PUERTAS LATERALES (INTERMEDIO)',
+'08' => '08 ENFRIADOR TROPICAL',
+'09' => '09 TQ. DE LUBRICACION',
+'10' => '10 ENS.  BATERIA Y MASTER SWICH',
+'11' => '11 ACCESORIOS INTERMEDIOS',
+   ];
+      
+      $carpetas=[
+          '01'=>['01 - 1301  12295 - CHASIS INTERMEDIO',
+'02 - 1301  12307 - OSCILANTE #1',
+'03 - 1301  12308 - OSCILANTE #2',
+'04 - 1301  12309 - BOCINA #1 OSCILANTE',
+'05 - 1301  12310 - BOCINA #2 OSCILANTE',
+'06 - 1301  12311 - TAPA DE OSCILANTE',
+'07 - 1301  12305 - SOPORTE #1 DE GUARDAFANGO',
+'08 - 1301  12306 - SOPORTE #2 DE GUARDAFANGO',
+'09 - 1301  12303 - GUARDAFANGO POSTERIOR DER.',
+'10 - 1301  12304 - GUARDAFANGO POSTERIOR IZQ.',
+'11 - 1301  12351 - SOPORTE DE CAJA DE TRASMISION',
+'12 - 1301  12352 - PROTECTOR DE CAJA TRASMISION',
+],
+           '02'=>['01 - 1301  12312 - SOPORTE DE UNIDAD DE POTENCIA',
+'02 - 1301  01254 - CAMPANA 100 HP',
+'03 - 1301  02427 - TAPA DE CAMPANA',
+'04 - 1301  02013 - BASE DE 1 MANOMETRO',
+'05 - 1301  01464 - COPLING BOMBA_A10VO100',
+'06 - 1301  01531 - COUPLING MOTOR_100HP',
+'07 - PENDIENTE - PROTECTOR SUP.  MOTOR ELECTRICO 100HP (SEGUN MOTOR)',
+],
+          '03'=>['01 - 1301  12314 - ARMADO DE TANQUE HIDRAÚLICO',
+'02 - 1301  12315 - TAPA DE TANQUE HIDRAULICO',
+'03 - 1301  12316 - BASE DE PROTECTOR DE TANQUE HIDRAULICO',
+'04 - 1301  12317 - PROTECTOR DE TANQUE HIDRAULICO',
+'05 - 1301  12355 - BASE DE COLECTRO DE RETORNO',
+],
+           '04'=>['01 - 1301  12313 - SOPORTE DE TECHO',
+'02 - 1301  12356 - SOPORTE DE TECHO INTERMEDIO',
+'03 - 1301  12357 - PROTECTOR DE MOTOR DIESEL',
+],
+       '05'=>['01 - PENDIENTE - BRIDA Ø405x5/8',
+'02 - PENDIENTE - SOPORTES DE DUMPER',
+'03 - PENDIENTE - TUBO ESCAPE',
+'04 - PENDIENTE - PROTECTOR DE TUBO ESCAPE',
+],
+           '06'=>['01 - 1301  12358 - ESTRUCTURA TECHO INTERMEDIO',
+'02 - 1301  12359 - TECHO MOTOR DIESEL DERECHO / IZQUIERDO',
+'03 - 1301  12361 - TECHO INTERMEDIO DERECHO  I IZQUIERDO',
+
+],
+          '07'=>['01 - 1301  12364 - PUERTA LATERAL INTERMEDIO IZQ.',
+'02 - 1301  12363 - PUERTA LATERAL INTERMEDIO DER.',
+'03 - 1301  12365 - PLATINA PUERTA LATERAL',
+'04 - 1301  09149 - ESPACIADORES DE PUERTAS',
+],
+           '08'=>['01 - 1301  12371 - SOPORTE MOVIL ENFRIADOR TROPICAL',
+'02 - 1301  01301 - PIN Ø24x70',
+'03 - 1301  02555 - PIN Ø35xØ45x126',
+'04 - 1301  01303 - SEGURO DE  PIN',
+],
+          '09'=>['01 - 1301  12371 - SOPORTE MOVIL LUBRICACION',
+'02 - 1301  12372 - TQ. LUBRICACION',
+'03 - 1301  02487 - TAPA DE TQ. LUBRICACION',
+'04 - 1301  01301 - PIN Ø24x70',
+'05 - 1301  02555 - PIN Ø35xØ45x126',
+'06 - 1301  01303 - SEGURO DE  PIN',
+],
+           '10'=>['01 - 1301  12367 - SOPORTE DE BATERIA',
+'02 - 1301  12368 - CAJA DE MASTER SWICH',
+'03 - 1301  02698 - TAPA POSTERIOR MASTER SWICH',
+'04 - 1301  12369 - TAPA DE MASTER SWICH',
+],
+          '11'=>['01 - 1301  01029 - BASE DE ENFRIADOR TUBULAR',
+'02 - 1301  02435 - PROTECTOR DE ANSUL',
+'03 - 1301  01690 - PORTA CONO',
+],     
+      ];
+      
+   foreach($grupo as $clave=>$valor)  {
+       $rutaBase='T:\01 FABRICACION AÑO 2023\06 OT0044-2023 - TRITON DFD20 - COBRIZA\01 CHASIS\02 TEST';
+       
+       IF(mkdir($rutaBase.'\\'.$valor,0777)){ 
+            foreach($carpetas[$clave] as $clave1=>$valor1) {
+                @mkdir($rutaBase.'\\'.$valor.'\\'.$valor1);
+            }
+       }
+       
+   } 
+      
+   die();   
+      
+      
+      
+      
+      
+      
+      
       
       \frontend\modules\mat\models\MatDetNe::findOne(17)->createOp();DIE();
       
@@ -401,7 +514,7 @@ class SiteController extends Controller
       
       die();
       $model=\frontend\modules\com\models\ComCotiversiones::findOne(16);
-      PRINT_R($model->mailCotizacion());
+      //\\PRINT_R($model->mailCotizacion();
       die();
       phpinfo(); 
       die();
@@ -411,7 +524,7 @@ class SiteController extends Controller
       ECHO 'h::tipoCambio(PEN)  :'.h::tipoCambio('PEN');
       ECHO 'h::tipoCambio(USD)  :'.h::tipoCambio('PEN');
       
-     $model= \frontend\modules\com\models\ComCotizacion::findOne(5);
+//     $model= \frontend\modules\com\models\ComCotizacion::findOne(5);
      echo $model->createVersion();
      die();
      print_r($model->array_cargos());

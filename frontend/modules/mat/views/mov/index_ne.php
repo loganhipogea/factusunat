@@ -75,11 +75,17 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
                   'format'=>'html',
                 'value'=>function ($model){
                             return ($model->activo)?$model->descri:
-                        '<i style="text-decoration: line-through;">'.$model->descripcion."</i>"; 
+                        '<i style="text-decoration: line-through;">'.$model->descri."</i>"; 
                        }
                 ],           
                         
-                        
+             ['attribute'=>'serie',
+                  'format'=>'html',
+                'value'=>function ($model){
+                            return ($model->activo)?$model->serie:
+                        '<i style="text-decoration: line-through;">'.$model->serie."</i>"; 
+                       }
+                ],            
                      
                         
            ['attribute'=>'codcen',
@@ -87,7 +93,16 @@ ECHO \common\widgets\spinnerWidget\spinnerWidget::widget();
                // 'headerOptions' => ['style' => 'width:50%'],
                // 'filter'=> frontend\modules\mat\helpers\comboHelper::getCboAlmacenes(),
                   'value'=>function ($model){
-                    return $model->codcen;
+                    return $model->nomcen;
+                  }
+                ],
+                        
+           ['attribute'=>'codcencli',
+               'group'=>true,
+               // 'headerOptions' => ['style' => 'width:50%'],
+               // 'filter'=> frontend\modules\mat\helpers\comboHelper::getCboAlmacenes(),
+                  'value'=>function ($model){
+                    return $model->nomcencli;
                   }
                 ],
            ['attribute'=>'fecha',

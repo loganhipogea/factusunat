@@ -87,7 +87,7 @@ class ResefPartes extends \common\models\base\modelBase
 				'codtra'=>$codtra,
 				'fecha'=>$fecha
 				],
-                false
+                true
                 );
 		
 	}

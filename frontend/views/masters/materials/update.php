@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = Yii::t('base.verbs', 'Update');
 
     <?= $this->render('_formfirme', [
         'model'=>$model,
-        'probConversiones'=>$probConversiones
+        'probConversiones'=>$probConversiones,
+         'provEstructura'=>$provEstructura
             ]) ?>
 
 </div>

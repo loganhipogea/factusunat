@@ -128,7 +128,7 @@ class Maestrocompo extends \common\models\base\modelBase
     public function beforeSave($insert) {
         //var_dump($insert);die();
         
-        if($insert){
+        if($insert && empty($this->codart)){
             //$this->prefijo=$this->codtipo;
             $this->codfam=$this->codtipo;
             if(empty($this->codart))
@@ -140,6 +140,9 @@ class Maestrocompo extends \common\models\base\modelBase
     
     public function getConversiones(){
          return $this->hasMany(Conversiones::className(), ['codart' => 'codart']);
+    }
+    public function getEstructuras(){
+         return $this->hasMany(\frontend\modules\mat\models\MatEstructuracompo::className(), ['maestro_id' => 'id']);
     }
     
     public function existsUm($codum,$returnModel=true){
@@ -229,11 +232,15 @@ class Maestrocompo extends \common\models\base\modelBase
    */
   public function dataUms(){
       $ums=$this->umsDisponibles();
+      // yii::error($ums,__FUNCTION__);
       $ums=Ums::find()->andWhere(['in','codum',$ums])->asArray()->all();
-     return array_combine(
+      //yii::error($ums,__FUNCTION__);
+      $ums=array_combine(
              array_column($ums,'codum'),
              array_column($ums,'desum'),
              );
+      //yii::error($ums,__FUNCTION__);
+     return $ums;
       
   }
   

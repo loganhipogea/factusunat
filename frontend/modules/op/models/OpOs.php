@@ -33,12 +33,12 @@ implements CosteoInterface,
     CONST LUGAR_TALLER='T';
     CONST LUGAR_PLANTA='P';
     
-     public $dateorTimeFields = [
+    /* public $dateorTimeFields = [
         'fechaprog' => self::_FDATE,
         'fechaini' => self::_FDATE,
-        //'ftermino' => self::_FDATETIME
+       
     ];
-     
+     */
       
     /**
      * {@inheritdoc}
@@ -55,7 +55,8 @@ implements CosteoInterface,
     {
         return [
             [['proc_id'], 'required'],
-             [['item','codcen','detgui_id','codart','orden','ot','finprog','fin','codest','avance'], 'safe'],
+             [['item','codcen','detgui_id','codart','orden','ot',
+                 'finprog','fin','codest','avance','codactivo','codcencli','serie'], 'safe'],
             [['proc_id'], 'integer'],
             [['textocomercial', 'textointerno', 'textotecnico'], 'string'],
             [['numero'], 'string', 'max' => 10],
@@ -69,12 +70,19 @@ implements CosteoInterface,
     }
 
     
-    public function behaviors() {
-        return [
-           
-           
-        ];
-    }
+    public function behaviors()
+         {
+                return [
+		
+		'fileBehavior' => [
+			'class' => '\common\behaviors\FileBehavior' 
+                               ],
+                    'auditoriaBehavior' => [
+			'class' => '\common\behaviors\AuditBehavior' ,
+                               ],
+		
+                    ];
+        }
     /**
      * {@inheritdoc}
      */
@@ -86,6 +94,8 @@ implements CosteoInterface,
             'numero' => Yii::t('app', 'Numero'),
             'fechaprog' => Yii::t('app', 'Fechaprog'),
             'fechaini' => Yii::t('app', 'Fechaini'),
+            'codcen' => Yii::t('app', 'Local'),
+            'codcencli' => Yii::t('app', 'Destino'),
             'codtra' => Yii::t('app', 'Codtra'),
             'codpro' => Yii::t('app', 'Codpro'),
             'descripcion' => Yii::t('app', 'Descripcion'),
@@ -113,6 +123,10 @@ implements CosteoInterface,
         return $this->hasOne(OpProcesos::className(), ['id' => 'proc_id']);
     }
     
+     public function getActivo()
+    {
+        return $this->hasOne(\frontend\modules\mat\models\MatActivos::className(), ['codigo' => 'codactivo']);
+    }
     
       public function getIngreso()
     {

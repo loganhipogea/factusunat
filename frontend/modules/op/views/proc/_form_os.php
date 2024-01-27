@@ -17,11 +17,14 @@ use kartik\grid\GridView;
 <div class="box-body">
     <br>
    
- 
+<?php 
+  echo $this->render('_form_os_base',['model'=>$model]);
+
+?>
         
     <?php Pjax::begin(['id'=>'pjax-detserv','timeout'=>false]); ?>
     <?php
-      $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs()));
+      $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs(),Fl::extImages()));
                        
 // echo $this->render('_search', ['model' => $searchModel]); ?>
 

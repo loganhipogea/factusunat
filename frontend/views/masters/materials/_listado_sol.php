@@ -50,9 +50,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function($model){                            
                             return $model->descrimanual;
                             }                
+                ], 
+                ['attribute' => 'proyecto',
+                // 'filter'=>$valores,
+                //'headerOptions' => ['style' => 'width:10%'],
+                'format'=>'raw',
+                'value'=>function($model){                            
+                            return $model->proyecto;
+                            }                
                 ],  
               'fecha_cre' ,        
-           
+           ['attribute' => 'user_name',
+                // 'filter'=>$valores,
+               // 'headerOptions' => ['style' => 'width:10%'],
+                //'format'=>'raw',
+                'value'=>function($model){                            
+                            return $model->user_name;
+                            }                
+                ],
                  [
                     'class' => 'yii\grid\ActionColumn',
                      //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),

@@ -15,6 +15,7 @@ class m231115_005412_create_mat_guia_table extends baseMigration
     
     public function safeUp()
     {
+         if(!$this->existsTable($this->table)) {
         $this->createTable($this->table, [
             'id' => $this->primaryKey(),
             'codpro'=>$this->string(10)->append($this->collateColumn()),
@@ -29,14 +30,7 @@ class m231115_005412_create_mat_guia_table extends baseMigration
             ],
            $this->collateTable()
 		   );
-       $this->putCombo($this->table, 'fpago', [
-                 '10'=> 'CONTADO',
-                   '20'=> 'FACTURA 30 DIAS',
-                   '30'=>'FACTURA 15 DIAS',
-                   '40'=>'FACTURA 45 DIAS',
-                   '50'=> 'CHEQUE DIFERIDO',
-                 
-                  ]); 
+         }
     }
 
     /**
@@ -44,6 +38,8 @@ class m231115_005412_create_mat_guia_table extends baseMigration
      */
     public function safeDown()
     {
+          if($this->existsTable($this->table)) {
         $this->dropTable($this->table);
+          }
     }
 }

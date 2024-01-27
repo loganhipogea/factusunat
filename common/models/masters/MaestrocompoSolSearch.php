@@ -18,7 +18,7 @@ class MaestrocompoSolSearch extends MaestrocompoSol
     {
         return [
           
-            [['descrimanual', 'codart', 'descripcion', 'caracteristicas', 'infotecnica','fecha_cre'], 'safe'],
+            [['descrimanual', 'codart', 'descripcion', 'caracteristicas', 'infotecnica','fecha_cre','proyecto','activo','user_name'], 'safe'],
            
         ];
     }
@@ -57,13 +57,21 @@ class MaestrocompoSolSearch extends MaestrocompoSol
             return $dataProvider;
         }
 
-
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'descrimanual', $this->descrimanual])
+        if(empty($this->descripcion)){
+          $query->andFilterWhere(['like', 'descrimanual', $this->descrimanual])
             ->andFilterWhere(['like', 'codart', $this->codart])
-            ->andFilterWhere(['like', 'caracteristicas', $this->caracteristicas])
-            ;
-
+             ->andFilterWhere(['like', 'user_name', $this->user_name])
+            ->andFilterWhere(['like', 'caracteristicas', $this->caracteristicas]);    
+         }else{
+                    $likeCondition = new \yii\db\conditions\LikeCondition('descripcion', 'LIKE','%'.$this->descripcion.'%');
+                    $likeCondition->setEscapingReplacements(false);
+                $query->andWhere($likeCondition);
+         }
+         if(!empty($this->proyecto)){
+             $likeCondition = new \yii\db\conditions\LikeCondition('proyecto', 'LIKE','%'.$this->proyecto.'%');
+                    $likeCondition->setEscapingReplacements(false);
+                $query->andWhere($likeCondition);
+         }
         return $dataProvider;
     }
     

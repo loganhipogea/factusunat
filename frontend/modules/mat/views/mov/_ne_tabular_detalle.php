@@ -64,12 +64,22 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
        'enableError' => true,
           'headerOptions' => [
-                'style' => 'width: 10%',
+                'style' => 'width: 5%',
                 //'class' => 'day-css-class'
             ],  
             
             ],
-        
+         [
+            'name'  => 'rotativo',
+            'title' => 'Rotativo',
+            'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_CHECKBOX,
+       'enableError' => true,
+          'headerOptions' => [
+                'style' => 'width: 2%',
+                //'class' => 'day-css-class'
+            ],  
+            
+            ],
          ['name'  => 'codart',
             'title' => 'CODIGO',
          'type'  =>pruebaWidget::className(),/*kartik\date\DatePicker::className(),*//*pruebaWidget::className(),*/
@@ -109,12 +119,25 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
             'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
        'enableError' => true,
             'headerOptions' => [
-                'style' => 'width: 40%',
+                'style' => 'width: 30%',
                 //'class' => 'day-css-class'
             ],
             //'items'=> ComboHelper::getCboUms(),
             ],
         
+        
+        [
+            'name'  => 'serie',
+            'title' => 'Serie',
+             
+            'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT,
+       'enableError' => true,
+            'headerOptions' => [
+                'style' => 'width: 15%',
+                //'class' => 'day-css-class'
+            ],
+            //'items'=> ComboHelper::getCboUms(),
+            ],
             /*['name'  => 'codart',
             'title' => 'codart',
             //'type'  => \unclead\multipleinput\MultipleInputColumn::TYPE_TEXT_INPUT, 
@@ -136,7 +159,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
        'enableError' => true,
             'items'=> $lista,
            'headerOptions' => [
-                'style' => 'width:15%',
+                'style' => 'width:5%',
                 //'class' => 'day-css-class'
                        ],
           ],

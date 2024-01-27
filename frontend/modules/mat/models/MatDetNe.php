@@ -23,8 +23,8 @@ use Yii;
 class MatDetNe extends \common\models\base\modelBase
 {
    
-   const EST_ACTIVO='1' ;
-   const EST_ANULADO='0';
+   const EST_ACTIVO='10' ;
+   const EST_ANULADO='99';
     
     
     public $booleanFields=['rotativo','activo'];
@@ -47,7 +47,7 @@ class MatDetNe extends \common\models\base\modelBase
             [['guia_id', 'cant','descripcion'], 'required'],
             [['guia_id'], 'integer'],
             [['cant'], 'number'],
-            [['rotativo','estadomaterial','activo'], 'safe'],
+            [['rotativo','estadomaterial','activo','codocu','codsoc','codestado'], 'safe'],
             [['detalle'], 'string'],
             [['item'], 'string', 'max' => 3],
             [['codum'], 'string', 'max' => 4],
@@ -68,6 +68,10 @@ class MatDetNe extends \common\models\base\modelBase
                     'auditoriaBehavior' => [
 			'class' => '\common\behaviors\AuditBehavior' ,
                                ],
+                    'codocuBehavior' => [
+			'class' => '\common\behaviors\CodocuBehavior' ,
+                               ],
+                    
 		
                     ];
         }
@@ -111,10 +115,12 @@ class MatDetNe extends \common\models\base\modelBase
         return $this->hasOne(Maestrocompo::className(), ['codart' => 'codart']);
     }
     
+    
+    
      public function beforeSave($insert) {
         IF($insert){            
             $this->setActivo()->item= $this->nextItem();
-                      
+            $this->codocu=$this->codocu();    
                   }         
         RETURN parent::beforeSave($insert);
     }
@@ -124,26 +130,28 @@ class MatDetNe extends \common\models\base\modelBase
     }
     
     public function setInactivo(){
-        $this->activo=self::EST_ANULADO;
+        $this->activo=false;
        return $this;
     }
     
     public function setActivo(){
-        $this->activo=self::EST_ACTIVO;
+        $this->activo=true;
        return $this;
     }
     
     public function isActivo(){
-        return $this->activo==self::EST_ACTIVO;
+        return $this->activo;
     }
+    
+    
     
     /*
      * ESTA FUNCION CREA UNA ORDEN AUTOMATICAMENTE
      * RELACIONANDO EL INGRESO CON EL CAMPO ID
      */
     public function createOp(){
-        if(is_null(\frontend\modules\op\models\OpOs::findOne(['detgui_id'=>$this->id])) and 
-            !$this->isNewRecord){
+        $model=\frontend\modules\op\models\OpOs::findOne(['detgui_id'=>$this->id]);
+        if(is_null($model) and !$this->isNewRecord){
         \frontend\modules\op\models\OpOs::firstOrCreateStatic(
                 [
                    'detgui_id'=>$this->id,
@@ -158,12 +166,14 @@ class MatDetNe extends \common\models\base\modelBase
                 ['detgui_id'=>$this->id],
                 false);        
                 
+            }elseif(is_null($model->getFirstImage()) && !is_null($this->getFirstImage())){
+                $model->attachFromPath($this->getFirstImage()->path);
             }
     }
     
    public function afterSave($insert, $changedAttributes) {
        
-       if($this->rotativo)$this->createOp();
+       //if($this->rotativo)$this->createOp();
        return parent::afterSave($insert, $changedAttributes);
    } 
     

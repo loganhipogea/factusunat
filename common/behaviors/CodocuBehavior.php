@@ -9,14 +9,17 @@ class CodocuBehavior extends Behavior
 {
     
     public function codocu($clase=null){
+     if(empty($this->owner->codocu)){
       $rutaClase=(is_null($clase))?$this->owner->className():$clase;
       //yii::error($rutaClase,__FUNCTION__);
       if(!is_null($registro= Documentos::findOne(['modelo'=>'\\'.$rutaClase]))){
           return $registro->codocu;
       }else{
         throw new ServerErrorHttpException(Yii::t('base.errors', 'Este clase {clase} no está asociada a ningún documento con código {codocu}',['clase'=>$rutaClase]));
-            
-      }
+           }
+       }else{
+        return $this->owner->codocu;
+       }
     }
    
 }
