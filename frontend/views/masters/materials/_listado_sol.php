@@ -81,11 +81,10 @@ $this->params['breadcrumbs'][] = $this->title;
                               
                             return \yii\helpers\Html::a('<span class="btn btn-success glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
-                        'delete' => function ($url,$model) {
-                                 
-			   $url = \yii\helpers\Url::to([$this->context->id.'/ajax-desactiva-item','id'=>$model->id]);
-                              return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
-                            }
+                        'delete' => function ($url,$model) {                             
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-anula-material-solicitado','id'=>$model->id]);
+                                return ($model->subido || !$model->activo)?'':\yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                             },
                         
                             ]
                     ],

@@ -25,13 +25,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ordenes'), 'url' => 
 
 ?>
 <h4><i class="fa fa-edit"></i><?= Html::encode($this->title) ?></h4>
- <?php
- $form=null;
-  $this->render('_form_os_base',[
-      'model'=>$model,
-      'form'=>$form,
-  ]);
-?>
+ 
   <div class="box-body">
     <?php 
     $items= [
@@ -41,7 +35,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ordenes'), 'url' => 
           'label'=>'<i class="fa fa-puzzle-piece"></i> '.yii::t('base.names','Actividades'), //$this->context->countDetail() obtiene el contador del detalle
             'content'=> $this->render('_form_os',[
                 'model' => $model,
-                'form'=>$form,
+               // 'form'=>$form,
                 //'aprobado'=>$aprobado,
                 //'dataProviderMateriales' =>$dataProviderMateriales,
                // 'dataProviderServicios' =>$dataProviderServicios,
@@ -89,6 +83,21 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ordenes'), 'url' => 
                     ]),
             'active' => false,
              'options' => ['id' => 'my7879ownID4'],
+        ];
+    }
+    
+    if(!empty($model->isEntregable())){
+        $items[]=[
+          'label'=>'<i class="fa fa-wrench"></i> '.yii::t('base.names','Entergables'), //$this->context->countDetail() obtiene el contador del detalle
+            'content'=> $this->render('_entregables',
+                    [ 
+                'model' => $model,
+                 'searchModelServ' => $searchModelServ,
+                'dataProviderServicios' =>$dataProviderServicios,
+               // 'aprobado'=>$aprobado
+                    ]),
+            'active' => false,
+             'options' => ['id' => 'my787454t9ownID4'],
         ];
     }
     echo TabsX::widget([

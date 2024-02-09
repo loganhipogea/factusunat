@@ -6,7 +6,7 @@
 namespace common\helpers;
 use yii;
 use yii\helpers\ArrayHelper;
-
+use yii\db\Expression;
 class ComboHelper  {
     
     /*
@@ -1133,6 +1133,19 @@ class ComboHelper  {
                         \common\models\masters\Grupostrabajo::find()->all(),
                 'codgrupo','desgrupo');
     }
+public static function getCboTurnos(){        
+        
+        return ArrayHelper::map(
+                        \common\models\masters\Turnos::find()->all(),
+                'id','desturno');
+    }
 
-
+  public static function getCboVwCuadrillas(){        
+        
+        return ArrayHelper::map(
+        \common\models\masters\VwCuadrillas::find()->all(),
+                'id','nombres');
+    }  
+    
+    
 }

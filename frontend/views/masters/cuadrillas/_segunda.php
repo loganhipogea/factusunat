@@ -46,6 +46,16 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
            
             
          ],
+                            
+        [
+             'attribute' => 'desturno',
+                'format'=>'raw',
+                //'filter'=> common\helpers\ComboHelper::getCboDocuments(),
+                'value'=>function($model){ 
+                             return $model->desturno;                                     
+                            } 
+                
+           ],                       
        
    ];
            
@@ -53,7 +63,7 @@ use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
     'dataProvider'=> new yii\data\ActiveDataProvider(
                 [
                     'query'=> \common\models\masters\VwCuadrillas::find()->
-                select(['nombres'])
+                select(['nombres','desturno'])
                 ->andWhere(['idcuadrilla'=>$model->id])
                 ]),
    // 'filterModel' => $searchModel,

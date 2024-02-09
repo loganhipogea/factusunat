@@ -22,7 +22,7 @@
         "daxslab/yii2-coreui": "*",
         "synamen/yii2-tabler-theme": "~1.0",
         "yiister/yii2-gentelella": "~1.0",
-         "dmstr/yii2-adminlte-asset": "^2.4",
+         "dmstr/yii2-adminlte-asset": "^2.1",
         "dlds/yii2-metronic": "dev-master",
         "yii2mod/yii2-settings": "*", 
         "2amigos/yii2-chartjs-widget": "~2.0",
@@ -59,7 +59,8 @@
       "yii2mod/yii2-tree": "*",
       "sjaakp/yii2-timeline": "*",
       "sjaakp/yii2-dateline": "*",
-      "practically/yii2-chartjs": "^1.1"
+      "practically/yii2-chartjs": "^1.1",
+      "yidas/yii2-adminlte": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

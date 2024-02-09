@@ -7,17 +7,14 @@ use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
  use yii\helpers\Url;
 use kartik\slider\Slider;       
-USE common\helpers\ComboHelper;
+USE frontend\modules\op\helpers\ComboHelper;
 use dosamigos\chartjs\ChartJs;
  ?>
 
    
     
-     <?php
-    //$aprobado=false;
-    $form = ActiveForm::begin([
-    //'fieldClass'=>'\common\components\MyActiveField'
-    ]); ?>
+    
+   
      <div class="box-header">
         <div class="col-md-12">
             <div class="form-group no-margin">
@@ -35,6 +32,21 @@ use dosamigos\chartjs\ChartJs;
      <?= $form->field($model, 'numero')->textInput(['disabled'=>true,'maxlength' => true]) ?>
 
  </div>
+     
+     
+           
+           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+     <?=$form->field($model, 'tipoes')->
+            dropDownList($model->dataComboValores('tipoes') ,
+                    ['prompt'=>'--'.yii::t('base.verbs','Seleccione un valor')."--",
+                    // 'class'=>'probandoSelect2',
+                      'disabled'=>(!$model->isNewRecord)?'disabled':null,
+                        ]
+                    )  ?>
+
+     </div>
+     
+     
    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
@@ -117,6 +129,23 @@ use dosamigos\chartjs\ChartJs;
         ]);  */ ?>
 
  </div> 
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+     <?php 
+  // $necesi=new Parametros;
+    echo selectWidget::widget([
+           // 'id'=>'mipapa',
+            'model'=>$model,
+            'form'=>$form,
+            'campo'=>'codart',
+         'ordenCampo'=>2,
+         'addCampos'=>[2,],
+        ]);  ?>
+
+ </div> 
+ <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'cant')->textInput(['maxlength' => true]) ?>
+
+ </div>
  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
     <?= 
             $form->field($model, 'codcen')->
@@ -231,10 +260,5 @@ use dosamigos\chartjs\ChartJs;
 
  </div>
    
- 
-      
-<?php
-   ActiveForm::end();
- 
- ?>
+
       </DIV><!-- comment -->

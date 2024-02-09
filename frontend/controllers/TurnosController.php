@@ -1,22 +1,22 @@
 <?php
 
-namespace frontend\controllers\masters;
+namespace frontend\controllers;
 
 use Yii;
-use common\models\masters\Cuadrillas;
-use common\models\masters\CuadrillasSearch;
+use common\models\masters\Turnos;
+use common\models\masters\TurnosSearch;
 use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\h;
 use yii\helpers\Url;
-
+use frontend\controllers\base\baseController;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 /**
- * CuadrillasController implements the CRUD actions for Cuadrillas model.
+ * TurnosController implements the CRUD actions for Turnos model.
  */
-class CuadrillasController extends baseController
+class TurnosController extends baseController
 {
     /**
      * {@inheritdoc}
@@ -34,12 +34,12 @@ class CuadrillasController extends baseController
     }
 
     /**
-     * Lists all Cuadrillas models.
+     * Lists all Turnos models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CuadrillasSearch();
+        $searchModel = new TurnosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +49,7 @@ class CuadrillasController extends baseController
     }
 
     /**
-     * Displays a single Cuadrillas model.
+     * Displays a single Turnos model.
      * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,13 +62,13 @@ class CuadrillasController extends baseController
     }
 
     /**
-     * Creates a new Cuadrillas model.
+     * Creates a new Turnos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Cuadrillas();
+        $model = new Turnos();
         
         
         if (h::request()->isAjax && $model->load(h::request()->post())) {
@@ -88,7 +88,7 @@ class CuadrillasController extends baseController
     }
 
     /**
-     * Updates an existing Cuadrillas model.
+     * Updates an existing Turnos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return mixed
@@ -113,7 +113,7 @@ class CuadrillasController extends baseController
     }
 
     /**
-     * Deletes an existing Cuadrillas model.
+     * Deletes an existing Turnos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return mixed
@@ -127,58 +127,18 @@ class CuadrillasController extends baseController
     }
 
     /**
-     * Finds the Cuadrillas model based on its primary key value.
+     * Finds the Turnos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Cuadrillas the loaded model
+     * @return Turnos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Cuadrillas::findOne($id)) !== null) {
+        if (($model = Turnos::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-    
-    
-     public function actionModalAgregaTrabajador($id){
-          //$this->layout = "install";
-          $modelPadre= Cuadrillas::findOne($id);
-          //var_dump($modelPadre);die();
-          $model= NEW \common\models\masters\Trabajcuadrilla();
-         // var_dump($model->detectaIdReq());die();
-          $model->setAttributes([
-              'cuadrilla_id'=>$modelPadre->id,
-              'codcuadrilla_id'=>$modelPadre->codigo,
-             // 'detos_id'=>$id,              
-          ]);
-           $datos=[];
-        if(h::request()->isPost){            
-            $model->load(h::request()->post());
-             h::response()->format = \yii\web\Response::FORMAT_JSON;
-            $datos=\yii\widgets\ActiveForm::validate($model);
-            if(count($datos)>0){
-               return ['success'=>2,'msg'=>$datos];  
-            }else{
-                $model->save(); 
-                //$model->assignStudentsByRandom();
-                  return ['success'=>1,'id'=>$model->id];
-            }
-        }else{
-           return $this->renderAjax('_modal_trabajador', [
-                        'model' => $model,
-                        'id' => $id,
-                        'gridName'=>h::request()->get('gridName'),
-                        'idModal'=>h::request()->get('idModal'),
-                        //'cantidadLibres'=>$cantidadLibres,
-          
-            ]);  
-        } 
-          
-      }
-      
-      
-      
 }

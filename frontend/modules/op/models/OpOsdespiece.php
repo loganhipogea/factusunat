@@ -35,8 +35,9 @@ class OpOsdespiece extends \common\models\base\modelBase
     {
         return [
             [['os_id', 'parent_id', 'nivel', 'prioridad'], 'integer'],
-            [['ruta', 'ruta2'], 'string'],
-            [['abreviatura'], 'required'],
+            [['ruta', 'ruta2','codart','descripcion','serie'], 'string'],
+            [['codart','descripcion','serie'], 'safe'],
+            //[['abreviatura'], 'required'],
             [['abreviatura'], 'string', 'max' => 14],
             [['clave'], 'string', 'max' => 20],
             [['final'], 'string', 'max' => 1],

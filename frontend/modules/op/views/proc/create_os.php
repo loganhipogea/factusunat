@@ -14,7 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h4><?= Html::encode($this->title) ?></h4>
 <div class="box box-success">
    <?php $form = ActiveForm::begin([
-    'fieldClass'=>'\common\components\MyActiveField'
+    'fieldClass'=>'\common\components\MyActiveField',
+     'id'=>'miform',
+      'enableAjaxValidation'=>true
     ]); ?>
     <?= $this->render('_form_os_base', [
         'model' => $model,

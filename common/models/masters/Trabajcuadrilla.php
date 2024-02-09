@@ -30,10 +30,13 @@ class Trabajcuadrilla extends \common\models\base\modelBase
     public function rules()
     {
         return [
-             [['trabajador_id'], 'required'],
+             [['codtra_id','turno_id'], 'required'],
             [['cuadrilla_id', 'trabajador_id'], 'integer'],
             [['textodetalle'], 'string'],
-             [['trabajador_id','cuadrilla_id'], 'unique',],
+             [['codtra_id','cuadrilla_id'], 'unique',
+                 'targetAttribute' => ['codtra_id','cuadrilla_id'],
+                 'message'=>Yii::t('base.errors','Ya existe esta combinación de valores'),
+                 ],
             [['codcuadrilla_id'], 'string', 'max' => 14],
             [['codtra_id'], 'string', 'max' => 6],
         ];
@@ -69,9 +72,14 @@ class Trabajcuadrilla extends \common\models\base\modelBase
         return $this->hasOne(Trabajadores::className(), ['codigotra' => 'codtra_id']);
     }
     
+    public function getTurno()
+    {
+        return $this->hasOne(Turnos::className(), ['id' => 'turno_id']);
+    }
+    
     public function beforeSave($insert) {
         
-$this->trabajador_id=$this->trabajador->id;
+         $this->trabajador_id=$this->trabajador->id;
         
         return parent::beforeSave($insert);
     }

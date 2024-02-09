@@ -1,7 +1,7 @@
 <?php
 
 use yii\widgets\ActiveForm;
-
+use common\helpers\ComboHelper;
 
 
  //use kartik\date\DatePicker;
@@ -57,7 +57,16 @@ use common\widgets\selectwidget\selectWidget;
         ]);  ?>
             </div>
            
-     
+     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+   
+    <?= $form->field($model, 'turno_id')->
+            dropDownList(ComboHelper::getCboTurnos(),
+                    ['prompt'=>'--'.yii::t('base.verbs','Choose a Value')."--",
+                    // 'class'=>'probandoSelect2',
+                       // 'disabled'=>(!$model->canChangeType() && !$model->isNewRecord),
+                        ]
+                    ) ?>
+    </div>
          
          
          

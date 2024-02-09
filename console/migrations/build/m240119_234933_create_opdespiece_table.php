@@ -20,7 +20,7 @@ if(!$this->existsTable($this->table)) {
             'parent_id'=>$this->integer(11),
             'ruta'=>$this->text()->append($this->collateColumn()),
               'ruta2'=>$this->text()->append($this->collateColumn()),            
-            'abreviatura'=>$this->string(14)->unique()->notNull()->append($this->collateColumn()),
+            'abreviatura'=>$this->string(14)->append($this->collateColumn()),
              'clave'=>$this->string(20)->append($this->collateColumn()),
              'final'=>$this->char(1)->append($this->collateColumn()),
             'nivel'=>$this->integer(2),

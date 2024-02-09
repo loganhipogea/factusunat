@@ -27,7 +27,18 @@ $this->params['breadcrumbs'][] = $this->title;
   $gridColumns= [
           
            
-            'codart',
+            ['attribute' => 'codart',
+               
+                'format'=>'raw',
+                'value'=>function($model){
+                    
+                        if($model->activo){
+                            return $model->codart;
+                        } else{
+                           return '<span class="tachado">'.$model->codart.'</span>';
+                            } 
+                    }
+                ],
               ['attribute' => 'subido',
                 // 'filter'=>$valores,
                 'headerOptions' => ['style' => 'width:5%'],
@@ -87,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                                'delete' => function ($url,$model) {                             
                                 $url = \yii\helpers\Url::to([$this->context->id.'/ajax-anula-material-solicitado','id'=>$model->id]);
-                                return ($model->subido)?'':\yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
+                                return ($model->subido || !$model->activo)?'':\yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
                              'attach' => function($url, $model) use($ext) {  
                           $url=\yii\helpers\Url::toRoute(['/finder/selectimage','isImage'=>true,
@@ -100,6 +111,10 @@ $this->params['breadcrumbs'][] = $this->title;
                              return Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['href' => $url, 'title' => 'Editar Adjunto', 'class' => 'botonAbre btn btn-info']);
                             }, 
                             ]
+                    ],
+             [
+                    'class' => 'common\components\columnGridAudit',
+                    
                     ],
         ];
 

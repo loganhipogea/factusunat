@@ -8,7 +8,7 @@ use common\helpers\h;
 use kartik\grid\GridView;
  use yii\widgets\Pjax;
 
-
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\op\models\OpProcesos */
 /* @var $form yii\widgets\ActiveForm */
@@ -16,12 +16,20 @@ use kartik\grid\GridView;
 
 <div class="box-body">
     <br>
-   
+ <?php
+$form = ActiveForm::begin([
+    'fieldClass'=>'\common\components\MyActiveField',
+     'id'=>'miform',
+      'enableAjaxValidation'=>true
+    ]); 
+  
+?>
+
 <?php 
-  echo $this->render('_form_os_base',['model'=>$model]);
+  echo $this->render('_form_os_base',['model'=>$model,'form'=>$form]);
 
 ?>
-        
+<?php ActiveForm::end(); ?>          
     <?php Pjax::begin(['id'=>'pjax-detserv','timeout'=>false]); ?>
     <?php
       $ext= json_encode(array_merge(Fl::extEngineers(),Fl::extDocs(),Fl::extImages()));

@@ -18,6 +18,7 @@ class m240122_214746_create_trabajcuadrillas_table extends baseMigration
             'codcuadrilla_id'=>$this->string(14)->append($this->collateColumn()),
            'trabajador_id'=>$this->integer(11),
              'codtra_id'=>$this->string(6)->append($this->collateColumn()),
+             'turno_id'=>$this->integer(11),
             'textodetalle'=>$this->text()->append($this->collateColumn()),
         ]);
     }

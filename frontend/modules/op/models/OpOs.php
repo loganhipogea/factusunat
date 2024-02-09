@@ -30,6 +30,11 @@ implements CosteoInterface,
         \frontend\modules\mat\interfaces\DocRelacionadoValeInterface
 {
     
+    CONST TYPE_ESTRUCTURAL_EQUIPO='A';
+    CONST TYPE_COMPONENTE_ROTATIVO='B';
+    CONST TYPE_COMPONENTES_VARIOS='C';
+    CONST TYPE_ESTRUCTURA_DESCONOCIDA='D';
+    
     CONST LUGAR_TALLER='T';
     CONST LUGAR_PLANTA='P';
     
@@ -54,11 +59,19 @@ implements CosteoInterface,
     public function rules()
     {
         return [
-            [['proc_id'], 'required'],
+            [['proc_id','tipoes'], 'required'],
+            
+            /*Validando la obligatoriedad de los campos codigos según el tipo*/
+            
+            [['tipoes'], 'validate_codes'],
+            
+           
+            
+            
              [['item','codcen','detgui_id','codart','orden','ot',
-                 'finprog','fin','codest','avance','codactivo','codcencli','serie'], 'safe'],
+                 'finprog','fin','codest','avance','codactivo','codcencli','serie','cant','tipoes'], 'safe'],
             [['proc_id'], 'integer'],
-            [['textocomercial', 'textointerno', 'textotecnico'], 'string'],
+            [['textocomercial', 'textointerno', 'textotecnico','tipoes'], 'string'],
             [['numero'], 'string', 'max' => 10],
             [['fechaprog', 'fechaini'], 'string', 'max' => 10],
             [['codtra',], 'string', 'max' => 6],
@@ -100,6 +113,7 @@ implements CosteoInterface,
             'codpro' => Yii::t('app', 'Codpro'),
             'descripcion' => Yii::t('app', 'Descripcion'),
             'tipo' => Yii::t('app', 'Tipo'),
+           'tipoes' => Yii::t('app', 'Tipo'),
             'codestado' => Yii::t('app', 'Codestado'),
             'textocomercial' => Yii::t('app', 'Textocomercial'),
             'textointerno' => Yii::t('app', 'Textointerno'),
@@ -112,7 +126,10 @@ implements CosteoInterface,
     {
         return $this->hasOne(Clipro::className(), ['codpro' => 'codpro']);
     }
-    
+     public function getMaterial()
+    {
+        return $this->hasOne(\common\models\masters\Maestrocompo::className(), ['codart' => 'codart']);
+    }
     public function getResponsable()
     {
         return $this->hasOne(Trabajadores::className(), ['codigotra' => 'codtra']);
@@ -147,6 +164,100 @@ implements CosteoInterface,
     }
     
     
+    /*
+     * Crea un despice entregable automaticamente
+     * En los casos del Tipo A y B crea el msimo equipo o 
+     * componente en los casos C crea un grupo de componentes
+     * En el caso D, crea una estrcutura cualquiera 
+     */
+    public function creaEntregable(){
+        
+      if($this->isTypeEstructural()){
+          yii::error('isTypeEstructural',__FUNCTION__);
+          $this->creaEntregableMismoComponente();
+      }elseif($this->isTypeComponente()){
+           yii::error('isTypeComponente',__FUNCTION__);
+          $this->creaEntregableMismoComponente();
+      }elseif($this->isTypeGrupoComponentes()){
+           yii::error('isTypeGrupoComponentes',__FUNCTION__);
+          $this->creaEntregableGrupoComponentes();
+      }elseif($this->isTypeDesconocido()){
+           yii::error('desconocido',__FUNCTION__);
+          //NO crea nada
+      }
+       
+    }
+    
+    public function validate_codes($attribute, $params){
+      if($this->isTypeEstructural()){
+         if(empty($this->codart))
+          $this->addError('codart',yii::t('base.errors','Codigo es obligatorio en este tipo')); 
+          if(empty($this->codactivo))
+          $this->addError('codactivo',yii::t('base.errors','Codigo activo es obligatorio en este tipo')); 
+         
+       }
+      if($this->isTypeComponente() || $this->isTypeGrupoComponentes()){
+           if(empty($this->codart))
+          $this->addError('codart',yii::t('base.errors','Codigo es obligatorio en este tipo')); 
+          if(empty($this->cant))
+          $this->addError('cant',yii::t('base.errors','Codigo activo es obligatorio en este tipo')); 
+       } 
+       
+    }
+    
+    
+    
+    private function creaEntregableMismoComponente(){
+        $model= OpOsdespiece::instance();
+        $attributes=[
+            'proc_id'=>$this->proc_id,
+            'os_id'=>$this->id,            
+             ];
+        if($this->isTypeEstructural()){
+            $attributes['descripcion']=$this->activo->descripcion;
+             $attributes['serie']=$this->activo->serie;
+        }
+        if($this->isTypeComponente()){
+            $attributes['descripcion']=$this->material->descripcion;
+        }
+        $model->setAttributes([$attributes]);
+        if(!$model->save())
+             yii::error($model->getErrors(),__FUNCTION__);
+    }
+    
+    /*
+     * Crea componentes hijos de acuerdo a la cantidad especificada
+     * asigna a cada uno una descriocion #1 , #2 secuencialmente
+     */
+    private function creaEntregableGrupoComponentes(){
+        //yii::error('Ingresando a  ',__FUNCTION__);
+        $model=null;
+        $attributes=[
+            'proc_id'=>$this->proc_id,
+            'os_id'=>$this->id,            
+             ];
+        $descripcion=$this->material->descripcion;
+        //yii::error('Ahora el for  ',__FUNCTION__);
+        //yii::error('la cantidad   '.$this->cant,__FUNCTION__);
+       for ($i=1;$i<=$this->cant;$i++) {
+           //yii::error('El  i  '.$i,__FUNCTION__);
+           $model=new OpOsdespiece;
+           $attributes['descripcion']=trim($descripcion).' # '.$i;
+             //$attributes['serie']=$this->activo->serie;
+           //yii::error('attibutss',__FUNCTION__);
+           //yii::error($attributes,__FUNCTION__);
+            $model->setAttributes($attributes);
+           // yii::error('Loa atributos del modelo',__FUNCTION__);
+             //yii::error( $model->attributes,__FUNCTION__);
+            if(!$model->save())
+             yii::error($model->getErrors(),__FUNCTION__);
+       }
+    }
+    
+    
+    /*
+     * Crea un registro actividad hijo automáticamente 
+     */
     public function creaHijo(){
         $model=OpOsdet::instance();
         $model->setAttributes([
@@ -180,6 +291,8 @@ implements CosteoInterface,
         if($insert){      
             $this->refresh();
             $this->creaHijo();
+            $this->creaEntregable();
+            
             
         }
         return parent::afterSave($insert, $changedAttributes);
@@ -206,5 +319,24 @@ implements CosteoInterface,
     public function hasIngreso(){
         return $this->detgui_id>0;
     }
-     
+    
+   public function isTypeEstructural(){
+       return ($this->tipoes==self::TYPE_ESTRUCTURAL_EQUIPO);
+   }
+   public function isTypeComponente(){
+       return ($this->tipoes==self::TYPE_COMPONENTE_ROTATIVO);
+   } 
+  public function isTypeGrupoComponentes(){
+       return ($this->tipoes==self::TYPE_COMPONENTES_VARIOS);
+       
+   } 
+  public function isTypeDesconocido(){
+       return ($this->tipoes== self::TYPE_ESTRUCTURA_DESCONOCIDA);
+       
+   } 
+   
+  public function isEntregable(){
+      return !$this->isTypeDesconocido();
+  }
+
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1482f06c0bda8e4456506d443ba7b59",
+    "content-hash": "111c132c3476a107661e27ddc024b1d0",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -6411,6 +6411,105 @@
                 "wiki": "https://github.com/wbraganca/yii2-fancytree-widget/wiki/"
             },
             "time": "2015-11-08T14:15:16+00:00"
+        },
+        {
+            "name": "yidas/yii2-adminlte",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yidas/yii2-adminlte.git",
+                "reference": "f6d115ac2e3d4c36e72988340545d90745d15205"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yidas/yii2-adminlte/zipball/f6d115ac2e3d4c36e72988340545d90745d15205",
+                "reference": "f6d115ac2e3d4c36e72988340545d90745d15205",
+                "shasum": ""
+            },
+            "require": {
+                "almasaeed2010/adminlte": "~2.4",
+                "yidas/yii2-fontawesome": "2.0.*",
+                "yiisoft/yii2": "2.0.*",
+                "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yidas\\adminlte\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nick Tsai",
+                    "email": "myintaer@gmail.com",
+                    "homepage": "https://github.com/yidas/"
+                }
+            ],
+            "description": "AdminLTE Asset Bundle for Yii2 Framework",
+            "keywords": [
+                "AdminLTE",
+                "asset",
+                "asset bundle",
+                "yii"
+            ],
+            "support": {
+                "issues": "https://github.com/yidas/yii2-adminlte/issues",
+                "source": "https://github.com/yidas/yii2-adminlte"
+            },
+            "time": "2018-05-10T10:02:49+00:00"
+        },
+        {
+            "name": "yidas/yii2-fontawesome",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yidas/yii2-fontawesome.git",
+                "reference": "da4fc4e6c71c07bc8da38a76858247e7c8f2512a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yidas/yii2-fontawesome/zipball/da4fc4e6c71c07bc8da38a76858247e7c8f2512a",
+                "reference": "da4fc4e6c71c07bc8da38a76858247e7c8f2512a",
+                "shasum": ""
+            },
+            "require": {
+                "fortawesome/font-awesome": "~4.7",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yidas\\yii\\fontawesome\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nick Tsai",
+                    "email": "myintaer@gmail.com",
+                    "homepage": "https://github.com/yidas/"
+                }
+            ],
+            "description": "Font Awesome Asset Bundle for Yii2 framework",
+            "keywords": [
+                "asset",
+                "asset bundle",
+                "font awesome",
+                "yii"
+            ],
+            "support": {
+                "issues": "https://github.com/yidas/yii2-fontawesome/issues",
+                "source": "https://github.com/yidas/yii2-fontawesome"
+            },
+            "time": "2017-09-09T17:52:13+00:00"
         },
         {
             "name": "yii2mod/yii2-editable",

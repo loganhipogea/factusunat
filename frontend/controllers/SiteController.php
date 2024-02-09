@@ -339,6 +339,14 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      echo \common\models\masters\Detturnos::findOne(13)->horas();die(); 
+     $c1=\common\models\masters\Detturnos::findOne(13)->toCarbon('hi');
+      $c2=\common\models\masters\Detturnos::findOne(13)->toCarbon('hf');
+     echo "<br>";
+     
+     
+     var_dump($c1->lt($c2));
+     die();
      echo \frontend\modules\prd\models\PrdOpDespiece::findOne(8)->pathRoute(false);die();
       
       
