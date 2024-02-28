@@ -60,7 +60,8 @@
       "sjaakp/yii2-timeline": "*",
       "sjaakp/yii2-dateline": "*",
       "practically/yii2-chartjs": "^1.1",
-      "yidas/yii2-adminlte": "^2.2"
+      "yidas/yii2-adminlte": "^2.2",
+      "cornernote/yii2-workflow-manager": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -2,6 +2,8 @@
 
 namespace frontend\modules\mat\models;
 use common\models\masters\Maestrocompo;
+use common\behaviors\FileBehavior;
+use yii\helpers\Html;
 use Yii;
 
 /**
@@ -20,6 +22,11 @@ use Yii;
  */
 class MatDespiece extends \common\models\base\modelBase
 {
+    
+    
+    private $_id=-1; 
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -34,17 +41,36 @@ class MatDespiece extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['codart','activo_id'], 'required'],
+           // [['codart','activo_id'], 'required'],
             [['cant'], 'number'],
             [['parent_id', 'activo_id', 'nivel', 'prioridad'], 'integer'],
-            [['secuencia', 'of', 'esemplazamiento'], 'safe'],
+            [['secuencia', 'of', 'esemplazamiento','modelobase_id'], 'safe'],
             [['ruta', 'ruta2'], 'string'],
             [['codart'], 'string', 'max' => 14],
             [['clave'], 'string', 'max' => 20],
-            [['codart'], 'unique'],
+            //[['codart'], 'unique'],
+              [['codart'], 'exist', 
+                  'skipOnError' => false, 
+                  'skipOnEmpty'=> true, 
+                  'targetClass' => \common\models\masters\Maestrocompo::className(), 'targetAttribute' => ['codart' => 'codart']],
+          
         ];
     }
 
+     public function behaviors() {
+        return [
+           
+            'fileBehavior' => [
+                'class' => FileBehavior::className()
+            ],
+            'auditoriaBehavior' => [
+                'class' => '\common\behaviors\AuditBehavior',
+            ],
+            
+        ];
+    }
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -67,6 +93,12 @@ class MatDespiece extends \common\models\base\modelBase
     {
         return $this->hasOne(Maestrocompo::className(), ['codart' => 'codart']);
     }
+    public function getModeloBase()
+    {
+        return $this->hasOne(\common\models\masters\Modelosbase::className(), ['id' => 'modelobase_id']);
+    }
+    
+    
     public function clave(){
       return '_'.$this->id;
     }
@@ -146,14 +178,43 @@ class MatDespiece extends \common\models\base\modelBase
      * 
      *   El array children se obtiene de la funcion childsTree()
      */
-    public function arrayForTree(){
+    public function arrayForTree($key=NULL,$icon=NULL,$title=NULL){
+       $key=(is_null($key))?$this->id.'':$key;
+       $icon=(is_null($icon))?'fa fa-dropbox':$icon;
+       $title=(is_null($title))?$this->codart.'-'.$this->material->descripcion:$title;        
+        return self::arrayForTreeBase($key, $icon,$title);
+    }
+    
+    
+    public static function arrayForTreeBase($key=null,$icon=null,$title){
         return [
-            'key'=>$this->id ,
-             'icon'=>'fa fa-dropbox',
-            'title'=>$this->id.'  -   '.$this->material->descripcion , 
+            'key'=>$key ,
+             'icon'=>$icon,
+            'title'=>$title , 
             'children'=>[],
         ];
     }
+    
+    /*
+     * Definamos un array para construir un nodo
+     * Este array debe de tener las claves basicas
+     * 
+     *    key=>[],
+     *    icon=>[],
+     *    title=>[],
+     *    urls=>[], Array de Urls 
+     */
+    
+    public function array_for_node(){
+        
+    }
+    
+    
+    private function buildUrls(){
+        
+    }
+    
+    
     
     /*
      * Va buscando las ramas hijas 
@@ -168,8 +229,8 @@ class MatDespiece extends \common\models\base\modelBase
           foreach($this->childs() as $child){  
                      $arr=$child->arrayForTree();
                      $arr['children']=$child->childsTreeRecursive();
-            $array_hijos[]=$arr;
-           } 
+                $array_hijos[]=$arr;
+            } 
           
            return $array_hijos;
        }else{
@@ -180,4 +241,68 @@ class MatDespiece extends \common\models\base\modelBase
     }
     
 
+    /*
+    * Funcion que genera los Hrmls de los
+    * botones de los enlaces
+    * ursl= [
+    *   'icon'=>Url,
+    *   'icon2'=>url2,
+    * 
+    * ]
+    * 
+    */
+   public function buildButtons($modelo){
+       
+       $urls=$modelo->urlsTreeViewButtons($this->id);
+       $cad="  |";
+       foreach($urls as $icon=>$url){
+           $cad.=Html::a('<i style=""><span class="'.$icon.'"></i>',$url['url'],$url['optionsEnlace'])."|";
+       }
+     return $cad;
+   } 
+   
+   
+   public function buttonAdd($icon,$url,$optionsEnlace){
+       $cad="  |";
+           $cad.=Html::a('<i style=""><span class="'.$icon.'"></i>',$url,$optionsEnlace)."|";
+       return $cad;
+   }
+   
+   public function buildTitle(){
+       $cad=" ";
+       foreach($this->titleTreeView($this) as $clave=>$valor){
+          $cad.="<span>".$valor['valor']."</span>";
+       }
+       
+   }
+    
+   public function titleTreeView(){
+    return [
+        "codart"=>[
+                    "valor"=>$this->codart,
+                      "style"=>"font-weight:800;",
+                    ],
+       "descripcion"=>[
+              "valor"=>$this->material->descripcion,
+                    ], 
+       "cant"=>[
+           "valor"=>$this->cant,
+             "style"=>"font-weight:800;",
+                    ], 
+    ];
+ } 
+ 
+ 
+ public function obtieneId(){
+   if($this->_id <0){
+       if($this->isNewRecord){
+        $model=self::find()->select()->orderBy(['id'=>SORT_DESC])->one();
+        $this->_id= (is_null($model))?null:$model->id;
+    }else{
+        $this->_id=$this->id;
+    }
+   }
+   return $this->_id; 
+ }
+ 
 }

@@ -252,6 +252,10 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
      */
    private $_messages=[];
    
+   /*
+    * Almacenar pares calve valor de valores almacenados en sesion
+    */
+  private $_attributes_session=[];
    
   public function makeReport(){}
     
@@ -647,6 +651,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
             $allowedValues=[self::_FHOUR,self::_FDATE,self::_FDATETIME,self::_FTIME];
             foreach(array_values($this->dateorTimeFields) as $key=>$value){
                 if(!in_array($value,$allowedValues)){
+                    //print_array($this->dateorTimeFields);die();
                     throw new ServerErrorHttpException(Yii::t('base.errors', 'Wrong property {valor}  in field time {campo} Times  ',['valor'=>$value,'campo'=>$key]));
     		                   
                 }
@@ -657,6 +662,7 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
         public function afterFind() {
             $this->convertBooleanFields();//COnveritr a booleanos los campos
             $this->prepareTimeFields(true);//Convierte los campos fechas y tiempo en legibles
+            $this->valuesAttributesFromSesion();
           return   parent::afterFind();
         }
         
@@ -1319,8 +1325,12 @@ class modelBase extends \yii\db\ActiveRecord  implements baseInterface
         
          if (!in_array($attribute, 
                  array_keys($this->dateorTimeFields))){
+             //var_dump($this->dateorTimeFields,$this->tableName());die();
                throw new ServerErrorHttpException(Yii::t('base.errors', 'Wrong property {valor}  in field time {campo} Times  ',['campo'=>$attribute])); 
          }
+         
+         if(is_null($this->{$attribute})) return null;
+         
          
          $type=$this->dateorTimeFields[$attribute];
          $formato=$this->formatToCarbon($type);
@@ -1765,6 +1775,75 @@ public function firstMessage($category=null){
    $this->{$field}=$this->correlativo($field, $longitud, $campocriterio);
    return $this;  
  }
+ 
+ 
+ /*Almaclores de atributos en sesiones*/
+ 
+ /*
+  * Guardar un valor especifico de un campo
+  */
+ private function store_sesionAttribute($attribute,$valor){
+     $key=self::className();
+     $sesion=h::session();
+     $array_temp=[];
+     if($sesion->has($key) && is_array($sesion->get($key))){
+         $array_temp=$sesion->get($key);
+         $array_temp[$attribute]=$valor;
+     }else{
+         $array_temp=[$attribute=>$valor];
+     }
+      $sesion->set($key,$array_temp);unset($array_temp);
+ }
+ 
+ /*
+  * Obtener un valor especifico de un campo
+  */
+ private function obtiene_sesionAttribute($attribute,$valor){
+     $key=self::className();
+     $sesion=h::session();
+     $array_temp=$sesion->get($key);
+         if(array_key_exists($attribute, $array_temp)){             
+           return $array_temp[$attribute];
+         }else{
+             return null;
+         }
+     }
+ 
+ 
+ /*
+  * Borrar un valor especifico de un campo
+  */
+ private function delete_sesionAttribute($attribute){
+     $key=self::className();
+     $sesion=h::session();
+    
+     if($sesion->has($key) && is_array($sesion->get($key))){
+          $array_temp=$sesion->get($key);
+         if(array_key_exists($attribute, $array_temp)){             
+            unset( $array_temp[$attribute]);
+         }
+       $sesion->set($key,$array_temp);
+     }
+ }
+ 
+ 
+ 
+ /*
+  * Obtiene los attributos de la sesion
+  */
+ public function valuesAttributesFromSesion(){
+     $key=self::className();
+     $sesion=h::session();
+     if($sesion->has($key) && is_array($sesion->get($key))){
+         $array_temp=$sesion->get($key);
+         foreach($array_temp as $attribute =>$valor){
+           $this->{$attribute}=$valor;
+         }
+         
+     }
+   return $this; 
+   }
+ 
 
 }   
 

@@ -62,7 +62,6 @@ class TreeViewBehavior extends \yii\base\Behavior {
    private function childsArray(){
        return $this->childsModelsQuery()->asArray()->all();
    }
-   
-   
+  
    
 }

@@ -32,7 +32,7 @@ return [
          'migrate' => [
 		'class' => 'yii\console\controllers\MigrateController',
 		'migrationNamespaces' => [
-			'nemmo\attachments\migrations',
+			//'nemmo\attachments\migrations',
 		],
          ],
         'migrate-build' => [

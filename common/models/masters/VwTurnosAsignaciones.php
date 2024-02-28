@@ -27,6 +27,13 @@ use Yii;
  */
 class VwTurnosAsignaciones extends \common\models\base\modelBase
 {
+    
+    
+    public $booleanFields=['actiasignado'];
+     public $dateorTimeFields = [
+        'finicio' => self::_FDATETIME, 
+       'fin' => self::_FDATETIME, 
+    ];
     /**
      * {@inheritdoc}
      */
@@ -51,7 +58,7 @@ class VwTurnosAsignaciones extends \common\models\base\modelBase
             [['codarea'], 'string', 'max' => 4],
             [['desarea', 'desturno'], 'string', 'max' => 40],
             [['fecha'], 'string', 'max' => 10],
-            [['actiasignado'], 'string', 'max' => 1],
+            //[['actiasignado'], 'string', 'max' => 1],
         ];
     }
 
@@ -88,5 +95,11 @@ class VwTurnosAsignaciones extends \common\models\base\modelBase
     public static function find()
     {
         return new VwTurnosAsignacionesQuery(get_called_class());
+    }
+    
+     public function getAsignacion(){
+    
+        return $this->hasOne(Turnosasignaciones::className(), ['id' => 'id']);
+   
     }
 }

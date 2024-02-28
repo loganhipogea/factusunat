@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\h;
 use yii\helpers\Url;
-use frontend\controllers\base\baseController;
+
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 /**

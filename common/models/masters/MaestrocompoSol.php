@@ -203,6 +203,7 @@ class MaestrocompoSol extends \common\models\base\modelBase
             $codsubfam.'04'=> 'CAMION TRANSPORTE PERSONAL',
             $codsubfam.'05'=> 'TRANSPORTADOR DE EQUIPOS',
             $codsubfam.'06'=> 'EQUIPO CARGA DE EXPLOSIVOS',
+            $codsubfam.'07'=> 'EQUIPOS MEZCLADORES DE CONCRETO',
                                 ],
                   
                         '1101'=>[
@@ -559,9 +560,10 @@ class MaestrocompoSol extends \common\models\base\modelBase
      return parent::afterSave($insert, $changedAttributes);
  }
  
- private function createMaterial(){
+ public function createMaterial(){
     if(is_null($modelo=Maestrocompo::find()->andWhere(['codart'=>$this->codart])->one())){
     $modelo= Maestrocompo::instance();
+   
     $modelo->setAttributes([
                 'codart'=>$this->codart,
                'codfam'=> substr($this->codart,0,2),

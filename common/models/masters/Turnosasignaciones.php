@@ -25,7 +25,14 @@ class Turnosasignaciones extends \common\models\base\modelBase
     {
         return '{{%turnosasignaciones}}';
     }
-
+    public $dateorTimeFields = [
+        'fecha' => self::_FDATE, 
+       //'fin' => self::_FDATETIME, 
+    ];
+    
+    public $booleanFields=['activo'];
+    
+    
     /**
      * {@inheritdoc}
      */
@@ -40,7 +47,7 @@ class Turnosasignaciones extends \common\models\base\modelBase
             [['codtra'], 'string', 'max' => 6],
             [['descripcion'], 'string', 'max' => 40],
             [['fecha'], 'string', 'max' => 10],
-            [['activo'], 'string', 'max' => 1],
+            //[['activo'], 'string', 'max' => 1],
         ];
     }
 
@@ -61,13 +68,19 @@ class Turnosasignaciones extends \common\models\base\modelBase
         ];
     }
 
-     public function getPermisos(){
+     
     
-        return $this->hasMany(Turnoscambio::className(), ['turno_id' => 'id']);
+    public function getTurno(){
+    
+        return $this->hasOne(Turnos::className(), ['id' => 'turno_id']);
    
     }
     
+    public function getPermisos(){
     
+        return $this->hasMany(Turnoscambio::className(), ['turnosasignaciones_id' => 'id']);
+   
+    }
     /**
      * {@inheritdoc}
      * @return TurnosasignacionesQuery the active query used by this AR class.
@@ -78,10 +91,41 @@ class Turnosasignaciones extends \common\models\base\modelBase
     }
     
     public function hasPermisos(){
-        return $this->getPermisos()->andWhere(['aprobado'=>'1'])->count()>0;
+        
+        return $this->getPermisos()->count()>0;
     }
     
+    public function nPermisos(){
+        return $this->getPermisos()->count();
+    }
+    
+    
     public function lastPermiso(){
-         return $this->getPermisos()->andWhere(['aprobado'=>'1'])->orderBy(['fecha'=>SORT_DESC])->one();
+        
+           return $this->getPermisos()->orderBy(['fecha'=>SORT_DESC])->one();
+         
+
+    }
+    
+    
+    public function beforeSave($insert) {
+        if($insert){
+            $this->activo=true;
+        }
+        return parent::beforeSave($insert);
+    }
+    
+    /*
+     * Antiguedad para humanos
+     */
+    public function antiguedad(){
+      $ahora=self::CarbonNow();      
+      //if($ahora->gt())
+      return  $ahora->locale('es_PE')->diffForHumans($this->toCarbon('fecha'), \Carbon\CarbonInterface::DIFF_RELATIVE_TO_OTHER, false, 4);
+    }
+    
+    
+    public function isInRangeTurno(\Carbon\Carbon $fecha){
+        return $fecha->betweenIncluded($this->turno->toCarbon('finicio'),$this->turno->toCarbon('fin'));
     }
 }

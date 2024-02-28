@@ -95,6 +95,7 @@ class comboHelper extends Combito
             'EQ TRITON DFDF20 2 BRAZOS',
             'EQ NAUTILUS 2R LITTLE',
             'EQ TRITON DD311',
+            'EQ INYECTOR CEMENTO 6M3-H',
             'DETERMINADO POR PROD',
             ];
       return array_combine($equipos,$equipos);

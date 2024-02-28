@@ -242,7 +242,7 @@ echo ModalAjax::widget([
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;color: #ffc24d;"></i><?=h::userName() ?>
+                                <i class="fa fa-user" style="font-size:1.5em;padding-right: 4px;"></i><?=h::userName() ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">

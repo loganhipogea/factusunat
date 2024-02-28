@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "111c132c3476a107661e27ddc024b1d0",
+    "content-hash": "879e166c5f57a7ea5d526a512057c73f",
     "packages": [
         {
             "name": "2amigos/qrcode-library",
@@ -632,6 +632,25 @@
             "type": "bower-asset"
         },
         {
+            "name": "bower-asset/vis",
+            "version": "v4.21.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:almende/vis.git",
+                "reference": "001716727826e2ba6cc0df7070733013936dda9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/almende/vis/zipball/001716727826e2ba6cc0df7070733013936dda9a",
+                "reference": "001716727826e2ba6cc0df7070733013936dda9a"
+            },
+            "type": "bower-asset",
+            "license": [
+                "Apache-2.0",
+                "MIT"
+            ]
+        },
+        {
             "name": "bower-asset/x-editable",
             "version": "1.5.1",
             "source": {
@@ -1029,6 +1048,58 @@
                 }
             ],
             "time": "2020-06-24T18:51:07+00:00"
+        },
+        {
+            "name": "cornernote/yii2-workflow-manager",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cornernote/yii2-workflow-manager.git",
+                "reference": "79dd9bc753b6d202ffc48cd2a967cbefd4cd377e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cornernote/yii2-workflow-manager/zipball/79dd9bc753b6d202ffc48cd2a967cbefd4cd377e",
+                "reference": "79dd9bc753b6d202ffc48cd2a967cbefd4cd377e",
+                "shasum": ""
+            },
+            "require": {
+                "raoul2000/yii2-workflow": "@dev",
+                "raoul2000/yii2-workflow-view": "@dev",
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-jui": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "cornernote\\workflow\\manager\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Brett O'Donnell",
+                    "email": "cornernote@gmail.com",
+                    "homepage": "http://mrphp.com.au/"
+                }
+            ],
+            "description": "Workflow Manager for Yii2.",
+            "keywords": [
+                "workflow",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/cornernote/yii2-workflow-manager/issues",
+                "source": "https://github.com/cornernote/yii2-workflow-manager/tree/1.0.2"
+            },
+            "time": "2018-03-26T03:11:41+00:00"
         },
         {
             "name": "daxslab/yii2-coreui",
@@ -4972,6 +5043,114 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "raoul2000/yii2-workflow",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/raoul2000/yii2-workflow.git",
+                "reference": "1e21516d0f2e102664cf194c33f2d74937eb7fd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/raoul2000/yii2-workflow/zipball/1e21516d0f2e102664cf194c33f2d74937eb7fd4",
+                "reference": "1e21516d0f2e102664cf194c33f2d74937eb7fd4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "~2.0.13"
+            },
+            "require-dev": {
+                "codeception/assert-throws": "^1.0",
+                "codeception/codeception": ">= 2.0.9",
+                "codeception/specify": "*",
+                "codeception/verify": "*",
+                "myclabs/deep-copy": ">= 1.3.1",
+                "yiisoft/yii2-codeception": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "raoul2000\\workflow\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Raoul",
+                    "email": "raoul.boulard@gmail.com",
+                    "homepage": "https://github.com/raoul2000/yii2-workflow"
+                }
+            ],
+            "description": "A simple workflow engine for Yii2",
+            "homepage": "http://raoul2000.github.io/yii2-workflow/guide-README.html",
+            "keywords": [
+                "workflow",
+                "yii2"
+            ],
+            "support": {
+                "email": "raoul.boulard@gmail.com",
+                "issues": "https://github.com/raoul2000/yii2-workflow/issues",
+                "source": "https://github.com/raoul2000/yii2-workflow"
+            },
+            "time": "2018-06-08T11:49:04+00:00"
+        },
+        {
+            "name": "raoul2000/yii2-workflow-view",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/raoul2000/yii2-workflow-view.git",
+                "reference": "0ea0b90a7595ba425baae50405c4e89a1ded1b96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/raoul2000/yii2-workflow-view/zipball/0ea0b90a7595ba425baae50405c4e89a1ded1b96",
+                "reference": "0ea0b90a7595ba425baae50405c4e89a1ded1b96",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/vis": "*",
+                "php": ">=5.4.0",
+                "raoul2000/yii2-workflow": ">=0.0.18",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "raoul2000\\workflow\\view\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Raoul",
+                    "email": "raoul.boulard@gmail.com",
+                    "homepage": "https://github.com/raoul2000/yii2-workflow-view"
+                }
+            ],
+            "description": "A simple widget to display your workflows",
+            "homepage": "http://www.yiiframework.com/",
+            "keywords": [
+                "view",
+                "widget",
+                "workflow",
+                "yii2"
+            ],
+            "support": {
+                "email": "raoul.boulard@gmail.com",
+                "issues": "https://github.com/raoul2000/yii2-workflow-view/issues",
+                "source": "https://github.com/raoul2000/yii2-workflow-view"
+            },
+            "time": "2015-08-23T20:00:46+00:00"
         },
         {
             "name": "rmrevin/yii2-fontawesome",

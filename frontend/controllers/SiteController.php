@@ -339,6 +339,18 @@ class SiteController extends Controller
     
   public function actionRutas()
     {
+      echo \yii::getAlias('@app/models'); die();
+      
+      
+      
+      $model= \common\models\masters\Turnos::findOne(1);
+      $model->createParte($model->CarbonNow());
+      die();
+      
+      
+      $model= new \common\models\masters\Turnoscambio();
+      var_dump($model->toCarbon('fecha'));die();
+      
       echo \common\models\masters\Detturnos::findOne(13)->horas();die(); 
      $c1=\common\models\masters\Detturnos::findOne(13)->toCarbon('hi');
       $c2=\common\models\masters\Detturnos::findOne(13)->toCarbon('hf');

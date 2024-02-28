@@ -1,13 +1,13 @@
 <?php
 use yii\widgets\ActiveForm;
-
+use yii\bootstrap4\Carousel;
 use yii\helpers\Html;
 ?>
 <?php 
 
 
 ?>
-<?= dosamigos\gallery\Carousel::widget([
+<?php echo dosamigos\gallery\Carousel::widget([
     'items' => $items, 'json' => false,
     'clientEvents' => [
         'onslide' => 'function(index, slide) {

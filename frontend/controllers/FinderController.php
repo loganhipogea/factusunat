@@ -77,6 +77,21 @@ class FinderController extends  \common\controllers\base\baseController
                         //'property1' => 'value1',
                         //'property2' => 'value2',
                             ],
+          'galleryimagebootstrap'=> [
+                        'class' => 'common\actions\ActionGalleryImageBootstrap',
+                        //'property1' => 'value1',
+                        //'property2' => 'value2',
+                            ],
+           'storesesion'=> [
+                        'class' => 'common\actions\ActionAjaxStoreSession',
+                        //'property1' => 'value1',
+                        //'property2' => 'value2',
+                            ],
+          'deletesesion'=> [
+                        'class' => 'common\actions\ActionAjaxDeleteSession',
+                        //'property1' => 'value1',
+                        //'property2' => 'value2',
+                            ],
       ];
       
   }

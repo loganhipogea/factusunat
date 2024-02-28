@@ -21,7 +21,7 @@ class ActionDelete extends \yii\base\Action
 	{
           
            
-            $datos=[];
+        $datos=[];
 	$modelClass=unserialize(h::request()->get(static::NOMBRE_CLASE_PARAMETER));
         $id=h::request()->get(static::ID_CLASE_PARAMETER);
         $model=$modelClass::findOne($id);

@@ -2,8 +2,9 @@
 
 namespace common\models\masters;
 use common\helpers\timeHelper;
+use common\helpers\h;
 use Yii;
-
+use frontend\modules\op\models\OpTareo;
 /**
  * This is the model class for table "{{%turnos}}".
  *
@@ -96,6 +97,11 @@ class Turnos extends \common\models\base\modelBase
    
     }
     
+   public function getAsignados(){
+    
+        return $this->hasMany(Turnosasignaciones::className(), ['turno_id' => 'id']);
+   
+    }  
     
     public function setHorasSemana(){
         $this->hsemanal=$this->horasSemana();
@@ -137,6 +143,34 @@ class Turnos extends \common\models\base\modelBase
        return $this;
    }
    
+   public function nAsignados(){
+     return $this->getAsignados()->andWhere(['activo'=>'1'])->count();
+   }
+   
+   public function createParte(\Carbon\Carbon $fecha){
+       $modelDay=$this->dia($fecha->weekday());
+    
+       OpTareo::firstOrCreateStatic(
+               [
+                   'turno_id'=>$this->id,
+                   'fecha'=>self::SwichtFormatDate($fecha->format(h::gsetting('timeBD', 'date')),'date',true),
+                   'hinicio'=>$modelDay->hi,
+                    'hfin'=>$modelDay->hf,
+                   'proc_id'=>1,
+                   
+               ],
+               null, 
+               [
+                   'turno_id'=>$this->id,
+                   'fecha'=>$fecha->format(h::gsetting('timeBD', 'date'))]
+               );
+   }
+   /*
+    * Devuelv el registro active RECORD Del dia
+    */
+   public function dia($ndia){
+       return $this->getDias()->andWhere(['dia'=>$ndia])->one();
+   }
    
     
 }

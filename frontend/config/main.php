@@ -29,7 +29,9 @@ return [
         // 'timeBeforeResetChatHandler' => 60
             ],
         
-       
+       'workflow' => [
+            'class' => 'cornernote\workflow\manager\Module',
+        ],
         'logi' => [
             'class' => 'frontend\modules\logi\Module',
                 ],
@@ -55,7 +57,9 @@ return [
         ]
     ],
     'components' => [       
-        
+     'workflowSource' => [
+            'class' => 'cornernote\workflow\manager\components\WorkflowDbSource',
+        ],   
     'telegram' => [
 		
                'class' => 'common\tlbot\TelegramMinerva',

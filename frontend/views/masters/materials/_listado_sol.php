@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
+use common\widgets\linkajaxgridwidget\linkAjaxGridWidget;
 use common\helpers\h;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\masters\MaestrocompoSearch */
@@ -72,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'yii\grid\ActionColumn',
                      //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
                      'headerOptions' => ['style' => 'width:10%'],
-                    'template' => '{edit}{delete}',
+                    'template' => '{edit}{delete}{plus}',
                     'buttons' => [
                     
                                 
@@ -85,7 +86,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $url = \yii\helpers\Url::to([$this->context->id.'/ajax-anula-material-solicitado','id'=>$model->id]);
                                 return ($model->subido || !$model->activo)?'':\yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
                              },
-                        
+                        'plus' => function ($url,$model) {                             
+                                $url = \yii\helpers\Url::to([$this->context->id.'/ajax-crea-material-solicitado','id'=>$model->id]);
+                                return \yii\helpers\Html::a('<span class="btn btn-danger glyphicon glyphicon-plus"></span>', '#', ['rel'=>$url,'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,])]);
+                             },
                             ]
                     ],
                  [
@@ -117,7 +121,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => $gridColumns,
     ]); ?>
     
-   
+   <?php 
+    echo linkAjaxGridWidget::widget([
+           'id'=>'widgetgrutrtitetdBancos',
+        'otherContainers'=>[],
+            'idGrilla'=>'grilla-materiales',
+            'family'=>'holas',
+          'type'=>'POST',
+           'evento'=>'click',
+        'posicion'=>\yii\web\View::POS_END
+       
+            //'foreignskeys'=>[1,2,3],
+        ]);
+    ?>   
     <?php Pjax::end(); ?>
   </div>
 </div>

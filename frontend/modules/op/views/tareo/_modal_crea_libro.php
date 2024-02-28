@@ -2,14 +2,19 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
+use yii\helpers\Json;
+//use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 use frontend\modules\op\helpers\ComboHelper;
   use kartik\time\TimePicker;
 use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
+use common\actions\ActionAjaxStoreSession;
+use common\actions\ActionAjaxDeleteSession;
  //use kartik\date\DatePicker;
 use kartik\datetime\DateTimePicker;
 //use common\widgets\selectwidget\selectWidget;
 use common\helpers\h;
+use common\widgets\inputajaxwidget\inputAjaxWidget;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\sigi\models\Edificios */
@@ -20,7 +25,7 @@ use common\helpers\h;
     <br>
     <?php $form = ActiveForm::begin([
         'id'=>'myformulario',
-    'fieldClass'=>'\common\components\MyActiveField'
+    //'fieldClass'=>'\common\components\MyActiveField'
     ]); ?>
       <div class="box-header">
         <div class="col-md-12">
@@ -73,9 +78,18 @@ use common\helpers\h;
     
    
  
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true/*,'disabled'=>!$model->activo*/,]) ?>
-
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group mb-3">
+     
+    
+     <?= $form->field($model, 'descripcion', [
+    'addon' => [
+        'prepend' => [
+            'content' => '<div id="sesion_test"><a href="#",class="holitas"><i class="glyphicon glyphicon-phone"></i></a></div>'
+        ]
+    ]
+                    ])->textInput(['maxlength' => true/*,'disabled'=>!$model->activo*/,]) ?>
+     
+     
  </div>
    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"> 
     <?php echo ComboDep::widget([
@@ -152,6 +166,21 @@ echo "detos_id=>".$model->detos_id."<br>";*/
      
     <?php ActiveForm::end(); ?>
 
+      <?php echo inputAjaxWidget::widget([
+            'isHtml'=>false,
+            'tipo'=>'POST',
+            'ruta'=>Url::to(['/finder/storesesion']),
+            'id_input'=>'sesion_test',
+            'idGrilla'=>'234_descri_proveedor',
+            'evento'=>'click',
+            'data'=>[ActionAjaxStoreSession::VALOR_ATTRIBUTO=>'eval($(\'#oplibro-descripcion\').val())',
+            ActionAjaxStoreSession::NOMBRE_CLASE_PARAMETER=>$model->className(),
+            ActionAjaxStoreSession::NOMBRE_ATRIBUTO=>'descripcion',  
+                    ],
+      ])  ?>
+        
+         
+         
 </div>
 
 

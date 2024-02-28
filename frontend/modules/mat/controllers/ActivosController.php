@@ -107,16 +107,17 @@ class ActivosController extends baseController
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        if($model->hasPartes()){
-           
-        }else{
-           $arr_arbol=[[              
-            'icon'=>'fa fa-dropbox',
-            'key'=>'_'.$model->id,
-            'title'=>$model->descripcion,
-             'children'=> \frontend\modules\mat\models\MatDespiece::findOne(1)->childsTreeRecursive() ,   
-           ]]; 
-        }
+        $arr_arbol=[];
+        foreach($model->piezasMayores() as $mod){
+             $arr_arbol[]=
+                        [              
+                                'icon'=>'fa fa-dropbox',
+                                'key'=>'_'.$mod->id,
+                                'title'=>$mod->material->descripcion,
+                                'children'=> $mod->childsTreeRecursive() ,   
+                            ]
+                        ; 
+            }
         
         
         return $this->render('update', [
@@ -155,6 +156,38 @@ class ActivosController extends baseController
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
     
-    
+    public function actionModalCreaNodo($id){
+           $this->layout = "install";
+           $model = new \frontend\modules\mat\models\MatDespiece();
+           if($id >0){
+               $nodoPadre = MatDespiece::findOne($id);           
+                $model->activo_id=$nodoPadre->activo_id;
+                $model->parent_id=$nodoPadre->id;
+           }else{
+                $model->activo_id=-$id;
+                $model->parent_id=null;  
+           }
+           
+            //var_dump($nodoPadre->attributes); die();
+        if(h::request()->isPost){ 
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+               if(!$model->save()) print_r($model->getErrors());
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('@frontend/views/masters/modelos-base/_modal_despiece_nodo', [
+                        'model' => $model,
+                        //'codigo'=>$modelMaterial->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+            ]);  
+        } 
+    } 
     
 }

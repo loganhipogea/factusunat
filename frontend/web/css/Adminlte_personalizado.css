@@ -1690,7 +1690,7 @@ a:hover,a:active,a:focus {
 .box.box-success {
     border-top-style: solid !important;
     border-top-width: 2px !important;
-    border-top-color: #ff9e00 !important;
+    border-top-color: #06a9d5 !important;
 }
 
 .box.box-default {
@@ -3254,7 +3254,10 @@ table.text-center,table.text-center td,table.text-center th {
 }
 
 .modal-header {
-    border-bottom-color: #f4f4f4
+    border-bottom-color: #f4f4f4;
+    background-color: #ff9508;
+    color: white;
+    text-shadow: 1px 1px 3px rgb(255 255 255);
 }
 
 .modal-footer {

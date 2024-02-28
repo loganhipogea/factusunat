@@ -16,6 +16,7 @@ class buttonSubmitWidget extends Widget
    public $idModal=null;    //id de la ventana MOdal
    public $url=null; //Direccion a la cual se redirecciona 
    public $title='Guardar';
+   public $scriptAfterSuccess='';
    
     
     public function init()
@@ -79,6 +80,8 @@ class buttonSubmitWidget extends Widget
             success: function(data){
           
                if(data.success=='1') {
+                  hacer_click();
+                       
                    if(data.type==1) {
                        $('#".$this->idModal."').modal('hide');                        
                         ".$cadAux."  
@@ -86,6 +89,7 @@ class buttonSubmitWidget extends Widget
                           $('#".$this->idModal."').modal('hide');
                                 ".$cadAux."  
                      }
+                     
                }
                if(data.success=='3'){
                       var msg=data.msg;
@@ -105,9 +109,26 @@ class buttonSubmitWidget extends Widget
                }
             }
               });
+        
+        
     }";
    $this->getView()->registerJs($cadenaJs, \yii\web\View::POS_HEAD);
+   
+   $cadenaJs2="function hacer_click(){
+       // psico_saves_widget();
+        afterSuccess();
+           }";
+   $this->getView()->registerJs($cadenaJs2, \yii\web\View::POS_HEAD);
+   
+   $cadenaJs3="function afterSuccess(){
+        ".$this->scriptAfterSuccess."  
+           }";
+   $this->getView()->registerJs($cadenaJs3, \yii\web\View::POS_HEAD);
+   
+   
+   
   } 
+  
 }
 
 ?>

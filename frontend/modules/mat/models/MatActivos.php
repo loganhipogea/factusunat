@@ -90,6 +90,7 @@ class MatActivos extends \common\models\base\modelBase
             'codocu' => Yii::t('app', 'Codocu'),
             'codestado' => Yii::t('app', 'Codestado'),
             'modalidad' => Yii::t('app', 'Modalidad'),
+            
         ];
     }
 
@@ -110,7 +111,7 @@ class MatActivos extends \common\models\base\modelBase
     
     public function getPartes()
     {
-        return $this->hasOne(MatDespiece::className(), ['activo_id' => 'id']);
+        return $this->hasMany(MatDespiece::className(), ['activo_id' => 'id']);
     }
     
     public function hasPartes(){
@@ -120,4 +121,9 @@ class MatActivos extends \common\models\base\modelBase
     public function getChilds($as_array=true){
         
     }
+    
+    public function piezasMayores(){
+       return $models=$this->getPartes()->andWhere(['parent_id'=>null])->all();
+       
+     }
 }

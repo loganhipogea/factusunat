@@ -31,4 +31,9 @@ class MatActivosQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+    
+    
+    public function equipos(){
+         $this->andWhere('esequipo', '1');
+    }
 }

@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
      
      $dataProvider=New ActiveDataProvider([
                                 'query' => \common\models\masters\VwTurnosAsignaciones::find()->
-                                            select(['codigotra','nombres','codcuadrilla','descricuadrilla','codarea','desarea'])->
+                                            select(['id','codigotra','nombres','codcuadrilla','descricuadrilla','codarea','desarea','actiasignado'])->
                                             andWhere(['idturno'=>$model->id]),
          
                                             ]);
@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                     
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
-            'template' => '{edit}{delete}',
+            'template' => '{edit}{delete}{view}',
                'buttons' => [  
                        'edit' => function ($url,$model) use($grilla) {
 			    $url= Url::to(['masters/clipro/edit-direccion','id'=>$model->id,'gridName'=>$grilla,'idModal'=>'buscarvalor']);
@@ -96,8 +96,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                         'delete' => function ($url,$model) {                             
                                 $url = \yii\helpers\Url::to([$this->context->id.'/deletemodel-for-ajax','id'=>$model->id]);
                               return \yii\helpers\Html::a('<span class=" danger glyphicon glyphicon-trash"></span>', '#', ['rel'=>$url,/*'id'=>$model->codparam,*/'family'=>'holas','id'=>\yii\helpers\Json::encode(['id'=>$model->id,'modelito'=> str_replace('@','\\',get_class($model))]),/*'title' => 'Borrar'*/]);
-                             }
-                        
+                             },
+                        'view' => function ($url,$model) {
+			    $url= Url::to(['masters/turnos/asignado','id'=>$model->id]);
+                              return \yii\helpers\Html::a('<span class="glyphicon glyphicon-search"></span>', $url, ['data-pjax'=>'0']);
+                            },
                     ]
               
                 ],
@@ -106,6 +109,19 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
             //'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'nombres',
            
+            
+         ],
+        [
+            //'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'actiasignado',
+            'format'=>'raw',
+             'value'=>function($model){
+                                    //var_dump($model->actiasignado);die();
+
+                return ($model->actiasignado)?'<i style="font-size: 1em; color:#a9e272;"><span class="fa fa-check"></span></i>':'<i style="color:#fd250d; font-size:1em;" ><span class="fa fa-close"></i>';
+
+               
+                }
             
          ],
            'codcuadrilla',                 

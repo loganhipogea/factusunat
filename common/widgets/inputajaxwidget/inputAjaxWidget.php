@@ -21,7 +21,7 @@ class inputAjaxWidget extends \yii\base\Widget
     public $data=['uno'=>1];
      public $otherContainers=[];
     PUBLIC $isHtml=false;
-    public $evento='change';
+    public $evento='change';    
     public $idGrilla=null; //Ids de los contendeores pjax a refrescar
     public function init()
     {
@@ -84,7 +84,8 @@ success: function (data) {
          }
     $cadena="$(document).ready(function() {
     $('#".$this->id_input."').one('".$this->evento."',function(){
-      
+      console.log('DEPURANDO');
+      console.log(".Json::encode($this->data).");
   $.ajax({ 
    url:'".$this->ruta."',
    type:'".$this->tipo."',

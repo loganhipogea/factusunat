@@ -25,7 +25,7 @@ class ActionGalleryImage extends \yii\base\Action
                                 'options'=>['title'=>(!empty($image->detalle))?$image->detalle:$image->titulo]
                                ];
                    }
-       
+      
             
             return $this->controller->render('/comunes/Gallery', [
                         'model' => $model,

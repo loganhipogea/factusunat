@@ -42,7 +42,7 @@ if (Yii::$app->session->hasFlash('info')): ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('base.verbs', 'Create Worker'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('base.verbs', 'Crear trabajador'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

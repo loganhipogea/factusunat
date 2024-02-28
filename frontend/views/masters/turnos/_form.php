@@ -15,6 +15,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
 ?>
 
 <div class="turnos-form">
+  <div class="box-body">
     <br>
     <?php $form = ActiveForm::begin([
     //'fieldClass'=>'\common\components\MyActiveField'
@@ -22,12 +23,13 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
         'enableAjaxValidation' => true,
     ]); ?>
     
-   <?php Pjax::begin(['id'=>'cabecera_turno','timeout'=>false]); ?>
+     <?php Pjax::begin(['id'=>'cabecera_turno','timeout'=>false]); ?>
       <div class="box-header">
+          
         <div class="col-md-12">
             <div class="btn-group"> 
                 
-        <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('<span class="fa fa-save"></span>   '.Yii::t('app', 'Grabar'), ['class' => 'btn btn-success']) ?>
        
         <?php 
         if($model->activo){
@@ -47,7 +49,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             </div>
         </div>
     </div>
-      <div class="box-body">
+     
  
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <?= 
@@ -93,8 +95,22 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                             ]) ?>
  </div>        
           
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
      <?= $form->field($model, 'desturno')->textInput(['maxlength' => true]) ?>
+
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+     <?= $form->field($model, 'id')->
+                   textInput(['disabled'=>true,'maxlength' => true,'value'=>$model->horasSemana()])-> 
+                   label(yii::t('base.names','Horas semana'))
+                   ?>
+
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+     <?= $form->field($model, 'id')->
+                   textInput(['disabled'=>true,'maxlength' => true,'value'=>$model->nAsignados()])-> 
+                   label(yii::t('base.names','Afiliados'))
+                   ?>
 
  </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -116,7 +132,8 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'evento'=>'click',
             'ruta'=>Url::to(['/masters/turnos/ajax-desactiva-turno','id'=>$model->id]),
             'id_input'=>'btn-activar',
-            'idGrilla'=>'cabecera_turno'
+            'idGrilla'=>'cabecera_turno',
+           'otherContainers'=>['grilla-turnos'],
       ])  ?>   
      <?php Pjax::end(); ?>
     <?php ActiveForm::end(); ?>
@@ -138,7 +155,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
             'template' => '{edit}',
                'buttons' => [  
                        'edit' => function ($url,$model) {
-			    $url= Url::to(['masters/turnos/modal-edita-det-turno','id'=>$model->id,'gridName'=>'grilla-turnos','idModal'=>'buscarvalor']);
+			    $url= Url::to(['masters/turnos/modal-edita-det-turno','id'=>$model->id,'gridName'=> \yii\helpers\Json::encode(['grilla-turnos','cabecera_turno']),'idModal'=>'buscarvalor']);
                               return \yii\helpers\Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['data-pjax'=>'0','class'=>'botonAbre']);
                             },
                        
@@ -178,7 +195,14 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
                             } 
                 
            ],  
-         
+         ['attribute' => 'jornada',
+                'format'=>'raw',
+                //'filter'=> common\helpers\ComboHelper::getCboDocuments(),
+                'value'=>function($model){ 
+                             return $model->horas.' '.Yii::t('base.names','Horas');                                     
+                            } 
+                
+           ],  
       
    ];
    echo '.'.GridView::widget([
@@ -193,7 +217,7 @@ use common\widgets\inputajaxwidget\inputAjaxWidget;
 <?php 
     echo linkAjaxGridWidget::widget([
            'id'=>'widget6768gruidBancos',
-       // 'otherContainers'=>['pjax-monto','pjax-moneda'],
+        'otherContainers'=>['cabecera_turno'],
             'idGrilla'=>'grilla-direcciones',
             'family'=>'holas',
           'type'=>'POST',

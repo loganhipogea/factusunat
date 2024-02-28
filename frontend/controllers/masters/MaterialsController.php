@@ -740,4 +740,27 @@ class MaterialsController extends baseController
             
       }
     }
+    
+   public function actionAjaxCreaMaterialSolicitado($id){
+        $req=h::request();       
+      if($req->isAjax){     
+      h::response()->format = \yii\web\Response::FORMAT_JSON;
+       $model= MaestrocompoSol::find()->andWhere(['id'=>$id])->one();
+            if(!is_null($model)){
+                  $model->createMaterial();
+            
+                  return ['success'=>yii::t('base.errors','Se agrego al catalogo de materiales')];
+             
+            }else{
+                return ['error'=>yii::t('base.errors','No se pudo agregar al catalogo de materiles')];  
+            }
+              
+            
+      }
+    }
+    
+    
+    public function actionEquipos(){
+        
+    }
 }

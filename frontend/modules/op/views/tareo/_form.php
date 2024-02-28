@@ -62,7 +62,12 @@ use common\widgets\cbodepwidget\cboDepWidget as ComboDep;
      <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
 </div>
-          
+ <?PHP if(!$model->isNewRecord) {  ?>
+ <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+     <?= $form->field($model, 'turno_id')->textInput(['maxlength' => true,'value'=>$model->turno->desturno,'disabled'=>true])->label('Turno') ?>
+
+</div>
+ <?PHP }  ?>
   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
      <?= $form->field($model, 'hinicio')->widget(TimePicker::className(), ['pluginOptions' => ['showMeridian' => false]]);?>
      

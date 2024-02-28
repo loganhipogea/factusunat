@@ -16,15 +16,12 @@ AppAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?= Html::csrfMetaTags() ?>
-    <title>ahu<?= Html::encode($this->title) ?></title>
+    <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <link href="<?=yii::getAlias(Yii::$app->params['ico'])?>" rel="icon">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
-    <?php $this->registerCssFile(Yii::$app->params['estilo_login'], [], 'css-install2'); ?>
-    
+    <?php $this->registerCssFile(Yii::$app->params['estilo_login'], []); ?>
+    <?php $this->registerJsFile ( Yii::$app->params['js_login'],['depends'=>['yii\web\JqueryAsset'],'position'=> yii\web\View::POS_END], null ); ?>
     
 </head>
 <body >

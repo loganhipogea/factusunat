@@ -2,6 +2,7 @@
 
 namespace frontend\modules\op\models;
 use common\models\masters\Direcciones;
+use common\models\masters\Turnos;
 use common\helpers\h;
 use Yii;
 
@@ -20,7 +21,8 @@ class OpTareo extends \common\models\base\modelBase
      public $dateorTimeFields=[
         'fecha'=>self::_FDATE,
         'fecha1'=>self::_FDATE,
-       // 'hfin'=>self::_FHOUR
+        'hinicio'=>self::_FHOUR,
+         'hfin'=>self::_FHOUR,
        ];
     /**
      * {@inheritdoc}
@@ -49,17 +51,17 @@ class OpTareo extends \common\models\base\modelBase
     public function rules()
     {
         return [
-            [['direcc_id', /*'proc_id', 'os_id', 'detos_id'*/], 'required'],
+           // [['direcc_id', /*'proc_id', 'os_id', 'detos_id'*/], 'required'],
             [['direcc_id', 'proc_id', 'os_id', 'detos_id'], 'integer'],
             [['detalle'], 'string'],
-            [['esferiado','semana','os_id','detos_id'], 'safe'],
+            [['esferiado','semana','os_id','detos_id','turno_id'], 'safe'],
             [['fecha'], 'string', 'max' => 10],
-            [['hinicio', 'hfin'], 'string', 'max' => 5],
+           // [['hinicio', 'hfin'], 'string', 'max' => 5],
             [['descripcion'], 'string', 'max' => 40],
-            [['detos_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpOsdet::className(), 'targetAttribute' => ['detos_id' => 'id']],
-            [['direcc_id'], 'exist', 'skipOnError' => true, 'targetClass' => Direcciones::className(), 'targetAttribute' => ['direcc_id' => 'id']],
-            [['proc_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpProcesos::className(), 'targetAttribute' => ['proc_id' => 'id']],
-            [['os_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpOs::className(), 'targetAttribute' => ['os_id' => 'id']],
+            //[['detos_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpOsdet::className(), 'targetAttribute' => ['detos_id' => 'id']],
+           // [['direcc_id'], 'exist', 'skipOnError' => true, 'targetClass' => Direcciones::className(), 'targetAttribute' => ['direcc_id' => 'id']],
+           // [['proc_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpProcesos::className(), 'targetAttribute' => ['proc_id' => 'id']],
+            //[['os_id'], 'exist', 'skipOnError' => true, 'targetClass' => OpOs::className(), 'targetAttribute' => ['os_id' => 'id']],
         ];
     }
 
@@ -106,6 +108,12 @@ class OpTareo extends \common\models\base\modelBase
         return $this->hasOne(Direcciones::className(), ['id' => 'direcc_id']);
     }
 
+    
+    
+     public function getTurno()
+    {
+        return $this->hasOne(Turnos::className(), ['id' => 'turno_id']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

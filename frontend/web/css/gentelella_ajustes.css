@@ -18,8 +18,8 @@ body {
 /*
 corregir el color del nav bar
 */.nav_menu {
-    border-bottom: 1px solid #f3dcc9 !important;
-    background: #fff9d5 !important;
+    border-bottom: 1px solid #0b9bef !important;
+    background: #0c1890 !important;
 }
 
 
@@ -34,7 +34,7 @@ y tambien los links d elos tabs
 */
  .nav>a,
 .nav-tabs > li > a {
-    color: #ffcfaa !important;
+    color: #a0c5f0 !important;
     text-decoration: none;
  }
  .nav>a:over,
@@ -43,7 +43,7 @@ y tambien los links d elos tabs
     text-decoration: none;
  }
  /*
-Aumentar el tamaño de la letra del menu
+Aumentar el tamaÃ±o de la letra del menu
  lateral
 */
  .nav-sm .nav.side-menu li a {
@@ -221,6 +221,14 @@ AJUSTES PARA EL PANEL IZQUIERDO DEL MENU
    
 background: #081275 !important;
 }
+
+
+.nav > li > a{
+    color: #a0c5f0 !important;
+}
+
+
+
 .sidebar-footer a:hover {
     background: #3c084d !important;
 }
@@ -303,3 +311,116 @@ hr {
         text-decoration-thickness: 2px;
         color:red;
       }
+      
+/*
+ Corigendo el color de los links de iconos 
+ del menu desplegable
+ */
+ .nav-md ul.nav.child_menu li:before {
+    background: #a0c5f0 !important;
+    
+}
+/*
+ Corigendo 
+ Las rayitas del item desplegable de meni
+ */
+.nav-md ul.nav.child_menu li:after {
+   border-left: 1px solid #a0c5f0 !important;
+    
+}
+
+
+
+/* AJUSTES PARA EL GRID */
+
+.grid-view table thead {
+    background-color: #f2f0df;
+}
+.grid-view table thead a {
+   color: #d6621f;
+   /* text-shadow: 1px 1px 1px rgb(170 17 67 / 40%); */
+   font-weight:normal;
+}
+
+  .grid-view table td  {
+   color: #638995;
+   text-shadow: 0px 0px 2px rgb(163 166 187 / 94%);
+   font-size: 11px;
+}
+
+
+
+.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td {
+    border-top: 1px solid #f4f4f4
+}
+
+.table>thead>tr>th {
+    border-bottom: 2px solid #f4f4f4
+}
+
+.table tr td .progress {
+    margin-top: 5px
+}
+
+.table-bordered {
+    border: 1px solid #f4f4f4
+}
+
+.table-bordered>thead>tr>th,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>tbody>tr>td,.table-bordered>tfoot>tr>td {
+    border: 1px solid #f4f4f4
+}
+
+.table-bordered>thead>tr>th,.table-bordered>thead>tr>td {
+    border-bottom-width: 2px
+}
+
+.table.no-border,.table.no-border td,.table.no-border th {
+    border: 0
+}
+
+table.text-center,table.text-center td,table.text-center th {
+    text-align: center
+}
+
+.table.align th {
+    text-align: left
+}
+
+.table.align td {
+    text-align: right
+}
+
+
+
+/*AJUSTES DE LOS BOTONES DE LA BARRA DE MENU HORIZONTAL*/
+.nav.navbar-nav>li>a {
+    color: #a0c5f0 !important;
+}
+
+.nav.navbar-nav>li>a:hover {
+    color: white !important;
+}
+
+.top_nav .nav>li>a:focus, .top_nav .nav>li>a:hover, .top_nav .nav .open>a, .top_nav .nav .open>a:focus, .top_nav .nav .open>a:hover {
+    background: #276fc6;
+}
+
+
+/*PARA LOS TITULOS DE CADA PAGINA H3*/
+h4 {
+    
+    color: #06a3bb !important;
+    text-shadow: 0px 0px 2px rgb(31 168 255) !important;
+    font-size: 18px !important;
+}
+
+  
+
+/*BOTON CERRAR DE LA VENTANA MODAL */
+.close:hover, .close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    filter: alpha(opacity=50);
+    opacity: 0.85;
+}

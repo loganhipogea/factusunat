@@ -89,7 +89,7 @@ use common\helpers\FileHelper as Fl;
                 ],
          
            
-             ['attribute' => 'codocu',
+             /*['attribute' => 'codocu',
                 'format'=>'raw',
                 'value'=>function($model){
                        if(!empty($model->codocu))
@@ -97,6 +97,8 @@ use common\helpers\FileHelper as Fl;
                              } 
                 
                 ],
+             */
+            
                ['attribute' => 'titulo',
                 'format'=>'raw',
                 'value'=>function($model){
