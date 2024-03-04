@@ -1,23 +1,23 @@
 <?php
 
-namespace frontend\controllers\masters;
+namespace frontend\modules\prd\controllers;
 
 use Yii;
-use common\models\masters\Modelosbase;
-use common\models\masters\ModelosbaseSearch;
+use frontend\modules\prd\models\PrdPlanos;
+use frontend\modules\prd\models\PrdPlanosSearch;
 use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use frontend\modules\mat\models\MatDespiece;
 use common\helpers\h;
 use yii\helpers\Url;
 
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use frontend\modules\mat\models\MatDespiece;
 /**
- * ModelosBaseController implements the CRUD actions for Modelosbase model.
+ * PlanosController implements the CRUD actions for PrdPlanos model.
  */
-class ModelosBaseController extends baseController
+class PlanosController extends baseController
 {
     /**
      * {@inheritdoc}
@@ -35,12 +35,12 @@ class ModelosBaseController extends baseController
     }
 
     /**
-     * Lists all Modelosbase models.
+     * Lists all PrdPlanos models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ModelosbaseSearch();
+        $searchModel = new PrdPlanosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +50,7 @@ class ModelosBaseController extends baseController
     }
 
     /**
-     * Displays a single Modelosbase model.
+     * Displays a single PrdPlanos model.
      * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,13 +63,13 @@ class ModelosBaseController extends baseController
     }
 
     /**
-     * Creates a new Modelosbase model.
+     * Creates a new PrdPlanos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Modelosbase();
+        $model = new PrdPlanos();
         
         
         if (h::request()->isAjax && $model->load(h::request()->post())) {
@@ -89,7 +89,7 @@ class ModelosBaseController extends baseController
     }
 
     /**
-     * Updates an existing Modelosbase model.
+     * Updates an existing PrdPlanos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return mixed
@@ -107,27 +107,14 @@ class ModelosBaseController extends baseController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-       $arr_arbol=[];
-        foreach($model->piezasMayores() as $mod){
-             $arr_arbol[]=
-                        [              
-                                'icon'=>'fa fa-dropbox',
-                                'key'=>'_'.$mod->id,
-                                'title'=>$mod->material->descripcion,
-                                'children'=> $mod->childsTreeRecursive() ,   
-                            ]
-                        ; 
-            }
-        
-        
+
         return $this->render('update', [
             'model' => $model,
-             'arr_arbol'=> $arr_arbol,
         ]);
     }
 
     /**
-     * Deletes an existing Modelosbase model.
+     * Deletes an existing PrdPlanos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return mixed
@@ -141,15 +128,15 @@ class ModelosBaseController extends baseController
     }
 
     /**
-     * Finds the Modelosbase model based on its primary key value.
+     * Finds the PrdPlanos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Modelosbase the loaded model
+     * @return PrdPlanos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Modelosbase::findOne($id)) !== null) {
+        if (($model = PrdPlanos::findOne($id)) !== null) {
             return $model;
         }
 
@@ -157,11 +144,17 @@ class ModelosBaseController extends baseController
     }
     
     
-     public function actionModalCreaRaiz($id){
-          $this->layout = "install";
-        $modelPadre = Modelosbase::findOne($id);
-        $model = new \frontend\modules\mat\models\MatDespiece();
-        $model->modelobase_id=$id;
+    public function actionModalCreaPlano($id){
+           $this->layout = "install";
+           $model = new \frontend\modules\prd\models\PrdPlanos();
+          
+               $nodoPadre = MatDespiece::findOne($id);           
+                //$model->activo_id=$nodoPadre->activo_id;
+              $model->matdespiece_id=$nodoPadre->id;
+               $model->codart=$nodoPadre->codart;
+           
+           
+            //var_dump($model->attributes); die();
         if(h::request()->isPost){ 
             $model->load(h::request()->post());
              h::response()->format = \yii\web\Response::FORMAT_JSON;
@@ -169,11 +162,42 @@ class ModelosBaseController extends baseController
             if(count($datos)>0){
                return ['success'=>2,'msg'=>$datos];  
             }else{
+              
                if(!$model->save()) print_r($model->getErrors());
                   return ['success'=>1,'id'=>$model->id];
             }
         }else{
-           return $this->renderAjax('_modal_despiece', [
+           return $this->renderAjax('_modal_crea_edita_plano', [
+                        'model' => $model,
+                        //'codigo'=>$modelMaterial->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+            ]);  
+        } 
+    } 
+    
+    
+    public function actionModalEditaPlano($id){
+           $this->layout = "install";
+           $model = PrdPlanos::findOne($id);
+          
+           
+            //var_dump($model->attributes); die();
+        if(h::request()->isPost){ 
+           // var_dump(h::request()->post()); die();
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+              
+               if(!$model->save()) print_r($model->getErrors());
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_crea_edita_plano', [
                         'model' => $model,
                         //'codigo'=>$modelMaterial->codart,
                         'id' => $id,
@@ -183,91 +207,34 @@ class ModelosBaseController extends baseController
         } 
     }
     
-    public function actionAjaxObtieneIdDespiece(){
-       if(h::request()->isAjax){
+    public function actionAjaxAprobarPlano($id){
+         if(h::request()->isAjax){
             
                 h::response()->format = \yii\web\Response::FORMAT_JSON;
-                $id=h::request()->post('id');
-                yii::error('El pots ');
-                yii::error(h::request()->post());
-                  if(is_null($id)){
-                      yii::error('el id es nulo');
-                      
-                     $model=MatDespiece::find()->orderBy(['id'=>SORT_DESC])->one(); 
+                $model= \frontend\modules\prd\models\PrdPlanosRevisiones::findOne($id);
+                  if(is_null($model)){
+                      return ['error'=>yii::t('base.errors','No se encontró el registro para este id')];
                   }else{
-                       yii::error('el id NO ES NULO '.$id);
-                      $model=MatDespiece::findOne($id); 
-
+                      if($model->setFinal()){
+                          $tx=$model->getDb()->beginTransaction();
+                          $modelPlano=$model->plano;
+                           if( $model->save() && $modelPlano->setAprobado()->save()){
+                               $tx->commit();
+                               return ['success'=>yii::t('base.errors','Se aprobó el diseño para este PT')];
+                           }else{
+                               
+                               return ['error'=>yii::t('base.errors','Se produjo un error en la grabación de los registros')];
+                              $tx->rollBack(); 
+                           }
+                      }else{
+                         // $tx->rollBack();
+                          return ['error'=>$model->getFirstError()];
+                      }
                   }
                    
-                   $matriz=[];
-                   $matriz['success']=$model->attributes;
-                   $matriz['success']['descripcion']=$model->material->descripcion;
-                    return $matriz;
-                }
-       }
-       
-       /*
-        * El id del parent
-        */
-       public function actionModalCreaNodo($id){
-           $this->layout = "install";
-           $model = new \frontend\modules\mat\models\MatDespiece();
-           if($id >0){
-               $nodoPadre = MatDespiece::findOne($id);           
-                $model->modelobase_id=$nodoPadre->modelobase_id;
-                $model->parent_id=$nodoPadre->id;
-           }else{
-                $model->modelobase_id=-$id;
-                $model->parent_id=null;  
-           }
-           
-            //var_dump($nodoPadre->attributes); die();
-        if(h::request()->isPost){ 
-            $model->load(h::request()->post());
-             h::response()->format = \yii\web\Response::FORMAT_JSON;
-            $datos=\yii\widgets\ActiveForm::validate($model);
-            if(count($datos)>0){
-               return ['success'=>2,'msg'=>$datos];  
-            }else{
-               if(!$model->save()) print_r($model->getErrors());
-                  return ['success'=>1,'id'=>$model->id];
-            }
-        }else{
-           return $this->renderAjax('_modal_despiece_nodo', [
-                        'model' => $model,
-                        //'codigo'=>$modelMaterial->codart,
-                        'id' => $id,
-                        'gridName'=>h::request()->get('gridName'),
-                        'idModal'=>h::request()->get('idModal'),
-            ]);  
-        } 
+                
     }
-      /*
-        * El id del parent
-        */
-       public function actionModalEditaNodo($id){
-           $this->layout = "install";
-           $model = MatDespiece::findOne($id);
-           
-        if(h::request()->isPost){ 
-            $model->load(h::request()->post());
-             h::response()->format = \yii\web\Response::FORMAT_JSON;
-            $datos=\yii\widgets\ActiveForm::validate($model);
-            if(count($datos)>0){
-               return ['success'=>2,'msg'=>$datos];  
-            }else{
-               if(!$model->save()) print_r($model->getErrors());
-                  return ['success'=>1,'id'=>$model->id];
-            }
-        }else{
-           return $this->renderAjax('_modal_despiece_nodo', [
-                        'model' => $model,
-                        //'codigo'=>$modelMaterial->codart,
-                        'id' => $id,
-                        'gridName'=>h::request()->get('gridName'),
-                        'idModal'=>h::request()->get('idModal'),
-            ]);  
-        } 
-    }  
+  }
+
+
 }

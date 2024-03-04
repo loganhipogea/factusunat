@@ -126,4 +126,38 @@ class MatActivos extends \common\models\base\modelBase
        return $models=$this->getPartes()->andWhere(['parent_id'=>null])->all();
        
      }
+     
+     
+     
+     public  function urlsTreeViewButtons(){
+         return [
+                 'add'=>[
+                           'icon'=>'fa fa-plus',
+                            'url'=>['/mat/activos/modal-crea-nodo','id'=>null,'gridName'=>'grilla-arbol','idModal'=>'buscarvalor'],
+                            'attrEnlace'=>['class'=>' botonAbre']
+                     ],
+                     'edit'=>[
+                           'icon'=>'fa fa-pencil',
+                            'url'=>['/mat/activos/modal-edita-nodo','id'=>null,'gridName'=>'grilla-arbol','idModal'=>'buscarvalor'],
+                            'attrEnlace'=>['class'=>' botonAbre']
+                     ],
+                        
+                 'delete'=>[
+                            'icon'=>'fa fa-trash',
+                            'url'=>'#',
+                            'attrEnlace'=>['rel'=>[ '/mat/activos/delete-nodo','id'=>null,'gridName'=>'grilla-arbol'],'class'=>'']
+                     ],
+                 'view'=>[
+                           'icon'=>'fa fa-eye',
+                            'url'=>['/mat/activos/modal-ver-nodo','id'=>null,'gridName'=>'grilla-arbol','idModal'=>'buscarvalor'],
+                            'attrEnlace'=>['class'=>' botonAbre']
+                     ],
+                'detail'=>[
+                           'icon'=>'fa fa-align-justify',
+                            'url'=>['/mat/activos/editar-parte','id'=>null,],
+                            'attrEnlace'=>['target'=>'_blank']
+                     ],
+             ];
+         
+     }
 }

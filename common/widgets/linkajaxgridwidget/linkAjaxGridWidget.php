@@ -90,7 +90,7 @@ class linkAjaxGridWidget extends Widget
          }
      
      $cadenaJs="$('div[id=\"".$this->idGrilla."\"] [family=\"".$this->family."\"]').on( '".$this->evento."', function() { 
-       
+      
      var yapaso=false;     
      if(this.rel===undefined){
        var_url=this.title;

@@ -1,11 +1,12 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\grid\GridView;
+
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
 use common\helpers\h;
 use yii\helpers\Json;
+use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\masters\MaestrocompoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -32,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
      Pjax::begin(['id'=>'grilla-arbol']);
      Pjax::end();
     ?>
-    <div class="box">
+   
        <div class="row">
         <div class="btn-group">
           <?php echo Html::input('text','hola','',['id'=>'cadena_a_buscar','class'=>'form-control']);  ?> 
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         
       </div>
-    </div>
+    
    
         
         
@@ -58,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'mode'=>"hide",  // "dimm": Grayout unmatched nodes, "hide": remove unmatched nodes
                                     //'checbox'=>true,
                                     ], 
-                       
+                              
            
            
                             ]//client OPtions
@@ -78,7 +79,8 @@ $this->params['breadcrumbs'][] = $this->title;
      ?>          
     <?php    
     $js5='$("#tree").fancytree("getTree").setOption("select", function(event, data) {
-                                                                      console.log(data["node"]);             
+                        // console.log(data["node"]["selected"]);   
+                        
                                                                                 }
                                                                         );';    
      $this->registerJs($js5, \yii\web\View::POS_END);
@@ -98,3 +100,39 @@ $this->params['breadcrumbs'][] = $this->title;
         ";
      $this->registerJs($js4, \yii\web\View::POS_END);
      ?>  
+            
+            <br>
+            <p> Agregados recientemente : </p>       
+    <?= GridView::widget([
+        'dataProvider' =>New \yii\data\ActiveDataProvider([
+            'query'=> frontend\modules\mat\models\MatDespiece::find()->orderBy(['creado'=>SORT_DESC])->limit(2),
+            'pagination' => false,
+        ]),
+         'summary' => '',
+       
+       
+        'columns' => [
+           
+              'codart',              
+           ['attribute' => 'descripcion',
+                'format'=>'raw',
+                'value'=>function($model){
+                        return $model->material->descripcion;
+                              } 
+                
+                ], 
+                        
+                 'cant',          
+                 'creado',           
+              ['attribute' => 'USER',
+                'format'=>'raw',
+             
+               // 'contentOptions'=>['style'=>'text-align:right; font-weight:800;'],
+                'value'=>function($model) {
+                        return '<span class="fa fa-user"></span>'.$model->username ;
+                            } 
+                
+                ], 
+          
+        ],
+    ]); ?>

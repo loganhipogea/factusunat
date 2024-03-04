@@ -3,6 +3,7 @@
 namespace common\models\masters;
 use common\behaviors\FileBehavior;
 use common\models\Sustancia;
+use frontend\modules\prd\models\PrdPlanos;
 use Yii;
 use common\helpers\h;
 /**
@@ -114,6 +115,13 @@ class Maestrocompo extends \common\models\base\modelBase
      public function getVales()
     {
         return $this->hasMany(\frontend\modules\mat\models\MatDetvale::className(), ['codart' => 'codart']);
+    }
+    /*
+     * rELACION CON PRODUCCION
+     */
+    public function getPlanos()
+    {
+        return $this->hasMany(\frontend\modules\prd\models\PrdPlanos::className(), ['codart' => 'codart']);
     }
    
     /**
@@ -242,6 +250,15 @@ class Maestrocompo extends \common\models\base\modelBase
       //yii::error($ums,__FUNCTION__);
      return $ums;
       
+  }
+  
+  public function hasPlanosAprobados(){
+      $estados=$this->getPlanos()->select('current_status')->andWhere(['<>','current_status'=> PrdPlanos::ST_ANULADO])->distinct()->column();
+                if(count(array_diff($estados,[PrdPlanos::ST_APROBADO]))==0){
+                    return true;
+                }else{
+                    return false;
+                }
   }
   
   

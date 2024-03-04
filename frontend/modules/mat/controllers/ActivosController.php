@@ -7,6 +7,7 @@ use frontend\modules\mat\models\MatActivos;
 use frontend\modules\mat\models\MatActivosSearch;
 use frontend\controllers\base\baseController;
 use yii\web\NotFoundHttpException;
+use frontend\modules\mat\models\MatDespiece;
 use yii\filters\VerbFilter;
 use common\helpers\h;
 use yii\helpers\Url;
@@ -168,7 +169,7 @@ class ActivosController extends baseController
                 $model->parent_id=null;  
            }
            
-            //var_dump($nodoPadre->attributes); die();
+            //var_dump($model->attributes); die();
         if(h::request()->isPost){ 
             $model->load(h::request()->post());
              h::response()->format = \yii\web\Response::FORMAT_JSON;
@@ -176,11 +177,12 @@ class ActivosController extends baseController
             if(count($datos)>0){
                return ['success'=>2,'msg'=>$datos];  
             }else{
+              
                if(!$model->save()) print_r($model->getErrors());
                   return ['success'=>1,'id'=>$model->id];
             }
         }else{
-           return $this->renderAjax('@frontend/views/masters/modelos-base/_modal_despiece_nodo', [
+           return $this->renderAjax('_modal_despiece_nodo', [
                         'model' => $model,
                         //'codigo'=>$modelMaterial->codart,
                         'id' => $id,
@@ -189,5 +191,55 @@ class ActivosController extends baseController
             ]);  
         } 
     } 
+    
+    
+    public function actionModalEditaNodo($id){
+           $this->layout = "install";
+           $model = MatDespiece::findOne($id);
+          
+           
+            //var_dump($model->attributes); die();
+        if(h::request()->isPost){ 
+            $model->load(h::request()->post());
+             h::response()->format = \yii\web\Response::FORMAT_JSON;
+            $datos=\yii\widgets\ActiveForm::validate($model);
+            if(count($datos)>0){
+               return ['success'=>2,'msg'=>$datos];  
+            }else{
+              
+               if(!$model->save()) print_r($model->getErrors());
+                  return ['success'=>1,'id'=>$model->id];
+            }
+        }else{
+           return $this->renderAjax('_modal_despiece_nodo', [
+                        'model' => $model,
+                        //'codigo'=>$modelMaterial->codart,
+                        'id' => $id,
+                        'gridName'=>h::request()->get('gridName'),
+                        'idModal'=>h::request()->get('idModal'),
+            ]);  
+        } 
+    }
+    
+    public function actionEditarParte($id){
+        $model = MatDespiece::findOne($id);
+
+        if (h::request()->isAjax && $model->load(h::request()->post())) {
+                h::response()->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        
+        return $this->render('editar_parte', [
+            'model' => $model,
+           // 'arr_arbol'=> $arr_arbol,
+        ]);
+        
+    }
+    
     
 }

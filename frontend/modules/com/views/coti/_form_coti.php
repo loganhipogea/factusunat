@@ -106,8 +106,8 @@ use yii\widgets\Pjax;
             'model'=>$model,
             'form'=>$form,
             'campo'=>'codcli',
-         'ordenCampo'=>1,
-         'addCampos'=>[2,3],
+         'ordenCampo'=>0,
+         'addCampos'=>[1,2],
         ]);  ?>
 
  </div>
@@ -119,8 +119,8 @@ use yii\widgets\Pjax;
             'model'=>$model,
             'form'=>$form,
             'campo'=>'codcli1',
-         'ordenCampo'=>1,
-         'addCampos'=>[2,3],
+         'ordenCampo'=>0,
+         'addCampos'=>[1,2],
         ]);  ?>
 
  </div>
